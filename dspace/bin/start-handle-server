@@ -42,7 +42,8 @@
 #
 ###########################################################################
 
-# Shell script for starting Handle server
+# Shell script for starting Handle server.  WARNING this assumes the old
+# one has been terminated.
 
 # Assume we're in the bin subdirectory of the DSpace installation directory
 BINDIR=`dirname $0`
@@ -51,5 +52,10 @@ BINDIR=`dirname $0`
 handledir=`$BINDIR/dsrun org.dspace.core.ConfigurationManager -property handle.dir`
 logdir=`$BINDIR/dsrun org.dspace.core.ConfigurationManager -property log.dir`
 
+# Remove lock file, in case the old Handle server did not shut down properly
 rm -f $handledir/txns/lock
-nohup $BINDIR/dsrun net.handle.server.Main $handledir </dev/null >> $logdir/handle-server.log 2>&1 &
+
+# Start the Handle server, with a special log4j properties file.
+# We cannot simply write to the same logs, since log4j
+# does not support more than one JVM writing to the same rolling log.
+nohup $BINDIR/dsrun net.handle.server.Main -Dlog4j.configuration=log4j-handle-plugin.properties $handledir </dev/null >> $logdir/handle-server.log 2>&1 &
