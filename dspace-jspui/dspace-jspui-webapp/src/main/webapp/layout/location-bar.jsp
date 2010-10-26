@@ -76,7 +76,9 @@
         if (u.equals(""))
         {
 %>
-<%= s %>&nbsp;&gt;
+<p class="browseBar">
+<span class="titletop"><br>
+<%= s %></span><br><br>
 <%
         }
         else
