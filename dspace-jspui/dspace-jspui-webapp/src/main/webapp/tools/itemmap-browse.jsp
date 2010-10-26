@@ -150,16 +150,16 @@
         {
          // do nothing the date is allready set to "without date"
         }
-        String contributor = LocaleSupport.getLocalizedMessage(pageContext, "jsp.general.without-contributor");
-        DCValue[] contributors = item.getMetadata("dc", "contributor", Item.ANY, Item.ANY);
-        if (contributors.length >= 1)
+        String creator = LocaleSupport.getLocalizedMessage(pageContext, "jsp.general.without-contributor");
+        DCValue[] creators = item.getMetadata("dc", "creator", Item.ANY, Item.ANY);
+        if (creators.length >= 1)
         {
-            contributor = contributors[0].value;
+            creator = creators[0].value;
             
         }
         else
         {
-         // do nothing the contributor is allready set to anonymous
+         // do nothing the creator is allready set to anonymous
         }
         String title = LocaleSupport.getLocalizedMessage(pageContext, "jsp.general.untitled");
         DCValue[] titles = item.getMetadata("dc", "title", null, Item.ANY);
@@ -181,7 +181,7 @@
         <%= date %>
         </td>
         <td class="<%= row %>RowEvenCol">
-        <%= contributor %>
+        <%= creator %>
         </td>
         <td class="<%= row %>RowOddCol">
         <%= title %></td>
