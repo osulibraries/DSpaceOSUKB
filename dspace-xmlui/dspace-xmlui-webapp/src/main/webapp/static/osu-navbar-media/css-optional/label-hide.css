@@ -1,0 +1,13 @@
+/*<!-- 
+	Note for developers: 
+    Hide Form input label. JS can also be used to do this dynamically.
+-->*/
+div#osu-NavbarLinks label.overlabel
+{
+	color: #999999;
+	left: 7px;
+	position: absolute;
+	top: 1px;
+	z-index: 1;
+	text-indent: -1000px;
+}

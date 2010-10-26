@@ -1,0 +1,215 @@
+div#osu-Navbar span, 
+div#osu-Navbar h1, 
+div#osu-Navbar h2, 
+div#osu-Navbar p, 
+div#osu-Navbar a, 
+div#osu-Navbar ol,
+div#osu-Navbar ul, 
+div#osu-Navbar li, 
+div#osu-Navbar fieldset, div#osu-Navbar form, div#osu-Navbar label
+{
+	margin: 0pt;
+	padding: 0pt;
+}
+
+.osu-semantic
+{
+	position: absolute;
+	left: 0;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+a.osu-semantic:active, a.osu-semantic:focus
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	overflow: visible;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 90%;
+}
+
+a#skip:active, a#skip:focus
+{
+	position: absolute;
+	top: 0;
+	left: 25%;
+	width: 50%;
+	text-align: center;
+	padding: 0.5em 0 1.5em 0;
+	display: block;
+	border: none;
+	color: #fff;
+	z-index: 99;
+	font-weight: bold;
+	text-decoration: none;
+	background: transparent url(../img/mast_skip_bg.png) repeat-x bottom left;
+	border-top: none;
+	border-bottom: 1px dotted #ccc;
+	border-right: 1px dotted #ccc;
+	border-left: 1px dotted #ccc;
+}
+
+div#osu-Navbar
+{
+	background: #eaebeb url(../img/background_graybar.gif) repeat-x left bottom;
+	font-family: Arial, Helvetica, sans-serif;
+	position: relative;
+	min-height: 2.7em;
+	margin: 0;
+	padding: 0;
+}
+
+/* Bread-crumb */
+div#osu-NavbarBreadcrumb
+{
+	background: transparent url(../img/background_redbar.gif) repeat-x left bottom;
+	float: left;
+	padding-left: 0.5em;
+	height: 2.7em;
+}
+
+div#osu-NavbarBreadcrumb p#osu, div#osu-NavbarBreadcrumb p#site-name
+{
+	float: left;
+	line-height: 2.37;
+	font-size: 93%;
+}
+
+div#osu-NavbarBreadcrumb p#osu { margin: 0 3px 0 0; }
+
+div#osu-NavbarBreadcrumb p#osu a
+{
+	font-weight: bolder;
+	color: #990000;
+	text-decoration: none;
+}
+
+div#osu-NavbarBreadcrumb p#osu a:hover,
+div#osu-NavbarBreadcrumb p#osu a:active,
+div#osu-NavbarBreadcrumb p#osu a:focus { text-decoration: underline; }
+
+div#osu-NavbarBreadcrumb p#site-name
+{
+	background: transparent url(../img/arrow_twisty.png) no-repeat left center;
+	padding: 0px 5px 0px 14px;
+}
+
+div#osu-NavbarBreadcrumb p#site-name a
+{
+	color: #3d3d3d;
+	text-decoration: none;
+}
+
+div#osu-NavbarBreadcrumb p#site-name a:hover, 
+div#osu-NavbarBreadcrumb p#site-name a:focus, 
+div#osu-NavbarBreadcrumb p#site-name a:active { text-decoration: underline; }
+
+/* Navbar links */
+div#osu-NavbarLinks
+{
+	background: transparent url(../img/background_graybar_gradient.png) no-repeat left bottom;
+	min-height: 2.7em;
+	overflow: hidden;
+}
+
+div#osu-NavbarLinks ul
+{
+	float: right;
+	font-size: 70%;
+	padding-right: 0.7em;
+}
+
+div#osu-NavbarLinks ul li
+{
+	float: left;
+	list-style-type: none;
+	font-size: 1.2em;
+	line-height: 2.7em;
+}
+
+div#osu-NavbarLinks ul li img { vertical-align: middle; }
+
+div#osu-NavbarLinks ul li a
+{
+	color: #3d3d3d;
+	text-decoration: none;
+	padding: 0em 0.45em;
+}
+
+div#osu-NavbarLinks ul li a:hover, 
+div#osu-NavbarLinks ul li a:active,
+div#osu-NavbarLinks ul li a:focus
+{
+	color: #000;
+	text-decoration: underline;
+	outline: none;
+}
+
+div#osu-NavbarLinks form input.textfield
+{
+	background: #fff;
+	color: #999;
+	border: 1px solid #c7c7c7;
+	height: 1.4em;
+	width: 11em;
+	margin: 0 0.275em;
+	padding-top: 3px;
+}
+
+div#osu-NavbarLinks form input.textfield:focus, div#osu-NavbarLinks form input.title:focus { border: 1px solid #666; }
+
+/* go button */
+div#osu-NavbarLinks button
+{
+	margin-top: 0.45em;
+	border: 1px solid #c7c7c7;
+	background-color: #f0f0f0;
+	text-decoration: none;
+	color: #6f6f6f;
+	cursor: pointer;
+}
+
+div#osu-NavbarLinks button[type]
+{
+	padding: 2px 5px 2px 4px;
+	/* Firefox */
+	line-height: 17px;
+	/* Safari */
+}
+
+div#osu-NavbarLinks button:hover,
+div#osu-NavbarLinks button:active,
+div#osu-NavbarLinks button:focus
+{
+	border: 1px solid #900;
+	color: #000;
+	background: #f4f4f4;
+}
+
+/*osu search input*/
+div#osu-NavbarLinks fieldset { border: none; }
+div#osu-NavbarLinks #searchbox { position: relative; }
+div#osu-NavbarLinks input#search-field { width: 11em; }
+div#osu-NavbarLinks label.overlabel { color: #999; }
+
+div#osu-NavbarLinks label.overlabel-apply
+{
+	position: absolute;
+	top: 1px;
+	left: 7px;
+	z-index: 1;
+	color: #999;
+}
+
+div#osu-NavbarLinks label.overlabel-apply-win
+{
+	position: absolute;
+	top: 0;
+	left: 7px;
+	z-index: 1;
+	color: #999;
+}
