@@ -238,8 +238,10 @@ public class Community extends DSpaceObject
      */
     public static Community[] findAll(Context context) throws SQLException
     {
+	    //kaliebe.1@osu.edu 2009.08.17 added upper() to ORDER BY
+	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(context, "community",
-                "SELECT * FROM community ORDER BY name");
+                "SELECT * FROM community ORDER BY upper(name)");
 
         List<Community> communities = new ArrayList<Community>();
 
@@ -289,10 +291,12 @@ public class Community extends DSpaceObject
     public static Community[] findAllTop(Context context) throws SQLException
     {
         // get all communities that are not children
+	    //kaliebe.1@osu.edu 2009.03.13 added upper() to ORDER BY
+	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(context, "community",
                 "SELECT * FROM community WHERE NOT community_id IN "
                         + "(SELECT child_comm_id FROM community2community) "
-                        + "ORDER BY name");
+                        + "ORDER BY upper(name)");
 
         List<Community> topCommunities = new ArrayList<Community>();
 
@@ -598,11 +602,13 @@ public class Community extends DSpaceObject
         List<Collection> collections = new ArrayList<Collection>();
 
         // Get the table rows
+	    //kaliebe.1@osu.edu 2009.03.13 added upper() to ORDER BY
+	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(
         	ourContext,"collection",
             "SELECT collection.* FROM collection, community2collection WHERE " +
             "community2collection.collection_id=collection.collection_id " +
-            "AND community2collection.community_id= ? ORDER BY collection.name",
+            "AND community2collection.community_id= ? ORDER BY upper(collection.name)",
             getID());
 
         // Make Collection objects
