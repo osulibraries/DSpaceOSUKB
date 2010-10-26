@@ -69,6 +69,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
+import javax.security.auth.login.Configuration;
+import org.dspace.content.Bundle;
 import org.dspace.content.authority.MetadataAuthorityManager;
 
 /**
@@ -101,6 +103,8 @@ public class BrowseListTag extends TagSupport
 
     /** Config browse/search thumbnail link behaviour */
     private boolean linkToBitstream = false;
+
+    private boolean linkToBitstreamFromNoThumbnail = false;
 
     /** Config to include an edit link */
     private boolean linkToEdit = false;
@@ -790,6 +794,17 @@ public class BrowseListTag extends TagSupport
                 linkToBitstream = true;
             }
         }
+
+        String linkNoThumbnailBehaviour = ConfigurationManager
+            .getProperty("webui.browse.nothumbnail.linkbehaviour");
+        if(linkNoThumbnailBehaviour != null)
+        {
+            if (linkNoThumbnailBehaviour.equals("bitstream"))
+            {
+                linkToBitstreamFromNoThumbnail = true;
+            }
+        }
+
     }
 
     /*
@@ -868,7 +883,36 @@ public class BrowseListTag extends TagSupport
 
             if (thumbnail == null)
     		{
-    			return "";
+                    String link = "";
+                    if(linkToBitstream && linkToBitstreamFromNoThumbnail) {
+                        // Try to get a link to the bitstream
+                        Item fullItem = Item.find(c, item.getID());
+                        Bundle[] origBundle = fullItem.getBundles("ORIGINAL");
+                        if(origBundle.length > 0) {
+                            Bitstream[] bitstreams = origBundle[0].getBitstreams();
+                            if(bitstreams.length > 0) {
+                                Bitstream bs = bitstreams[0];
+                                link = hrq.getContextPath() + "/bitstream/"
+                                                            + item.getHandle() + "/"
+                                                            + bs.getSequenceID() + "/"
+                                                            + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
+                            }
+                        }
+                    }
+
+                    if(link.contentEquals("")) {
+                        link = hrq.getContextPath() + "/handle/" + item.getHandle();
+                    }
+                    StringBuffer thumbFrag = new StringBuffer();
+
+                    thumbFrag.append("<a href=\"" + link + "\" ");
+                    thumbFrag.append("title=\"" + item.getName() + "\" />");
+                    String img = "image/mime/NONE.png";
+                    thumbFrag.append("<img src=\"")
+                             .append(img)
+                             .append("\" alt=\"No thumbnail available\"")
+                             .append(" border=\"0\"></a>");
+                    return thumbFrag.toString();
     		}
         	StringBuffer thumbFrag = new StringBuffer();
 
@@ -877,12 +921,12 @@ public class BrowseListTag extends TagSupport
         		Bitstream original = thumbnail.getOriginal();
         		String link = hrq.getContextPath() + "/bitstream/" + item.getHandle() + "/" + original.getSequenceID() + "/" +
         						UIUtil.encodeBitstreamName(original.getName(), Constants.DEFAULT_ENCODING);
-        		thumbFrag.append("<a target=\"_blank\" href=\"" + link + "\" />");
+        		thumbFrag.append("<a target=\"_blank\" href=\"" + link + "\" title=\"" + item.getName() + "\" />");
         	}
         	else
         	{
         		String link = hrq.getContextPath() + "/handle/" + item.getHandle();
-        		thumbFrag.append("<a href=\"" + link + "\" />");
+        		thumbFrag.append("<a href=\"" + link + "\"  title=\"" + item.getName() + "\" />");
         	}
 
         	Bitstream thumb = thumbnail.getThumb();
@@ -892,7 +936,7 @@ public class BrowseListTag extends TagSupport
             String scAttr = getScalingAttr(hrq, thumb);
             thumbFrag.append("<img src=\"")
                      .append(img)
-                     .append("\" alt=\"")
+                     .append("\" title=\"")
                      .append(alt + "\" ")
                      .append(scAttr)
                      .append("/ border=\"0\"></a>");
