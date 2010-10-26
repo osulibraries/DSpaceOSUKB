@@ -63,6 +63,7 @@
 <%@ page import="org.dspace.browse.ItemCounter" %>
 <%@ page import="org.dspace.content.*" %>
 <%@ page import="org.dspace.core.ConfigurationManager" %>
+<%@ page import="org.dspace.eperson.Group"     %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
 
@@ -173,21 +174,22 @@
               <td align="center" class="standard" valign="middle">
                 <small><fmt:message key="jsp.general.orbrowse"/>&nbsp;</small>
    				<%-- Insert the dynamic list of browse options --%>
+        <div class="browse_buttons">
 <%
 	for (int i = 0; i < bis.length; i++)
 	{
 		String key = "browse.menu." + bis[i].getName();
 %>
-	<div class="browse_buttons">
 	<form method="get" action="<%= request.getContextPath() %>/handle/<%= community.getHandle() %>/browse">
 		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
 		<%-- <input type="hidden" name="community" value="<%= community.getHandle() %>" /> --%>
 		<input type="submit" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
 	</form>
-	</div>
+	&nbsp;
 <%	
 	}
 %>
+            </div>
 			  </td>
             </tr>
           </table>
@@ -436,13 +438,17 @@
     <%= sidebar %>
 
   </dspace:sidebar>
-
+            <%
+                    boolean restrictedStats = ConfigurationManager.getBooleanProperty("statistics.item.authorization.admin", false);
+                    if(!restrictedStats || editor_button) {
+             %>
          <div align="center">
                    <form method="get" action="<%= request.getContextPath() %>/displaystats">
                        <input type="hidden" name="handle" value="<%= community.getHandle() %>"/>
                        <input type="submit" name="submit_simple" value="<fmt:message key="jsp.community-home.display-statistics"/>" />
                    </form>
           </div>
+           <%    } %>
 
 
 </dspace:layout>
