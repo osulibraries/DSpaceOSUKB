@@ -38,13 +38,18 @@
 
 package org.dspace.content.service;
 
+import java.io.IOException;
+import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.dao.ItemDAO;
 import org.dspace.content.dao.ItemDAOFactory;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Thumbnail;
+import org.dspace.content.Item;
 import org.dspace.core.Context;
 
 import java.sql.SQLException;
+import java.util.Iterator;
+import org.dspace.content.Bundle;
 
 public class ItemService
 {
@@ -65,7 +70,7 @@ public class ItemService
         {
             if (requireOriginal)
                 primaryBitstream = dao.getFirstBitstream(itemId, "ORIGINAL");
-            
+
             thumbBitstream   = dao.getFirstBitstream(itemId, "THUMBNAIL");
         }
 
@@ -73,5 +78,122 @@ public class ItemService
             return new Thumbnail(thumbBitstream, primaryBitstream);
 
         return null;
+    }
+
+    /**
+     *
+     *
+     *
+     * Assumptions:
+     *  - one item which houses this bitstream
+     *  - one receiver, one loser
+     * @param context
+     * @param bitstream_id
+     * @param destinationBundleName
+     * @throws SQLException
+     */
+    public static void moveBitstreamToBundle(Context context, int bitstream_id, String destinationBundleName) throws SQLException, AuthorizeException, IOException
+    {
+        context.turnOffAuthorisationSystem();
+        //Get all background info
+        Bitstream currentBitstream = Bitstream.find(context, bitstream_id);
+        System.out.println("bitstream_id:"+bitstream_id);
+
+        Bundle[] losingBundles = currentBitstream.getBundles();
+
+        for (int i = 0; i < losingBundles.length; i++) {
+            System.out.print(" LosingBundle:"+losingBundles[i].getName()+" -- bundle_id:"+losingBundles[i].getID());
+        }
+
+        Item parentItem = losingBundles[0].getItems()[0];
+        System.out.print(" Parent item_id:"+parentItem.getID());
+
+        // Get movers and loser bundles
+        Bundle[] destinationBundles = parentItem.getBundles(destinationBundleName);
+        Bundle destinationBundle = null;
+        if(destinationBundles.length > 0)
+        {
+            destinationBundle = destinationBundles[0];
+            System.out.print(" Existing dest bundle -- bundle_id:"+destinationBundle.getID());
+        }
+        else
+        {
+            //Doesn't exist, must create
+            destinationBundle = parentItem.createBundle(destinationBundleName);
+            System.out.print(" new dest bundle -- bundle_id:"+destinationBundle.getID());
+        }
+
+        // Add this bitstream to dest bundle, remove from exist bundle
+        if(destinationBundle.getID() == losingBundles[0].getID()) {
+            System.out.println("HOLD THE PHONE!!! -- Losing Bundle and gain bundle should not be the same, aborting!!!");
+            context.restoreAuthSystemState();
+            return;
+        }
+
+
+        destinationBundle.addBitstream(currentBitstream);
+        destinationBundle.update();
+        losingBundles[0].removeBitstream(currentBitstream);
+        losingBundles[0].update();
+
+        System.out.println(" Move Completed!");
+
+        context.commit();
+
+        context.restoreAuthSystemState();
+    }
+
+    public static void moveBitstreamToBundleTest() throws SQLException, AuthorizeException, IOException
+    {
+        Context context = new Context();
+
+        moveBitstreamToBundle(context, 377057, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 377059, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 230169, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 94995, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 94996, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 94999, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426640, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426642, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426645, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426647, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426649, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426651, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426654, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426715, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426655, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 202226, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 202234, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426657, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426718, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426660, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426661, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426664, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426665, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426721, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426667, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426670, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426724, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426727, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426644, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426675, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 426678, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 484542, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 520563, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 520575, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 520582, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 520568, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 538658, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 538922, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 538664, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 538960, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 538969, "PROXY-LICENSE");
+
+    }
+
+    public static void main(String[] args) throws SQLException, AuthorizeException, IOException
+    {
+        moveBitstreamToBundleTest();
+        System.exit(0);
     }
 }
