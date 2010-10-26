@@ -111,6 +111,13 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/builder.js"> </script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/controls.js"> </script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/choice-support.js"> </script>
+
+   <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
+   <script type="text/javascript">
+     var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
+     document.write(unescape("%3Cscript src='" + JsHost + "ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
+   </script>
+    <script>!window.jQuery && document.write('<script src="<%= request.getContextPath() %>/static/js/jquery-1.4.2.min.js"><\/script>')</script>
     </head>
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
@@ -123,16 +130,11 @@
 
             <%-- DSpace logo --%>
             <tr>
-                <td>
-                    <a href="<%= request.getContextPath() %>/"><img src="<%= request.getContextPath() %>/image/dspace-blue.gif" alt="<fmt:message key="jsp.layout.header-default.alt"/>" width="198" height="79" border="0"/></a></td>
-                    <td class="tagLine" width="99%"> <%-- Make as wide as possible. cellpadding repeated for broken NS 4.x --%>
-                    <a class="tagLineText" target="_blank" href="http://www.dspace.org/"><fmt:message key="jsp.layout.header-default.about"/></a>
-                </td>
-                <td nowrap="nowrap" valign="middle">
-                </td>
-            </tr>
-            <tr class="stripe"> <%-- Blue stripe --%>
-                <td colspan="3">&nbsp;</td>
+                <td background="<%= request.getContextPath() %>/image/bk.gif">
+					<a href="<%= request.getContextPath() %>/">					
+						<img src="<%= request.getContextPath() %>/image/banner.gif" alt="<fmt:message key="jsp.layout.header-default.alt"/>">
+					</a>
+				</td>
             </tr>
         </table>
 

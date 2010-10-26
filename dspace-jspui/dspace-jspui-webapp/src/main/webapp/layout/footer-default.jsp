@@ -48,6 +48,7 @@
 
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
+<%@ page import="org.dspace.core.ConfigurationManager" %>
 
 <%
     String sidebar = (String) request.getAttribute("dspace.layout.sidebar");
