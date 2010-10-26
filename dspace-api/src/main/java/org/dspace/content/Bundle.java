@@ -50,6 +50,7 @@ import org.dspace.authorize.AuthorizeConfiguration;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
@@ -102,13 +103,22 @@ public class Bundle extends DSpaceObject
         ourContext = context;
         bundleRow = row;
         bitstreams = new ArrayList<Bitstream>();
+        String bitstreamOrderingField  = ConfigurationManager.getProperty("webui.bitstream.order.field");
+        String bitstreamOrderingSort   = ConfigurationManager.getProperty("webui.bitstream.order.sort"); //Value must be one of ASC | DESC
+        if(bitstreamOrderingField.length() == 0) {
+            bitstreamOrderingField = "sequence_id";
+        }
+        if(bitstreamOrderingSort.length() == 0) {
+            bitstreamOrderingSort = "ASC";
+        }
 
-        // Get bitstreams
+        String query = "SELECT bitstream.* FROM bitstream, bundle2bitstream WHERE "
+                        + "bundle2bitstream.bitstream_id=bitstream.bitstream_id AND "
+                        + "bundle2bitstream.bundle_id= ? "
+                        + "ORDER BY bitstream." + bitstreamOrderingField +" "+ bitstreamOrderingSort;
         TableRowIterator tri = DatabaseManager.queryTable(
                 ourContext, "bitstream",
-                "SELECT bitstream.* FROM bitstream, bundle2bitstream WHERE "
-                        + "bundle2bitstream.bitstream_id=bitstream.bitstream_id AND "
-                        + "bundle2bitstream.bundle_id= ? ",
+                query,
                 bundleRow.getIntColumn("bundle_id"));
 
         try
