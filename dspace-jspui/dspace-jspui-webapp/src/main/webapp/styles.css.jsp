@@ -1,9 +1,9 @@
 <%--
   - styles.css.jsp
   -
-  - Version: $Revision$
+  - Version: $Revision: 4603 $
   -
-  - Date: $Date$
+  - Date: $Date: 2006/03/27 05:24:03 $
   -
   - Copyright (c) 2002, Hewlett-Packard Company and Massachusetts
   - Institute of Technology.  All rights reserved.
@@ -308,6 +308,10 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
              vertical-align: middle;
              text-decoration: none }
 
+.browse_buttons form {
+             display:inline;
+            }
+
 .itemListCellOdd { font-family: "verdana", "Arial", "Helvetica", sans-serif;
                    font-size: 12pt;
                    font-style: normal;
@@ -348,7 +352,7 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
                    font-weight: bold;
            font-size: 10pt;
            text-align: right;
-           vertical-align: top }
+}
 
 .submitFormHelp {  margin-left: 10px;
            margin-right: 10px;
@@ -377,7 +381,7 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
                         font-size: 10pt;
                         font-style: italic;
                         text-align: center;
-                        vertical-align: top; }
+ }
 
 .submitProgressTable{ margin: 0;
                       padding: 0;
@@ -543,7 +547,7 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
              color: #000000;
              vertical-align: middle;
              text-decoration: none;
-             background: #fefecd;
+             background: #dfe5ed;
              padding: 0;
              border: 0;
              margin: 0 }
@@ -553,7 +557,7 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
                   font-style: normal;
                   font-weight: bold;
                   color: #000000;
-                  background: #fefecd;
+                  background: #dfe5ed;
                   text-decoration: none;
                   vertical-align: middle }
 
@@ -562,9 +566,17 @@ UL { font-family: "verdana", "Arial", "Helvetica", sans-serif;
                   font-style: normal;
                   font-weight: bold;
                   color: #000000;
-                  background: #fefecd;
+                  background: #dfe5ed;
                   text-decoration: none;
                   vertical-align: middle }
+
+.titletop {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        font-weight: bold;
+        color: #990000;
+        text-decoration: none;
+}
 
 .attentionTable
 {
@@ -782,3 +794,8 @@ input.ds-authority-lock.is-locked
   { background-image: url(<%= request.getContextPath() %>/image/lock24.png); }
 input.ds-authority-lock.is-unlocked
   { background-image: url(<%= request.getContextPath() %>/image/unlock24.png); }
+
+/* remove border from image links */
+img {
+    border:0px;
+}
