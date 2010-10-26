@@ -79,14 +79,20 @@
                 <td colspan="<%= overallColSpan %>" class="pageFootnote">
                     <table class="pageFooterBar" width="100%">
                         <tr>
+				<%--
                             <td>
                                 <a href="http://validator.w3.org/check?uri=referer"><img
                                     src="<%= request.getContextPath() %>/image/valid-xhtml10.png"
                                     alt="Valid XHTML 1.0!" height="31" width="88" /></a>
                             </td>
+				--%>
                             <td class="pageFootnote">
                                 <fmt:message key="jsp.layout.footer-default.text"/>&nbsp;-
-                                <a target="_blank" href="<%= request.getContextPath() %>/feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
+                                <%
+                                    String fromPage = UIUtil.getOriginalURL(request);
+                                    fromPage = URLEncoder.encode(fromPage);
+                                %>
+                                <a target="_blank" href="<%= request.getContextPath() %>/feedback?fromPage=<%= fromPage %>"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
                                 <a href="<%= request.getContextPath() %>/htmlmap"></a>
                             </td>
                             <td nowrap="nowrap" valign="middle"> <%-- nowrap, valign for broken NS 4.x --%>
@@ -96,5 +102,20 @@
                 </td>
             </tr>
         </table>
+
+<%-- Start Google Analytics Code --%>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("<%= ConfigurationManager.getProperty("xmlui.google.analytics.key") %>");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<%-- End Google Analytics Code --%>
+
     </body>
 </html>
