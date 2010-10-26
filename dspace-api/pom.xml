@@ -207,7 +207,12 @@
             <artifactId>modules</artifactId>
             <version>0.3.2</version>
         </dependency>
-    </dependencies>
+	<!-- JTidy jar needs to be locally installed. See: http://jira.dspace.org/jira/browse/DS-692 -->
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>938</version>
+        </dependency>
    </dependencies>
 
 </project>
