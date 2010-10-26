@@ -196,6 +196,18 @@
          <groupId>commons-httpclient</groupId>
          <artifactId>commons-httpclient</artifactId>
       </dependency>
+      <dependencies>
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>modules</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+    </dependencies>
    </dependencies>
 
 </project>

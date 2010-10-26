@@ -65,6 +65,8 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndEnclosure;
+import com.sun.syndication.feed.synd.SyndEnclosureImpl;
 import com.sun.syndication.feed.synd.SyndImage;
 import com.sun.syndication.feed.synd.SyndImageImpl;
 import com.sun.syndication.feed.synd.SyndPerson;
@@ -74,10 +76,13 @@ import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.module.DCModuleImpl;
 import com.sun.syndication.feed.module.DCModule;
 import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.itunes.*;
+import com.sun.syndication.feed.module.itunes.types.Duration;
 import com.sun.syndication.io.SyndFeedOutput;
 import com.sun.syndication.io.FeedException;
 
 import org.apache.log4j.Logger;
+import org.dspace.content.Bundle;
 
 /**
  * Invoke ROME library to assemble a generic model of a syndication
@@ -147,6 +152,8 @@ public class SyndicationFeed
     // affects Bitstream retrieval URL and I18N keys
     private String uiType = null;
 
+    private HttpServletRequest request = null;
+
     /**
      * Constructor.
      * @param ui either "xmlui" or "jspui"
@@ -177,6 +184,8 @@ public class SyndicationFeed
         String logoURL = null;
         String objectURL = null;
         String defaultTitle = null;
+        boolean podcastFeed = false;
+        this.request = request;
 
         // dso is null for the whole site, or a search without scope
         if (dso == null)
@@ -195,6 +204,10 @@ public class SyndicationFeed
                 defaultTitle = col.getMetadata("name");
                 feed.setDescription(col.getMetadata("short_description"));
                 logo = col.getLogo();
+                String cols = ConfigurationManager.getProperty("webui.feed.podcast.collections");
+                if(cols != null && cols.length() > 1 && cols.contains(col.getHandle()) ) {
+                    podcastFeed = true;
+                }
             }
             else if (dso.getType() == Constants.COMMUNITY)
             {
@@ -202,13 +215,16 @@ public class SyndicationFeed
                 defaultTitle = comm.getMetadata("name");
                 feed.setDescription(comm.getMetadata("short_description"));
                 logo = comm.getLogo();
+                String comms = ConfigurationManager.getProperty("webui.feed.podcast.communities");
+                if(comms != null && comms.length() > 1 && comms.contains(comm.getHandle()) ){
+                    podcastFeed = true;
+                }
             }
             objectURL = resolveURL(request, dso);
             if (logo != null)
                 logoURL = urlOfBitstream(request, logo);
         }
-        feed.setTitle(labels.containsKey(MSG_FEED_TITLE) ?
-                            localize(labels, MSG_FEED_TITLE) : defaultTitle);
+        feed.setTitle(localize(labels, MSG_FEED_TITLE) + defaultTitle);
         feed.setLink(objectURL);
         feed.setPublishedDate(new Date());
         feed.setUri(objectURL);
@@ -342,6 +358,65 @@ public class SyndicationFeed
                     }
                     entry.getModules().add(dc);
                 }
+                entry.setUri(title);
+
+                //iTunes Podcast Support - START
+                if (podcastFeed)
+                {
+                    // Add enclosure(s)
+                    List<SyndEnclosure> enclosures = new ArrayList();
+                    try {
+                        Bundle[] bunds = item.getBundles("ORIGINAL");
+                        if (bunds[0] != null) {
+                            Bitstream[] bits = bunds[0].getBitstreams();
+                            for (int i = 0; (i < bits.length); i++) {
+                                String mime = bits[i].getFormat().getMIMEType();
+                                if(mime.contains("audio/x-mpeg")) {
+                                    SyndEnclosure enc = new SyndEnclosureImpl();
+                                    enc.setType(bits[i].getFormat().getMIMEType());
+                                    enc.setLength(bits[i].getSize());
+                                    enc.setUrl(urlOfBitstream(request, bits[i]));
+                                    enclosures.add(enc);
+                                } else {
+                                    continue;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    entry.setEnclosures(enclosures);
+
+                    // Get iTunes specific fields: author, subtitle, summary, duration, keywords
+                    EntryInformation itunes = new EntryInformationImpl();
+
+                    String author = getOneDC(item, authorField);
+                    if (author != null && author.length() > 0) {
+                        itunes.setAuthor(author);                               // <itunes:author>
+                    }
+
+                    itunes.setSubtitle(title == null ? localize(labels, MSG_UNTITLED) : title); // <itunes:subtitle>
+
+                    if (db.length() > 0) {
+                        itunes.setSummary(db.toString());                       // <itunes:summary>
+                    }
+
+                    String extent = getOneDC(item, "dc.format.extent");         // assumed that user will enter this field with length of song in seconds
+                    if (extent != null && extent.length() > 0) {
+                        extent = extent.split(" ")[0];
+                        Integer duration = Integer.parseInt(extent);
+                        itunes.setDuration(new Duration(duration));             // <itunes:duration>
+                    }
+
+                    String subject = getOneDC(item, "dc.subject");
+                    if (subject != null && subject.length() > 0) {
+                        String[] subjects = new String[1];
+                        subjects[0] = subject;
+                        itunes.setKeywords(subjects);                           // <itunes:keywords>
+                    }
+
+                    entry.getModules().add(itunes);
+                }
             }
             feed.setEntries(entries);
         }
@@ -441,15 +516,7 @@ public class SyndicationFeed
         {
             if (baseURL == null)
             {
-                if (request == null)
-                    baseURL = ConfigurationManager.getProperty("dspace.url");
-                else
-                {
-                    baseURL = (request.isSecure()) ? "https://" : "http://";
-                    baseURL += ConfigurationManager.getProperty("dspace.hostname");
-                    baseURL += ":" + request.getServerPort();
-                    baseURL += request.getContextPath();
-                }
+                baseURL = ConfigurationManager.getProperty("dspace.url");
             }
             return baseURL;
         }
@@ -480,4 +547,3 @@ public class SyndicationFeed
         return (dcv.length > 0) ? dcv[0].value : null;
     }
 }
-
