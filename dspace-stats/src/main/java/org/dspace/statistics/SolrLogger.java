@@ -243,8 +243,8 @@ public class SolrLogger
             storeParents(doc1, dspaceObject);
 
             solr.add(doc1);
-            // TODO: requires further load testing, very fast commits might cause issues
-            solr.commit(false, false);
+            //commits are executed automatically using the solr autocommit
+//            solr.commit(false, false);
    
         } catch (Exception e) {
         	log.error(e.getMessage(), e);
@@ -874,4 +874,24 @@ public class SolrLogger
 
     }
     
+    /**
+     * Maintenance to keep a SOLR index efficient.
+     * Note: This might take a long time.
+     */
+    public static void optimizeSOLR() {
+        try {
+            long start = System.currentTimeMillis();
+            System.out.println("SOLR Optimize -- Process Started:"+start);
+            solr.optimize();
+            long finish = System.currentTimeMillis();
+            System.out.println("SOLR Optimize -- Process Finished:"+finish);
+            System.out.println("SOLR Optimize -- Total time taken:"+(finish-start) + " (ms).");
+        } catch (SolrServerException sse) {
+            System.err.println(sse.getMessage());
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+    }
+    
 }
+
