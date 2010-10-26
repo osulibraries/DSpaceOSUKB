@@ -3,9 +3,9 @@
 <!--
   structural.xsl
 
-  Version: $Revision$
+  Version: $Revision: 4716 $
  
-  Date: $Date$
+  Date: $Date: 2010-01-21 11:57:40 -0500 (Thu, 21 Jan 2010) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.

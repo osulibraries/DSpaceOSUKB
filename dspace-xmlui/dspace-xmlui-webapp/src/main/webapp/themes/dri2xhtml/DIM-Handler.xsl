@@ -3,9 +3,9 @@
 <!--
   DS-METS-1.0-DIM.xsl
 
-  Version: $Revision$
+  Version: $Revision: 4648 $
  
-  Date: $Date$
+  Date: $Date: 2009-12-23 11:24:52 -0500 (Wed, 23 Dec 2009) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.
@@ -829,7 +829,7 @@
         	</div>
         </xsl:if>
         
-        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
+        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0 or string-length(dim:field[@element='rights'][@qualifier='license'])&gt;0">
         	<div class="detail-view-rights-and-license">
 		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
 		            <p class="copyright-text">

@@ -3,9 +3,9 @@
 <!--
   DS-METS-1.0.xsl
 
-  Version: $Revision$
+  Version: $Revision: 4098 $
  
-  Date: $Date$
+  Date: $Date: 2009-07-21 22:09:29 -0400 (Tue, 21 Jul 2009) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.
@@ -206,7 +206,7 @@
                 </xsl:choose>                        
             </td>
 	    <!-- Display the contents of 'Description' as long as at least one bitstream contains a description -->
-	    <xsl:if test="$context/mets:fileSec/mets:fileGrp[@USE='CONTENT']/mets:file/mets:FLocat/@xlink:label != ''">
+	    <xsl:if test="$context/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat/@xlink:label != ''">
 	        <td>
 	            <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:label"/>
 	        </td>

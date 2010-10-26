@@ -62,6 +62,10 @@
         <xsl:import href="dri2xhtml/MODS-Handler.xsl"/>-->
     
     <xsl:import href="dri2xhtml/General-Handler.xsl"/>
+
+    <xsl:import href="dri2xhtml/osukb_base/simple_item_fields.xsl"/>
+    <xsl:import href="dri2xhtml/osukb_base.xsl"/>
+
     <xsl:output indent="yes"/>       
     
 </xsl:stylesheet>
