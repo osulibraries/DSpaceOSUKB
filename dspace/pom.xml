@@ -426,6 +426,7 @@
                 </default.db.url>
                 <default.db.username>dspace</default.db.username>
                 <default.db.password>dspace</default.db.password>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
             </properties>
         </profile>
 
