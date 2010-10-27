@@ -151,9 +151,9 @@ public class UploadLicenseStep extends AbstractProcessingStep
             throws ServletException, IOException, SQLException,
             AuthorizeException
     {
-        if(!AuthorizeManager.isAdmin(context)) {
+        /*if(!AuthorizeManager.isAdmin(context)) {
             return STATUS_COMPLETE;
-        }
+        }*/
 
         // get button user pressed
         String buttonPressed = Util.getSubmitButton(request, NEXT_BUTTON);
@@ -283,24 +283,19 @@ public class UploadLicenseStep extends AbstractProcessingStep
     public int getNumberOfPages(HttpServletRequest request,
             SubmissionInfo subInfo) throws ServletException
     {
+        //if isAdmin, 1, else 0
         try {
-            //@TODO Get context of user, and if isAdmin, 1, else 0
-            // Admins should see the tab, others never know it existed
-            Context c = new Context();
-            if (AuthorizeManager.isAdmin(c))
+            if (!AuthorizeManager.isAdmin(subInfo.getContext())) {
+                return STATUS_COMPLETE;
+            } else
             {
-                //Admins see a step to perform this
                 return 1;
-            } else {
-                // Regular people don't
-                return 0;
             }
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(UploadLicenseStep.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
-
-        //in the event of failed, then return 0;
-        return 0;
+        //return 0;
     }
 
     // ****************************************************************
@@ -325,6 +320,10 @@ public class UploadLicenseStep extends AbstractProcessingStep
     protected int processRemoveFile(Context context, Item item, int bitstreamID)
             throws IOException, SQLException, AuthorizeException
     {
+        /*if(!AuthorizeManager.isAdmin(context)) {
+            return STATUS_COMPLETE;
+        }*/
+
         Bitstream bitstream;
 
         // Try to find bitstream
@@ -384,6 +383,10 @@ public class UploadLicenseStep extends AbstractProcessingStep
             throws ServletException, IOException, SQLException,
             AuthorizeException
     {
+        /*if(!AuthorizeManager.isAdmin(context)) {
+            return STATUS_COMPLETE;
+        }*/
+
         boolean formatKnown = true;
         boolean fileOK = false;
         BitstreamFormat bf = null;

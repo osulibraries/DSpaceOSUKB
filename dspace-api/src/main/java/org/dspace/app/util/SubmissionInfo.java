@@ -50,6 +50,7 @@ import org.apache.log4j.Logger;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
 import org.dspace.content.InProgressSubmission;
+import org.dspace.core.Context;
 
 import org.dspace.submit.AbstractProcessingStep;
 import org.dspace.workflow.WorkflowItem;
@@ -73,6 +74,8 @@ public class SubmissionInfo
     * process that this item is going through (including all steps, etc)
     */
     private SubmissionConfig submissionConfig = null;
+
+    private Context context = null;
     
     /**
     * Handle of the collection where this item is being submitted
@@ -134,10 +137,12 @@ public class SubmissionInfo
      * @throws ServletException
      *             if an error occurs
      */
-    public static SubmissionInfo load(HttpServletRequest request, InProgressSubmission subItem) throws ServletException
+    public static SubmissionInfo load(HttpServletRequest request, InProgressSubmission subItem, Context context) throws ServletException
     {
         boolean forceReload = false;
     	SubmissionInfo subInfo = new SubmissionInfo();
+
+        subInfo.setContext(context);
         
         // load SubmissionConfigReader only the first time
         // or if we're using a different UI now.
@@ -210,6 +215,16 @@ public class SubmissionInfo
     public SubmissionConfig getSubmissionConfig()
     {
         return this.submissionConfig;
+    }
+
+    public void setContext(Context context)
+    {
+        this.context = context;
+    }
+
+    public Context getContext()
+    {
+        return this.context;
     }
 
     /**
