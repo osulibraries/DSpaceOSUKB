@@ -1,0 +1,3 @@
+[submodule "dspace/config"]
+	path = dspace/config
+	url = git@github.com:kompewter/kb-config.git
