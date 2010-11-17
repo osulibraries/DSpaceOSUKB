@@ -45,9 +45,9 @@ $(document).ready(function() {
 function initGalleryPopups() {
 	for (var i=0; i != itemids.length; i++) { 
 		var sel = "a#anchor" + itemids[i]; 
-		$(sel).fancybox({'hideOnContentClick': false}); 
+		$(sel).fancybox({ 'hideOnContentClick': false }); 
 		sel = "a#image" + itemids[i]; 
-		$(sel).fancybox({'hideOnContentClick': false}); 
+		$(sel).fancybox({ 'hideOnContentClick': false }); 
 	} 
 }
 
@@ -77,99 +77,13 @@ function initZoomableImage() {
 			
 			serviceImgUrl = serviceImg.url;
 			
-			// add the puzzle "easter egg" to the footer
-			html = "<a href='javascript:showPuzzle()'>...</a>";
-			$("#ds-footer-links").append(html);
+
 		}
 		
 	}
 }
 
-/**
-* Shows the puzzle
-*/
-function showPuzzle() {
-	if (serviceImgUrl != '') {
-		displayPuzzle(serviceImgUrl);
-	}
-}
-
-/** 
-* Displays the puzzle on the interface 
-*/
-function displayPuzzle(imgUrl) {
-	var html = "<div id='puzzle'>";
-	html += "<img src='" + imgUrl + "' id='puzzleimage' width='400' />";
-	html += "<a href='javascript:hidePuzzle()'>Hide Puzzle</a>";
-	html += "</div>";
-	$("body").append(html);
-	
-	$("#puzzle").css("position","absolute");
-	$("#puzzle").css("left",50);
-	$("#puzzle").css("top",50);
-	$("#puzzle").css("width",400);
-	$("#puzzle").css("background-color","#fff");
-	$("#puzzle").css("border-width","1px");
-	$("#puzzle").css("border-color","#999");
-	// $("#puzzle").css("background-color","#fff");	
-
-	//$("#puzzleimage").css("width",400);
-	var settings = { 
-    hole: 6,                   // initial hole position [1 ... rows*columns] 
-    shuffle: true,             // initially show shuffled pieces [true|false] 
-    numbers: false,              // initially show numbers on pieces [true|false] 
- 
-    // display additional gui controls 
-    control: { 
-        shufflePieces: true,    // display 'Shuffle' button [true|false] 
-        confirmShuffle: true,   // ask before shuffling [true|false] 
-        toggleOriginal: true,   // display 'Original' button [true|false] 
-        toggleNumbers: true,    // display 'Numbers' button [true|false] 
-        counter: true,          // display moves counter [true|false] 
-        timer: true,            // display timer (seconds) [true|false] 
-        pauseTimer: true        // pause timer if 'Original' button is activated 
-                                // [true|false] 
-    }};
-	$('#puzzleimage').jqPuzzle(settings);
-}
-
-function hidePuzzle() {
-	$("#puzzle").remove();
-}
 
 function showAbout() {
 	$("#gallery-about").load(ABOUT_PAGE_URL);
-}
-
-//came from loose inline from buildHead of gallery.xsl
-function tFocus(element) {
-    if (element.value ==
-        '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
-        element.value='';
-    }
-}
-
-function tSubmit(form){
-    var defaultedElements =
-    document.getElementsByTagName("textarea");
-    for (var i=0; i != defaultedElements.length; i++) {
-        if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>') {
-            defaultedElements[i].value='';
-        }
-    }
-}
-
-/**
- * Creates an iframe with the specified source
- * @REQUIRES jQuery
- * @REQUIRES that there exists an element with ID preview-embed
- */
-function embeddedPreview(source) {
-    if($("#embed").length > 0) {
-        //set the source to the location asked for
-        $("#embed").attr("src", source);
-    } else {
-        //Create the embed iframe
-        $("#preview-embed").append("<iframe id='embed' src='"+source+"' width='100%' height='342px' style='border:none;'/>"); //requires jQuery
-    }
 }

@@ -3,9 +3,9 @@
 <!--
   template.xsl
 
-  Version: $Revision$
+  Version: $Revision: 3705 $
  
-  Date: $Date$
+  Date: $Date: 2009-04-11 13:02:24 -0400 (Sat, 11 Apr 2009) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.
@@ -62,29 +62,5 @@
     <xsl:output indent="yes"/>
     
     
-    <!-- An example of an existing template copied from structural.xsl and overridden -->  
-    <xsl:template name="buildFooter">
-        <div id="ds-footer">
-            This footer has had its text and links changed. This change should override the existing template.
-            <div id="ds-footer-links">
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                        <xsl:text>/contact</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
-                </a>
-                <xsl:text> | </xsl:text>
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                        <xsl:text>/feedback</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
-                </a>
-            </div>
-        </div>
-    </xsl:template>
-
     
 </xsl:stylesheet>

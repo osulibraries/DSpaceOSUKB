@@ -1,247 +1,508 @@
-/*
-  style.css
-
-  Version: $Revision: 4461 $
- 
-  Date: $Date: 2009-10-19 22:42:11 -0400 (Mon, 19 Oct 2009) $
- 
-  Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
-  Institute of Technology.  All rights reserved.
- 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
- 
-  - Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
- 
-  - Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution.
- 
-  - Neither the name of the Hewlett-Packard Company nor the name of the
-  Massachusetts Institute of Technology nor the names of their
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
- 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-  DAMAGE.
-*/
 
 body {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: .8em;
-        text-align: center;
-}
-
-fieldset {
-        border: 0px;
-}
-
-div#ds-main {
-        position: relative;
-        margin-top: 5px;
-        min-width: 950px;
-        width: 80%;
-        color: inherit;
-        background-color: white;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: left;
+        font-family: Corbel, Optima, Verdana, sans-serif;
+        font-size: .9em;
+	background: url('../images/bkgd.png') repeat-x transparent;
+        background-color: #999;
+	margin: 0;
         padding: 0;
 }
 
+a {
+    color: #003;
+}
+
+fieldset {
+    border: 0px;
+}
+
+ul {
+    list-style-type: none;
+}
+table {
+    clear: both;
+    border-spacing: 0px;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777;
+    width: 100%;
+}
+
+th {
+    padding: 4px 10px;
+}
+.subheader th {
+    padding-left: 5px;
+    font-weight: 100;
+}
+
+td.span.bold {
+    text-align: right;
+    vertical-align: text-top;
+}
+
+tr.ds-table-header-row {
+    color: inherit;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+tr.ds-table-header-row.subheader {
+    background-color: #9ab;
+}
+
+tr.ds-table-row.odd {
+    color: inherit;
+    background-color: #FFF;
+}
+
+tr.ds-table-row.even {
+    color: inherit;
+    background-color: #F5FAFF;
+
+}
+
+/* ds-main is the outer container for the other four sections:
+    ds-header
+        <a>ds-header-logo</a>
+        <ul id="ds-trail">
+        <div id="ds-user-box">
+    ds-body
+        [lots of stuff]
+    ds-options
+        [lots of stuff]
+    ds-footer
+        <div id="ds-footer-links">
+*/
+
+div#ds-main {
+    position: relative;
+    margin: 5px auto;
+    min-width: 780px;
+    max-width: 95%;
+    
+}
+
 div#ds-header {
-        width: 100%;
-        border: 3px solid rgb(240, 240, 210);
-        padding: 0px;
-        background-color: #DCD8BD;
+    width: 100%;
+    height: 94px;
+    padding: 0px;
+    	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.6);
+	background: transparent\9; /* clear solid background for ie */
+    zoom:1; /* required for the filters */
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+
 }
 
-div#ds-header a {
-        text-decoration: none;
-}
 
-div#ds-header  a span#ds-header-logo {
+div#ds-header a span#ds-header-logo {
         width: 435px;
         height: 80px;
         float: left;
         background-image: url("../images/KB-logo-cio.png");
-        background-repeat: no-repeat;
-        color: inherit;
+    background-repeat: no-repeat;
         margin: 5px;
+    color: inherit;
 }
 
 div#ds-header h1,div#ds-header h2 {
-        display: none;
+    font-size: 3em;
+    display: inherit;
+    padding: 10px 0 0 10px;
+    margin: 0 0 0 0;
 }
+
+
+div#ds-user-box {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    text-align: right;
+}
+
+div#ds-user-box p {
+    font-size: 90%;
+    color: inherit;
+    background-color: inherit;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+div#ds-user-box a {
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+
 
 ul#ds-trail {
-        position: relative;
-        margin-top: 90px;
-        margin-bottom: 0px;
-        padding: 3px;
-        margin-left: 0;
-        color: inherit;
-        background-color: rgb(255, 255, 240);
-        border-top: 2px solid rgb(245, 245, 216);
+    position: relative;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0;
+    padding: 3px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+
 }
 
+
+
+
+
+
 li.ds-trail-link {
-        overflow: hidden;
-        display: inline;
-        background-image: url("../images/trail.bmp");
-        background-repeat: no-repeat;
-        background-position: 0% 60%;
-        padding-left: 16px;
-        margin-top: 2px;
-        margin-left: 5px;
-        font-weight: 200;
-        max-width: 400px;
-        line-height: 20px;
+    overflow: hidden;
+    display: inline;
+    background-image:url("../images/trail.bmp");
+    background-repeat: no-repeat;
+    background-position: 0% 60%;
+    padding: 0 0 0 16px;
+    margin-top: 0px;
+    margin-left: 0px;
+    font-weight: bold;
+    max-width: 400px;
+    line-height: 20px;
 }
+
+
 
 li.first-link {
     background-image: url("../images/crumb-home.png");
     margin-left: 2px;
-/*        list-style: none;
-        background-image: none;
-        padding-left: 0;*/
+    /*        list-style: none;
+            background-image: none;
+            padding-left: 0;*/
 }
 
-div#ds-user-box {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    text-align: left;
+
+
+
+div#ds-menubar {
+    background-color: #900;
+    text-align: right;
+    height: auto;
+    border: none;
 }
 
-div#ds-user-box p {
-        font-size: 90%;
-        color: gray;
-        background-color: inherit;
-        height: 12px;
-        padding: 0px;
-        margin: 0px;
-}
 
-div#ds-user-box a {
-        text-decoration: none;
-        color: gray;
-        background-color: inherit;
-        height: 12px;
-        padding: 0px;
-        margin: 0px;
-}
 
-div#ds-user-box a:hover {
-        text-decoration: underline;
-}
+
 
 div#ds-body {
-        position: relative;
-        float: right;
-        //width: 592px;
-        width: 73%;
-        color: inherit;
-        background-color: rgb(255, 255, 253);
-        border: 2px solid rgb(240, 240, 210);
-        margin: 15px 0px 0px 0px;
-        padding-bottom: 30px;
-        padding-left: 5px;
-        padding-right: 5px;
+    position: relative;
+    float: right;
+    width: 75%;
+    color: inherit;
+    background-color: #ffffff;
+    border: 0px solid #777;
+    margin: 0px 0px 0px 0px;
+    padding: 12px;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.6);
+	background: transparent\9; /* clear solid background for ie */
+    zoom:1; /* required for the filters */
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+
 }
 
+
 div#ds-body h1 {
-        font-size: 1.5em;
-        padding: 10px 0 0 0;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        color: #910000;
-        background-color: inherit;
-        font-weight: bolder;
+    font-size: 1.5em;
+    padding: 8px 2px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: #000;
+    font-weight: bold;
+
 }
 
 div#ds-body h2 {
-        font-size: 1.3em;
-        padding: 6px 0;
-        margin-bottom: 0px;
-        color: #910000;
-        background-color: inherit;
-        font-weight: bolder;
+    font-size: 1.3em;
+    padding: 6px 0;
+    margin-bottom: 0px;
+    color: #000;
+    background-color: inherit;
+    font-weight: bolder;
+
 }
 
 div#ds-body h3 {
-        margin-bottom: 15px;
+    margin-bottom: 15px;
+
 }
 
-ul.ds-progress-list {
-        margin: 0 0 10px 0;
-        padding: 2px 0px;
+div.intro-text {
+    padding: 4px;
+    background-color: #FFF;
+}
+
+
+
+
+
+
+
+
+
+div#ds-options {
+    position: relative;
+    float: left;
+    clear:  left;
+    width: 21%;
+    color: inherit;
+
+    margin: 0px;
+    padding: 0px;
+    font-size: 95%;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: rgb(255, 255, 255);
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.6);
+	background: transparent\9; /* clear solid background for ie */
+    zoom:1; /* required for the filters */
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+
+}
+
+div.ds-option-set {
+
+    padding: 12px 2px 3px 2px;
+    margin: -3px 0px 8px 0px;
+    color: inherit;
+}
+
+div.ds-option-set a {
+    padding-left: 10px;
+}
+
+div#ds-options h3 {
+    font-size: 1em;
+    color:#000;
+    margin:0 0 0 0;
+    padding:5px;
+    position:relative;
+        /* Fallback for web browsers that doesn't support RGBa */
+        background: rgb(255, 255, 255);
+        /* RGBa with 0.6 opacity */
+        background: rgba(255, 255, 255, 0.8);
+	background: transparent\9; /* clear solid background for ie */
+    zoom:1; /* required for the filters */
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+
+
+
+}
+
+div#ds-options h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #000;
+    background-color: inherit;
+}
+
+/* This width setting seems necessary to keep IE happy.. */
+div#ds-options ul {
+        width: 220px;
+        margin: 0px 0px 5px 0px;
+        padding: 0px;
+}
+
+div#ds-options li {
+        
+        margin-left: 8px;
+        padding: 0px;
+        list-style: none;
+}
+
+
+
+div#ds-footer {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    height: 20px;
+    float: left;
+    width: 100%;
+    border: none;
+    padding: 0 0 5px 0;
+    border-top: 1px solid #777;
+    color: inherit;
+}
+
+div#ds-footer-links {
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    padding-right: 5px;
+    text-align: right;
+    font-size: inherit;
+
+}
+
+
+
+
+div.notice {
+    background-color: #f9f9f9;
+    border: 1px solid #777;
+    padding: 6px;
+    text-align: center;
+    margin: 10px 30px 10px 30px;
+}
+
+div.license-info {
+    text-align: center;
+    padding: 10px 0 10px 0;
+}
+
+p.copyright-text {
+        font-style: italic;
+        font-size: .8em;
         text-align: center;
+        color: #222;
+}
+
+div.ds-logo-wrapper {
+    float: right;
+    padding: 20px 5px 5px 10px;
 }
 
 
-ul.ds-progress-list li {
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        background-color: rgb(255, 255, 240);
-        border: 1px solid rgb(240, 240, 210);
-        color: rgb(233, 160, 80);
-        overflow: hidden;
-        display: inline;
-        padding: 4px 3px;
-        margin-top: 2px;
-        margin-left: 3px;
-        max-width: 400px;
-        line-height: 20px;
+ul.collection-browse, ul.community-browse {
+    background-color: inherit;
 }
 
-ul.ds-progress-list li.button {
-        background-color: inherit;
-        border: none;
-        padding: 1px !important;
-        margin-top: 2px;
-        margin-left: 0px !important;
+ul.ds-artifact-list {
+    padding: 2px;
+    list-style-type: none;
+    margin: 0;
+    float: left;
 }
 
-ul.ds-progress-list li.button input.ds-button-field {
-        font-size: smaller;
+ul.ds-artifact-list li.odd {
+    color: inherit;
+    background-color: #FFF;
 }
 
-ul.ds-progress-list li.current.button input.ds-button-field {
-        color: rgb(10,175,10);
+ul.ds-artifact-list li.even {
+    color: inherit;
+    background-color: #F5FAFF;
 }
 
-ul.ds-progress-list li.disabled.button input.ds-button-field {
-        color: rgb(184,184,184);
+ul.ds-artifact-list li {
+    float: left;
+    width: 100%;
+    padding-bottom: 7px;
+    padding-top: 5px;
+}
+
+ul.ds-artifact-list li img {
+    border: 0px;
+    max-height: 80px;
+    max-width: 80px;
 }
 
 
-ul.ds-progress-list li.current {
-        color: rgb(80, 183, 40);
-        background-color: inherit;
-        border-color: rgb(216, 245, 216);
+ul.ds-artifact-list li div.artifact-description {
+    margin-top: 0px;
+    padding: 0 5px;
 }
 
-ul.ds-progress-list li.arrow {
-        border: none;
-        background: none;
-        font-size: 120%;
-        font-weight: normal;
-        margin-left: 0px;
-        margin-right: 0px;
+ul.ds-artifact-list li div.artifact-title {
+    float: none;
+    font-weight: bold;
 }
+
+ul.ds-artifact-list li div.artifact-title a:link {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-title a:visited {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-info {
+    float: none;
+    margin-left: 15px;
+}
+
+ul.ds-artifact-list li span.publisher {
+    font-style: italic;
+}
+
+ul.ds-artifact-list li div.artifact-preview {
+    float: right;
+}
+
+div.ds-static-div {
+    border: none;
+    clear: both;
+}
+
+
+#file_news_div_news {
+    font-size: 1em;
+    padding: 3px;
+}
+
+element.style {
+    font-size: 100%;
+}
+
+table.file-list {
+    text-align: center;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td.field-label {
+    text-align: right;
+    font-weight: bold;
+    vertical-align: top;
+    width: 10em;
+    padding: 5px;
+}
+td.field-data {
+    padding: 3px;
+}
+.aspect_artifactbrowser_SimpleSearch_field_scope {
+    font-size: .5em;
+}
+
+div.ds-form-content {
+    float: left;
+    clear: both;
+    display: block;
+    padding: 7px;
+    width: 400px;
+}
+
 
 ul.alphabet {
         padding-left: 10px;
@@ -257,433 +518,12 @@ ul.alphabet li {
         font-weight: 200;
 }
 
-ul.alphabet a {
-        font-weight: 600;
-        color: rgb(100, 100, 50);
-        background-color: inherit;
-}
 
-ul.alphabet a:hover {
-        font-weight: 600;
-        color: rgb(150, 150, 50);
-        background-color: inherit;
-}
-/*
-form.search {
-        margin: 0px;
-        padding: 0px;
-}
 
-form.search select {
-        max-width: 200px;
-}
 
-*.collection.search-browse,*.community.search-browse {
-        width: 340px;
-        float: left;
-        margin: 5px 12px 5px 0px;
-}
+/*copying all form stuff from osukb_base.css, need to go back to adjust colors*/
 
-form.search fieldset,form.navigation fieldset {
-        color: inherit;
-        background-color: rgb(255, 255, 245);
-        border: 2px solid rgb(240, 240, 210);
-        padding: 5px 5px 5px 5px;
-}*/
 
-form.search li {
-    margin: 0;
-    padding: 0px !important;
-}
-
-form.navigation input,form.navigation select {
-        margin-left: 5px;
-}
-
-form.navigation p {
-        text-align: center;
-}
-/*
-form.search table {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: none;
-}
-
-form.search table th {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-}
-*/
-div.browse {
-        display: block;
-}
-
-div.pagination {
-        position: relative;
-        padding: 0px;
-        color: inherit;
-        background-color: rgb(255, 255, 240);
-        border: 2px solid rgb(240, 240, 210);
-        margin: 2px 0px 5px 1px;
-}
-
-div.pagination * {
-        padding: 0px;
-}
-
-div.pagination-masked {
-        position: relative;
-        color: inherit;
-        background-color: rgb(255, 255, 240);
-        border: 2px solid rgb(240, 240, 210);
-        margin-bottom: 5px;
-}
-
-a.previous-page-link {
-        position: absolute;
-        left: 10px;
-        top: 6px;
-        color: rgb(100, 100, 50);
-        background-color: inherit;
-}
-
-p.pagination-info {
-    text-align: center;
-    margin-left: 125px;
-    margin-right: 125px;
-}
-
-ul.pagination-links {
-        position: relative;
-        text-align: center;
-        top: -5px;
-        width: 360px;
-        margin: 0 auto;
-        padding: 0;
-        line-height: 12px;
-}
-
-*.pagination-links li {
-        list-style: none;
-        display: inline;
-        margin-right: 5px;
-        font-weight: bolder;
-        font-size: 90%;
-}
-
-li.page-link a,li.first-page-link a,li.last-page-link a {
-        color: rgb(100, 100, 50);
-        background-color: inherit;
-}
-
-li.current-page-link a {
-        color: #910000;
-        background-color: inherit;
-}
-
-a.next-page-link {
-        position: absolute;
-        right: 10px;
-        top: 6px;
-        color: rgb(100, 100, 50);
-        background-color: inherit;
-}
-
-div.detail-view {
-        clear: both;
-        padding: 5px 5px 5px 6px;
-}
-
-p.button-list {
-        margin-top: 3px;
-        padding-bottom: 0;
-}
-
-ul.collection-browse,ul.community-browse {
-    //display: table;
-    margin: 0;
-    padding: 0;
-    cursor: default;
-    list-style-type: none;
-    display: inline;
-    background-color: #DAD9D9;
-}
-
-ul.collection-browse ul,ul.community-browse ul {
-        margin: 0;
-	padding: 0;
-	cursor: default;
-	list-style-type: none;
-	display: inline;
-        background-color: #DAD9D9;
-}
-
-ul.collection-browse,ul.community-browse>li {
-        display: table-cell;
-	position: relative;
-	padding: 2px 6px;
-}
-
-*.collection-search-browse td,*.community-search-browse td {
-        white-space: nowrap;
-}
-
-*.collection-search-browse h4,*.community-search-browse h4 {
-        display: block;
-}
-
-*.collection-search-browse select,*.community-search-browse select {
-        width: auto;
-        max-width: 200px;
-}
-
-*.collection-search-browse input,*.community-search-browse input {
-        width: auto;
-        max-width: 195px;
-}
-
-*.button-list input {
-        width: auto;
-}
-
-div.ds-logo-wrapper {
-    float: right;
-    padding: 5px 0px 5px 10px;
-}
-
-p.copyright-text {
-        margin-top: 30px;
-        font-style: italic;
-        text-align: center;
-}
-
-div.primary {
-        overflow: auto;
-        margin-bottom: 20px;
-}
-
-.primary .primary {
-        margin-bottom: 10px;
-}
-
-table {
-    clear: both;
-        border-spacing: 0px;
-        border: 2px solid rgb(240, 240, 210);
-        width: 100%;
-}
-
-tr.ds-table-header-row {
-        color: inherit;
-        background-color: rgb(240, 240, 210);
-}
-
-tr.ds-table-header-row.subheader {
-    background-color: rgb(250, 250, 214);
-}
-
-
-th {
-    padding: 4px 10px;
-}
-.subheader th {
-    padding-left: 5px;
-        font-weight: 100;
-}
-
-
-
-tr.ds-table-row.odd {
-        color: inherit;
-        background-color: rgb(252, 252, 232);
-}
-
-tr.ds-table-row.even {
-        color: inherit;
-        background-color: rgb(255, 255, 245);
-}
-
-td {
-        padding: 3px 10px 5px 10px;
-        border: none;
-        font-size: inherit;
-        background-color: inherit;
-        color: inherit;
-}
-
-td.ds-table-cell.right {
-    text-align: right;
-}
-
-*.first-cell {
-        vertical-align: middle;
-        text-align: center;
-}
-
-.indent {
-    padding-left: 35px;
-    padding-right: 0;
-}
-.doubleIndent {
-    padding-left: 55px;
-    padding-right: 0;
-}
-
-
-th.indent {
-    padding-left: 30px;
-    padding-right: 0;
-}
-th.doubleIndent {
-    padding-left: 50px;
-    padding-right: 0;
-}
-
-
-
-/* highlight a single row */
-tr.ds-table-row.highlight {
-        background-color: rgb(216, 245, 216);
-}
-
-/* metadata import rows
- * additions and deletions
- */
-
-tr.ds-table-row.metadata-addition {
-	background-color: #CCFFCC;
-}
-
-tr.ds-table-row.metadata-deletion {
-	background-color: #CCCCCC;
-}
-
-tr.ds-table-row.metadata-addition td,tr.ds-table-row.metadata-deletion td {
-	border-top: 1px solid black;
-}
-
-/* Tables that are actually a result of glossary lists are not rendered
- as plain tables are... */
-table.ds-gloss-list {
-        border: none;
-        width: auto;
-        font-size: inherit;
-}
-
-*.ds-gloss-list td {
-        padding: 5px;
-}
-
-*.ds-gloss-list-label {
-        font-weight: bolder;
-}
-
-table.ds-gloss-list td ul {
-        list-style-type: none;
-        padding: 0px;
-        margin: 0px;
-}
-
-/* Formatting associated with the "Files in this item" table in the item view */
-*.file-list td {
-        text-align: center;
-}
-
-a.image-link img {
-        border: none;
-}
-
-span.bold {
-        font-weight: bold;
-}
-
-span.italics,span.italic {
-        font-style: italic;
-}
-
-span.underline {
-        text-decoration: underline;
-}
-
-div.ds-static-div {
-        border: 1px solid white;
-        clear: both;
-}
-
-ul.ds-artifact-list {
-        border: 2px solid rgb(240, 240, 210);
-        padding: 0px;
-        list-style-type: none;
-        margin: 0px;
-        float: left;
-        width: 584px;
-}
-
-ul.ds-artifact-list li.odd {
-        color: inherit;
-        background-color: rgb(250, 250, 232);
-}
-
-ul.ds-artifact-list li.even {
-        color: inherit;
-        background-color: rgb(255, 255, 245);
-}
-
-ul.ds-artifact-list li {
-        float: left;
-        clear: both;
-        width: 100%;
-        padding-bottom: 3px;
-        padding-top: 3px;
-}
-
-ul.ds-artifact-list li img {
-        border: 0px;
-}
-
-ul.ds-artifact-list li  div {
-        float: left;
-}
-
-ul.ds-artifact-list li div.artifact-description {
-        float: left;
-        margin-top: 0px;
-        width: 83%;
-        padding: 0 5px;
-}
-
-ul.ds-artifact-list li div.artifact-title {
-        float: none;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-}
-
-ul.ds-artifact-list li div.artifact-title a:link {
-    color: rgb(60,60,230);
-}
-
-ul.ds-artifact-list li div.artifact-title a:visited {
-    color: rgb(125,50,125);
-}
-
-ul.ds-artifact-list li div.artifact-info {
-        float: none;
-        margin-left: 15px;
-}
-
-ul.ds-artifact-list li span.publisher {
-        font-style: italic;
-}
-
-ul.ds-artifact-list li div.artifact-preview {
-        float: right;
-}
-
-
-
-/* The composite field voodoo */
 span.ds-composite-field {
         display: table-row;
         padding: 2px;
@@ -709,7 +549,6 @@ span.composite-help {
         text-align: left;
 }
 
-/* Checkboxes and Radio buttons */
 fieldset.ds-checkbox-field,fieldset.ds-radio-field {
         border: none;
         margin: 0;
@@ -724,18 +563,17 @@ fieldset.ds-checkbox-field label,fieldset.ds-radio-field label {
         display: block;
 }
 
-/* The form list and and its components voodoo */ /* Top-level stuff */
 fieldset.ds-form-list {
-        border: 2px solid rgb(240, 240, 210);
+        border: 1px solid #777;
         padding: 0;
         color: inherit;
-        background-color: rgb(255, 255, 245);
+        background-color: #F5FAFF;
         margin-left: 0;
         margin-right: 0;
 }
 
 fieldset.ds-form-list.thick {
-        border-top: 22px solid rgb(240, 240, 210);
+        border-top: 22px solid #777;
 }
 
 fieldset.ds-form-list ol {
@@ -754,15 +592,14 @@ fieldset.ds-form-list legend {
 
 fieldset.thick legend {
         color: #910000;
-        background-color: rgb(255, 255, 245);
-        border-top: 2px solid rgb(240, 240, 210);
+        background-color: #F5FAFF;
+        border-top: 2px solid #777;
         padding-left: 10px;
         padding-right: 30px;
 }
 
-/* Top-level stuff for the nested "form" lists */
 fieldset.ds-form-sublist {
-        border: 1px solid rgb(240, 240, 210);
+        border: 1px solid #777;
         padding: 0;
         margin: 5px;
 }
@@ -771,10 +608,13 @@ fieldset.ds-form-list ol {
         list-style-type: none;
 }
 
+form.ds-interactive-div {
+    margin: 0 auto;
+}
+
 form.ds-interactive-div fieldset.ds-form-sublist ol {
         display: table;
         padding: 0;
-        margin: 0;
         width: 100%;
 }
 
@@ -788,7 +628,6 @@ form.ds-interactive-div fieldset.ds-form-sublist legend {
         border: 0;
 }
 
-/* Row-level hierarchy */
 form.ds-interactive-div li.ds-form-item {
         display: block;
         padding: 5px 0;
@@ -797,31 +636,27 @@ form.ds-interactive-div li.ds-form-item {
 
 form.ds-interactive-div li.odd {
         color: inherit;
-        background-color: rgb(252, 252, 230);
+        background-color: #FFF;
 }
 
 form.ds-interactive-div li.even {
         color: inherit;
-        background-color: rgb(255, 255, 245);
+        background-color: #F5FAFF;
 }
 
 form.ds-interactive-div li.ds-form-item.last {
-        border-top: 2px solid rgb(240, 240, 210);
+        border-top: 1px solid #777;
         color: inherit;
-        background-color: rgb(248, 248, 217);
+        background-color: #D5DADF;
 }
 
 form.ds-interactive-div.primary {
-        float: left;
+
         clear: both;
         padding: 0px;
         margin-bottom: 10px;
 }
 
-p {
-    padding: 0;
-    margin: 6px;
-}
 
 fieldset ol {
         float: left;
@@ -838,7 +673,7 @@ div.ds-form-content {
         clear: right;
         display: block;
         padding: 7px;
-                width: 400px;
+        width: 400px;
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -880,7 +715,7 @@ span.field-help {
 
 input.error,textarea.error,select.error {
         color: inherit;
-        background-color: rgb(255, 245, 245);
+        background-color: inherit;
         border-color: red;
 }
 
@@ -899,248 +734,31 @@ div.spacer {
         clear: both;
 }
 
-div#ds-options {
-        position: relative;
-        float: left;
-        clear:  left;
-        //width: 135px;
-        width: 25%;
-        color: inherit;
-        background-color: white;
-        margin: 0px;
-        padding: 0px;
-        font-size: 95%;
-}
-
-div.ds-option-set {
-        padding: 30px 2px 3px 2px;
-        //width: 133px;
-        margin: -3px 0px 0px 0px;
-        color: inherit;
-        background-color: rgb(255, 255, 240);
-        border: 2px solid rgb(240, 240, 210);
-}
-
-div#ds-search-option input {
-        font-size: 90%;
-}
-
-div#ds-search-option input.ds-text-field {
-        width: 80%;
-        margin: 0;
-        margin-left: -15px;
-        padding: 0;
-        position: relative;
-        top: -1px;
-        left: 8px;
-}
-
-div#ds-search-option input.ds-button-field {
-        width: auto;
-        height: 20px;
-        margin: 0px;
-        padding-left: 2px;
-        padding-right: 2px;
-        position: relative;
-        top: -1px;
-        left: 10px;
-}
-
-div#ds-search-option a {
-    position: relative;
-    top: -4px;
-    left: 4px;
-        margin: 0;
-        padding: 0;
-}
 
 
 
-form#ds-search-form {
-        font-size: 90%;
-}
-
-div#ds-options h3 {
-        position: relative;
-        top: 22px;
-        left: 5px;
-        margin: 0 2px 0 0;
-        padding: 0px;
-        color: #910000;
-        background-color: rgb(255, 255, 240);
-}
-
-div#ds-options h4 {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        color: #910000;
-        background-color: inherit;
-}
-
-div#ds-options ul {
-        margin: 0px 0px 10px 0px;
-        padding: 0px;
-}
-
-div#ds-options li {
-        margin-left: 15px;
-        padding: 0px;
-        color: rgb(100, 100, 50);
-        background-color: inherit;
-}
-
-input.ds-password-field {
-        margin-right: 5px;
-}
-
-div#ds-footer {
-        position: relative;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        height: 80px;
-        float: left;
-        width: 100%;
-        border: 3px solid rgb(240, 240, 210);
-}
-
-span#ds-footer-logo {
-        float: left;
-        clear: both;
-        height: 80px;
-        width: 300px;
-        background-image: url("../images/di_logo.jpg");
-        background-repeat: no-repeat;
-        background-position: 0% 30%;
-        color: inherit;
-        background-color: white;
-}
-
-div#ds-footer p {
-        width: 450px;
-        position: absolute;
-        top: -8px;
-        right: 0px;
-        text-align: right;
-        padding: 5px;
-        font-size: smaller;
-}
-
-div#ds-footer-links {
-        position: absolute;
-        top: 57px;
-        right: 0px;
-        padding-right: 5px;
-        text-align: right;
-        font-size: smaller;
-}
-
-div#ds-footer a#ds-logo-link {
-        text-decoration: none;
-}
-
-div.notice {
-        background-color: rgb(255, 255, 240);
-        border: 1px solid rgb(240, 240, 210);
-        padding: 6px;
-        text-align: center;
-        margin: 10px 30px 10px 30px;
-}
-
-div.notice.success p {
-        margin: 0;
-        padding: 0;
-        font-weight: bold;
-        color: rgb(80, 183, 40);
-        text-align: center;
-}
-
-div.notice.failure p {
-        margin: 0;
-        padding: 0;
-        font-weight: bold;
-        color: rgb(213, 80, 40);
-        text-align: center;
-}
-
-h1.ds-div-head,h2.ds-div-head,h3.ds-div-head {
-        clear: both;
-}
-
-/* License text display during submission */
-div.license-text {
-        border: 1px solid #666;
-        background-color: #EEE;
-        padding: 20px;
-        margin: 20px;
-        margin-top: 5px;
-        font-family: monospace;
-        font-size: 125%;
-}
-
-div#NoticeTransformer_div_general-message h1.ds-div-head {
-    position: absolute;
-    top: 11px;
-    left: 42px;
-    margin: 0;
-    padding: 0 5px;
-    font-size: small;
-}
-
-p.hidden {
-    display: none;
-}
-
-h1.ds-div-head, h2.ds-div-head, h3.ds-div-head {
-    clear:both;
-}
-
-span.fade {
-    color: gray;
-    font-size: 90%;
-}
-
-span.fade a {
-    color: gray;
-    text-decoration: none;
-}
-
-span.fade a:hover {
-    color: blue;
-    text-decoration: underline;
-}
-
-span.warn {
-    color: red;
-    font-weight: bolder;
-}
-
-/* System-wide alerts */
-div#ds-system-wide-alert {
-    background-color: rgb(255, 255, 240);
-    border: 1px solid rgb(240, 240, 210);
-    padding: 6px;
-        margin: 10px 30px 10px 30px;
-    color: rgb(213, 80, 40);
-}
 
 
-/* admin tabs */
+
+
+
+
+/* administrative tables, like Edit Item, Collection, etc. */
 form.administrative{
-  border: 1px solid rgb(240, 240, 210);
-  border-top: 0px;
-  width: inherit;
+  border-bottom: 1px solid #777;
+  
 }
 
 form.administrative fieldset{
   margin: 7px;
-  width: auto;
+
 }
 form.administrative h3{
   margin: 7px;
 }
 form.administrative table{
   margin: 7px;
-  width: auto;
+
 }
 
 
@@ -1156,9 +774,7 @@ list-style-type: none;
 padding: 0px;
 padding-left: 0px;
 padding-bottom: 24px;
-border-bottom: 1px solid rgb(240, 240, 210);
-border-left: 1px solid white;
-border-right: 1px solid white;
+border-bottom: 1px solid #777;
 margin: 0px;
 margin-left: -1px;
 margin-right: -1px;
@@ -1169,9 +785,9 @@ ul.horizontal li
 {
 float: left;
 height: 21px;
-background-color: rgb(252, 252, 232);
+background-color: #F5FAFF;
 margin: 2px 2px 0px 2px;
-border: 1px solid rgb(240, 240, 210);
+border: 1px solid #777;
 }
 
 
@@ -1183,7 +799,6 @@ text-decoration: none;
 padding: 4px;
 }
 
-ul.horizontal a:hover { background: white; text-decoration: underline;}
 
 ul.horizontal li span.bold a
 {
@@ -1194,73 +809,118 @@ background-color: white;
 ul.horizontal li span.bold a { color: black; }
 
 
-/** Additions for Authority Control elements **/
-/* for scriptaculous autocomplete */
-div.autocomplete {
-  position:absolute;
-  width:250px;
-  background-color:white;
-  border:1px solid #888;
-  margin:0;
-  padding:0;
+
+
+
+
+
+
+
+
+div.pagination {
+        position: relative;
+        padding: 8px;
+        clear: both;
+        margin: 0px 150px;
 }
-div.autocomplete ul {
-  list-style-type:none;
-  margin:0;
-  padding:0;
+
+
+
+div.pagination-masked {
+        position: relative;
+        color: inherit;
+        margin-bottom: 5px;
 }
-div.autocomplete ul li.selected { background-color: #ffb;}
-div.autocomplete ul li {
-  list-style-type:none;
-  display:block;
-  margin:0;
-  padding:2px;
-/*  height:32px; */
-  cursor:pointer;
+
+a.previous-page-link {
+        position: absolute;
+        left: 10px;
+        top: 20px;
 }
-div.autocomplete ul li span.value { display:none; }
 
-/* this magic gets the 16x16 icon to show up.. setting height/width didn't
-   do it, but adding padding actually made it show up. */
-img.ds-authority-confidence
-{ width: 16px; height: 16px; margin: 0px 2px; padding: 0px; vertical-align: bottom;}
+p.pagination-info {
+    text-align: center;
+}
 
-img.ds-authority-confidence.cf-unset
-  { background: transparent url(../images/confidence/bug.png); }
-img.ds-authority-confidence.cf-novalue
-  /* { background: transparent } */
-  { background: transparent url(../images/confidence/3-circleslash.gif); }
-img.ds-authority-confidence.cf-rejected,
-img.ds-authority-confidence.cf-failed
-  { background: transparent url(../images/confidence/2-errortriangle.gif); }
-img.ds-authority-confidence.cf-notfound
-  { background: transparent url(../images/confidence/3-thumb2.gif); }
-img.ds-authority-confidence.cf-ambiguous
-  { background: transparent url(../images/confidence/4-question.gif); }
-img.ds-authority-confidence.cf-uncertain
-  { background: transparent url(../images/confidence/5-pinion.gif); }
-img.ds-authority-confidence.cf-accepted
-  { background: transparent url(../images/confidence/6-thumb2.gif); }
+a.next-page-link {
+        position: absolute;
+        right: 10px;
+        top: 20px;
+}
 
-/* hide authority-value inputs in forms */
-input.ds-authority-value { display:none; }
-/** XXX Change to this to get the authority value to show up for debugging:
- input.ds-authority-value { display:inline; }
-**/
+ul.pagination-links {
+        position: relative;
+        text-align: center;
+        top: -5px;
+        width: 360px;
+        margin: 0 auto;
+        padding: 0;
+        line-height: 12px;
+}
 
-/* ..except, show authority-value inputs in on the Item EditMetadata page */
-input.ds-authority-value.ds-authority-visible { display: inline; }
+*.pagination-links li {
+        list-style: none;
+        display: inline;
+        margin-right: 5px;
+        font-weight: bolder;
+        font-size: 90%;
+}
 
-/* for lock button */
-input.ds-authority-lock
-  { vertical-align: bottom; height: 24px; width:
-    24px; background-repeat: no-repeat; background-color: transparent; }
-input.ds-authority-lock.is-locked
-  { background-image: url(../images/lock24.png); }
-input.ds-authority-lock.is-unlocked
-  { background-image: url(../images/unlock24.png); }
+li.page-link a,li.first-page-link a,li.last-page-link a {
+
+}
+
+li.current-page-link a {
+
+}
 
 
-/* Example of authority display: this makes authors with an authority
-   value show up as red in the item summary view: */
-span.ds-dc_contributor_author-authority { color: #982521; }
+
+
+
+
+
+
+
+
+
+ul.collection-browse,ul.community-browse {
+    margin: 0;
+    padding: 0;
+    cursor: default;
+    list-style-type: none;
+    display: inline;
+
+}
+
+ul.collection-browse ul,ul.community-browse ul {
+        margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	display: inline;
+}
+
+ul.collection-browse li,ul.community-browse li {
+        display: table-cell;
+	position: relative;
+	padding: 2px 6px;
+}
+
+*.collection-search-browse td,*.community-search-browse td {
+        white-space: nowrap;
+}
+
+*.collection-search-browse h4,*.community-search-browse h4 {
+        display: block;
+}
+
+*.collection-search-browse select,*.community-search-browse select {
+        width: auto;
+        max-width: 200px;
+}
+
+*.collection-search-browse input,*.community-search-browse input {
+        width: auto;
+        max-width: 195px;
+}

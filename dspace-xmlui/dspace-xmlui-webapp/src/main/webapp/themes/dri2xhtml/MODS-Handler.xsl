@@ -3,9 +3,9 @@
 <!--
   DS-METS-1.0-MODS.xsl
 
-  Version: $Revision: 4869 $
+  Version: $Revision: 4868 $
  
-  Date: $Date: 2010-04-13 16:32:16 -0400 (Tue, 13 Apr 2010) $
+  Date: $Date: 2010-04-13 16:21:41 -0400 (Tue, 13 Apr 2010) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.

@@ -1,0 +1,15 @@
+<fieldset>
+<field>dc.creator</field>
+<field>dc.title</field>
+<field>dc.date.issued</field>
+<field>dc.relation.haspart</field>
+<field>dc.source.uri</field>
+<field>dc.description.ALL</field>
+<field>dc.subject</field>
+<field>dc.identifier</field>
+<field>dc.identifier.uri</field>
+<field>dc.identifier.govdoc</field>
+<field>dc.identifier.isbn</field>
+<field>dc.identifier.issn</field>
+<field>dc.identifier.ismn</field>
+</fieldset>

@@ -130,8 +130,10 @@
               </xsl:when>
               <xsl:otherwise>
             <body>
-                
-                <div id="ds-main">
+
+                <!-- bds: see OSU-local.xsl for buildBodyOSU -->
+                <xsl:call-template name="buildBodyOSU"/>
+                                <div id="ds-main">
                     <!--
                         The header div, complete with title, subtitle, trail and other junk. The trail is
                         built by applying a template over pageMeta's trail children. -->
@@ -173,6 +175,15 @@
                 </xsl:if>
               </xsl:attribute>
             </meta>
+            <!-- bds: see OSU-local.xsl for buildHeadOSU -->
+            <xsl:call-template name="buildHeadOSU"/>
+            <!-- Add global theme(s) -->
+            <link rel="stylesheet" type="text/css">
+                <xsl:attribute name="href">
+                    <xsl:value-of select="$context-path"/>
+                    <xsl:text>/static/css/osukb_base.css</xsl:text>
+                </xsl:attribute>
+            </link>
             <!-- Add stylsheets -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='stylesheet']">
                 <link rel="stylesheet" type="text/css">
@@ -180,7 +191,7 @@
                         <xsl:value-of select="@qualifier"/>
                     </xsl:attribute>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:value-of select="$context-path"/>
                         <xsl:text>/themes/</xsl:text>
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
                         <xsl:text>/</xsl:text>
@@ -259,7 +270,7 @@
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
                 <script type="text/javascript">
                     <xsl:attribute name="src">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:value-of select="$context-path"/>
                         <xsl:text>/themes/</xsl:text>
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
                         <xsl:text>/</xsl:text>
@@ -271,7 +282,7 @@
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][@qualifier='static']">
                 <script type="text/javascript">
                     <xsl:attribute name="src">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:value-of select="$context-path"/>
                         <xsl:text>/</xsl:text>
                         <xsl:value-of select="."/>
                     </xsl:attribute>&#160;</script>
@@ -323,14 +334,15 @@
         <div id="ds-header">
             <a>
                 <xsl:attribute name="href">
-                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:value-of select="$context-path"/>
                     <xsl:text>/</xsl:text>
                 </xsl:attribute>
-                <span id="ds-header-logo">&#160;</span>
+                <span id="ds-header-logo"></span>
             </a>
+<!-- bds: removing text title/subtitle from header section, only the logo and user box go up there.
             <h1 class="pagetitle">
                 <xsl:choose>
-                        <!-- protectiotion against an empty page title -->
+
                         <xsl:when test="not(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title'])">
                                 <xsl:text> </xsl:text>
                         </xsl:when>
@@ -341,8 +353,12 @@
                         
             </h1>
             <h2 class="static-pagetitle"><i18n:text>xmlui.dri2xhtml.structural.head-subtitle</i18n:text></h2>
-            
-            
+-->
+
+<!-- bds: Our trails are sometimes very large and don't lend themselves to inline display.
+    The other option, a more list-like display like the old JSPUI, does not fit very well in the header.
+    Thus this section is removed from here and placed into the top of the buildBody template.
+
             <ul id="ds-trail">
                 <xsl:choose>
                         <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
@@ -353,6 +369,7 @@
                         </xsl:otherwise>
                 </xsl:choose>
             </ul>
+-->
            
             
             <xsl:choose>
@@ -404,28 +421,37 @@
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
-            <i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>
+            <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
             <div id="ds-footer-links">
-                <a>
+<!-- bds: JSPUI didn't have a contact link, so I comment this one out too
+                                <a>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:value-of select="$context-path"/>
                         <xsl:text>/contact</xsl:text>
                     </xsl:attribute>
                     <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
                 </a>
+                -->
+                <a target="_blank" href="http://www.dspace.org/">DSpace</a>
+                <xsl:text> | </xsl:text>
+                <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
+                <xsl:text> | </xsl:text>
+                <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
                 <xsl:text> | </xsl:text>
                 <a>
                     <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:value-of select="$context-path"/>
                         <xsl:text>/feedback</xsl:text>
                     </xsl:attribute>
                     <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                 </a>
             </div>
+            <!-- bds: this invisible link thing appears to be broken,
+            do we have no /htmlmap defined? -->
             <!--Invisible link to HTML sitemap (for search engines) -->
             <a>
                 <xsl:attribute name="href">
-                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:value-of select="$context-path"/>
                     <xsl:text>/htmlmap</xsl:text>
                 </xsl:attribute>
             </a>
@@ -493,34 +519,10 @@
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-        <div id="ds-body">
-            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
-                <div id="ds-system-wide-alert">
-                    <p>
-                        <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']/node()"/>
-                    </p>
-                </div>
-            </xsl:if>
-            <xsl:apply-templates />
-        </div>
-    </xsl:template>
-
-    <!--
-        The template to handle dri:options. Since it contains only dri:list tags (which carry the actual
-        information), the only things than need to be done is creating the ds-options div and applying
-        the templates inside it.
-        
-        In fact, the only bit of real work this template does is add the search box, which has to be
-        handled specially in that it is not actually included in the options div, and is instead built
-        from metadata available under pageMeta.
-    -->
-    <!-- TODO: figure out why i18n tags break the go button -->
-    <xsl:template match="dri:options">
-        <div id="ds-options">
-            <h3 id="ds-search-option-head" class="ds-option-set-head"><i18n:text>xmlui.dri2xhtml.structural.search</i18n:text></h3>
+<!-- bds: crudely dropping a menubar here -->
+        <div id="ds-menubar">
+<!-- bds: copied search box from options bar to here, might need to change id/class designators -->
             <div id="ds-search-option" class="ds-option-set">
-                <!-- The form, complete with a text box and a button, all built from attributes referenced
-                    from under pageMeta. -->
                 <form id="ds-search-form" method="post">
                     <xsl:attribute name="action">
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
@@ -549,6 +551,133 @@
                             </xsl:attribute>
                         </input>
                         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
+                            <br/>
+                            <label>
+                                <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
+                                <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
+                            </label>
+                            <label>
+                                <input id="ds-search-form-scope-container" type="radio" name="scope">
+                                    <xsl:attribute name="value">
+                                        <xsl:value-of select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
+                                    </xsl:attribute>
+                                </input>
+                                <xsl:choose>
+                                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
+                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
+                                    </xsl:otherwise>
+
+                                </xsl:choose>
+                            </label>
+                        </xsl:if>
+                    </fieldset>
+                </form>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='advancedURL']"/>
+                    </xsl:attribute>
+                    <i18n:text>xmlui.dri2xhtml.structural.search-advanced</i18n:text>
+                </a>
+            </div>
+        </div>
+<!-- bds: crudely dropping the trail in here, copied from the original in the buildHeader section -->
+        <div>
+            <ul id="ds-trail">
+                <xsl:choose>
+                        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
+                                <li class="ds-trail-link first-link"> - </li>
+                        </xsl:when>
+                        <xsl:otherwise>
+                                <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
+                        </xsl:otherwise>
+                </xsl:choose>
+            </ul>
+        </div>
+
+
+        <div id="ds-body">
+
+            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
+                <div id="ds-system-wide-alert">
+                    <p>
+                        <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']/node()"/>
+                    </p>
+                </div>
+            </xsl:if>
+            <!-- bds: override main page community list with two-column layout for other content -->
+            <xsl:choose>
+                <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
+<h1>Homepage!</h1>
+<p>Imagine this section split into two columns, one big one in the middle and one narrow one to the right</p>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </xsl:template>
+
+    <!--
+        The template to handle dri:options. Since it contains only dri:list tags (which carry the actual
+        information), the only things than need to be done is creating the ds-options div and applying
+        the templates inside it.
+        
+        In fact, the only bit of real work this template does is add the search box, which has to be
+        handled specially in that it is not actually included in the options div, and is instead built
+        from metadata available under pageMeta.
+    -->
+    <!-- TODO: figure out why i18n tags break the go button -->
+    <xsl:template match="dri:options">
+        <div id="ds-options">
+<!-- bds: adding help and about links bit -->
+            <h3 id="ds-help-option-head" class="ds-option-set-head">
+                <xsl:text>Information</xsl:text>
+            </h3>
+            <div id="ds-partners-option" class="ds-option-set">
+                <ul>
+                    <li><a href="http://library.osu.edu/">Help</a></li>
+                    <li><a href="http://library.osu.edu/">About</a></li>
+                    <li><a href="http://library.osu.edu/">Contact Us</a></li>
+                </ul>
+            </div>
+
+<!-- bds: removing search box from options box -->
+            <!--<h3 id="ds-search-option-head" class="ds-option-set-head"><i18n:text>xmlui.dri2xhtml.structural.search</i18n:text></h3>
+            <div id="ds-search-option" class="ds-option-set">
+                 The form, complete with a text box and a button, all built from attributes referenced
+                    from under pageMeta. 
+                <form id="ds-search-form" method="post">
+                    <xsl:attribute name="action">
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
+                    </xsl:attribute>
+                    <fieldset>
+                        <input class="ds-text-field " type="text">
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                            </xsl:attribute>
+                        </input>
+                        <input class="ds-button-field " name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
+                            <xsl:attribute name="onclick">
+                                <xsl:text>
+                                    var radio = document.getElementById(&quot;ds-search-form-scope-container&quot;);
+                                    if (radio != undefined &amp;&amp; radio.checked)
+                                    {
+                                    var form = document.getElementById(&quot;ds-search-form&quot;);
+                                    form.action=
+                                </xsl:text>
+                                <xsl:text>&quot;</xsl:text>
+                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
+                                <xsl:text>/handle/&quot; + radio.value + &quot;/search&quot; ; </xsl:text>
+                                <xsl:text>
+                                    }
+                                </xsl:text>
+                            </xsl:attribute>
+                        </input>
+                        <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
+                            <br/>
                             <label>
                                 <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
                                 <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
@@ -573,7 +702,7 @@
                         </xsl:if>
                     </fieldset>
                 </form>
-                <!-- The "Advanced search" link, to be perched underneath the search box -->
+                 The "Advanced search" link, to be perched underneath the search box 
                 <a>
                     <xsl:attribute name="href">
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='advancedURL']"/>
@@ -581,9 +710,34 @@
                     <i18n:text>xmlui.dri2xhtml.structural.search-advanced</i18n:text>
                 </a>
             </div>
-            
+            -->
             <!-- Once the search box is built, the other parts of the options are added -->
             <xsl:apply-templates />
+
+            <!-- bds: KB partners links -->
+            <h3 id="ds-partners-option-head" class="ds-option-set-head">
+                <xsl:text>Partners</xsl:text>
+            </h3>
+            <div id="ds-partners-option" class="ds-option-set">
+                <ul>
+                    <!--<li><a href="http://library.osu.edu/sites/dlib/kb/projects.html">Digital Initiatives at OSU</a></li>-->
+                    <li><a href="http://www.ohiolink.edu">OhioLink</a></li>
+                    <li><a href="http://www.ohiolink.edu/etd">OhioLink-ETD Center</a></li>
+                    <li><a href="http://library.osu.edu/sites/copyright/">Copyright Help Center</a></li>
+                    <li><a href="http://wmc.ohio-state.edu">Web Media Collective</a></li>
+                </ul>
+            </div>
+
+            <!-- Peter: Add RSS Links to Page -->
+            <!-- bds: xsl:if test prevents box from appearing when there aren't any RSS feeds for a page -->
+            <xsl:if test="count(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']) != 0">
+                <h3 id="ds-feed-option-head" class="ds-option-set-head"><xsl:text>RSS Feeds</xsl:text></h3>
+                <div id="ds-feed-option" class="ds-option-set">
+<!-- bds: see OSU-local.xsl for addRSSLinks -->
+                    <ul><xsl:call-template name="addRSSLinks"/></ul>
+                </div>
+            </xsl:if>
+
         </div>
     </xsl:template>
     
@@ -1465,20 +1619,26 @@
         nest freely, their headers should reflect that. Thus, the type of HTML h tag produced depends on how
         many divisions the header tag is nested inside of. -->
     <!-- The font-sizing variable is the result of a linear function applied to the character count of the heading text -->
+    <!-- bds: changing a few values here to result in a smaller title -->
+    <!--    (unfortunately, changing in CSS does not work) -->
     <xsl:template match="dri:div/dri:head" priority="3">
         <xsl:variable name="head_count" select="count(ancestor::dri:div)"/>
         <!-- with the help of the font-sizing variable, the font-size of our header text is made continuously variable based on the character count -->
-        <xsl:variable name="font-sizing" select="365 - $head_count * 80 - string-length(current())"></xsl:variable>
+        
         <xsl:element name="h{$head_count}">
-            <!-- in case the chosen size is less than 120%, don't let it go below. Shrinking stops at 120% -->
-            <xsl:choose>
-                <xsl:when test="$font-sizing &lt; 120">
-                    <xsl:attribute name="style">font-size: 120%;</xsl:attribute>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="style">font-size: <xsl:value-of select="$font-sizing"/>%;</xsl:attribute>
-                </xsl:otherwise>
-            </xsl:choose>
+            <!-- bds: Prefer to have this only apply to h1 tags, and not things like "Recent Submissions",
+                so I'm adding this if clause here. This helps avoid styling conflicts. -->
+            <xsl:if test="$head_count = 1">
+                <xsl:variable name="font-sizing" select="225 - string-length(current())"></xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="$font-sizing &lt; 130">
+                        <xsl:attribute name="style">font-size: 130%;</xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="style">font-size: <xsl:value-of select="$font-sizing"/>%;</xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
             <xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">ds-div-head</xsl:with-param>
             </xsl:call-template>
@@ -2705,20 +2865,27 @@
         is provided then the logical structType will be rendered, otherwise none will. The default operation is to
         render all structure types.
     -->
-    
+
     <!-- Then we resolve the reference tag to an external mets object -->
     <xsl:template match="dri:reference" mode="summaryList">
         <xsl:variable name="externalMetadataURL">
             <xsl:text>cocoon:/</xsl:text>
             <xsl:value-of select="@url"/>
             <!-- Since this is a summary only grab the descriptive metadata, and the thumbnails -->
-            <xsl:text>?sections=dmdSec,fileSec&amp;fileGrpTypes=THUMBNAIL</xsl:text>
+    <!--
+    bds: removing the "&amp;fileGrpTypes=THUMBNAIL" limitation from the
+    ?sections= limiter on the METS grab so that browse screens have access to
+    the bitstream URLs. Also adding structMap to identify primary bitstream.
+    -->
+            <xsl:text>?sections=dmdSec,fileSec,structMap</xsl:text>
             <!-- An example of requesting a specific metadata standard (MODS and QDC crosswalks only work for items)->
             <xsl:if test="@type='DSpace Item'">
                 <xsl:text>&amp;dmdTypes=DC</xsl:text>
             </xsl:if>-->
         </xsl:variable>
+        <!-- bds: removing this External Metadata URL comment from the HTML output
         <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -->
         <li>
             <xsl:attribute name="class">
                 <xsl:text>ds-artifact-item </xsl:text>
@@ -2738,7 +2905,9 @@
             <xsl:value-of select="@url"/>
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
+        <!-- bds: removing this External Metadata URL comment from the HTML output
         <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -->
         <li>
             <xsl:apply-templates select="document($externalMetadataURL)" mode="detailList"/>
             <xsl:apply-templates />
@@ -2751,7 +2920,9 @@
             <xsl:value-of select="@url"/>
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
+        <!-- bds: removing this External Metadata URL comment from the HTML output
         <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -->
         <xsl:apply-templates select="document($externalMetadataURL)" mode="summaryView"/>
         <xsl:apply-templates />
     </xsl:template>
@@ -2762,7 +2933,9 @@
             <xsl:value-of select="@url"/>
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
+        <!-- bds: removing this External Metadata URL comment from the HTML output
         <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -->
         <xsl:apply-templates select="document($externalMetadataURL)" mode="detailView"/>
         <xsl:apply-templates />
     </xsl:template>
@@ -3018,7 +3191,7 @@
         <xsl:text>', collection: </xsl:text>
         <xsl:value-of select="$collectionID"/>
         <xsl:text>, contextPath: '</xsl:text>
-        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+        <xsl:value-of select="$context-path"/>
         <xsl:text>'});</xsl:text>
       </script>
     </xsl:template>

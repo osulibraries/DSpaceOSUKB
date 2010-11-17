@@ -577,7 +577,7 @@ dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='
                     </xsl:choose>
                      -->
                 </span>
-                <!-- bds: removing publisher and date, which had some issues anyway -->
+                <!-- bds: removing publisher and date, which had some issues anyway
                 <xsl:text> </xsl:text>
                 <xsl:if test="dim:field[@element='date' and @qualifier='issued'] or dim:field[@element='publisher']">
                     <span class="publisher-date">
@@ -594,7 +594,7 @@ dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='
                         <xsl:text>)</xsl:text>
                     </span>
                 </xsl:if>
-               
+                -->
             </div>
         </div>
     </xsl:template>

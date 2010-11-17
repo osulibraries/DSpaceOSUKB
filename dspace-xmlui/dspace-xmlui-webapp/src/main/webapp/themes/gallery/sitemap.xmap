@@ -57,6 +57,17 @@
 		</map:component-configurations>
 		
 		
+
+                <map:pipeline>
+                        <!-- Allow the browser to cache static content for an hour -->
+                        <map:parameter name="expires" value="access plus 1 hours"/>
+
+                        <!-- Static content -->
+                        <map:match pattern="themes/*/**">
+                                <map:read src="{2}"/>
+                        </map:match>
+                </map:pipeline>
+
 		<!-- 
 			The theme's pipeline is used to process all requests handled 
 			by the theme. It is broken up into two parts, the first part 
@@ -67,6 +78,8 @@
 			browser without any processing. 
 		-->
 		<map:pipeline>
+                        <!-- Never allow the browser to cache dynamic content -->
+                        <map:parameter name="expires" value="now"/>
 			
 			<!-- Static content -->
 			<map:match pattern="themes/*/**">
@@ -140,17 +153,7 @@
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
-                                                        <map:parameter name="stylesheet.screen#2" value="lib/gallery.css"/>
-                                                        <map:parameter name="stylesheet.screen#3" value="lib/fancybox/jquery.fancybox-1.2.5.css"/>
-                                                        <map:parameter name="stylesheet.screen#4" value="lib/jqpuzzle/jquery.jqpuzzle.css"/>
-
-                                                        <map:parameter name="javascript#1" value="lib/jquery-1.3.2.min.js"/>
-                                                        <map:parameter name="javascript#2" value="lib/gallery.js"/>
-                                                        <map:parameter name="javascript#3" value="lib/fancybox/jquery.fancybox-1.2.5.js"/>
-                                                        <map:parameter name="javascript#4" value="lib/jqpuzzle/jquery.jqpuzzle.min.js"/>
-                                                        <map:parameter name="javascript#5" value="lib/tjpzoom/tjpzoom.js"/>
-                                                        <map:parameter name="javascript#6" value="lib/tjpzoom/tjpzoom_config_default.js"/>
+							<map:parameter name="stylesheet.screen" value="lib/style.css"/>
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
@@ -166,6 +169,7 @@
 				<!-- Step 3: Transform to XHTML -->
 				<map:transform src="gallery.xsl"/>
 				
+
 				<!-- Step 4: Localize the page -->
 				<map:act type="locale">
 					<map:transform type="i18n">
