@@ -60,6 +60,27 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
+        <!-- bds: breadcrumb trail shrinker -->
+        <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script type="text/javascript">
+            jQuery(document).ready(function()
+            {
+                jQuery("#breadCrumb0").jBreadCrumb();
+            })
+        </script>
         <link rel="icon" type="image/x-icon">
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>

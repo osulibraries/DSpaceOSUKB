@@ -634,7 +634,7 @@
             </div>
         </div>
 <!-- bds: crudely dropping the trail in here, copied from the original in the buildHeader section -->
-        <div>
+        <div id="breadCrumb0" class="breadCrumb">
             <ul id="ds-trail">
                 <xsl:choose>
                         <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
