@@ -371,8 +371,8 @@
             </ul>
 -->
            
-            
-            <xsl:choose>
+<!-- bds: moving user-box to inside scarlet-bar, below -->
+            <!--<xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
                     <div id="ds-user-box">
                         <p>
@@ -412,7 +412,7 @@
                         </p>
                     </div>
                 </xsl:otherwise>
-            </xsl:choose>
+            </xsl:choose>-->
             
         </div>
     </xsl:template>
@@ -519,21 +519,63 @@
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-<!-- bds: crudely dropping a menubar here -->
-        <div id="ds-menubar">
+<!-- bds: scarlet bar for user-box -->
+        <div id="scarlet-bar">
+            <xsl:choose>
+                <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
+                    <div id="ds-user-box">
+                        <p>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                                        dri:metadata[@element='identifier' and @qualifier='url']"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.profile</i18n:text>
+                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                                    dri:metadata[@element='identifier' and @qualifier='firstName']"/>
+                                <xsl:text> </xsl:text>
+                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                                    dri:metadata[@element='identifier' and @qualifier='lastName']"/>
+                            </a>
+                            <xsl:text> | </xsl:text>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                                        dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
+                            </a>
+                        </p>
+                    </div>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div id="ds-user-box">
+                        <p>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                                        dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
+                            </a>
+                        </p>
+                    </div>
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+
+<!-- bds: grey bar for search-box -->
+        <div id="grey-bar">
 <!-- bds: copied search box from options bar to here, might need to change id/class designators -->
-            <div id="ds-search-option" class="ds-option-set">
+            <div id="ds-global-search">
                 <form id="ds-search-form" method="post">
                     <xsl:attribute name="action">
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
                     </xsl:attribute>
                     <fieldset>
-                        <input class="ds-text-field " type="text">
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
-                            </xsl:attribute>
-                        </input>
-                        <input class="ds-button-field " name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
+                        <!-- bds: creating unique id for the search box and button -->
+                        <!--      button, box, and radio buttons in reverse order for floats to work right -->
+                        <input id="ds-global-search-button" name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
                             <xsl:attribute name="onclick">
                                 <xsl:text>
                                     var radio = document.getElementById(&quot;ds-search-form-scope-container&quot;);
@@ -550,28 +592,36 @@
                                 </xsl:text>
                             </xsl:attribute>
                         </input>
+                        <!-- bds: title attribute works with jQuery script static/js/text-field-prompt.js -->
+                        <input title="Search the Knowledge Bank" id="ds-global-search-box" type="text">
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                            </xsl:attribute>
+                        </input>
                         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
-                            <br/>
-                            <label>
-                                <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
-                                <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
-                            </label>
-                            <label>
-                                <input id="ds-search-form-scope-container" type="radio" name="scope">
-                                    <xsl:attribute name="value">
-                                        <xsl:value-of select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
-                                    </xsl:attribute>
-                                </input>
-                                <xsl:choose>
-                                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
-                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
-                                    </xsl:otherwise>
+                            <div id="ds-global-search-scope">
+                                <label>
 
-                                </xsl:choose>
-                            </label>
+                                    <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
+                                    <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
+                                </label>
+                                <label>
+                                    <input id="ds-search-form-scope-container" type="radio" name="scope">
+                                        <xsl:attribute name="value">
+                                            <xsl:value-of select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
+                                        </xsl:attribute>
+                                    </input>
+                                    <xsl:choose>
+                                        <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
+                                                <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                                <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
+                                        </xsl:otherwise>
+
+                                    </xsl:choose>
+                                </label>
+                            </div>
                         </xsl:if>
                     </fieldset>
                 </form>
