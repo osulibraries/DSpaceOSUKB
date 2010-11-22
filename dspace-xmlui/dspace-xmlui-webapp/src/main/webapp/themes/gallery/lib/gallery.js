@@ -29,19 +29,24 @@ var serviceImgUrl = '';
 /**
 * JQuery initialization routine 
 */
-$(document).ready(function() { 
+$(document).ready(function() {
+    /* bds: no longer used
 	initGalleryPopups();
+    */
 	initZoomableImage();
 	
 	// initialize the about popup
+        /* bds: no longer used
 	$("a#about").fancybox({
 		'hideOnContentClick':false
 	});
+        */
 });
 
 /**
 * Initializes popups on the gallery view page
 */
+/* bds: no longer used
 function initGalleryPopups() {
 	for (var i=0; i != itemids.length; i++) { 
 		var sel = "a#anchor" + itemids[i]; 
@@ -50,7 +55,7 @@ function initGalleryPopups() {
 		$(sel).fancybox({ 'hideOnContentClick': false }); 
 	} 
 }
-
+*/
 /**
 * If there is a JPEG image less than MAX_SERVICE_IMG_SIZE, 
 * set the largest image found as the service image
