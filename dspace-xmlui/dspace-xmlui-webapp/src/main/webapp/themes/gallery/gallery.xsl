@@ -124,13 +124,14 @@
 				</link>
 			</xsl:for-each>
 
-			<!-- JQuery JS   -->
+			<!-- JQuery JS
+                    bds: removing this because it may be conflicting with jQ 1.4.4
 			<script type="text/javascript">
 				<xsl:attribute name="src">
 					<xsl:value-of select="$themePath"/>
 					<xsl:text>lib/jquery-1.3.2.min.js</xsl:text>
 				</xsl:attribute> &#160; </script>
-
+-->
 			<!-- the following javascript removes the default text of empty text areas when they are focused on or submitted -->
 			<script type="text/javascript"> function tFocus(element){if (element.value ==
 				'<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){element.value='';}}
