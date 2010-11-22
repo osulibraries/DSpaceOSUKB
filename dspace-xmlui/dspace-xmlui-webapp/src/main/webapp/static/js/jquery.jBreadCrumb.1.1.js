@@ -41,7 +41,7 @@
 		//Check if easing plugin exists. If it doesn't, use "swing"
 		if(typeof(jQuery.easing) == 'object')
 		{
-			_easingEquation = 'easeOutQuad'
+			_easingEquation = 'easeOutQuart'
 		}
 		else
 		{
@@ -224,17 +224,17 @@
     
     jQuery.fn.jBreadCrumb.defaults = 
     {
-        maxFinalElementLength: 400,
-        minFinalElementLength: 200,
-        minimumCompressionElements: 4,
+        maxFinalElementLength: 350,
+        minFinalElementLength: 150,
+        minimumCompressionElements: 1,
         endElementsToLeaveOpen: 1,
         beginingElementsToLeaveOpen: 0,
-        timeExpansionAnimation: 800,
-        timeCompressionAnimation: 500,
-        timeInitialCollapse: 600,
+        timeExpansionAnimation: 600,
+        timeCompressionAnimation: 900,
+        timeInitialCollapse: 1200,
         easing: _easingEquation,
         overlayClass: 'chevronOverlay',
-        previewWidth: 40
+        previewWidth: 30
     };
     
 })(jQuery);
