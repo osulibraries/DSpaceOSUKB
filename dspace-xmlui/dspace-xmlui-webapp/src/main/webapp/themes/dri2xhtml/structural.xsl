@@ -612,7 +612,9 @@
                                         </xsl:attribute>
                                     </input>
                                     <xsl:choose>
+            <!-- bds : temporary hack to get container type [community|collection], since the following test is broken (not found in DRI)
                                         <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
+              -->                       <xsl:when test="/dri:document/dri:options/dri:list[@n='browse']/dri:list[@n='context']/dri:head/i18n:text/text() = 'xmlui.ArtifactBrowser.Navigation.head_this_community'">
                                                 <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
                                         </xsl:when>
                                         <xsl:otherwise>
