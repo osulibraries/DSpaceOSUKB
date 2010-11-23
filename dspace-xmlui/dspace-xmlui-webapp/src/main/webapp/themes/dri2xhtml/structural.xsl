@@ -323,7 +323,8 @@
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='xhtml_head_item']"
                               disable-output-escaping="yes"/>
             </xsl:if>
-            
+
+            <xsl:call-template name="extraHead"/>
         </head>
     </xsl:template>
     
