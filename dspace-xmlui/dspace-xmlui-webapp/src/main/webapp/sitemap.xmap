@@ -199,6 +199,7 @@
                         <map:reader name="MetadataExportReader" src="org.dspace.app.xmlui.cocoon.MetadataExportReader"/>
             <map:reader name="OpenURLReader" src="org.dspace.app.xmlui.cocoon.OpenURLReader"/>
             <map:reader name="SitemapReader" src="org.dspace.app.xmlui.cocoon.SitemapReader"/>
+            <map:reader name="ConcatenationReader" src="org.dspace.app.xmlui.cocoon.ConcatenationReader"/>
                 </map:readers>
                 <map:actions>
                         <map:action name="locale" src="org.dspace.app.xmlui.cocoon.DSpaceLocaleAction"/>
@@ -518,6 +519,23 @@
                                         <map:parameter name="type" value="sitemaps.org"/>
                                 </map:read>
       </map:match>
+
+        <!-- handle static js and css -->
+            <map:match pattern="themes/*.js">
+                <map:read type="ConcatenationReader" src="{1}.js">
+                    <map:parameter name="requestQueryString" value="{request:queryString}"/>
+                </map:read>
+            </map:match>
+            <map:match pattern="themes/*.css">
+                <map:read type="ConcatenationReader" src="{1}.css">
+                    <map:parameter name="requestQueryString" value="{request:queryString}"/>
+                </map:read>
+            </map:match>
+            <map:match pattern="themes/*.json">
+                <map:read type="ConcatenationReader" src="{1}.json">
+                    <map:parameter name="requestQueryString" value="{request:queryString}"/>
+                </map:read>
+            </map:match>
 
                         <!-- handle common theme resources, such as dri2xhtml -->
                         <map:match pattern="themes/*">

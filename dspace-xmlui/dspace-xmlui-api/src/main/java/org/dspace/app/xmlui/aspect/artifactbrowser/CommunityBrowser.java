@@ -303,7 +303,7 @@ public class CommunityBrowser extends AbstractDSpaceTransformer implements Cache
         	name = ((Collection) dso).getMetadata("name");
         
         String url = contextPath + "/handle/"+dso.getHandle();
-        list.addItem().addHighlight("bold").addXref(url, name);
+        list.addItem()./*addHighlight("bold").*/addXref(url, name);
         
         List subList = null;
         
