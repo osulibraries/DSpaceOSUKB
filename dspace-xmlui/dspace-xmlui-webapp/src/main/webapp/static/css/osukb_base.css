@@ -2,18 +2,20 @@
 body {
         font-family: Corbel, Optima, Verdana, sans-serif;
         font-size: .9em;
-	background: url('../images/bkgd.png') repeat-x transparent;
-        background-color: #999;
+        background-color: #DAE6DE;
 	margin: 0;
         padding: 0;
 }
-
+/*
+background: url('../images/bkgd.png') repeat-x transparent;
+*/
 a {
     color: #003;
 }
 
 fieldset {
     border: 0px;
+    padding: 0;
 }
 
 ul {
@@ -78,10 +80,8 @@ tr.ds-table-row.even {
 
 div#ds-main {
     position: relative;
-    margin: 5px auto;
-    min-width: 780px;
-    max-width: 95%;
-    
+    margin: 0 auto;
+    width: 950px;
 }
 
 div#ds-header {
@@ -121,9 +121,7 @@ div#ds-header h1,div#ds-header h2 {
 
 
 div#ds-user-box {
-    position: absolute;
-    top: 6px;
-    right: 6px;
+
     text-align: right;
 }
 
@@ -138,13 +136,15 @@ div#ds-user-box p {
 
 div#ds-user-box a {
     text-decoration: none;
-    color: inherit;
+    color: #eee;
     background-color: inherit;
     height: 12px;
     padding: 0px;
     margin: 0px;
 }
-
+div#ds-user-box a:hover {
+    text-decoration: underline;
+}
 
 
 ul#ds-trail {
@@ -189,28 +189,67 @@ li.first-link {
 }
 
 
+/* scarlet-bar and grey-bar lie between header and trail */
 
-
-div#ds-menubar {
+div#scarlet-bar {
     background-color: #900;
+    text-align: right;
+    height: 14px;
+    border: none;
+    padding: 4px;
+}
+
+div#grey-bar {
+    background-color: #999;
     text-align: right;
     height: auto;
     border: none;
+    padding: 0;
 }
 
 
+div#ds-global-search {
+    color: #fff;
+    padding: 5px;
+}
 
+div#ds-global-search a {
+    color: #fff;
+    margin-right: 14px;
+}
+
+input#ds-global-search-box {
+    width: 300px;
+    float: right;
+    margin: 0 8px;
+}
+
+input#ds-global-search-button {
+    float: right;
+}
+
+div#ds-global-search-scope {
+  
+}
+
+.input-prompt {
+  position: absolute;
+  right: 188px;
+  top: 124px;
+  font-style: italic;
+  color: #aaa;
+}
 
 
 div#ds-body {
     position: relative;
     float: right;
-    width: 75%;
+    width: 750px;
     color: inherit;
     background-color: #ffffff;
     border: 0px solid #777;
-    margin: 0px 0px 0px 0px;
-    padding: 12px;
+    margin: 0;
+    padding: 0;
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
 	/* RGBa with 0.6 opacity */
@@ -267,11 +306,11 @@ div#ds-options {
     position: relative;
     float: left;
     clear:  left;
-    width: 21%;
+    width: 200px;
     color: inherit;
 
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font-size: 95%;
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
@@ -293,8 +332,15 @@ div.ds-option-set {
     color: inherit;
 }
 
-div.ds-option-set a {
-    padding-left: 10px;
+
+div.ds-option-set a:link {
+text-decoration: none;
+}
+div.ds-option-set a:visited {
+text-decoration: none;
+}
+div.ds-option-set a:hover {
+text-decoration: underline;
 }
 
 div#ds-options h3 {

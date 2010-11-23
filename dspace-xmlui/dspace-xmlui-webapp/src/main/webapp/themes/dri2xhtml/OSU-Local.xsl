@@ -35,13 +35,30 @@
                 <xsl:text>/static/osu-navbar-media/css/navbar.css</xsl:text>
             </xsl:attribute>
         </link>
-        <!-- TODO not currently calling IE specific navbar css files. Go screw yourself IE-->
+        <!-- TODO not currently calling IE specific navbar css files. -->
         <script rel="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/osu-navbar-media/js/searchform.js</xsl:text>
             </xsl:attribute>
             <xsl:text>var x=0;</xsl:text>
+        </script>
+        <!-- bds: making jQuery available system-wide -->
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery-1.4.4.min.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <!-- bds: text-field-prompt.js for global search box, uses jQuery -->
+        <!-- see http://kyleschaeffer.com/best-practices/input-prompt-text/ -->
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/text-field-prompt.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
         </script>
         <link rel="icon" type="image/x-icon">
             <xsl:attribute name="href">
