@@ -672,8 +672,12 @@
             <!-- bds: override main page community list with two-column layout for other content -->
             <xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
-<h1>Homepage!</h1>
-<p>Imagine this section split into two columns, one big one in the middle and one narrow one to the right</p>
+                        <div id="homepage-body">
+                            <h1>Homepage!</h1>
+                        </div>
+                        <div id="homepage-featured">
+                            <img src="/xmlui/static/images/featured.png"/>
+                        </div>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates />

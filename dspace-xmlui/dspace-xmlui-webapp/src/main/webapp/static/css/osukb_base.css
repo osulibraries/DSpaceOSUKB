@@ -275,6 +275,13 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 
 
 
+div#homepage-body {
+    float: left;
+}
+div#homepage-featured {
+    float: right;
+    background-color: #999;
+}
 
 
 
