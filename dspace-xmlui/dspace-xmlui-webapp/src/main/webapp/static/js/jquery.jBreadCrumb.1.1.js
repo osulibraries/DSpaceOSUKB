@@ -224,8 +224,8 @@
     
     jQuery.fn.jBreadCrumb.defaults = 
     {
-        maxFinalElementLength: 350,
-        minFinalElementLength: 150,
+        maxFinalElementLength: 450,
+        minFinalElementLength: 250,
         minimumCompressionElements: 1,
         endElementsToLeaveOpen: 1,
         beginingElementsToLeaveOpen: 0,
