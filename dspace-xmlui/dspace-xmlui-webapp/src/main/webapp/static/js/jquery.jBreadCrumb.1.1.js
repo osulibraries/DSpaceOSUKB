@@ -231,7 +231,7 @@
         beginingElementsToLeaveOpen: 0,
         timeExpansionAnimation: 600,
         timeCompressionAnimation: 900,
-        timeInitialCollapse: 1200,
+        timeInitialCollapse: 0,
         easing: _easingEquation,
         overlayClass: 'chevronOverlay',
         previewWidth: 30
