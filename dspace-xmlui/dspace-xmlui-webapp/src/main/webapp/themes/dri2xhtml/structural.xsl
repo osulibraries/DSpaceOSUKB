@@ -636,19 +636,28 @@
                 </a>
             </div>
         </div>
-<!-- bds: crudely dropping the trail in here, copied from the original in the buildHeader section -->
-        <div id="breadCrumb0" class="breadCrumb">
-            <ul id="ds-trail">
-                <xsl:choose>
-                        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
+<!-- bds: dropping the trail in here, copied from the original in the buildHeader section -->
+<!--      also setting it to not appear on the home page or on the CC list page  -->
+        <xsl:choose>
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home' or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'">
+
+            </xsl:when>
+            <xsl:otherwise>
+                <div id="breadCrumb0" class="breadCrumb">
+                    <ul id="ds-trail">
+                        <xsl:choose>
+                            <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
                                 <li class="ds-trail-link first-link"> - </li>
-                        </xsl:when>
-                        <xsl:otherwise>
+                            </xsl:when>
+                            <xsl:otherwise>
                                 <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
-                        </xsl:otherwise>
-                </xsl:choose>
-            </ul>
-        </div>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ul>
+                </div>                 
+            </xsl:otherwise>
+        </xsl:choose>
+
 
 
         <div id="ds-body">
