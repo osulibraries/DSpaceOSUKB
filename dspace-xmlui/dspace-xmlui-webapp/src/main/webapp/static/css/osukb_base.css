@@ -2,7 +2,7 @@
 body {
         font-family: Corbel, Optima, Verdana, sans-serif;
         font-size: .9em;
-        background-color: #DAE6DE;
+        background-color: #C2CEC2;
 	margin: 0;
         padding: 0;
 }
@@ -81,12 +81,12 @@ tr.ds-table-row.even {
 div#ds-main {
     position: relative;
     margin: 0 auto;
-    width: 950px;
+    width: 1000px;
 }
 
 div#ds-header {
     width: 100%;
-    height: 94px;
+    height: 109px;
     padding: 0px;
     	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(255, 255, 255);
@@ -103,12 +103,12 @@ div#ds-header {
 
 
 div#ds-header a span#ds-header-logo {
-        width: 435px;
-        height: 80px;
+        width: 1000px;
+        height: 109px;
         float: left;
-        background-image: url("../images/KB-logo-cio.png");
+        background-image: url("../images/header.png");
     background-repeat: no-repeat;
-        margin: 5px;
+        margin: 0px;
     color: inherit;
 }
 
@@ -190,7 +190,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	display: block;
 	height: 21px;
 	overflow: hidden;
-	width: 940px;
+	width: 990px;
 	padding:5px;
 	border:none 1px #dedede;
 	background:#fff;
@@ -331,17 +331,17 @@ div#ds-global-search-scope {
 
 .input-prompt {
   position: absolute;
-  right: 188px;
-  top: 124px;
+  right: 62px;
+  top: 139px;
   font-style: italic;
-  color: #aaa;
+  color: #555;
 }
 
 
 div#ds-body {
     position: relative;
     float: right;
-    width: 750px;
+    width: 800px;
     color: inherit;
     background-color: #ffffff;
     border: 0px solid #777;
