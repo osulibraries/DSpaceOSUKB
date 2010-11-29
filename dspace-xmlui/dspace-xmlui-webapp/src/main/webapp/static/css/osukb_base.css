@@ -354,17 +354,6 @@ div#ds-body {
     border: 0px solid #777;
     margin: 0;
     padding: 0;
-	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(255, 255, 255);
-	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.6);
-	background: transparent\9; /* clear solid background for ie */
-    zoom:1; /* required for the filters */
-	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
-
 }
 
 
@@ -412,21 +401,7 @@ div#ds-options {
     clear:  left;
     width: 200px;
     color: inherit;
-
-    margin: 0;
-    padding: 0;
-    font-size: 95%;
-	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(255, 255, 255);
-	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.6);
-	background: transparent\9; /* clear solid background for ie */
-    zoom:1; /* required for the filters */
-	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
-
+    background-color: #edeaea;
 }
 
 div.ds-option-set {
@@ -448,25 +423,28 @@ text-decoration: underline;
 }
 
 div#ds-options h3 {
+    background-color: #CABFBF;
     font-size: 1em;
     color:#000;
     margin:0 0 0 0;
     padding:5px;
     position:relative;
-        /* Fallback for web browsers that doesn't support RGBa */
+
+}
+
+/*         Fallback for web browsers that doesn't support RGBa
         background: rgb(255, 255, 255);
-        /* RGBa with 0.6 opacity */
+         RGBa with 0.6 opacity
         background: rgba(255, 255, 255, 0.8);
-	background: transparent\9; /* clear solid background for ie */
-    zoom:1; /* required for the filters */
-	/* For IE 5.5 - 7*/
+	background: transparent\9;  clear solid background for ie
+    zoom:1;  required for the filters
+	 For IE 5.5 - 7
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
+	 For IE 8
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 
 
-
-}
+*/
 
 div#ds-options h4 {
     margin-top: 0px;
@@ -493,15 +471,28 @@ div#ds-options li {
 
 div#ds-footer {
     position: relative;
-    margin-top: 10px;
     margin-bottom: 40px;
-    height: 20px;
+    height: 120px;
     float: left;
     width: 100%;
     border: none;
     padding: 0 0 5px 0;
-    border-top: 1px solid #777;
+    border-top: 3px solid #cabfbf;
     color: inherit;
+    background-color: #edeaea;
+}
+
+div#osu-footer-logo {
+    background: url("../images/OSU_fulllogo.png") no-repeat;
+    border: none;
+    height: 58px;
+    margin: 12px;
+    width: 58px;
+    float: left;
+}
+
+div#osu-logo-text p {
+    font-size: .8em;
 }
 
 div#ds-footer-links {

@@ -423,6 +423,12 @@
     <xsl:template name="buildFooter">
         <div id="ds-footer">
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
+            <div id="osu-footer-logo">
+                <span> </span>
+            </div>
+            <div id="osu-logo-text">
+                <p>© 2010, The Ohio State University</p>
+            </div>
             <div id="ds-footer-links">
 <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
                                 <a>
@@ -447,9 +453,6 @@
                     <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                 </a>
             </div>
-            <!-- bds: this invisible link thing appears to be broken,
-            do we have no /htmlmap defined? -->
-            <!--Invisible link to HTML sitemap (for search engines) -->
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="$context-path"/>
