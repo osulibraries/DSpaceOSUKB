@@ -62,11 +62,6 @@
     <xsl:output indent="yes"/>
 
     <xsl:template name="extraHead">
-        <script type="text/javascript"> 
-         var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
-         document.write(unescape("%3Cscript src='" + JsHost + "ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
-       </script>
-
         <script type="text/javascript" src="themes/community-list/lib/collapsableTree.js">&#160;</script>
         <script type="text/javascript">
             <xsl:text disable-output-escaping="yes">jQuery(document).ready(function(){$('ul#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser').collapsibleCheckboxTree();});</xsl:text>

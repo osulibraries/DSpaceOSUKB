@@ -56,7 +56,7 @@
         xmlns:mods="http://www.loc.gov/mods/v3"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
         xmlns="http://www.w3.org/1999/xhtml"
-        exclude-result-prefixes="mets xlink xsl dim xhtml mods dc">
+        exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
     
     <xsl:output indent="yes"/>
     
@@ -132,26 +132,32 @@
             <body>
 
                 <!-- bds: see OSU-local.xsl for buildBodyOSU -->
+                <!--      (really just builds OSU navbar) -->
                 <xsl:call-template name="buildBodyOSU"/>
                                 <div id="ds-main">
                     <!--
                         The header div, complete with title, subtitle, trail and other junk. The trail is
                         built by applying a template over pageMeta's trail children. -->
                     <xsl:call-template name="buildHeader"/>
-                    
+
+                <!-- bds: the following items have been separated from their original containers -->
+                    <xsl:call-template name="scarlet-bar"/>
+                    <xsl:call-template name="grey-bar"/>
+                    <xsl:call-template name="trail"/>
+
                     <!--
                         Goes over the document tag's children elements: body, options, meta. The body template
                         generates the ds-body div that contains all the content. The options template generates
                         the ds-options div that contains the navigation and action options available to the
                         user. The meta element is ignored since its contents are not processed directly, but
                         instead referenced from the different points in the document. -->
-                    <xsl:apply-templates />
 
-                    <!--
-                        The footer div, dropping whatever extra information is needed on the page. It will
-                        most likely be something similar in structure to the currently given example. -->
+                 <!-- bds: adding body-and-options div to allow more styling options -->
+                    <div id="body-and-options">
+                        <xsl:apply-templates />
+                    </div>
+
                     <xsl:call-template name="buildFooter"/>
-                    
                 </div>
             </body>
               </xsl:otherwise>
@@ -327,7 +333,11 @@
             <xsl:call-template name="extraHead"/>
         </head>
     </xsl:template>
-    
+
+
+
+
+
     
     <!-- The header (distinct from the HTML head element) contains the title, subtitle, login box and various
         placeholders for header images -->
@@ -340,89 +350,24 @@
                 </xsl:attribute>
                 <span id="ds-header-logo"></span>
             </a>
-<!-- bds: removing text title/subtitle from header section, only the logo and user box go up there.
-            <h1 class="pagetitle">
-                <xsl:choose>
-
-                        <xsl:when test="not(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title'])">
-                                <xsl:text> </xsl:text>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/node()"/>
-                        </xsl:otherwise>
-                </xsl:choose>
-                        
-            </h1>
-            <h2 class="static-pagetitle"><i18n:text>xmlui.dri2xhtml.structural.head-subtitle</i18n:text></h2>
--->
-
-<!-- bds: Our trails are sometimes very large and don't lend themselves to inline display.
-    The other option, a more list-like display like the old JSPUI, does not fit very well in the header.
-    Thus this section is removed from here and placed into the top of the buildBody template.
-
-            <ul id="ds-trail">
-                <xsl:choose>
-                        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
-                                <li class="ds-trail-link first-link"> - </li>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
-                        </xsl:otherwise>
-                </xsl:choose>
-            </ul>
--->
-           
-<!-- bds: moving user-box to inside scarlet-bar, below -->
-            <!--<xsl:choose>
-                <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
-                    <div id="ds-user-box">
-                        <p>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='url']"/>
-                                </xsl:attribute>
-                                <i18n:text>xmlui.dri2xhtml.structural.profile</i18n:text>
-                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                    dri:metadata[@element='identifier' and @qualifier='firstName']"/>
-                                <xsl:text> </xsl:text>
-                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                    dri:metadata[@element='identifier' and @qualifier='lastName']"/>
-                            </a>
-                            <xsl:text> | </xsl:text>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
-                                </xsl:attribute>
-                                <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
-                            </a>
-                        </p>
-                    </div>
-                </xsl:when>
-                <xsl:otherwise>
-                    <div id="ds-user-box">
-                        <p>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
-                                </xsl:attribute>
-                                <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
-                            </a>
-                        </p>
-                    </div>
-                </xsl:otherwise>
-            </xsl:choose>-->
-            
         </div>
     </xsl:template>
-    
+
+
+
+
+
     
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
+            <div id="osu-footer-logo">
+                <span> </span>
+            </div>
+            <div id="osu-logo-text">
+                <p>© 2010, The Ohio State University</p>
+            </div>
             <div id="ds-footer-links">
 <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
                                 <a>
@@ -447,9 +392,6 @@
                     <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                 </a>
             </div>
-            <!-- bds: this invisible link thing appears to be broken,
-            do we have no /htmlmap defined? -->
-            <!--Invisible link to HTML sitemap (for search engines) -->
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="$context-path"/>
@@ -457,70 +399,46 @@
                 </xsl:attribute>
             </a>
         </div>
-        <!--
-            <a href="http://di.tamu.edu">
-                <div id="ds-footer-logo"></div>
-            </a>
-            <p>
-            This website is using Manakin, a new front end for DSpace created by Texas A&amp;M University
-            Libraries. The interface can be extensively modified through Manakin Aspects and XSL based Themes.
-            For more information visit
-            <a href="http://di.tamu.edu">http://di.tamu.edu</a> and
-            <a href="http://dspace.org">http://dspace.org</a>
-            </p>
-        -->
     </xsl:template>
     
-    
-    
-    <!--
-        The trail is built one link at a time. Each link is given the ds-trail-link class, with the first and
-        the last links given an additional descriptor.
-    -->
-    <xsl:template match="dri:trail">
-        <li>
-            <xsl:attribute name="class">
-                <xsl:text>ds-trail-link </xsl:text>
-                <xsl:if test="position()=1">
-                    <xsl:text>first-link </xsl:text>
-                </xsl:if>
-                <xsl:if test="position()=last()">
-                    <xsl:text>last-link</xsl:text>
-                </xsl:if>
-            </xsl:attribute>
-            <!-- Determine whether we are dealing with a link or plain text trail link -->
-            <xsl:choose>
-                <xsl:when test="./@target">
-                    <a>
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="./@target"/>
-                        </xsl:attribute>
-                        <xsl:apply-templates />
-                    </a>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates />
-                </xsl:otherwise>
-            </xsl:choose>
-        </li>
-    </xsl:template>
 
-
-    
-    
-<!--
-        The meta, body, options elements; the three top-level elements in the schema
--->
-    
-    
-    
     
     <!--
         The template to handle the dri:body element. It simply creates the ds-body div and applies
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
+       <div id="ds-body">
+            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
+                <div id="ds-system-wide-alert">
+                    <p>
+                        <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']/node()"/>
+                    </p>
+                </div>
+            </xsl:if>
+            <!-- bds: override main page community list with two-column layout for other content -->
+            <xsl:choose>
+                <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
+                        <div id="homepage-body">
+                            <h1>Homepage!</h1>
+                        </div>
+                        <div id="homepage-featured">
+                            <img src="/xmlui/static/images/featured.png"/>
+                        </div>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </xsl:template>
+
+
+
+
+
 <!-- bds: scarlet bar for user-box -->
+    <xsl:template name="scarlet-bar">
         <div id="scarlet-bar">
             <xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
@@ -564,10 +482,22 @@
                 </xsl:otherwise>
             </xsl:choose>
         </div>
+    </xsl:template>
+
+
+
+
+
+
+
+
+
+
 
 <!-- bds: grey bar for search-box -->
+    <xsl:template name="grey-bar">
         <div id="grey-bar">
-<!-- bds: copied search box from options bar to here, might need to change id/class designators -->
+<!-- bds: copied search box from options bar to here -->
             <div id="ds-global-search">
                 <form id="ds-search-form" method="post">
                     <xsl:attribute name="action">
@@ -636,42 +566,74 @@
                 </a>
             </div>
         </div>
-<!-- bds: crudely dropping the trail in here, copied from the original in the buildHeader section -->
-        <div id="breadCrumb0" class="breadCrumb">
-            <ul id="ds-trail">
-                <xsl:choose>
-                        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
+     </xsl:template>
+
+
+
+
+
+<!-- bds: moving the trail in here, copied from the original in the buildHeader section -->
+<!--      also setting it to not appear on the home page or on the CC list page  -->
+<!--      individual trail links are built with the match="dri:trail" template below -->
+    <xsl:template name="trail">
+        <xsl:choose>
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home' or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'">
+
+            </xsl:when>
+            <xsl:otherwise>
+                <div id="breadCrumb0" class="breadCrumb">
+                    <ul id="ds-trail">
+                        <xsl:choose>
+                            <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
                                 <li class="ds-trail-link first-link"> - </li>
-                        </xsl:when>
-                        <xsl:otherwise>
+                            </xsl:when>
+                            <xsl:otherwise>
                                 <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
-                        </xsl:otherwise>
-                </xsl:choose>
-            </ul>
-        </div>
-
-
-        <div id="ds-body">
-
-            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
-                <div id="ds-system-wide-alert">
-                    <p>
-                        <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']/node()"/>
-                    </p>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ul>
                 </div>
-            </xsl:if>
-            <!-- bds: override main page community list with two-column layout for other content -->
+            </xsl:otherwise>
+        </xsl:choose>
+     </xsl:template>
+
+    <xsl:template match="dri:trail">
+        <li>
+            <xsl:attribute name="class">
+                <xsl:text>ds-trail-link </xsl:text>
+                <xsl:if test="position()=1">
+                    <xsl:text>first-link </xsl:text>
+                </xsl:if>
+                <xsl:if test="position()=last()">
+                    <xsl:text>last-link</xsl:text>
+                </xsl:if>
+            </xsl:attribute>
+            <!-- Determine whether we are dealing with a link or plain text trail link -->
             <xsl:choose>
-                <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
-<h1>Homepage!</h1>
-<p>Imagine this section split into two columns, one big one in the middle and one narrow one to the right</p>
+                <xsl:when test="./@target">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="./@target"/>
+                        </xsl:attribute>
+                        <xsl:apply-templates />
+                    </a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates />
                 </xsl:otherwise>
             </xsl:choose>
-        </div>
+        </li>
     </xsl:template>
+
+
+
+
+
+
+
+
+
+
 
     <!--
         The template to handle dri:options. Since it contains only dri:list tags (which carry the actual

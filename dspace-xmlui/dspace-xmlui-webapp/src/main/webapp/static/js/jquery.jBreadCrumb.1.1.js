@@ -224,14 +224,14 @@
     
     jQuery.fn.jBreadCrumb.defaults = 
     {
-        maxFinalElementLength: 350,
-        minFinalElementLength: 150,
+        maxFinalElementLength: 450,
+        minFinalElementLength: 250,
         minimumCompressionElements: 1,
         endElementsToLeaveOpen: 1,
         beginingElementsToLeaveOpen: 0,
         timeExpansionAnimation: 600,
         timeCompressionAnimation: 900,
-        timeInitialCollapse: 1200,
+        timeInitialCollapse: 0,
         easing: _easingEquation,
         overlayClass: 'chevronOverlay',
         previewWidth: 30
