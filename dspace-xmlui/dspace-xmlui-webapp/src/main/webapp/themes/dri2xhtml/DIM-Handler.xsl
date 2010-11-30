@@ -59,7 +59,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xalan="http://xml.apache.org/xalan" 
     xmlns:encoder="xalan://java.net.URLEncoder"
-    exclude-result-prefixes="xalan encoder i18n dri mets dim xlink xsl oreatom ore atom">
+    exclude-result-prefixes="i18n dri mets dim xlink xsl oreatom ore atom xalan encoder ">
         <!-- bds: added oreatom ore atom to above exclusions, not currently used, was causing display errors -->
     <!--  
     the above should be replaced with if Saxon is going to be used.
