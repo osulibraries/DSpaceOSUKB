@@ -2,12 +2,12 @@
 
 <!--
     Gallery.xsl
-    
+
     Implements an image gallery view for Manakin. See the public "About this Theme"
     page for instructions on use and credits.
-    
+
 -->
-    
+
 
 <xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
 	xmlns:dri="http://di.tamu.edu/DRI/1.0/" xmlns:mets="http://www.loc.gov/METS/"
@@ -21,8 +21,8 @@
 
 	<!-- THEME CONFIGURATION OPTIONS -->
 
-	<!-- using these 2 options, you can restrict navigation to this collection, 
-    removing links to outside colelctions, communities, etc -->
+	<!-- using these 2 options, you can restrict navigation to this collection,
+    removing links to outside collections, communities, etc -->
 
 	<!--  THEME VARIABLES -->
 <!-- bds: todo: check usage and redundancy of these variables -->
@@ -50,7 +50,7 @@
 		/>
 	</xsl:variable>
 
-	<!-- apgeUrl: path to the  server, up through the port -->
+	<!-- pageUrl: path to the  server, up through the port -->
 	<xsl:variable name="pageUrl">
 		<xsl:value-of select="$serverUrl"/>
 		<xsl:value-of
@@ -65,160 +65,24 @@
 		<xsl:value-of select="1"/>
 	</xsl:variable>
 
+        <xsl:template name="extraHead">
+            <!-- pass through some config values to Javascript -->
+            <script type="text/javascript">
+                    var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;
+                    var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
+                    var THEME_PATH = "<xsl:value-of select='$themePath' />";
+            </script>
+        </xsl:template>
 
 
 
+	<!--
+        From: General-Handler.xsl
 
-	<!-- 
-        From: structural.xsl
-        Changes:  
-                1. Added $themePath variable in a number of places  to reduce number of lookups ovia XPath
-                2. Added JS libraries : JQuery, AnythingZoomer, FancyBox
-    -->
-	<xsl:template name="buildHead">
-		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-			
-			<!-- pass through some config values to Javascript -->
-			<script type="text/javascript">
-				var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;
-				var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
-			</script>
-	
-        <!--bds: Add OSU navbar header and stylesheets -->
-        <!-- bds: see OSU-local.xsl for buildHeadOSU -->
-            <xsl:call-template name="buildHeadOSU"/>
-            <!-- Add global theme(s) -->
-            <link rel="stylesheet" type="text/css">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/static/css/osukb_base.css</xsl:text>
-                </xsl:attribute>
-            </link>
-
-                      
-			<!-- Add stylsheets -->
-			<xsl:for-each
-				select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='stylesheet']">
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="media">
-						<xsl:value-of select="@qualifier"/>
-					</xsl:attribute>
-					<xsl:attribute name="href">
-						<xsl:value-of select="$themePath"/>
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</link>
-			</xsl:for-each>
-
-			<!-- Add syndication feeds -->
-			<xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']">
-				<link rel="alternate" type="application">
-					<xsl:attribute name="type">
-						<xsl:text>application/</xsl:text>
-						<xsl:value-of select="@qualifier"/>
-					</xsl:attribute>
-					<xsl:attribute name="href">
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</link>
-			</xsl:for-each>
-
-			<!-- JQuery JS
-                    bds: removing this because it may be conflicting with jQ 1.4.4
-			<script type="text/javascript">
-				<xsl:attribute name="src">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/jquery-1.3.2.min.js</xsl:text>
-				</xsl:attribute> &#160; </script>
--->
-			<!-- the following javascript removes the default text of empty text areas when they are focused on or submitted -->
-			<script type="text/javascript"> function tFocus(element){if (element.value ==
-				'<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){element.value='';}}
-				function tSubmit(form){var defaultedElements =
-				document.getElementsByTagName("textarea"); for (var i=0; i !=
-				defaultedElements.length; i++){ if (defaultedElements[i].value ==
-				'<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
-				defaultedElements[i].value='';}}} </script>
-
-			<!-- Add javascript  -->
-			<xsl:for-each
-				select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript']">
-				<script type="text/javascript">
-					<xsl:attribute name="src">
-						<xsl:value-of select="$themePath"/>
-						<xsl:value-of select="."/>
-					</xsl:attribute>.</script>
-			</xsl:for-each>
-			<!-- Add the title in -->
-			<xsl:variable name="page_title"
-				select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']"/>
-
-			<!-- Add  Gallery JS and CSS  -->
-			<link rel="stylesheet" type="text/css">
-				<xsl:attribute name="href">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/gallery.css</xsl:text>
-				</xsl:attribute>
-			</link>
-			
-			<script type="text/javascript">
-				<xsl:attribute name="src">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/gallery.js</xsl:text>
-				</xsl:attribute> &#160; </script>
-
-			<!-- Add Fancy Box JS and CSS -->
-                        <!-- bds: ditch the fancy-box 
-			<link rel="stylesheet" type="text/css">
-				<xsl:attribute name="href">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/fancybox/jquery.fancybox-1.2.5.css</xsl:text>
-				</xsl:attribute>
-			</link>
-
-			<script type="text/javascript">
-				<xsl:attribute name="src">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/fancybox/jquery.fancybox-1.2.5.js</xsl:text>
-				</xsl:attribute> &#160; </script>
-			-->
-
-			<!--Add TJPzoom library   -->
-			<script type="text/javascript">
-				<xsl:attribute name="src">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/tjpzoom/tjpzoom.js</xsl:text>
-				</xsl:attribute>&#160; </script>
-			
-			<script type="text/javascript">
-				<xsl:attribute name="src">
-					<xsl:value-of select="$themePath"/>
-					<xsl:text>lib/tjpzoom/tjpzoom_config_default.js</xsl:text>
-				</xsl:attribute>&#160; </script>
-		
-			<title>
-				<xsl:choose>
-					<xsl:when test="not($page_title)">
-						<xsl:text>  </xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="$page_title/node()"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</title>
-		</head>
-	</xsl:template>
-
-
-
-	<!-- 
-        From: General-Handler.xsl        
-        
-        Changes: 
+        Changes:
          	1. moved thumbnail to another rule
-        
-        Generate the thunbnail, if present, from the file section -->
+
+        Generate the thumbnail, if present, from the file section -->
 	<xsl:template match="mets:fileSec" mode="artifact-preview">
 		<!--
 			Thumbnail moved to another rule
@@ -240,12 +104,12 @@
 		-->
 	</xsl:template>
 
-	<!-- 
+	<!--
         From DIM-Handler.xsl
         Changes:
                 1. rewrote/reordered to use the Fancybox JQuery library
-                
-        Generate the info about the item from the metadata section 
+
+        Generate the info about the item from the metadata section
     -->
 	<xsl:template match="dim:dim" mode="itemSummaryList-DIM">
 		<xsl:variable name="itemWithdrawn" select="@withdrawn"/>
@@ -254,7 +118,7 @@
 		<xsl:variable name="itemid" select="generate-id(node())"/>
 
 		<script type="text/javascript"> itemids.push("<xsl:value-of select="$itemid"/>"); </script>
-	
+
 		<!-- FancyBox link on image: opens popup -->
                 <a>
                     <xsl:attribute name="id">
@@ -330,7 +194,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</p>
-					
+
 
 		<a>
                     <!-- bds: adding a class to the details link so it can be styled independtly -->
@@ -367,7 +231,7 @@
 				<xsl:value-of select="$itemid"/>
 			</xsl:attribute>
 
- bds: trying out using structures from simple_item_fields.xsl to insert fields to popup 
+ bds: trying out using structures from simple_item_fields.xsl to insert fields to popup
 
 <xsl:element name="a">
     <xsl:attribute name="href">
@@ -411,7 +275,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
     <tr class="ds-table-row">
         <td class="field-label"><span class="bold"><i18n:text>metadata.dc.title</i18n:text>: </span></td>
         <td class="field-data">
-             bds: removing COinS for now 
+             bds: removing COinS for now
                 <span class="Z3988">
 <xsl:attribute name="title">
 <xsl:call-template name="renderCOinS"/>
@@ -442,7 +306,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
             <td class="field-label"><span class="bold"><i18n:text>metadata.dc.creator</i18n:text>:</span></td>
             <td class="field-data">
                 <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
-                     bds: link to author browse magic 
+                     bds: link to author browse magic
                     <a>
 
                         <xsl:attribute name="href">
@@ -467,7 +331,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
             <td class="field-label"><span class="bold"><i18n:text>metadata.dc.description</i18n:text>:</span></td>
             <td class="field-data">
                 <xsl:for-each select="dim:field[@element='description' and not(@qualifier)]">
-                     bds: this if clause specifically for Ukrainian, to block TGN line from appearing 
+                     bds: this if clause specifically for Ukrainian, to block TGN line from appearing
                     <xsl:if test="not(contains(node(),'TGN'))">
                     <span>
 <xsl:call-template name="parseurls">
@@ -495,17 +359,17 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
 
 
 
-	<!-- 
+	<!--
         From: DIM-Handler.xsl
-        
+
         Changes:
             1. add in -line image viewing
             2. reordered elements
-            
+
         An item rendered in the summaryView pattern. This is the default way to view a DSpace item in Manakin. -->
 
 	<xsl:template name="itemSummaryView-DIM">
-		
+
 		<script type="text/javascript">
 			var o;
 		<xsl:for-each select="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
@@ -528,7 +392,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
 				</xsl:attribute>
 				</img>
 			-->
-			&#160; 
+			&#160;
 		</div>
 
 		<!-- Generate the info about the item from the metadata section -->
@@ -553,7 +417,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
 
 
 
-<!-- bds: creating new template akin to those in structural.xsl, removing Recent Submissions box 
+<!-- bds: creating new template akin to those in structural.xsl, removing Recent Submissions box
     <xsl:template match="dri:div[@n='community-recent-submission']|dri:div[@n='collection-recent-submission']" priority="3">
         <div>
             <h1>Success! No recent submissions box! (But now what to put here?)</h1>

@@ -87,8 +87,3 @@ function initZoomableImage() {
 		
 	}
 }
-
-
-function showAbout() {
-	$("#gallery-about").load(ABOUT_PAGE_URL);
-}
