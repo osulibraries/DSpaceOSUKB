@@ -482,7 +482,7 @@
 
 <!-- bds: this entire template is overridden in simple_item_fields.xsl -->
     <!-- render each field on a row, alternating phase between odd and even -->
-    <!-- recursion needed since not every row appears for each Item. -->
+<!--     recursion needed since not every row appears for each Item.
     <xsl:template name="itemSummaryView-DIM-fields">
       <xsl:param name="clause" select="'1'"/>
       <xsl:param name="phase" select="'even'"/>
@@ -499,7 +499,7 @@
 
       <xsl:choose>
 
-            <!--  artifact?
+              artifact?
             <tr class="ds-table-row odd">
                 <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-preview</i18n:text>:</span></td>
                 <td>
@@ -520,9 +520,9 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </td>
-            </tr>-->
+            </tr>
             
-          <!-- Title row -->
+           Title row 
           <xsl:when test="$clause = 1">
             <tr class="ds-table-row {$phase}">
                 <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-title</i18n:text>: </span></td>
@@ -556,7 +556,7 @@
             </xsl:call-template>
           </xsl:when>
 
-          <!-- Author(s) row -->
+           Author(s) row 
           <xsl:when test="$clause = 2 and (dim:field[@element='contributor'][@qualifier='author'] or dim:field[@element='creator'] or dim:field[@element='contributor'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-author</i18n:text>:</span></td>
@@ -603,7 +603,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- Abstract row -->
+           Abstract row 
           <xsl:when test="$clause = 3 and (dim:field[@element='description' and @qualifier='abstract'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text>:</span></td>
@@ -628,7 +628,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- Description row -->
+           Description row 
           <xsl:when test="$clause = 4 and (dim:field[@element='description' and not(@qualifier)])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-description</i18n:text>:</span></td>
@@ -653,7 +653,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- identifier.uri row -->
+           identifier.uri row 
           <xsl:when test="$clause = 5 and (dim:field[@element='identifier' and @qualifier='uri'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text>:</span></td>
@@ -677,7 +677,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- date.issued row -->
+           date.issued row 
           <xsl:when test="$clause = 6 and (dim:field[@element='date' and @qualifier='issued'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-date</i18n:text>:</span></td>
@@ -696,9 +696,9 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- recurse without changing phase if we didn't output anything -->
+           recurse without changing phase if we didn't output anything 
           <xsl:otherwise>
-            <!-- IMPORTANT: This test should be updated if clauses are added! -->
+             IMPORTANT: This test should be updated if clauses are added! 
             <xsl:if test="$clause &lt; 7">
               <xsl:call-template name="itemSummaryView-DIM-fields">
                 <xsl:with-param name="clause" select="($clause + 1)"/>
@@ -708,7 +708,7 @@
           </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+-->
     
     <!-- The summaryView of communities and collections is undefined. -->
     <xsl:template name="collectionSummaryView-DIM">
@@ -1052,7 +1052,7 @@
 
     This Code does not parse authors names, instead relying on dc.contributor to populate the
     coins
-     -->
+     
 
     <xsl:template name="renderCOinS">
        <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
@@ -1068,7 +1068,7 @@
                 <xsl:text>&amp;</xsl:text>
             </xsl:if>
         </xsl:for-each>
-    </xsl:template>
+    </xsl:template>-->
     
     
 </xsl:stylesheet>

@@ -88,16 +88,6 @@ div#ds-header {
     width: 100%;
     height: 109px;
     padding: 0px;
-    	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(255, 255, 255);
-	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.6);
-	background: transparent\9; /* clear solid background for ie */
-    zoom:1; /* required for the filters */
-	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 
 }
 
@@ -280,14 +270,19 @@ div#homepage-body {
 }
 div#homepage-featured {
     float: right;
-    background-color: #999;
+    background-color: #edeaea;
+    width: 200px;
+    padding: 10px;
 }
 
+div.feature-item {
+    margin-bottom: 15px;
+}
 
-
-
-
-
+div.feature-item-logo {
+    margin: 0 auto;
+    display: table;
+}
 
 
 
@@ -343,6 +338,16 @@ div#ds-global-search-scope {
   font-style: italic;
   color: #555;
 }
+
+
+/* bds: "body-and-options" is a div container that wraps the entire set of templates
+        for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
+        This was added to allow for more flexibility in styling colors and positioning.
+*/
+div#body-and-options {
+        background-color: #edeaea;
+}
+
 
 
 div#ds-body {

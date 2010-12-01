@@ -408,7 +408,7 @@
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-       <div id="ds-body">
+        <div id="ds-body">
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
                 <div id="ds-system-wide-alert">
                     <p>
@@ -419,12 +419,10 @@
             <!-- bds: override main page community list with two-column layout for other content -->
             <xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
-                        <div id="homepage-body">
-                            <h1>Homepage!</h1>
-                        </div>
-                        <div id="homepage-featured">
-                            <img src="/xmlui/static/images/featured.png"/>
-                        </div>
+                    <!-- bds: homepage-body.xhtml contains <div id="homepage-body">...</div> -->
+                    <xsl:copy-of select="document('../../static/homepage-body.xhtml')"/>
+                    <!-- bds: homepage-featured.xhtml contains <div id="homepage-featured">...</div> -->
+                    <xsl:copy-of select="document('../../static/homepage-featured.xhtml')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates />
