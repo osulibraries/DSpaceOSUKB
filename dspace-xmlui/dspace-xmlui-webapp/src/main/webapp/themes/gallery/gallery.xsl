@@ -70,7 +70,7 @@
 
 
 
-        <xsl:template name="extraHead">
+        <xsl:template name="extraHead-top">
             <!-- pass through some config values to Javascript -->
             <script type="text/javascript">
                     var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;

@@ -134,11 +134,14 @@
 				<map:select type="browser">
 					<map:when test="explorer">
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
-							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
+							<map:parameter name="stylesheet.screen#2" value="lib/gallery.css"/>
+                                                        <map:parameter name="stylesheet.screen#3" value="lib/thickbox/thickbox.css"/>
 
                                                         <map:parameter name="javascript#1" value="lib/tjpzoom/tjpzoom.js"/>
                                                         <map:parameter name="javascript#2" value="lib/tjpzoom/tjpzoom_config_default.js"/>
+                                                        <map:parameter name="javascript#3" value="lib/gallery.js"/>
+                                                        <map:parameter name="javascript#4" value="lib/thickbox/thickbox.js"/>
+                                                        <map:parameter name="javascript#5" value="lib/jquery.jScale.js"/>
 
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
@@ -146,7 +149,7 @@
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
+							<!--<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>-->
                                                         <map:parameter name="stylesheet.screen#2" value="lib/gallery.css"/>
                                                         <map:parameter name="stylesheet.screen#3" value="lib/thickbox/thickbox.css"/>
 
@@ -154,12 +157,7 @@
                                                         <map:parameter name="javascript#2" value="lib/tjpzoom/tjpzoom_config_default.js"/>
                                                         <map:parameter name="javascript#3" value="lib/gallery.js"/>
                                                         <map:parameter name="javascript#4" value="lib/thickbox/thickbox.js"/>
-                                                        <!--
-                                                            lib/fancybox/jquery.fancybox-1.2.5.css
-                                                            lib/fancybox/jquery.fancybox-1.2.5.js
-                                                        -->
-
-
+                                                        <map:parameter name="javascript#5" value="lib/jquery.jScale.js"/>
 
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>

@@ -25,6 +25,16 @@ Convenience access to the service image's url
 */
 var serviceImgUrl = '';
 
+function getOriginalWidthOfImg(img_element) {
+    var t = new Image();
+    t.src = (img_element.getAttribute ? img_element.getAttribute("src") : false) || img_element.src;
+    var width=t.width;
+    var height = t.height;
+
+    img_element.attr("width", ZOOMABLE_IMG_WIDTH / width);
+    img_element.attr("height", ZOOMABLE_IMG_WIDTH / height);
+    alert(t.width);
+}
 
 /**
 * JQuery initialization routine
@@ -32,8 +42,11 @@ var serviceImgUrl = '';
 $(document).ready(function()
 {
     initZoomableImage();
-
+    $("div.left img").jScale({ls:'500px'});
+    $("div.right img").jScale({ls:'200px'});
 });
+
+
 
 /**
 * If there is a JPEG image less than MAX_SERVICE_IMG_SIZE,
@@ -51,23 +64,44 @@ function initZoomableImage()
         {
             var serviceImg = imageJpegArray[i];
             var caption;    //Show an image caption. Either short description or title.
-            if(serviceImg.caption.length > 0)
+
+            if(imageJpegArray.length > 1)
             {
-                 caption = serviceImg.caption;
+                caption = serviceImg.title;
+            } else if(serviceImg.caption.length > 0)
+            {
+                caption = serviceImg.caption;
             } else {
                 caption = serviceImg.itemTitle;
             }
 
-            var html =  "<a href='"+serviceImg.url+"' class=\"thickbox\"  title=\"" + caption + "\"";
+            var html;
+            if(i == 0) {
+                html = "<div class='left'>";
+            } else {
+                html = "<div class='right'>";
+            }
+            html +=  "<a href='"+serviceImg.url+"' class=\"thickbox\"  title=\"" + caption + "\"";
             if(imageJpegArray.length >1) {
                 html += " rel=\"gallery\"";
             }
             html += "><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"";
-            html+= " width='"+ZOOMABLE_IMG_WIDTH+"'></img></a>";
+
+            //html += " width='600'";
+
+            /*if(i == 0)
+            {
+                html+= " width='"+ZOOMABLE_IMG_WIDTH+"'";
+            } else
+            {
+                html+= " width='180'";
+            }*/
+
+            html += "></img></a>";
 
 
 
-            html += "<br/><span>" + caption + "</span>";
+            html += "<br/><span class='caption'>" + caption + "</span></div>";
 
             $("#photos").prepend(html);
             serviceImgUrl = serviceImg.url;
