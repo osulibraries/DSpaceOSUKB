@@ -49,15 +49,7 @@ function initZoomableImage()
 
         for ( var i=0; i<imageJpegArray.length; i++)
         {
-            if (imageJpegArray[i].size < MAX_SERVICE_IMG_SIZE && (imageJpegArray[i].size > serviceImg.size))
-            {
-                serviceImg = imageJpegArray[i];
-            }
-        }
-
-        if (serviceImg.size > 0)
-        {
-
+            var serviceImg = imageJpegArray[i];
             var caption;    //Show an image caption. Either short description or title.
             if(serviceImg.caption.length > 0)
             {
@@ -66,7 +58,11 @@ function initZoomableImage()
                 caption = serviceImg.itemTitle;
             }
 
-            var html =  "<a href='"+serviceImg.url+"' class='thickbox' title=\"" + caption + "\"><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"";
+            var html =  "<a href='"+serviceImg.url+"' class=\"thickbox\"  title=\"" + caption + "\"";
+            if(imageJpegArray.length >1) {
+                html += " rel=\"gallery\"";
+            }
+            html += "><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"";
             html+= " width='"+ZOOMABLE_IMG_WIDTH+"'></img></a>";
 
 
