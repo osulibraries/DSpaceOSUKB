@@ -22,7 +22,7 @@
 	<!-- THEME CONFIGURATION OPTIONS -->
 
 	<!-- using these 2 options, you can restrict navigation to this collection,
-    removing links to outside collections, communities, etc -->
+    removing links to outside colelctions, communities, etc -->
 
 	<!--  THEME VARIABLES -->
 <!-- bds: todo: check usage and redundancy of these variables -->
@@ -50,7 +50,7 @@
 		/>
 	</xsl:variable>
 
-	<!-- pageUrl: path to the  server, up through the port -->
+	<!-- apgeUrl: path to the  server, up through the port -->
 	<xsl:variable name="pageUrl">
 		<xsl:value-of select="$serverUrl"/>
 		<xsl:value-of
@@ -65,6 +65,11 @@
 		<xsl:value-of select="1"/>
 	</xsl:variable>
 
+
+
+
+
+
         <xsl:template name="extraHead">
             <!-- pass through some config values to Javascript -->
             <script type="text/javascript">
@@ -72,6 +77,7 @@
                     var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
                     var THEME_PATH = "<xsl:value-of select='$themePath' />";
             </script>
+
         </xsl:template>
 
 
@@ -82,7 +88,7 @@
         Changes:
          	1. moved thumbnail to another rule
 
-        Generate the thumbnail, if present, from the file section -->
+        Generate the thunbnail, if present, from the file section -->
 	<xsl:template match="mets:fileSec" mode="artifact-preview">
 		<!--
 			Thumbnail moved to another rule
@@ -377,12 +383,14 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
 			o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
 			o.size = <xsl:value-of select="./@SIZE"/>;
 			o.title = "<xsl:value-of select="mets:FLocat/@xlink:title"/>";
+                        o.caption = "<xsl:value-of select="//dim:field[@element='description'][@qualifier='abstract']" />";
+                        o.itemTitle = "<xsl:value-of select="//dim:field[@element='title']" />";
 			imageJpegArray.push(o);
 		</xsl:for-each>
 		</script>
 
 		<!-- TJPZoom: the zoomable image  viewer -->
-		<div id="image-zoom-panel">
+		<div id="photos">
 			<!-- Moved this into Javascript: see gallery.js
 				left this here just in case issues were found and needed to revert -->
 			<!--

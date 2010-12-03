@@ -149,3 +149,10 @@ div#fancy_div table {
     clear: none;
     width: auto;
 }
+
+div#photos {
+    background: #F2F2F2;
+    margin: 8px 0px 17px;
+    position: relative;
+    text-align: center;
+}
