@@ -139,7 +139,8 @@
         </div>
     </xsl:template>
     <!-- This is a named template to be an easy way to override to add something to the buildHead -->
-    <xsl:template name="extraHead"></xsl:template>
+    <xsl:template name="extraHead-top"></xsl:template>
+    <xsl:template name="extraHead-bottom"></xsl:template>
 
 
     <!-- Peter's RSS code for options box -->

@@ -60,16 +60,5 @@
 
     <xsl:import href="../dri2xhtml.xsl"/>
     <xsl:output indent="yes"/>
-
-    <xsl:template name="extraHead">
-        <script type="text/javascript" src="themes/community-list/lib/collapsableTree.js">&#160;</script>
-        <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">jQuery(document).ready(function(){$('ul#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser').collapsibleCheckboxTree();});</xsl:text>
-        &#160;</script>
-    </xsl:template>
-
-    
-    
-    
     
 </xsl:stylesheet>

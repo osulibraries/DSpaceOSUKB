@@ -131,6 +131,8 @@
 							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
 							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
                                                         <map:parameter name="stylesheet.screen#3" value="lib/collapsableTree.css"/>
+                                                        <map:parameter name="javascript#1" value="lib/collapsableTree.js" />
+                                                        <map:parameter name="javascript#2" value="lib/community-list.js" />
                                                         
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
@@ -141,6 +143,8 @@
 						<map:transform type="IncludePageMeta">
 							<map:parameter name="stylesheet.screen" value="lib/style.css"/>
                                                         <map:parameter name="stylesheet.screen#1" value="lib/collapsableTree.css"/>
+                                                        <map:parameter name="javascript#1" value="lib/collapsableTree.js" />
+                                                        <map:parameter name="javascript#2" value="lib/community-list.js" />
                                                         
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>

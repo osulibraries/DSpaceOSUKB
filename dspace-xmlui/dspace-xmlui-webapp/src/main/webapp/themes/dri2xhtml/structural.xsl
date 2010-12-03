@@ -181,7 +181,7 @@
                 </xsl:if>
               </xsl:attribute>
             </meta>
-            <xsl:call-template name="extraHead"/>
+            <xsl:call-template name="extraHead-top"/>
             <!-- bds: see OSU-local.xsl for buildHeadOSU -->
             <xsl:call-template name="buildHeadOSU"/>
             <!-- Add global theme(s) -->
@@ -331,7 +331,7 @@
                               disable-output-escaping="yes"/>
             </xsl:if>
 
-            <!-- old extra head entry point -->
+            <xsl:call-template name="extraHead-bottom"/>
         </head>
     </xsl:template>
 
