@@ -800,13 +800,12 @@
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">top</xsl:with-param>
         </xsl:apply-templates>
-        <div>
-            <xsl:call-template name="standardAttributes">
+        <div><xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">ds-static-div</xsl:with-param>
             </xsl:call-template>
             <xsl:choose>
                     <!--  does this element have any children -->
-                        <xsl:when test="child::node()">
+                    <xsl:when test="child::node()">
                                 <xsl:apply-templates select="*[not(name()='head')]"/>
                     </xsl:when>
                         <!-- if no children are found we add a space to eliminate self closing tags -->

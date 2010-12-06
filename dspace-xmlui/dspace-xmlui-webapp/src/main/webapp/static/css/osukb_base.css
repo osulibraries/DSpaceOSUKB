@@ -1,6 +1,6 @@
 
 body {
-        font-family: Candara, Optima, Tahoma, sans-serif;
+        font-family: Corbel, Optima, Verdana, sans-serif;
         font-size: .9em;
         background-color: #C2CEC2;
 	margin: 0;
@@ -9,6 +9,7 @@ body {
 /*
 background: url('../images/bkgd.png') repeat-x transparent;
 */
+
 a {
     color: #003;
 }
@@ -24,16 +25,10 @@ ul {
 table {
     clear: both;
     border-spacing: 0px;
-    border-left: none;
-    border-right: none;
-    border-top: 1px solid #777;
-    border-bottom: 1px solid #777;
+    border: none;
     width: 100%;
 }
 
-th {
-    padding: 4px 10px;
-}
 .subheader th {
     padding-left: 5px;
     font-weight: 100;
@@ -323,7 +318,7 @@ div#ds-global-search a {
     color: #003333;
     position: absolute;
     right: 58px;
-    font-size: 0.8em;
+    font-size: 0.85em;
 }
 
 input#ds-global-search-box {
@@ -347,6 +342,7 @@ div#ds-global-search-scope {
   font-style: italic;
   color: #555;
 }
+
 
 
 /* bds: "body-and-options" is a div container that wraps the entire set of templates
@@ -392,7 +388,7 @@ div#ds-body h2 {
 }
 
 div#ds-body h3 {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 
 }
 
@@ -515,7 +511,6 @@ div#ds-footer-links {
     padding-right: 5px;
     text-align: right;
     font-size: inherit;
-
 }
 
 
@@ -526,7 +521,16 @@ div.notice {
     border: 1px solid #777;
     padding: 6px;
     text-align: center;
-    margin: 10px 30px 10px 30px;
+    margin: 10px auto;
+    width: 500px;
+}
+div.notice p {
+    margin: 0;
+}
+
+
+p.ds-paragraph {
+    margin: 0 0 5px 0;
 }
 
 div.license-info {
@@ -551,6 +555,16 @@ ul.collection-browse, ul.community-browse {
     background-color: inherit;
 }
 
+ul a:link {
+text-decoration: none;
+}
+ul a:visited {
+text-decoration: none;
+}
+ul a:hover {
+text-decoration: underline;
+}
+
 ul.ds-artifact-list {
     padding: 2px;
     list-style-type: none;
@@ -560,12 +574,12 @@ ul.ds-artifact-list {
 
 ul.ds-artifact-list li.odd {
     color: inherit;
-    background-color: #FFF;
+    background-color: #f6f4f4;
 }
 
 ul.ds-artifact-list li.even {
     color: inherit;
-    background-color: #F5FAFF;
+    background-color: #dee1de;
 }
 
 ul.ds-artifact-list li {
@@ -614,8 +628,7 @@ ul.ds-artifact-list li div.artifact-preview {
 }
 
 div.ds-static-div {
-    border: none;
-    clear: both;
+    padding: 0 5px;
 }
 
 
@@ -634,6 +647,21 @@ table.file-list {
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #c2cec2;
+}
+table.file-list th {
+    padding: 4px;
+}
+table.file-list td {
+    padding: 4px;
+}
+table.file-list a:link {
+text-decoration: none;
+}
+table.file-list a:visited {
+text-decoration: none;
+}
+table.file-list a:hover {
+text-decoration: underline;
 }
 
 td.field-label {
@@ -688,6 +716,22 @@ form.controls {
     margin: 0 auto;
     display: table;
 }
+
+
+
+/*
+    bds: ds-includeSet-table is the table class used for item metadata in both summary and detail view
+*/
+
+table.ds-includeSet-table {
+    width: 740px;
+    margin: 0 auto;
+    display: table;
+}
+
+
+
+
 
 
 /*copying all form stuff from osukb_base.css, need to go back to adjust colors*/
