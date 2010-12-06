@@ -1,6 +1,6 @@
 
 body {
-        font-family: Corbel, Optima, Verdana, sans-serif;
+        font-family: Candara, Optima, Tahoma, sans-serif;
         font-size: .9em;
         background-color: #C2CEC2;
 	margin: 0;
@@ -56,16 +56,21 @@ tr.ds-table-header-row.subheader {
 
 tr.ds-table-row.odd {
     color: inherit;
-    background-color: #FFF;
+    background-color: #f6f4f4;
 }
 
 tr.ds-table-row.even {
     color: inherit;
-    background-color: #F5FAFF;
+    background-color: #dee1de;
 
 }
 
 /* ds-main is the outer container for the other four sections:
+
+
+bds: FIXME, the following is outdated
+
+
     ds-header
         <a>ds-header-logo</a>
         <ul id="ds-trail">
@@ -180,10 +185,10 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	display: block;
 	height: 21px;
 	overflow: hidden;
-	width: 990px;
+	width: 785px;
 	padding:5px;
 	border:none 1px #dedede;
-	background:#fff;
+	background:#ffffff;
 }
 .breadCrumb ul
 {
@@ -204,7 +209,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	line-height: 21px;
 	margin: 0px 6px 0px 0;
 	padding: 0px 10px 0px 0;
-	font-size: .9167em;
+	font-size: .8em;
 	background: url(../images/Chevron.gif) no-repeat 100% 0;
 }
 .breadCrumb ul li div.chevronOverlay
@@ -299,22 +304,26 @@ div#scarlet-bar {
 }
 
 div#grey-bar {
-    background-color: #999;
+    background-color: #edeaea;
     text-align: right;
-    height: auto;
+    height: 45px;
     border: none;
+    border-bottom: 1px solid #999;
     padding: 0;
 }
 
 
 div#ds-global-search {
-    color: #fff;
+    color: #000;
     padding: 5px;
+    font-size: 0.8em;
 }
 
 div#ds-global-search a {
-    color: #fff;
-    margin-right: 14px;
+    color: #003333;
+    position: absolute;
+    right: 58px;
+    font-size: 0.8em;
 }
 
 input#ds-global-search-box {
@@ -353,7 +362,7 @@ div#body-and-options {
 div#ds-body {
     position: relative;
     float: right;
-    width: 800px;
+    width: 795px;
     color: inherit;
     background-color: #ffffff;
     border: 0px solid #777;
@@ -404,7 +413,7 @@ div#ds-options {
     position: relative;
     float: left;
     clear:  left;
-    width: 200px;
+    width: 205px;
     color: inherit;
     background-color: #edeaea;
 }
@@ -430,11 +439,10 @@ text-decoration: underline;
 div#ds-options h3 {
     background-color: #CABFBF;
     font-size: 1em;
-    color:#000;
+    color:#330000;
     margin:0 0 0 0;
-    padding:5px;
+    padding:5px 0 4px 20px;
     position:relative;
-
 }
 
 /*         Fallback for web browsers that doesn't support RGBa
@@ -625,6 +633,7 @@ table.file-list {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
+    border: 2px solid #c2cec2;
 }
 
 td.field-label {
@@ -665,6 +674,20 @@ ul.alphabet li {
 }
 
 
+/*
+    bds: configurable browse controls
+*/
+
+form.navigation {
+    margin: 0 auto;
+    display: table;
+    text-align: center;
+}
+
+form.controls {
+    margin: 0 auto;
+    display: table;
+}
 
 
 /*copying all form stuff from osukb_base.css, need to go back to adjust colors*/

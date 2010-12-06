@@ -143,7 +143,7 @@
                 <!-- bds: the following items have been separated from their original containers -->
                     <xsl:call-template name="scarlet-bar"/>
                     <xsl:call-template name="grey-bar"/>
-                    <xsl:call-template name="trail"/>
+                    <!--<xsl:call-template name="trail"/>-->
 
                     <!--
                         Goes over the document tag's children elements: body, options, meta. The body template
@@ -409,6 +409,7 @@
     -->
     <xsl:template match="dri:body">
         <div id="ds-body">
+            <xsl:call-template name="trail"/>
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
                 <div id="ds-system-wide-alert">
                     <p>
