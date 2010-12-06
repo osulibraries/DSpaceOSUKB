@@ -25,17 +25,6 @@ Convenience access to the service image's url
 */
 var serviceImgUrl = '';
 
-function getOriginalWidthOfImg(img_element) {
-    var t = new Image();
-    t.src = (img_element.getAttribute ? img_element.getAttribute("src") : false) || img_element.src;
-    var width=t.width;
-    var height = t.height;
-
-    img_element.attr("width", ZOOMABLE_IMG_WIDTH / width);
-    img_element.attr("height", ZOOMABLE_IMG_WIDTH / height);
-    alert(t.width);
-}
-
 /**
 * JQuery initialization routine
 */
@@ -46,8 +35,6 @@ $(document).ready(function()
     $("div.right img").jScale({ls:'200px'});
 });
 
-
-
 /**
 * If there is a JPEG image less than MAX_SERVICE_IMG_SIZE,
 * set the largest image found as the service image
@@ -57,9 +44,6 @@ function initZoomableImage()
 {
     if (imageJpegArray.length >0)
     {
-        var serviceImg = new Object();
-        serviceImg.size = 0;
-
         for ( var i=0; i<imageJpegArray.length; i++)
         {
             var serviceImg = imageJpegArray[i];
@@ -85,22 +69,7 @@ function initZoomableImage()
             if(imageJpegArray.length >1) {
                 html += " rel=\"gallery\"";
             }
-            html += "><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"";
-
-            //html += " width='600'";
-
-            /*if(i == 0)
-            {
-                html+= " width='"+ZOOMABLE_IMG_WIDTH+"'";
-            } else
-            {
-                html+= " width='180'";
-            }*/
-
-            html += "></img></a>";
-
-
-
+            html += "><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"/></a>";
             html += "<br/><span class='caption'>" + caption + "</span></div>";
 
             $("#photos").prepend(html);
