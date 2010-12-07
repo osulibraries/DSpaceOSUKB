@@ -9,7 +9,10 @@ body {
 /*
 background: url('../images/bkgd.png') repeat-x transparent;
 */
-
+p {
+    margin: 0;
+    padding: 0;
+}
 a {
     color: #003;
 }
@@ -150,24 +153,6 @@ ul#ds-trail {
 }
 
 
-
-
-
-
-
-/*
-li.first-link {
-    background-image: url("../images/crumb-home.png");
-    margin-left: 2px;
-            list-style: none;
-            background-image: none;
-            padding-left: 0;
-}
-
-*/
-
-
-
 /* Breadcrumb Styles
 bds: from the jQuery add-on for magic shrinking breadcrumbs
 ---------------------------------------------------------------------*/
@@ -265,8 +250,56 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 
 
 
+/* bds: "body-and-options" is a div container that wraps the entire set of templates
+        for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
+        This was added to allow for more flexibility in styling colors and positioning.
+*/
+div#body-and-options {
+    background-color: #999
+}
+
+/* bds: container1 and contatiner2 are nested inside body-and-options and are used
+        to help create equal-height columns. See:
+        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+*/
+#container2 {
+    clear:left;
+    float:left;
+    width:100%;
+    overflow:hidden;
+    background:#ffffff; /* column 2 background colour */
+}
+#container1 {
+    float:left;
+    width:100%;
+    position:relative;
+    right:790px;
+    background:#edeaea; /* column 1 background colour */
+}
+div#ds-body {
+    float:left;
+    width:790px;
+    position:relative;
+    left:1000px;
+    overflow:hidden;
+    color: inherit;
+    margin: 0;
+    padding: 2px;
+
+}
+
+div#ds-options {
+    float:left;
+    width:205px;
+    position:relative;
+    left:0px;
+    overflow:hidden;
+    color: inherit;
+
+}
+
 div#homepage-body {
-    float: left;
+    padding: 5px;
 }
 div#homepage-featured {
     float: right;
@@ -274,6 +307,13 @@ div#homepage-featured {
     width: 200px;
     padding: 10px;
 }
+
+
+
+
+
+
+
 
 div.feature-item {
     margin-bottom: 15px;
@@ -283,6 +323,12 @@ div.feature-item-logo {
     margin: 0 auto;
     display: table;
 }
+
+
+
+
+
+
 
 
 
@@ -345,33 +391,12 @@ div#ds-global-search-scope {
 
 
 
-/* bds: "body-and-options" is a div container that wraps the entire set of templates
-        for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
-        This was added to allow for more flexibility in styling colors and positioning.
-*/
-div#body-and-options {
-        background-color: #edeaea;
-}
-
-
-
-div#ds-body {
-    position: relative;
-    float: right;
-    width: 795px;
-    color: inherit;
-    background-color: #ffffff;
-    border: 0px solid #777;
-    margin: 0;
-    padding: 0;
-}
 
 
 div#ds-body h1 {
     font-size: 1.5em;
     padding: 8px 2px;
-    margin-top: 0px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     color: #000;
     font-weight: bold;
 
@@ -402,17 +427,14 @@ div.intro-text {
 
 
 
-
-
-
-div#ds-options {
+/*div#ds-options {
     position: relative;
     float: left;
-    clear:  left;
+    left: 205px;
     width: 205px;
     color: inherit;
     background-color: #edeaea;
-}
+}*/
 
 div.ds-option-set {
 
@@ -551,9 +573,77 @@ div.ds-logo-wrapper {
 }
 
 
-ul.collection-browse, ul.community-browse {
-    background-color: inherit;
+div.search-browse {
+    border: 4px solid #dee1de;
+    background: #f6f4f4;
+    width: 140px;
+    margin: 5px 10px;
+    padding: 5px !important;
+    float: right;
 }
+
+div.search-browse h3 {
+    margin: 0px;
+}
+
+ul.collection-browse, ul.community-browse {
+    list-style-type: square;
+    margin: 0;
+    padding: 0 0 0 5px;
+}
+
+ul.collection-browse li,ul.community-browse li {
+    margin: 0 0 0 6px;
+    padding: 2px 0px;
+}
+
+ul.collection-browse a,ul.community-browse a {
+    text-decoration: underline;
+}
+
+/*
+ul.collection-browse ul,ul.community-browse ul {
+        margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	display: inline;
+}
+
+ul.collection-browse li,ul.community-browse li {
+        display: table-cell;
+	position: relative;
+	padding: 2px 6px;
+}
+
+
+
+*.collection-search-browse td,*.community-search-browse td {
+        white-space: nowrap;
+}
+
+*.collection-search-browse h4,*.community-search-browse h4 {
+        display: block;
+}
+
+*.collection-search-browse select,*.community-search-browse select {
+        width: auto;
+        max-width: 200px;
+}
+
+*.collection-search-browse input,*.community-search-browse input {
+        width: auto;
+        max-width: 195px;
+}
+
+*/
+
+
+
+
+
+
+
 
 ul a:link {
 text-decoration: none;
@@ -566,9 +656,9 @@ text-decoration: underline;
 }
 
 ul.ds-artifact-list {
+    margin: 4px;
     padding: 2px;
     list-style-type: none;
-    margin: 0;
     float: left;
 }
 
@@ -725,9 +815,84 @@ form.controls {
 
 table.ds-includeSet-table {
     width: 740px;
-    margin: 0 auto;
+    margin: 5px auto 20px;
     display: table;
 }
+
+
+
+
+
+
+
+
+/*
+    bds: submission form stylings
+*/
+
+ul.ds-progress-list {
+        margin: 0 0 10px 0;
+        padding: 2px 0px;
+        text-align: center;
+}
+
+
+ul.ds-progress-list li {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        background-color: rgb(255, 255, 240);
+        border: 1px solid rgb(240, 240, 210);
+        color: rgb(233, 160, 80);
+        overflow: hidden;
+        display: inline;
+        padding: 4px 3px;
+        margin-top: 2px;
+        margin-left: 3px;
+        max-width: 400px;
+        line-height: 20px;
+}
+
+ul.ds-progress-list li.button {
+        background-color: inherit;
+        border: none;
+        padding: 1px !important;
+        margin-top: 2px;
+        margin-left: 0px !important;
+}
+
+ul.ds-progress-list li.button input.ds-button-field {
+        font-size: smaller;
+}
+
+ul.ds-progress-list li.current.button input.ds-button-field {
+        color: rgb(10,175,10);
+}
+
+ul.ds-progress-list li.disabled.button input.ds-button-field {
+        color: rgb(184,184,184);
+}
+
+
+ul.ds-progress-list li.current {
+        color: rgb(80, 183, 40);
+        background-color: inherit;
+        border-color: rgb(216, 245, 216);
+}
+
+ul.ds-progress-list li.arrow {
+        border: none;
+        background: none;
+        font-size: 120%;
+        font-weight: normal;
+        margin-left: 0px;
+        margin-right: 0px;
+}
+
+
+
+
+
+
 
 
 
@@ -1096,44 +1261,3 @@ li.current-page-link a {
 
 
 
-
-ul.collection-browse,ul.community-browse {
-    margin: 0;
-    padding: 0;
-    cursor: default;
-    list-style-type: none;
-    display: inline;
-
-}
-
-ul.collection-browse ul,ul.community-browse ul {
-        margin: 0;
-	padding: 0;
-	cursor: default;
-	list-style-type: none;
-	display: inline;
-}
-
-ul.collection-browse li,ul.community-browse li {
-        display: table-cell;
-	position: relative;
-	padding: 2px 6px;
-}
-
-*.collection-search-browse td,*.community-search-browse td {
-        white-space: nowrap;
-}
-
-*.collection-search-browse h4,*.community-search-browse h4 {
-        display: block;
-}
-
-*.collection-search-browse select,*.community-search-browse select {
-        width: auto;
-        max-width: 200px;
-}
-
-*.collection-search-browse input,*.community-search-browse input {
-        width: auto;
-        max-width: 195px;
-}

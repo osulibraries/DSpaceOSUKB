@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('input[type=text][title][id="ds-global-search-box"]').each(function(i){
+  $('input[title][id="ds-global-search-box"][type="text"]').each(function(i){
     $(this).addClass('input-prompt-' + i);
     var promptSpan = $('<span class="input-prompt"/>');
     $(promptSpan).attr('id', 'input-prompt-' + i);

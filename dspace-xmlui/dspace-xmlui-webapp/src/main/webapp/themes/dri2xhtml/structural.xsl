@@ -143,7 +143,8 @@
                 <!-- bds: the following items have been separated from their original containers -->
                     <xsl:call-template name="scarlet-bar"/>
                     <xsl:call-template name="grey-bar"/>
-                    <!--<xsl:call-template name="trail"/>-->
+                    <!-- bds: trail moving to inside ds-body
+                    <xsl:call-template name="trail"/>-->
 
                     <!--
                         Goes over the document tag's children elements: body, options, meta. The body template
@@ -153,8 +154,16 @@
                         instead referenced from the different points in the document. -->
 
                  <!-- bds: adding body-and-options div to allow more styling options -->
+<!-- bds: container1 and contatiner2 are nested inside body-and-options and are used
+        to help create equal-height columns. See:
+        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+-->
                     <div id="body-and-options">
-                        <xsl:apply-templates />
+                        <div id="container2">
+                            <div id="container1">
+                                <xsl:apply-templates />
+                            </div>
+                        </div>
                     </div>
 
                     <xsl:call-template name="buildFooter"/>
@@ -420,10 +429,10 @@
             <!-- bds: override main page community list with two-column layout for other content -->
             <xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
-                    <!-- bds: homepage-body.xhtml contains <div id="homepage-body">...</div> -->
-                    <xsl:copy-of select="document('../../static/homepage-body.xhtml')"/>
                     <!-- bds: homepage-featured.xhtml contains <div id="homepage-featured">...</div> -->
                     <xsl:copy-of select="document('../../static/homepage-featured.xhtml')"/>
+                    <!-- bds: homepage-body.xhtml contains <div id="homepage-body">...</div> -->
+                    <xsl:copy-of select="document('../../static/homepage-body.xhtml')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates />
@@ -576,7 +585,9 @@
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
         <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home' or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'">
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
+            or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
+            or /dri:document/dri:body/dri:div[@rend]='primary submission'">
 
             </xsl:when>
             <xsl:otherwise>
