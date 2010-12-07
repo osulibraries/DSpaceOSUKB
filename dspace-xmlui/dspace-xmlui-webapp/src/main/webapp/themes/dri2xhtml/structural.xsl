@@ -1498,6 +1498,9 @@
     <!-- NON-instance composite fields (i.e. not repeatable) -->
     <xsl:template match="dri:field[@type='composite']" mode="formComposite">
         <div class="ds-form-content">
+            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:choose>
@@ -1526,10 +1529,6 @@
                 <xsl:with-param name="confValue" select="$confValue"/>
               </xsl:call-template>
             </xsl:if>
-            <div class="spacer">&#160;</div>
-            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         </div>
     </xsl:template>
     
@@ -1783,6 +1782,9 @@
     <xsl:template match="dri:field[@type='composite'][dri:field/dri:instance | dri:params/@operations]" mode="formComposite" priority="2">
         <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
         <div class="ds-form-content">
+            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:if test="contains(dri:params/@operations,'add')">
                 <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
@@ -1822,10 +1824,6 @@
                 <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
               </xsl:call-template>
             </xsl:if>
-            <div class="spacer">&#160;</div>
-            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:if test="dri:instance or dri:field/dri:instance">
                 <div class="ds-previous-values">
                     <xsl:call-template name="fieldIterator">
@@ -1859,6 +1857,8 @@
         
     <!-- Fieldset (instanced) field stuff, in the case of non-composites -->
     <xsl:template match="dri:field[dri:field/dri:instance | dri:params/@operations]" priority="2">
+        <xsl:apply-templates select="dri:help" mode="help"/>
+        <xsl:apply-templates select="dri:error" mode="error"/>
         <!-- Create the first field normally -->
         <xsl:apply-templates select="." mode="normalField"/>
         <!-- Follow it up with an ADD button if the add operation is specified. This allows
@@ -1866,17 +1866,14 @@
         <xsl:if test="contains(dri:params/@operations,'add')">
             <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
             <input type="submit" value="Add" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
-              <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
-              <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
-                <xsl:attribute name="style">
-                  <xsl:text>display:none;</xsl:text>
-                </xsl:attribute>
+                <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
+                <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+                    <xsl:attribute name="style">
+                        <xsl:text>display:none;</xsl:text>
+                    </xsl:attribute>
+                </xsl:if>
+            </input>
         </xsl:if>
-           </input>
-        </xsl:if>
-        <br/>
-        <xsl:apply-templates select="dri:help" mode="help"/>
-        <xsl:apply-templates select="dri:error" mode="error"/>
         <xsl:if test="dri:instance">
             <div class="ds-previous-values">
                 <!-- Iterate over the dri:instance elements contained in this field. The instances contain
@@ -1967,12 +1964,12 @@
     <xsl:template match="dri:field[@type='composite'][dri:field/dri:instance | dri:params/@operations]" priority="3">
         <!-- First is special, so first we grab all the values from the child fields.
             We do this by applying normal templates to the field, which should ignore instances. -->
+        <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+        <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         <span class="ds-composite-field">
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
         </span>
         <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-        <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-        <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         <!-- Insert choice mechanism here.
              Follow it up with an ADD button if the add operation is specified. This allows
             entering more than one value for this field. -->
@@ -2232,6 +2229,8 @@
     
     <!-- The handling of component fields, that is fields that are part of a composite field type -->
     <xsl:template match="dri:field" mode="compositeComponent">
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
         <xsl:choose>
                 <xsl:when test="@type = 'checkbox'  or @type='radio'">
                     <xsl:apply-templates select="." mode="normalField"/>
@@ -2267,7 +2266,6 @@
         looking at other ways of encoding forms, so this may change in the future. -->
     <!-- The simple field case... not part of a complex field and does not contain instance values -->
     <xsl:template match="dri:field">
-        <xsl:apply-templates select="." mode="normalField"/>
         <xsl:if test="not(@type='composite') and ancestor::dri:list[@type='form']">
             <!--
             <xsl:if test="not(@type='checkbox') and not(@type='radio') and not(@type='button')">
@@ -2277,6 +2275,7 @@
             <xsl:apply-templates select="dri:help" mode="help"/>
             <xsl:apply-templates select="dri:error" mode="error"/>
         </xsl:if>
+        <xsl:apply-templates select="." mode="normalField"/>
     </xsl:template>
     
     <xsl:template match="dri:field" mode="normalField">
@@ -2392,13 +2391,12 @@
                 </input>
                 -->
             <xsl:when test="@type= 'composite'">
-                <!-- TODO: add error and help stuff on top of the composite -->
-                <span class="ds-composite-field">
-                    <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
-                </span>
                 <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
                 <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
                 <xsl:apply-templates select="dri:field/dri:help" mode="compositeComponent"/>
+                <span class="ds-composite-field">
+                    <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
+                </span>
                 <!--<xsl:apply-templates select="dri:help" mode="compositeComponent"/>-->
             </xsl:when>
                     <!-- text, password, file, and hidden types are handled the same.
@@ -2566,7 +2564,7 @@
     
     
     
-    <!-- Help elementns are turning into tooltips. There might be a better way tot do this -->
+    <!-- Help elements are turning into tooltips. There might be a better way to do this -->
     <xsl:template match="dri:help">
         <xsl:attribute name="title"><xsl:value-of select="."/></xsl:attribute>
         <xsl:if test="i18n:text">
@@ -2987,7 +2985,7 @@
     
     <!-- templates for required textarea attributes used if not found in DRI document -->
     <xsl:template name="textAreaCols">
-      <xsl:attribute name="cols">20</xsl:attribute>
+      <xsl:attribute name="cols">60</xsl:attribute>
     </xsl:template>
     
     <xsl:template name="textAreaRows">

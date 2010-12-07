@@ -576,7 +576,7 @@ div.ds-logo-wrapper {
 div.search-browse {
     border: 4px solid #dee1de;
     background: #f6f4f4;
-    width: 140px;
+    width: 210px;
     margin: 5px 10px;
     padding: 5px !important;
     float: right;
@@ -768,14 +768,6 @@ td.field-data {
     font-size: .5em;
 }
 
-div.ds-form-content {
-    float: left;
-    clear: both;
-    display: block;
-    padding: 7px;
-    width: 400px;
-}
-
 
 ul.alphabet {
         padding-left: 10px;
@@ -865,11 +857,11 @@ ul.ds-progress-list li.button input.ds-button-field {
 }
 
 ul.ds-progress-list li.current.button input.ds-button-field {
-        color: rgb(10,175,10);
+        color: #900;
 }
 
 ul.ds-progress-list li.disabled.button input.ds-button-field {
-        color: rgb(184,184,184);
+        color: #999;
 }
 
 
@@ -882,7 +874,7 @@ ul.ds-progress-list li.current {
 ul.ds-progress-list li.arrow {
         border: none;
         background: none;
-        font-size: 120%;
+        font-size: 40%;
         font-weight: normal;
         margin-left: 0px;
         margin-right: 0px;
@@ -892,14 +884,6 @@ ul.ds-progress-list li.arrow {
 
 
 
-
-
-
-
-
-
-
-/*copying all form stuff from osukb_base.css, need to go back to adjust colors*/
 
 
 span.ds-composite-field {
@@ -922,9 +906,25 @@ span.ds-composite-field {
 span.composite-help {
         display: block;
         font-size: 80%;
-        color: blue;
+        color: #200;
         background-color: inherit;
-        text-align: left;
+        margin: 0 0 5px;
+}
+
+span.error {
+        display: block;
+        font-size: 85%;
+        color: red;
+        background-color: inherit;
+        margin: 0;
+}
+
+span.field-help {
+        display: block;
+        font-size: 80%;
+        color: #200;
+        background-color: inherit;
+        margin: 0 0 5px;
 }
 
 fieldset.ds-checkbox-field,fieldset.ds-radio-field {
@@ -945,13 +945,12 @@ fieldset.ds-form-list {
         border: 1px solid #777;
         padding: 0;
         color: inherit;
-        background-color: #F5FAFF;
-        margin-left: 0;
-        margin-right: 0;
+        background-color: #f6f4f4;
+        margin: 0 10px;
 }
 
 fieldset.ds-form-list.thick {
-        border-top: 22px solid #777;
+
 }
 
 fieldset.ds-form-list ol {
@@ -961,17 +960,16 @@ fieldset.ds-form-list ol {
 }
 
 fieldset.ds-form-list legend {
-        color: #910000;
+        color: #990000;
         background-color: inherit;
         font-size: 115%;
         font-weight: bolder;
         margin-left: 10px;
+        border: 1px solid #777;
 }
 
 fieldset.thick legend {
-        color: #910000;
-        background-color: #F5FAFF;
-        border-top: 2px solid #777;
+        color: #990000;
         padding-left: 10px;
         padding-right: 30px;
 }
@@ -985,6 +983,12 @@ fieldset.ds-form-sublist {
 fieldset.ds-form-list ol {
         list-style-type: none;
 }
+
+
+
+
+
+
 
 form.ds-interactive-div {
     margin: 0 auto;
@@ -1014,18 +1018,18 @@ form.ds-interactive-div li.ds-form-item {
 
 form.ds-interactive-div li.odd {
         color: inherit;
-        background-color: #FFF;
+        background-color: #ffffff;
 }
 
 form.ds-interactive-div li.even {
         color: inherit;
-        background-color: #F5FAFF;
+        background-color: #eef1ee;
 }
 
 form.ds-interactive-div li.ds-form-item.last {
         border-top: 1px solid #777;
         color: inherit;
-        background-color: #D5DADF;
+        background-color: #dee1de;
 }
 
 form.ds-interactive-div.primary {
@@ -1051,7 +1055,7 @@ div.ds-form-content {
         clear: right;
         display: block;
         padding: 7px;
-        width: 400px;
+        width: 500px;
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -1070,26 +1074,12 @@ label.ds-composite-component {
         float: left;
         padding: 0px 5px 0 0px;
         font-size: 80%;
-        color: blue;
+        color: #444;
         background-color: inherit;
         text-align: left;
 }
 
-span.error {
-        display: block;
-        font-size: 85%;
-        color: red;
-        background-color: inherit;
-        margin: 0;
-}
 
-span.field-help {
-        display: block;
-        margin-left: 5px;
-        font-size: 80%;
-        color: gray;
-        background-color: inherit;
-}
 
 input.error,textarea.error,select.error {
         color: inherit;
@@ -1097,13 +1087,6 @@ input.error,textarea.error,select.error {
         border-color: red;
 }
 
-span.composite-help {
-        display: block;
-        font-size: 80%;
-        color: gray;
-        background-color: inherit;
-        text-align: left;
-}
 
 div.spacer {
         margin: 0;
