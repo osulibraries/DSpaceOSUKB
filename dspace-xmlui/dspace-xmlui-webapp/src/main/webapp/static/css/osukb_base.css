@@ -273,7 +273,7 @@ div#body-and-options {
     float:left;
     width:100%;
     position:relative;
-    right:790px;
+    right:794px;
     background:#edeaea; /* column 1 background colour */
 }
 div#ds-body {
@@ -459,7 +459,7 @@ div#ds-options h3 {
     font-size: 1em;
     color:#330000;
     margin:0 0 0 0;
-    padding:5px 0 4px 20px;
+    padding:5px 0 4px 8px;
     position:relative;
 }
 
@@ -493,7 +493,7 @@ div#ds-options ul {
 
 div#ds-options li {
         
-        margin-left: 8px;
+        margin-left: 14px;
         padding: 0px;
         list-style: none;
 }
@@ -503,12 +503,12 @@ div#ds-options li {
 div#ds-footer {
     position: relative;
     margin-bottom: 40px;
-    height: 120px;
+    height: 80px;
     float: left;
     width: 100%;
     border: none;
     padding: 0 0 5px 0;
-    border-top: 3px solid #cabfbf;
+    border-top: 1px solid #999;
     color: inherit;
     background-color: #edeaea;
 }
@@ -517,13 +517,14 @@ div#osu-footer-logo {
     background: url("../images/OSU_fulllogo.png") no-repeat;
     border: none;
     height: 58px;
-    margin: 12px;
+    margin: 5px;
     width: 58px;
     float: left;
 }
 
 div#osu-logo-text p {
     font-size: .8em;
+    margin: 5px 0 0 0;
 }
 
 div#ds-footer-links {
@@ -574,8 +575,8 @@ div.ds-logo-wrapper {
 
 
 div.search-browse {
-    border: 4px solid #dee1de;
-    background: #f6f4f4;
+    border: 4px solid #cabfbf;
+    background: #edeaea;
     width: 210px;
     margin: 5px 10px;
     padding: 5px !important;
@@ -587,20 +588,21 @@ div.search-browse h3 {
 }
 
 ul.collection-browse, ul.community-browse {
-    list-style-type: square;
     margin: 0;
     padding: 0 0 0 5px;
 }
 
 ul.collection-browse li,ul.community-browse li {
-    margin: 0 0 0 6px;
+    margin: 0 0 0 22px;
     padding: 2px 0px;
 }
 
-ul.collection-browse a,ul.community-browse a {
+ul.collection-browse a:link,ul.community-browse a:link {
     text-decoration: underline;
 }
-
+ul.collection-browse a:visited,ul.community-browse a:visited {
+    text-decoration: underline;
+}
 /*
 ul.collection-browse ul,ul.community-browse ul {
         margin: 0;
@@ -660,6 +662,7 @@ ul.ds-artifact-list {
     padding: 2px;
     list-style-type: none;
     float: left;
+    width: 760px;
 }
 
 ul.ds-artifact-list li.odd {
@@ -1055,7 +1058,7 @@ div.ds-form-content {
         clear: right;
         display: block;
         padding: 7px;
-        width: 500px;
+        width: 580px;
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -1196,7 +1199,7 @@ div.pagination-masked {
 a.previous-page-link {
         position: absolute;
         left: 10px;
-        top: 20px;
+        top: 8px;
 }
 
 p.pagination-info {
@@ -1206,7 +1209,7 @@ p.pagination-info {
 a.next-page-link {
         position: absolute;
         right: 10px;
-        top: 20px;
+        top: 8px;
 }
 
 ul.pagination-links {
