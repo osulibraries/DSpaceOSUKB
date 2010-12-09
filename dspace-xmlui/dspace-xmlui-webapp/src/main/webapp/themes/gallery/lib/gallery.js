@@ -31,8 +31,9 @@ var serviceImgUrl = '';
 $(document).ready(function()
 {
     initZoomableImage();
-    $("div.left img").jScale({ls:'500px'});
-    $("div.right img").jScale({ls:'200px'});
+
+    //$("div.right img").jScale({ls:'200px'});
+    initjQueryTools();
 });
 
 /**
@@ -44,37 +45,75 @@ function initZoomableImage()
 {
     if (imageJpegArray.length >0)
     {
+        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img src=\"http://static.flowplayer.org/tools/img/blank.gif\"  /></a></div>";
+        var totalHtml = viewPort;
+
+        var containHtml = "<div class=\"scrollable\"><div class=\"items\"><div>";
+        totalHtml += containHtml;
+
         for ( var i=0; i<imageJpegArray.length; i++)
         {
-            var serviceImg = imageJpegArray[i];
-            var caption;    //Show an image caption. Either short description or title.
-
-            if(imageJpegArray.length > 1)
-            {
-                caption = serviceImg.title;
-            } else if(serviceImg.caption.length > 0)
-            {
-                caption = serviceImg.caption;
-            } else {
-                caption = serviceImg.itemTitle;
-            }
-
-            var html;
-            if(i == 0) {
-                html = "<div class='left'>";
-            } else {
-                html = "<div class='right'>";
-            }
-            html +=  "<a href='"+serviceImg.url+"' class=\"thickbox\"  title=\"" + caption + "\"";
-            if(imageJpegArray.length >1) {
-                html += " rel=\"gallery\"";
-            }
-            html += "><img src =\""+serviceImg.url+"\" alt='Image of: "+ serviceImg.title +"' title=\""+ serviceImg.itemTitle + "\"/></a>";
-            html += "<br/><span class='caption'>" + caption + "</span></div>";
-
-            $("#photos").prepend(html);
-            serviceImgUrl = serviceImg.url;
+            totalHtml +=processImage(imageJpegArray[i]);
         }
 
+        var tailHtml = "</div></div></div>";
+        totalHtml += tailHtml;
+        $("#photos").prepend(totalHtml);
+        if(imageJpegArray.length == 1) {
+            $('div.scrollable').css('display', 'none');
+
+        }
     }
+}
+
+function processImage(serviceImg)
+{
+    return "<img src =\""+serviceImg.url+"\" alt=\""+ serviceImg.title +"\" title=\""+ serviceImg.itemTitle + "\"/>";
+}
+
+
+
+function initjQueryTools () {
+
+$(".scrollable").scrollable();
+
+$(".items img").click(function() {
+
+	// see if same thumb is being clicked
+	if ($(this).hasClass("active")) { return; }
+
+	// Currently assuming that thumbnail and full image use same url.
+        var clickedImage = $(this);
+	var url = clickedImage.attr("src");
+
+	// get handle to element that wraps the image and make it semi-transparent
+	var wrap = $("#image_wrap").fadeTo("medium", 0.5);
+
+	var img = new Image();
+
+	// call this function after it's loaded
+	img.onload = function() {
+		// make wrapper fully visible
+		wrap.fadeTo("fast", 1);
+
+
+		// change the image
+		wrap.find("img").attr("src", url);
+
+                wrap.find('img').jScale({ls:'670px'});
+		$('#anchor').attr("href", url);
+                $('#anchor').attr("title", clickedImage.attr("title") + "<br/>Download: <a href=\""+url+"\">" + clickedImage.attr("alt") + "</a>" );
+
+
+	};
+
+	// begin loading the image
+	img.src = url;
+
+	// activate item
+	$(".items img").removeClass("active");
+	$(this).addClass("active");
+
+// when page loads simulate a "click" on the first image
+}).filter(":first").click();
 }

@@ -385,6 +385,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
 			o.title = "<xsl:value-of select="mets:FLocat/@xlink:title"/>";
                         o.caption = "<xsl:value-of select="//dim:field[@element='description'][@qualifier='abstract']" />";
                         o.itemTitle = "<xsl:value-of select="//dim:field[@element='title']" />";
+
 			imageJpegArray.push(o);
 		</xsl:for-each>
 		</script>
@@ -431,5 +432,7 @@ select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@
             <h1>Success! No recent submissions box! (But now what to put here?)</h1>
         </div>
     </xsl:template>-->
+
+
 
 </xsl:stylesheet>

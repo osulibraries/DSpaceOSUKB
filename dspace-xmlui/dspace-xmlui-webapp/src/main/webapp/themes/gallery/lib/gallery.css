@@ -168,10 +168,26 @@ div.right {
     background: #b2b2b2;
     width:25%;
     min-width:200px;
+
     padding-top: 8px;
     padding-right: 8px;
 }
 
 span.caption {
     font-style: italic;
+}
+
+#image_wrap {
+    /* dimensions */
+    width:95%;
+    margin:15px;
+
+    /* centered */
+    text-align:center;
+
+    /* some "skinning" */
+    background-color:#efefef;
+    border:2px solid #fff;
+    outline:1px solid #ddd;
+    -moz-ouline-radius:4px;
 }
