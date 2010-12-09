@@ -852,10 +852,11 @@
     
     <!-- Generate the info about the collection from the metadata section -->
     <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
+    <!--        also using disabl-output-escaping because these are CDATA sections of HTML -->
     <xsl:template match="dim:dim" mode="collectionDetailView-DIM"> 
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
             <div class="intro-text">
-                <xsl:copy-of select="dim:field[@element='description'][not(@qualifier)]/node()"/>
+                <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
             </div>
         </xsl:if>
 
@@ -865,7 +866,7 @@
         	<div class="detail-view-news">
         		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
         		<div class="news-text">
-        			<xsl:copy-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()"/>
+        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
         		</div>
         	</div>
         </xsl:if>
@@ -873,9 +874,9 @@
         <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
         	<div class="detail-view-rights-and-license">
 		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-		            <p class="copyright-text">
-		                <xsl:copy-of select="dim:field[@element='rights'][not(@qualifier)]/node()"/>
-		            </p>
+		            <div class="copyright-text">
+		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+		            </div>
 		        </xsl:if>
         	</div>
         </xsl:if>
@@ -1000,29 +1001,34 @@
     </xsl:template>
     
     <!-- Generate the info about the community from the metadata section -->
-    <xsl:template match="dim:dim" mode="communityDetailView-DIM"> 
+    <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
+    <!--        also using disabl-output-escaping because these are CDATA sections of HTML -->
+    <xsl:template match="dim:dim" mode="communityDetailView-DIM">
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
-            <!-- bds: changing intro-text to a div instead of p -->
             <div class="intro-text">
-                <xsl:copy-of select="dim:field[@element='description'][not(@qualifier)]/node()"/>
+                <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
             </div>
         </xsl:if>
-        
+
+        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
+                    we ususally have used for related links -->
         <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;0">
         	<div class="detail-view-news">
-        		<h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3>
-        		<p class="news-text">
-        			<xsl:copy-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()"/>
-        		</p>
+        		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
+        		<div class="news-text">
+        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
+        		</div>
         	</div>
         </xsl:if>
-        
+
         <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
         	<div class="detail-view-rights-and-license">
-	            <p class="copyright-text">
-	                <xsl:copy-of select="dim:field[@element='rights'][not(@qualifier)]/node()"/>
-	            </p>
-            </div>
+		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
+		            <div class="copyright-text">
+		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+		            </div>
+		        </xsl:if>
+        	</div>
         </xsl:if>
     </xsl:template>
    

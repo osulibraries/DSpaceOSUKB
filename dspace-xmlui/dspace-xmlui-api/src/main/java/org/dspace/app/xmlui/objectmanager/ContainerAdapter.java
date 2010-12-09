@@ -286,11 +286,11 @@ public class ContainerAdapter extends AbstractAdapter
                 String title = collection.getMetadata("name");
                 
                 createFieldHTML("dc","description",null,null,description);
-                createFieldHTML("dc","description","abstract",null,description_abstract);
+                createField("dc","description","abstract",null,description_abstract);
                 createFieldHTML("dc","description","tableofcontents",null,description_table);
                 createField("dc","identifier","uri",null,identifier_uri);
                 createField("dc","provenance",null,null,provenance);
-                createField("dc","rights",null,null,rights);
+                createFieldHTML("dc","rights",null,null,rights);
                 createField("dc","rights","license",null,rights_license);
                 createField("dc","title",null,null,title);
                 
@@ -324,10 +324,10 @@ public class ContainerAdapter extends AbstractAdapter
                 String title = community.getMetadata("name");
                 
                 createFieldHTML("dc","description",null,null,description);
-                createFieldHTML("dc","description","abstract",null,description_abstract);
+                createField("dc","description","abstract",null,description_abstract);
                 createFieldHTML("dc","description","tableofcontents",null,description_table);
                 createField("dc","identifier","uri",null,identifier_uri);
-                createField("dc","rights",null,null,rights);
+                createFieldHTML("dc","rights",null,null,rights);
                 createField("dc","title",null,null,title);
                 
                 boolean useCache = ConfigurationManager.getBooleanProperty("webui.strengths.cache");
