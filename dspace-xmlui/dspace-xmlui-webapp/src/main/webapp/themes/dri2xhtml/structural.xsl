@@ -143,7 +143,8 @@
                 <!-- bds: the following items have been separated from their original containers -->
                     <xsl:call-template name="scarlet-bar"/>
                     <xsl:call-template name="grey-bar"/>
-                    <xsl:call-template name="trail"/>
+                    <!-- bds: trail moving to inside ds-body
+                    <xsl:call-template name="trail"/>-->
 
                     <!--
                         Goes over the document tag's children elements: body, options, meta. The body template
@@ -153,8 +154,16 @@
                         instead referenced from the different points in the document. -->
 
                  <!-- bds: adding body-and-options div to allow more styling options -->
+<!-- bds: container1 and contatiner2 are nested inside body-and-options and are used
+        to help create equal-height columns. See:
+        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+-->
                     <div id="body-and-options">
-                        <xsl:apply-templates />
+                        <div id="container2">
+                            <div id="container1">
+                                <xsl:apply-templates />
+                            </div>
+                        </div>
                     </div>
 
                     <xsl:call-template name="buildFooter"/>
@@ -164,8 +173,8 @@
             </xsl:choose>
         </html>
     </xsl:template>
-
-
+    
+    
     <!-- The HTML head element contains references to CSS as well as embedded JavaScript code. Most of this
         information is either user-provided bits of post-processing (as in the case of the JavaScript), or
         references to stylesheets pulled directly from the pageMeta element. -->
@@ -206,7 +215,7 @@
                     </xsl:attribute>
                 </link>
             </xsl:for-each>
-
+            
             <!-- Add syndication feeds -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']">
                 <link rel="alternate" type="application">
@@ -219,7 +228,7 @@
                     </xsl:attribute>
                 </link>
             </xsl:for-each>
-
+            
             <!--  Add OpenSearch auto-discovery link -->
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='opensearch'][@qualifier='shortName']">
                 <link rel="search" type="application/opensearchdescription+xml">
@@ -239,7 +248,7 @@
                     </xsl:attribute>
                 </link>
             </xsl:if>
-
+            
             <!-- The following javascript removes the default text of empty text areas when they are focused on or submitted -->
             <!-- There is also javascript to disable submitting a form when the 'enter' key is pressed. -->
                         <script type="text/javascript">
@@ -260,19 +269,19 @@
                                 function disableEnterKey(e)
                                 {
                                      var key;
-
+                                
                                      if(window.event)
                                           key = window.event.keyCode;     //Internet Explorer
                                      else
                                           key = e.which;     //Firefox and Netscape
-
+                                
                                      if(key == 13)  //if "Enter" pressed, then disable!
                                           return false;
                                      else
                                           return true;
                                 }
             </script>
-
+            
             <!-- Add theme javascipt  -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
                 <script type="text/javascript">
@@ -284,7 +293,7 @@
                         <xsl:value-of select="."/>
                     </xsl:attribute>&#160;</script>
             </xsl:for-each>
-
+            
             <!-- add "shared" javascript from static, path is relative to webapp root-->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][@qualifier='static']">
                 <script type="text/javascript">
@@ -294,8 +303,8 @@
                         <xsl:value-of select="."/>
                     </xsl:attribute>&#160;</script>
             </xsl:for-each>
-
-
+            
+            
             <!-- Add a google analytics script if the key is present -->
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
                                 <script type="text/javascript">
@@ -310,8 +319,8 @@
                                         <xsl:text>} catch(err) {}</xsl:text>
                                 </script>
             </xsl:if>
-
-
+            
+            
             <!-- Add the title in -->
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']" />
             <title>
@@ -339,7 +348,7 @@
 
 
 
-
+    
     <!-- The header (distinct from the HTML head element) contains the title, subtitle, login box and various
         placeholders for header images -->
     <xsl:template name="buildHeader">
@@ -358,7 +367,7 @@
 
 
 
-
+    
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
@@ -401,15 +410,16 @@
             </a>
         </div>
     </xsl:template>
+    
 
-
-
+    
     <!--
         The template to handle the dri:body element. It simply creates the ds-body div and applies
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-       <div id="ds-body">
+        <div id="ds-body">
+            <xsl:call-template name="trail"/>
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
                 <div id="ds-system-wide-alert">
                     <p>
@@ -420,12 +430,10 @@
             <!-- bds: override main page community list with two-column layout for other content -->
             <xsl:choose>
                 <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
-                        <div id="homepage-body">
-                            <h1>Homepage!</h1>
-                        </div>
-                        <div id="homepage-featured">
-                            <img src="/xmlui/static/images/featured.png"/>
-                        </div>
+                    <!-- bds: homepage-featured.xhtml contains <div id="homepage-featured">...</div> -->
+                    <xsl:copy-of select="document('../../static/homepage-featured.xhtml')"/>
+                    <!-- bds: homepage-body.xhtml contains <div id="homepage-body">...</div> -->
+                    <xsl:copy-of select="document('../../static/homepage-body.xhtml')"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates />
@@ -578,7 +586,9 @@
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
         <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home' or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'">
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
+            or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
+            or /dri:document/dri:body/dri:div[@rend]='primary submission'">
 
             </xsl:when>
             <xsl:otherwise>
@@ -802,13 +812,12 @@
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">top</xsl:with-param>
         </xsl:apply-templates>
-        <div>
-            <xsl:call-template name="standardAttributes">
+        <div><xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">ds-static-div</xsl:with-param>
             </xsl:call-template>
             <xsl:choose>
                     <!--  does this element have any children -->
-                        <xsl:when test="child::node()">
+                    <xsl:when test="child::node()">
                                 <xsl:apply-templates select="*[not(name()='head')]"/>
                     </xsl:when>
                         <!-- if no children are found we add a space to eliminate self closing tags -->
@@ -1490,6 +1499,9 @@
     <!-- NON-instance composite fields (i.e. not repeatable) -->
     <xsl:template match="dri:field[@type='composite']" mode="formComposite">
         <div class="ds-form-content">
+            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:choose>
@@ -1518,10 +1530,6 @@
                 <xsl:with-param name="confValue" select="$confValue"/>
               </xsl:call-template>
             </xsl:if>
-            <div class="spacer">&#160;</div>
-            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         </div>
     </xsl:template>
 
@@ -1775,6 +1783,9 @@
     <xsl:template match="dri:field[@type='composite'][dri:field/dri:instance | dri:params/@operations]" mode="formComposite" priority="2">
         <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
         <div class="ds-form-content">
+            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:if test="contains(dri:params/@operations,'add')">
                 <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
@@ -1814,10 +1825,6 @@
                 <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
               </xsl:call-template>
             </xsl:if>
-            <div class="spacer">&#160;</div>
-            <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
             <xsl:if test="dri:instance or dri:field/dri:instance">
                 <div class="ds-previous-values">
                     <xsl:call-template name="fieldIterator">
@@ -1851,6 +1858,8 @@
 
     <!-- Fieldset (instanced) field stuff, in the case of non-composites -->
     <xsl:template match="dri:field[dri:field/dri:instance | dri:params/@operations]" priority="2">
+        <xsl:apply-templates select="dri:help" mode="help"/>
+        <xsl:apply-templates select="dri:error" mode="error"/>
         <!-- Create the first field normally -->
         <xsl:apply-templates select="." mode="normalField"/>
         <!-- Follow it up with an ADD button if the add operation is specified. This allows
@@ -1858,17 +1867,14 @@
         <xsl:if test="contains(dri:params/@operations,'add')">
             <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
             <input type="submit" value="Add" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
-              <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
-              <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
-                <xsl:attribute name="style">
-                  <xsl:text>display:none;</xsl:text>
-                </xsl:attribute>
+                <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
+                <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+                    <xsl:attribute name="style">
+                        <xsl:text>display:none;</xsl:text>
+                    </xsl:attribute>
+                </xsl:if>
+            </input>
         </xsl:if>
-           </input>
-        </xsl:if>
-        <br/>
-        <xsl:apply-templates select="dri:help" mode="help"/>
-        <xsl:apply-templates select="dri:error" mode="error"/>
         <xsl:if test="dri:instance">
             <div class="ds-previous-values">
                 <!-- Iterate over the dri:instance elements contained in this field. The instances contain
@@ -1959,12 +1965,12 @@
     <xsl:template match="dri:field[@type='composite'][dri:field/dri:instance | dri:params/@operations]" priority="3">
         <!-- First is special, so first we grab all the values from the child fields.
             We do this by applying normal templates to the field, which should ignore instances. -->
+        <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+        <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         <span class="ds-composite-field">
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
         </span>
         <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
-        <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
-        <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
         <!-- Insert choice mechanism here.
              Follow it up with an ADD button if the add operation is specified. This allows
             entering more than one value for this field. -->
@@ -2224,6 +2230,8 @@
 
     <!-- The handling of component fields, that is fields that are part of a composite field type -->
     <xsl:template match="dri:field" mode="compositeComponent">
+            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
+            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
         <xsl:choose>
                 <xsl:when test="@type = 'checkbox'  or @type='radio'">
                     <xsl:apply-templates select="." mode="normalField"/>
@@ -2259,7 +2267,6 @@
         looking at other ways of encoding forms, so this may change in the future. -->
     <!-- The simple field case... not part of a complex field and does not contain instance values -->
     <xsl:template match="dri:field">
-        <xsl:apply-templates select="." mode="normalField"/>
         <xsl:if test="not(@type='composite') and ancestor::dri:list[@type='form']">
             <!--
             <xsl:if test="not(@type='checkbox') and not(@type='radio') and not(@type='button')">
@@ -2269,6 +2276,7 @@
             <xsl:apply-templates select="dri:help" mode="help"/>
             <xsl:apply-templates select="dri:error" mode="error"/>
         </xsl:if>
+        <xsl:apply-templates select="." mode="normalField"/>
     </xsl:template>
 
     <xsl:template match="dri:field" mode="normalField">
@@ -2384,13 +2392,12 @@
                 </input>
                 -->
             <xsl:when test="@type= 'composite'">
-                <!-- TODO: add error and help stuff on top of the composite -->
-                <span class="ds-composite-field">
-                    <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
-                </span>
                 <xsl:apply-templates select="dri:field/dri:error" mode="compositeComponent"/>
                 <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
                 <xsl:apply-templates select="dri:field/dri:help" mode="compositeComponent"/>
+                <span class="ds-composite-field">
+                    <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
+                </span>
                 <!--<xsl:apply-templates select="dri:help" mode="compositeComponent"/>-->
             </xsl:when>
                     <!-- text, password, file, and hidden types are handled the same.
@@ -2555,10 +2562,10 @@
     <xsl:template match="dri:error" mode="error">
         <span class="error">* <xsl:apply-templates/></span>
     </xsl:template>
-
-
-
-    <!-- Help elementns are turning into tooltips. There might be a better way tot do this -->
+    
+    
+    
+    <!-- Help elements are turning into tooltips. There might be a better way to do this -->
     <xsl:template match="dri:help">
         <xsl:attribute name="title"><xsl:value-of select="."/></xsl:attribute>
         <xsl:if test="i18n:text">
@@ -2979,7 +2986,7 @@
 
     <!-- templates for required textarea attributes used if not found in DRI document -->
     <xsl:template name="textAreaCols">
-      <xsl:attribute name="cols">20</xsl:attribute>
+      <xsl:attribute name="cols">60</xsl:attribute>
     </xsl:template>
 
     <xsl:template name="textAreaRows">

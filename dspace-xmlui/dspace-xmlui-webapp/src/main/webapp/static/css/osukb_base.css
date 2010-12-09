@@ -9,6 +9,10 @@ body {
 /*
 background: url('../images/bkgd.png') repeat-x transparent;
 */
+p {
+    margin: 0;
+    padding: 0;
+}
 a {
     color: #003;
 }
@@ -24,16 +28,10 @@ ul {
 table {
     clear: both;
     border-spacing: 0px;
-    border-left: none;
-    border-right: none;
-    border-top: 1px solid #777;
-    border-bottom: 1px solid #777;
+    border: none;
     width: 100%;
 }
 
-th {
-    padding: 4px 10px;
-}
 .subheader th {
     padding-left: 5px;
     font-weight: 100;
@@ -56,16 +54,21 @@ tr.ds-table-header-row.subheader {
 
 tr.ds-table-row.odd {
     color: inherit;
-    background-color: #FFF;
+    background-color: #f6f4f4;
 }
 
 tr.ds-table-row.even {
     color: inherit;
-    background-color: #F5FAFF;
+    background-color: #dee1de;
 
 }
 
 /* ds-main is the outer container for the other four sections:
+
+
+bds: FIXME, the following is outdated
+
+
     ds-header
         <a>ds-header-logo</a>
         <ul id="ds-trail">
@@ -88,16 +91,6 @@ div#ds-header {
     width: 100%;
     height: 109px;
     padding: 0px;
-    	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(255, 255, 255);
-	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.6);
-	background: transparent\9; /* clear solid background for ie */
-    zoom:1; /* required for the filters */
-	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 
 }
 
@@ -160,24 +153,6 @@ ul#ds-trail {
 }
 
 
-
-
-
-
-
-/*
-li.first-link {
-    background-image: url("../images/crumb-home.png");
-    margin-left: 2px;
-            list-style: none;
-            background-image: none;
-            padding-left: 0;
-}
-
-*/
-
-
-
 /* Breadcrumb Styles
 bds: from the jQuery add-on for magic shrinking breadcrumbs
 ---------------------------------------------------------------------*/
@@ -190,10 +165,10 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	display: block;
 	height: 21px;
 	overflow: hidden;
-	width: 990px;
+	width: 785px;
 	padding:5px;
 	border:none 1px #dedede;
-	background:#fff;
+	background:#ffffff;
 }
 .breadCrumb ul
 {
@@ -214,7 +189,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	line-height: 21px;
 	margin: 0px 6px 0px 0;
 	padding: 0px 10px 0px 0;
-	font-size: .9167em;
+	font-size: .8em;
 	background: url(../images/Chevron.gif) no-repeat 100% 0;
 }
 .breadCrumb ul li div.chevronOverlay
@@ -275,12 +250,78 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 
 
 
+/* bds: "body-and-options" is a div container that wraps the entire set of templates
+        for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
+        This was added to allow for more flexibility in styling colors and positioning.
+*/
+div#body-and-options {
+    background-color: #999
+}
+
+/* bds: container1 and contatiner2 are nested inside body-and-options and are used
+        to help create equal-height columns. See:
+        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+*/
+#container2 {
+    clear:left;
+    float:left;
+    width:100%;
+    overflow:hidden;
+    background:#ffffff; /* column 2 background colour */
+}
+#container1 {
+    float:left;
+    width:100%;
+    position:relative;
+    right:794px;
+    background:#edeaea; /* column 1 background colour */
+}
+div#ds-body {
+    float:left;
+    width:790px;
+    position:relative;
+    left:1000px;
+    overflow:hidden;
+    color: inherit;
+    margin: 0;
+    padding: 2px;
+
+}
+
+div#ds-options {
+    float:left;
+    width:205px;
+    position:relative;
+    left:0px;
+    overflow:hidden;
+    color: inherit;
+
+}
+
 div#homepage-body {
-    float: left;
+    padding: 5px;
 }
 div#homepage-featured {
     float: right;
-    background-color: #999;
+    background-color: #edeaea;
+    width: 200px;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+div.feature-item {
+    margin-bottom: 15px;
+}
+
+div.feature-item-logo {
+    margin: 0 auto;
+    display: table;
 }
 
 
@@ -304,22 +345,26 @@ div#scarlet-bar {
 }
 
 div#grey-bar {
-    background-color: #999;
+    background-color: #edeaea;
     text-align: right;
-    height: auto;
+    height: 45px;
     border: none;
+    border-bottom: 1px solid #999;
     padding: 0;
 }
 
 
 div#ds-global-search {
-    color: #fff;
+    color: #000;
     padding: 5px;
+    font-size: 0.8em;
 }
 
 div#ds-global-search a {
-    color: #fff;
-    margin-right: 14px;
+    color: #003333;
+    position: absolute;
+    right: 58px;
+    font-size: 0.85em;
 }
 
 input#ds-global-search-box {
@@ -345,23 +390,13 @@ div#ds-global-search-scope {
 }
 
 
-div#ds-body {
-    position: relative;
-    float: right;
-    width: 800px;
-    color: inherit;
-    background-color: #ffffff;
-    border: 0px solid #777;
-    margin: 0;
-    padding: 0;
-}
+
 
 
 div#ds-body h1 {
     font-size: 1.5em;
     padding: 8px 2px;
-    margin-top: 0px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     color: #000;
     font-weight: bold;
 
@@ -378,7 +413,7 @@ div#ds-body h2 {
 }
 
 div#ds-body h3 {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 
 }
 
@@ -392,17 +427,14 @@ div.intro-text {
 
 
 
-
-
-
-div#ds-options {
+/*div#ds-options {
     position: relative;
     float: left;
-    clear:  left;
-    width: 200px;
+    left: 205px;
+    width: 205px;
     color: inherit;
     background-color: #edeaea;
-}
+}*/
 
 div.ds-option-set {
 
@@ -425,11 +457,10 @@ text-decoration: underline;
 div#ds-options h3 {
     background-color: #CABFBF;
     font-size: 1em;
-    color:#000;
+    color:#330000;
     margin:0 0 0 0;
-    padding:5px;
+    padding:5px 0 4px 8px;
     position:relative;
-
 }
 
 /*         Fallback for web browsers that doesn't support RGBa
@@ -462,7 +493,7 @@ div#ds-options ul {
 
 div#ds-options li {
         
-        margin-left: 8px;
+        margin-left: 14px;
         padding: 0px;
         list-style: none;
 }
@@ -472,12 +503,12 @@ div#ds-options li {
 div#ds-footer {
     position: relative;
     margin-bottom: 40px;
-    height: 120px;
+    height: 80px;
     float: left;
     width: 100%;
     border: none;
     padding: 0 0 5px 0;
-    border-top: 3px solid #cabfbf;
+    border-top: 1px solid #999;
     color: inherit;
     background-color: #edeaea;
 }
@@ -486,13 +517,14 @@ div#osu-footer-logo {
     background: url("../images/OSU_fulllogo.png") no-repeat;
     border: none;
     height: 58px;
-    margin: 12px;
+    margin: 5px;
     width: 58px;
     float: left;
 }
 
 div#osu-logo-text p {
     font-size: .8em;
+    margin: 5px 0 0 0;
 }
 
 div#ds-footer-links {
@@ -502,7 +534,6 @@ div#ds-footer-links {
     padding-right: 5px;
     text-align: right;
     font-size: inherit;
-
 }
 
 
@@ -513,7 +544,16 @@ div.notice {
     border: 1px solid #777;
     padding: 6px;
     text-align: center;
-    margin: 10px 30px 10px 30px;
+    margin: 10px auto;
+    width: 500px;
+}
+div.notice p {
+    margin: 0;
+}
+
+
+p.ds-paragraph {
+    margin: 0 0 5px 0;
 }
 
 div.license-info {
@@ -534,25 +574,105 @@ div.ds-logo-wrapper {
 }
 
 
+div.search-browse {
+    border: 4px solid #cabfbf;
+    background: #edeaea;
+    width: 210px;
+    margin: 5px 10px;
+    padding: 5px !important;
+    float: right;
+}
+
+div.search-browse h3 {
+    margin: 0px;
+}
+
 ul.collection-browse, ul.community-browse {
-    background-color: inherit;
+    margin: 0;
+    padding: 0 0 0 5px;
+}
+
+ul.collection-browse li,ul.community-browse li {
+    margin: 0 0 0 22px;
+    padding: 2px 0px;
+}
+
+ul.collection-browse a:link,ul.community-browse a:link {
+    text-decoration: underline;
+}
+ul.collection-browse a:visited,ul.community-browse a:visited {
+    text-decoration: underline;
+}
+/*
+ul.collection-browse ul,ul.community-browse ul {
+        margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	display: inline;
+}
+
+ul.collection-browse li,ul.community-browse li {
+        display: table-cell;
+	position: relative;
+	padding: 2px 6px;
+}
+
+
+
+*.collection-search-browse td,*.community-search-browse td {
+        white-space: nowrap;
+}
+
+*.collection-search-browse h4,*.community-search-browse h4 {
+        display: block;
+}
+
+*.collection-search-browse select,*.community-search-browse select {
+        width: auto;
+        max-width: 200px;
+}
+
+*.collection-search-browse input,*.community-search-browse input {
+        width: auto;
+        max-width: 195px;
+}
+
+*/
+
+
+
+
+
+
+
+
+ul a:link {
+text-decoration: none;
+}
+ul a:visited {
+text-decoration: none;
+}
+ul a:hover {
+text-decoration: underline;
 }
 
 ul.ds-artifact-list {
+    margin: 4px;
     padding: 2px;
     list-style-type: none;
-    margin: 0;
     float: left;
+    width: 760px;
 }
 
 ul.ds-artifact-list li.odd {
     color: inherit;
-    background-color: #FFF;
+    background-color: #f6f4f4;
 }
 
 ul.ds-artifact-list li.even {
     color: inherit;
-    background-color: #F5FAFF;
+    background-color: #dee1de;
 }
 
 ul.ds-artifact-list li {
@@ -601,8 +721,7 @@ ul.ds-artifact-list li div.artifact-preview {
 }
 
 div.ds-static-div {
-    border: none;
-    clear: both;
+    padding: 0 5px;
 }
 
 
@@ -620,6 +739,22 @@ table.file-list {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
+    border: 2px solid #c2cec2;
+}
+table.file-list th {
+    padding: 4px;
+}
+table.file-list td {
+    padding: 4px;
+}
+table.file-list a:link {
+text-decoration: none;
+}
+table.file-list a:visited {
+text-decoration: none;
+}
+table.file-list a:hover {
+text-decoration: underline;
 }
 
 td.field-label {
@@ -634,14 +769,6 @@ td.field-data {
 }
 .aspect_artifactbrowser_SimpleSearch_field_scope {
     font-size: .5em;
-}
-
-div.ds-form-content {
-    float: left;
-    clear: both;
-    display: block;
-    padding: 7px;
-    width: 400px;
 }
 
 
@@ -660,9 +787,106 @@ ul.alphabet li {
 }
 
 
+/*
+    bds: configurable browse controls
+*/
+
+form.navigation {
+    margin: 0 auto;
+    display: table;
+    text-align: center;
+}
+
+form.controls {
+    margin: 0 auto;
+    display: table;
+}
 
 
-/*copying all form stuff from osukb_base.css, need to go back to adjust colors*/
+
+/*
+    bds: ds-includeSet-table is the table class used for item metadata in both summary and detail view
+*/
+
+table.ds-includeSet-table {
+    width: 740px;
+    margin: 5px auto 20px;
+    display: table;
+}
+
+
+
+
+
+
+
+
+/*
+    bds: submission form stylings
+*/
+
+ul.ds-progress-list {
+        margin: 0 0 10px 0;
+        padding: 2px 0px;
+        text-align: center;
+}
+
+
+ul.ds-progress-list li {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        background-color: rgb(255, 255, 240);
+        border: 1px solid rgb(240, 240, 210);
+        color: rgb(233, 160, 80);
+        overflow: hidden;
+        display: inline;
+        padding: 4px 3px;
+        margin-top: 2px;
+        margin-left: 3px;
+        max-width: 400px;
+        line-height: 20px;
+}
+
+ul.ds-progress-list li.button {
+        background-color: inherit;
+        border: none;
+        padding: 1px !important;
+        margin-top: 2px;
+        margin-left: 0px !important;
+}
+
+ul.ds-progress-list li.button input.ds-button-field {
+        font-size: smaller;
+}
+
+ul.ds-progress-list li.current.button input.ds-button-field {
+        color: #900;
+}
+
+ul.ds-progress-list li.disabled.button input.ds-button-field {
+        color: #999;
+}
+
+
+ul.ds-progress-list li.current {
+        color: rgb(80, 183, 40);
+        background-color: inherit;
+        border-color: rgb(216, 245, 216);
+}
+
+ul.ds-progress-list li.arrow {
+        border: none;
+        background: none;
+        font-size: 40%;
+        font-weight: normal;
+        margin-left: 0px;
+        margin-right: 0px;
+}
+
+
+
+
+
 
 
 span.ds-composite-field {
@@ -685,9 +909,25 @@ span.ds-composite-field {
 span.composite-help {
         display: block;
         font-size: 80%;
-        color: blue;
+        color: #200;
         background-color: inherit;
-        text-align: left;
+        margin: 0 0 5px;
+}
+
+span.error {
+        display: block;
+        font-size: 85%;
+        color: red;
+        background-color: inherit;
+        margin: 0;
+}
+
+span.field-help {
+        display: block;
+        font-size: 80%;
+        color: #200;
+        background-color: inherit;
+        margin: 0 0 5px;
 }
 
 fieldset.ds-checkbox-field,fieldset.ds-radio-field {
@@ -708,13 +948,12 @@ fieldset.ds-form-list {
         border: 1px solid #777;
         padding: 0;
         color: inherit;
-        background-color: #F5FAFF;
-        margin-left: 0;
-        margin-right: 0;
+        background-color: #f6f4f4;
+        margin: 0 10px;
 }
 
 fieldset.ds-form-list.thick {
-        border-top: 22px solid #777;
+
 }
 
 fieldset.ds-form-list ol {
@@ -724,17 +963,16 @@ fieldset.ds-form-list ol {
 }
 
 fieldset.ds-form-list legend {
-        color: #910000;
+        color: #990000;
         background-color: inherit;
         font-size: 115%;
         font-weight: bolder;
         margin-left: 10px;
+        border: 1px solid #777;
 }
 
 fieldset.thick legend {
-        color: #910000;
-        background-color: #F5FAFF;
-        border-top: 2px solid #777;
+        color: #990000;
         padding-left: 10px;
         padding-right: 30px;
 }
@@ -748,6 +986,12 @@ fieldset.ds-form-sublist {
 fieldset.ds-form-list ol {
         list-style-type: none;
 }
+
+
+
+
+
+
 
 form.ds-interactive-div {
     margin: 0 auto;
@@ -777,18 +1021,18 @@ form.ds-interactive-div li.ds-form-item {
 
 form.ds-interactive-div li.odd {
         color: inherit;
-        background-color: #FFF;
+        background-color: #ffffff;
 }
 
 form.ds-interactive-div li.even {
         color: inherit;
-        background-color: #F5FAFF;
+        background-color: #eef1ee;
 }
 
 form.ds-interactive-div li.ds-form-item.last {
         border-top: 1px solid #777;
         color: inherit;
-        background-color: #D5DADF;
+        background-color: #dee1de;
 }
 
 form.ds-interactive-div.primary {
@@ -814,7 +1058,7 @@ div.ds-form-content {
         clear: right;
         display: block;
         padding: 7px;
-        width: 400px;
+        width: 580px;
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -833,26 +1077,12 @@ label.ds-composite-component {
         float: left;
         padding: 0px 5px 0 0px;
         font-size: 80%;
-        color: blue;
+        color: #444;
         background-color: inherit;
         text-align: left;
 }
 
-span.error {
-        display: block;
-        font-size: 85%;
-        color: red;
-        background-color: inherit;
-        margin: 0;
-}
 
-span.field-help {
-        display: block;
-        margin-left: 5px;
-        font-size: 80%;
-        color: gray;
-        background-color: inherit;
-}
 
 input.error,textarea.error,select.error {
         color: inherit;
@@ -860,13 +1090,6 @@ input.error,textarea.error,select.error {
         border-color: red;
 }
 
-span.composite-help {
-        display: block;
-        font-size: 80%;
-        color: gray;
-        background-color: inherit;
-        text-align: left;
-}
 
 div.spacer {
         margin: 0;
@@ -976,7 +1199,7 @@ div.pagination-masked {
 a.previous-page-link {
         position: absolute;
         left: 10px;
-        top: 20px;
+        top: 8px;
 }
 
 p.pagination-info {
@@ -986,7 +1209,7 @@ p.pagination-info {
 a.next-page-link {
         position: absolute;
         right: 10px;
-        top: 20px;
+        top: 8px;
 }
 
 ul.pagination-links {
@@ -1024,44 +1247,3 @@ li.current-page-link a {
 
 
 
-
-ul.collection-browse,ul.community-browse {
-    margin: 0;
-    padding: 0;
-    cursor: default;
-    list-style-type: none;
-    display: inline;
-
-}
-
-ul.collection-browse ul,ul.community-browse ul {
-        margin: 0;
-	padding: 0;
-	cursor: default;
-	list-style-type: none;
-	display: inline;
-}
-
-ul.collection-browse li,ul.community-browse li {
-        display: table-cell;
-	position: relative;
-	padding: 2px 6px;
-}
-
-*.collection-search-browse td,*.community-search-browse td {
-        white-space: nowrap;
-}
-
-*.collection-search-browse h4,*.community-search-browse h4 {
-        display: block;
-}
-
-*.collection-search-browse select,*.community-search-browse select {
-        width: auto;
-        max-width: 200px;
-}
-
-*.collection-search-browse input,*.community-search-browse input {
-        width: auto;
-        max-width: 195px;
-}
