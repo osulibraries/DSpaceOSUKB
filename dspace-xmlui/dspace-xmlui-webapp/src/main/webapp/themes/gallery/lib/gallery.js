@@ -1,175 +1,119 @@
 
 /* VARIABLES
 
-/*  
+/*
 Used on the gallery page.
-Records all ids assigned to items in order to initialize popups in the gallery display 
+Records all ids assigned to items in order to initialize popups in the gallery display
 */
 var itemids = Array();
 
-/* 
+/*
 Used on the individual item display page.
 Not currently used, but is populated and intended for later development.
 
-An array of Javascript object of JPEGs in the file, each with the 
-properties size and url, as in 
+An array of Javascript object of JPEGs in the file, each with the
+properties size and url, as in
 	o.size
 	o.url
-The app can then make user of these as necessary. For example, 
-could be used to display a service image if it was under 1 MB, etc 
+The app can then make user of these as necessary. For example,
+could be used to display a service image if it was under 1 MB, etc
 */
 var imageJpegArray = Array();
 
-/* 
+/*
 Convenience access to the service image's url
 */
 var serviceImgUrl = '';
 
-
 /**
-* JQuery initialization routine 
+* JQuery initialization routine
 */
-$(document).ready(function() { 
-	initGalleryPopups();
-	initZoomableImage();
-	
-	// initialize the about popup
-	$("a#about").fancybox({
-		'hideOnContentClick':false
-	});
+$(document).ready(function()
+{
+    initZoomableImage();
+
+    //$("div.right img").jScale({ls:'200px'});
+    initjQueryTools();
 });
 
 /**
-* Initializes popups on the gallery view page
-*/
-function initGalleryPopups() {
-	for (var i=0; i != itemids.length; i++) { 
-		var sel = "a#anchor" + itemids[i]; 
-		$(sel).fancybox({'hideOnContentClick': false}); 
-		sel = "a#image" + itemids[i]; 
-		$(sel).fancybox({'hideOnContentClick': false}); 
-	} 
-}
-
-/**
-* If there is a JPEG image less than MAX_SERVICE_IMG_SIZE, 
+* If there is a JPEG image less than MAX_SERVICE_IMG_SIZE,
 * set the largest image found as the service image
 * and display it as a zoomable image
 */
-function initZoomableImage() {
-	
-	if (imageJpegArray.length >0)  {
-	
-		var serviceImg = new Object();
-		serviceImg.size = 0;
-		
-		for ( var i=0; i<imageJpegArray.length; i++) {
-			if (imageJpegArray[i].size < MAX_SERVICE_IMG_SIZE && 
-				( imageJpegArray[i].size > serviceImg.size))  {
-				serviceImg = imageJpegArray[i];
-			}
-		}
-		
-		if (serviceImg.size > 0) {
-			var html =  "<img src ='"+serviceImg.url+"' alt='zoomable image' onmouseover='TJPzoom(this);' width='"+ZOOMABLE_IMG_WIDTH+"'>";
-			html+=	"</img>"
-			$("#image-zoom-panel").prepend(html);
-			
-			serviceImgUrl = serviceImg.url;
-			
-			// add the puzzle "easter egg" to the footer
-			html = "<a href='javascript:showPuzzle()'>...</a>";
-			$("#ds-footer-links").append(html);
-		}
-		
-	}
-}
+function initZoomableImage()
+{
+    if (imageJpegArray.length >0)
+    {
+        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img src=\"http://static.flowplayer.org/tools/img/blank.gif\"  /></a></div>";
+        var totalHtml = viewPort;
 
-/**
-* Shows the puzzle
-*/
-function showPuzzle() {
-	if (serviceImgUrl != '') {
-		displayPuzzle(serviceImgUrl);
-	}
-}
+        var containHtml = "<div class=\"scrollable\"><div class=\"items\"><div>";
+        totalHtml += containHtml;
 
-/** 
-* Displays the puzzle on the interface 
-*/
-function displayPuzzle(imgUrl) {
-	var html = "<div id='puzzle'>";
-	html += "<img src='" + imgUrl + "' id='puzzleimage' width='400' />";
-	html += "<a href='javascript:hidePuzzle()'>Hide Puzzle</a>";
-	html += "</div>";
-	$("body").append(html);
-	
-	$("#puzzle").css("position","absolute");
-	$("#puzzle").css("left",50);
-	$("#puzzle").css("top",50);
-	$("#puzzle").css("width",400);
-	$("#puzzle").css("background-color","#fff");
-	$("#puzzle").css("border-width","1px");
-	$("#puzzle").css("border-color","#999");
-	// $("#puzzle").css("background-color","#fff");	
+        for ( var i=0; i<imageJpegArray.length; i++)
+        {
+            totalHtml +=processImage(imageJpegArray[i]);
+        }
 
-	//$("#puzzleimage").css("width",400);
-	var settings = { 
-    hole: 6,                   // initial hole position [1 ... rows*columns] 
-    shuffle: true,             // initially show shuffled pieces [true|false] 
-    numbers: false,              // initially show numbers on pieces [true|false] 
- 
-    // display additional gui controls 
-    control: { 
-        shufflePieces: true,    // display 'Shuffle' button [true|false] 
-        confirmShuffle: true,   // ask before shuffling [true|false] 
-        toggleOriginal: true,   // display 'Original' button [true|false] 
-        toggleNumbers: true,    // display 'Numbers' button [true|false] 
-        counter: true,          // display moves counter [true|false] 
-        timer: true,            // display timer (seconds) [true|false] 
-        pauseTimer: true        // pause timer if 'Original' button is activated 
-                                // [true|false] 
-    }};
-	$('#puzzleimage').jqPuzzle(settings);
-}
+        var tailHtml = "</div></div></div>";
+        totalHtml += tailHtml;
+        $("#photos").prepend(totalHtml);
+        if(imageJpegArray.length == 1) {
+            $('div.scrollable').css('display', 'none');
 
-function hidePuzzle() {
-	$("#puzzle").remove();
-}
-
-function showAbout() {
-	$("#gallery-about").load(ABOUT_PAGE_URL);
-}
-
-//came from loose inline from buildHead of gallery.xsl
-function tFocus(element) {
-    if (element.value ==
-        '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
-        element.value='';
-    }
-}
-
-function tSubmit(form){
-    var defaultedElements =
-    document.getElementsByTagName("textarea");
-    for (var i=0; i != defaultedElements.length; i++) {
-        if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>') {
-            defaultedElements[i].value='';
         }
     }
 }
 
-/**
- * Creates an iframe with the specified source
- * @REQUIRES jQuery
- * @REQUIRES that there exists an element with ID preview-embed
- */
-function embeddedPreview(source) {
-    if($("#embed").length > 0) {
-        //set the source to the location asked for
-        $("#embed").attr("src", source);
-    } else {
-        //Create the embed iframe
-        $("#preview-embed").append("<iframe id='embed' src='"+source+"' width='100%' height='342px' style='border:none;'/>"); //requires jQuery
-    }
+function processImage(serviceImg)
+{
+    return "<img src =\""+serviceImg.url+"\" alt=\""+ serviceImg.title +"\" title=\""+ serviceImg.itemTitle + "\"/>";
+}
+
+
+
+function initjQueryTools () {
+
+$(".scrollable").scrollable();
+
+$(".items img").click(function() {
+
+	// see if same thumb is being clicked
+	if ($(this).hasClass("active")) { return; }
+
+	// Currently assuming that thumbnail and full image use same url.
+        var clickedImage = $(this);
+	var url = clickedImage.attr("src");
+
+	// get handle to element that wraps the image and make it semi-transparent
+	var wrap = $("#image_wrap").fadeTo("medium", 0.5);
+
+	var img = new Image();
+
+	// call this function after it's loaded
+	img.onload = function() {
+		// make wrapper fully visible
+		wrap.fadeTo("fast", 1);
+
+
+		// change the image
+		wrap.find("img").attr("src", url);
+
+                wrap.find('img').jScale({ls:'670px'});
+		$('#anchor').attr("href", url);
+                $('#anchor').attr("title", clickedImage.attr("title") + "<br/>Download: <a href=\""+url+"\">" + clickedImage.attr("alt") + "</a>" );
+
+
+	};
+
+	// begin loading the image
+	img.src = url;
+
+	// activate item
+	$(".items img").removeClass("active");
+	$(this).addClass("active");
+
+// when page loads simulate a "click" on the first image
+}).filter(":first").click();
 }

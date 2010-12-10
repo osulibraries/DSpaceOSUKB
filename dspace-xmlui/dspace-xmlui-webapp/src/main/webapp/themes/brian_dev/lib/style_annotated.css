@@ -1,0 +1,1166 @@
+/*
+    This stylesheet is an annotated version of the default style.css that
+    comes with DSpace. I have attempted to match the class and id labels with
+    the places they appear in General-Handler.xsl, DIM-Handler.xsl and
+    structural.xsl. (By default, QDC-Handler.xsl and MODS-Handler.xsl are not
+    used. See 'themes/dri2xhtml.xsl'.) There has been some rearranging to better
+    group related items, and I have put more white space between sections to
+    help give some sense of structure while scrolling through the document. I
+    also found that some classes and ids are no longer used, and those have been
+    removed from this document.
+
+    At the time of this writing, the annotation is a work-in-progress.
+
+    Brian Stamper (bds)
+    The Ohio State University
+    September 15, 2010
+  
+*/
+
+
+/*****************************************************
+bds: general classes and ids that may appear anywhere
+******************************************************/
+
+body {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: .8em;
+        text-align: center;
+}
+
+
+p {
+    padding: 0;
+    margin: 6px;
+}
+
+
+a.image-link img {
+        border: none;
+}
+
+span.bold {
+        font-weight: bold;
+}
+
+span.italics,span.italic {
+        font-style: italic;
+}
+
+span.underline {
+        text-decoration: underline;
+}
+
+fieldset {
+        border: 0px;
+}
+
+
+fieldset ol {
+        float: left;
+        clear: both;
+}
+
+
+
+
+
+/* bds: ds-main is the outer container for the other four sections:
+    ds-header
+        <a>ds-header-logo</a>
+        <ul id="ds-trail">
+        <div id="ds-user-box">
+    ds-body
+        [lots of stuff]
+    ds-options
+        [lots of stuff]
+    ds-footer
+        <div id="ds-footer-links">
+*/
+
+div#ds-main {
+        position: relative;
+        margin-top: 5px;
+        width: 750px;
+        color: inherit;
+        background-color: white;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+        padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div#ds-header {
+        width: 100%;
+        border: 3px solid rgb(240, 240, 210);
+        padding: 0px;
+}
+
+div#ds-header a {
+        text-decoration: none;
+}
+
+div#ds-header  a span#ds-header-logo {
+        width: 190px;
+        height: 80px;
+        float: right;
+        background-image: url("../images/manakin_logo.jpg");
+        background-repeat: no-repeat;
+        background-position: 85% 40%;
+        color: inherit;
+        background-color: white;
+}
+
+div#ds-header h1,div#ds-header h2 {
+        display: none;
+}
+
+
+
+
+
+
+
+
+
+
+/********
+bds: breadcrumb trail styling
+***********/
+ul#ds-trail {
+        position: relative;
+        margin-top: 80px;
+        margin-bottom: 0px;
+        padding: 3px;
+        margin-left: 0;
+        color: inherit;
+        background-color: rgb(255, 255, 240);
+        border-top: 2px solid rgb(245, 245, 216);
+}
+
+li.ds-trail-link {
+        overflow: hidden;
+        display: inline;
+        background-image: url("../images/trail.bmp");
+        background-repeat: no-repeat;
+        background-position: 0% 60%;
+        padding-left: 16px;
+        margin-top: 2px;
+        margin-left: 5px;
+        font-weight: 200;
+        max-width: 400px;
+        line-height: 20px;
+}
+
+li.first-link {
+        list-style: none;
+        background-image: none;
+        padding-left: 0;
+}
+
+
+
+
+
+
+
+/*****************************
+bds: login link and user info box, by default found in the header
+(as opposed to the login link in the "options" side bar)
+***************************/
+div#ds-user-box {
+    width: 300px;
+        position: absolute;
+        top: 10px;
+        left: 12px;
+        text-align: left;
+}
+
+div#ds-user-box p {
+        font-size: 90%;
+        color: gray;
+        background-color: inherit;
+        height: 12px;
+        padding: 0px;
+        margin: 0px;
+}
+
+div#ds-user-box a {
+        text-decoration: none;
+        color: gray;
+        background-color: inherit;
+        height: 12px;
+        padding: 0px;
+        margin: 0px;
+}
+div#ds-user-box a:hover {
+        text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/*******************************
+bds: main body section, where most content goes
+(as opposed to the header, footer, and sidebar)
+******************************************/
+div#ds-body {
+        position: relative;
+        float: left;
+        width: 592px;
+        clear: left;
+        color: inherit;
+        background-color: rgb(255, 255, 253);
+        border: 2px solid rgb(240, 240, 210);
+        margin: 15px 0px 0px 0px;
+        padding-bottom: 30px;
+        padding-left: 5px;
+        padding-right: 5px;
+}
+
+div#ds-body h1 {
+        font-size: 1.5em;
+        padding: 10px 0 0 0;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        color: #DF6E00;
+        background-color: inherit;
+        font-weight: bolder;
+}
+
+div#ds-body h2 {
+        font-size: 1.3em;
+        padding: 6px 0;
+        margin-bottom: 0px;
+        color: #DF6E00;
+        background-color: inherit;
+        font-weight: bolder;
+}
+
+div#ds-body h3 {
+        margin-bottom: 15px;
+}
+
+
+
+
+
+
+/* bds: progress-list items are used "in forms that span several pages"
+    see structural.xsl
+  (not sure yet if this refers to submission forms or what)
+*/
+ul.ds-progress-list {
+        margin: 0 0 10px 0;
+        padding: 2px 0px;
+        text-align: center;
+}
+
+ul.ds-progress-list li {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        background-color: rgb(255, 255, 240);
+        border: 1px solid rgb(240, 240, 210);
+        color: rgb(233, 160, 80);
+        overflow: hidden;
+        display: inline;
+        padding: 4px 3px;
+        margin-top: 2px;
+        margin-left: 3px;
+        max-width: 400px;
+        line-height: 20px;
+}
+
+ul.ds-progress-list li.button {
+        background-color: inherit;
+        border: none;
+        padding: 1px !important;
+        margin-top: 2px;
+        margin-left: 0px !important;
+}
+
+ul.ds-progress-list li.button input.ds-button-field {
+        font-size: smaller;
+}
+
+ul.ds-progress-list li.current.button input.ds-button-field {
+        color: rgb(10,175,10);
+}
+
+ul.ds-progress-list li.disabled.button input.ds-button-field {
+        color: rgb(184,184,184);
+}
+
+ul.ds-progress-list li.current {
+        color: rgb(80, 183, 40);
+        background-color: inherit;
+        border-color: rgb(216, 245, 216);
+}
+
+ul.ds-progress-list li.arrow {
+        border: none;
+        background: none;
+        font-size: 120%;
+        font-weight: normal;
+        margin-left: 0px;
+        margin-right: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*************************************
+bds: not exactly sure about pagination,
+but it all comes from structural.xsl <xsl:template match="@pagination">
+******************/
+div.pagination {
+        position: relative;
+        padding: 0px;
+        color: inherit;
+        background-color: rgb(255, 255, 240);
+        border: 2px solid rgb(240, 240, 210);
+        margin: 2px 0px 5px 1px;
+}
+
+div.pagination * {
+        padding: 0px;
+}
+
+div.pagination-masked {
+        position: relative;
+        color: inherit;
+        background-color: rgb(255, 255, 240);
+        border: 2px solid rgb(240, 240, 210);
+        margin-bottom: 5px;
+}
+a.previous-page-link {
+        position: absolute;
+        left: 10px;
+        top: 6px;
+        color: rgb(100, 100, 50);
+        background-color: inherit;
+}
+
+p.pagination-info {
+    text-align: center;
+    margin-left: 125px;
+    margin-right: 125px;
+}
+
+ul.pagination-links {
+        position: relative;
+        text-align: center;
+        top: -5px;
+        width: 360px;
+        margin: 0 auto;
+        padding: 0;
+        line-height: 12px;
+}
+
+*.pagination-links li {
+        list-style: none;
+        display: inline;
+        margin-right: 5px;
+        font-weight: bolder;
+        font-size: 90%;
+}
+
+li.page-link a,li.first-page-link a,li.last-page-link a {
+        color: rgb(100, 100, 50);
+        background-color: inherit;
+}
+
+li.current-page-link a {
+        color: rgb(223, 110, 0);
+        background-color: inherit;
+}
+
+a.next-page-link {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        color: rgb(100, 100, 50);
+        background-color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*****************
+bds: detail-view is a wrapper used in community and collection main pages,
+goes around the logo and other comm/coll metadata
+see DIM-Handler
+    <xsl:template name="communityDetailView-DIM">
+    <xsl:template name="collectionDetailView-DIM">
+there are also classes in the xsl for
+    detail-view-news
+    detail-view-rights-and-license
+but those are not defined by default in style.css
+***************************/
+div.detail-view {
+        clear: both;
+        padding: 5px 5px 5px 6px;
+}
+
+/*
+bds: collection logo wrapper from General-Handler.xsl <xsl:template match="mets:fileGrp[@USE='LOGO']">
+*/
+div.ds-logo-wrapper {
+    float: right;
+    padding: 5px 0px 5px 10px;
+}
+
+
+
+
+
+/*
+bds: copyright-text used at community and collection level, but I haven't
+actually seen it appear in the DRI.. see DIM-Handler.xsl
+*/
+p.copyright-text {
+        margin-top: 30px;
+        font-style: italic;
+        text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************
+bds: general table stuff, can be used in items and elsewhere
+******************/
+
+table {
+    clear: both;
+        border-spacing: 0px;
+        border: 2px solid rgb(240, 240, 210);
+        width: 100%;
+}
+
+tr.ds-table-header-row {
+        color: inherit;
+        background-color: rgb(240, 240, 210);
+}
+
+tr.ds-table-header-row.subheader {
+    background-color: rgb(250, 250, 214);
+}
+
+
+th {
+    padding: 4px 10px;
+}
+.subheader th {
+    padding-left: 5px;
+        font-weight: 100;
+}
+
+tr.ds-table-row.odd {
+        color: inherit;
+        background-color: rgb(252, 252, 232);
+}
+
+tr.ds-table-row.even {
+        color: inherit;
+        background-color: rgb(255, 255, 245);
+}
+
+td {
+        padding: 3px 10px 5px 10px;
+        border: none;
+        font-size: inherit;
+        background-color: inherit;
+        color: inherit;
+}
+
+td.ds-table-cell.right {
+    text-align: right;
+}
+
+
+
+
+
+/* Tables that are actually a result of glossary lists are not rendered
+ as plain tables are... */
+/* bds: not sure where this is used, templates are in structural.xsl */
+table.ds-gloss-list {
+        border: none;
+        width: auto;
+        font-size: inherit;
+}
+
+*.ds-gloss-list td {
+        padding: 5px;
+}
+
+*.ds-gloss-list-label {
+        font-weight: bolder;
+}
+
+table.ds-gloss-list td ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+}
+
+/* bds: Formatting associated with the "Files in this item" table in the item view */
+/* Used in conjunction with ds-table */
+*.file-list td {
+        text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+/***
+bds: from structural.xsl, for "Non-interactive divs"  (?)
+**/
+div.ds-static-div {
+        border: 1px solid white;
+        clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+/**********************************************************
+bds: ds-artifact-list is used in browse-by screens
+
+artifact-description encases all of one item in the list,
+  and contains these three parts:
+artifact-title   (title of the item)
+artifact-info    (author, publisher, date)
+artifact-preview (thumbnail)
+***********************************************************/
+
+ul.ds-artifact-list {
+        border: 2px solid rgb(240, 240, 210);
+        padding: 0px;
+        list-style-type: none;
+        margin: 0px;
+        float: left;
+        width: 584px;
+}
+
+ul.ds-artifact-list li.odd {
+        color: inherit;
+        background-color: rgb(250, 250, 232);
+}
+
+ul.ds-artifact-list li.even {
+        color: inherit;
+        background-color: rgb(255, 255, 245);
+}
+
+ul.ds-artifact-list li {
+        float: left;
+        clear: both;
+        width: 100%;
+        padding-bottom: 3px;
+        padding-top: 3px;
+}
+
+ul.ds-artifact-list li img {
+        border: 0px;
+}
+
+ul.ds-artifact-list li  div {
+        float: left;
+}
+
+ul.ds-artifact-list li div.artifact-description {
+        float: left;
+        margin-top: 0px;
+        width: 83%;
+        padding: 0 5px;
+}
+
+ul.ds-artifact-list li div.artifact-title {
+        float: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+}
+
+ul.ds-artifact-list li div.artifact-title a:link {
+    color: rgb(60,60,230);
+}
+
+ul.ds-artifact-list li div.artifact-title a:visited {
+    color: rgb(125,50,125);
+}
+
+ul.ds-artifact-list li div.artifact-info {
+        float: none;
+        margin-left: 15px;
+}
+
+ul.ds-artifact-list li span.publisher {
+        font-style: italic;
+}
+
+ul.ds-artifact-list li div.artifact-preview {
+        float: right;
+}
+
+
+
+
+
+
+
+
+
+
+/* bds: not entirely sure about these, but has to do with form fields
+that are a 'composite' of several 'components', see structural.xsl */
+span.ds-composite-field {
+        display: table-row;
+        padding: 2px;
+}
+
+*.ds-composite-field.ds-composite-component {
+        display: table-cell;
+        text-align: left;
+        width: auto;
+        padding-right: 10px;
+}
+
+*.ds-composite-field input,*.ds-composite-field textarea,*.ds-composite-field select {
+        margin-right: 5px;
+        margin-bottom: -2px;
+}
+
+span.composite-help {
+        display: block;
+        font-size: 80%;
+        color: blue;
+        background-color: inherit;
+        text-align: left;
+}
+
+label.ds-composite-component {
+        display: block;
+        float: left;
+        padding: 0px 5px 0 0px;
+        font-size: 80%;
+        color: blue;
+        background-color: inherit;
+        text-align: left;
+}
+
+
+
+
+/** bds: from structural.xsl
+"Interactive divs get turned into forms"
+**/
+
+form.ds-interactive-div fieldset.ds-form-sublist ol {
+        display: table;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+}
+
+form.ds-interactive-div fieldset.ds-form-sublist legend {
+        color: #DF6E00;
+        font-size: 100%;
+        font-weight: bolder;
+        margin-left: 10px;
+        padding: 0;
+        background-color: inherit;
+        border: 0;
+}
+
+/* Row-level hierarchy */
+form.ds-interactive-div li.ds-form-item {
+        display: block;
+        padding: 5px 0;
+        width: 100%;
+}
+
+form.ds-interactive-div li.odd {
+        color: inherit;
+        background-color: rgb(252, 252, 230);
+}
+
+form.ds-interactive-div li.even {
+        color: inherit;
+        background-color: rgb(255, 255, 245);
+}
+
+form.ds-interactive-div li.ds-form-item.last {
+        border-top: 2px solid rgb(240, 240, 210);
+        color: inherit;
+        background-color: rgb(248, 248, 217);
+}
+
+form.ds-interactive-div.primary {
+        float: left;
+        clear: both;
+        padding: 0px;
+        margin-bottom: 10px;
+}
+
+
+
+
+
+
+/* bds: not sure exactly when the following form items are used */
+li.ds-form-item {
+        float: left;
+        clear: both;
+}
+
+div.ds-form-content {
+        float: left;
+        clear: right;
+        display: block;
+        padding: 7px;
+                width: 400px;
+}
+
+span.ds-form-label,label.ds-form-label {
+        display: block;
+        float: left;
+        clear: left;
+        padding: 5px 20px 5px 10px;
+        width: 115px;
+        font-weight: bold;
+        vertical-align: middle;
+        overflow: hidden;
+}
+
+
+
+
+/* bds: not sure about error usage, is found in authority section but also elsewhere */
+span.error {
+        display: block;
+        font-size: 85%;
+        color: red;
+        background-color: inherit;
+        margin: 0;
+}
+
+span.field-help {
+        display: block;
+        margin-left: 5px;
+        font-size: 80%;
+        color: gray;
+        background-color: inherit;
+}
+
+input.error,textarea.error,select.error {
+        color: inherit;
+        background-color: rgb(255, 245, 245);
+        border-color: red;
+}
+/* bds: spacer also found among new authority stuff */
+div.spacer {
+        margin: 0;
+        padding: 0;
+        line-height: 0px;
+        clear: both;
+}
+
+
+
+
+
+
+/*******************************************
+"options" sidebar (Search, browse-by links, etc.)
+***********************************************/
+div#ds-options {
+        position: relative;
+        float: right;
+        width: 135px;
+        color: inherit;
+        background-color: white;
+        margin: 0px;
+        padding: 0px;
+        font-size: 95%;
+}
+
+div.ds-option-set {
+        padding: 30px 2px 3px 2px;
+        width: 133px;
+        margin: -3px 0px 0px 0px;
+        color: inherit;
+        background-color: rgb(255, 255, 240);
+        border: 2px solid rgb(240, 240, 210);
+}
+
+div#ds-search-option input {
+        font-size: 90%;
+}
+
+div#ds-search-option input.ds-text-field {
+        width: 80%;
+        margin: 0;
+        margin-left: -15px;
+        padding: 0;
+        position: relative;
+        top: -1px;
+        left: 8px;
+}
+
+div#ds-search-option input.ds-button-field {
+        width: auto;
+        height: 20px;
+        margin: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+        position: relative;
+        top: -1px;
+        left: 10px;
+}
+
+div#ds-search-option a {
+    position: relative;
+    top: -4px;
+    left: 4px;
+        margin: 0;
+        padding: 0;
+}
+
+
+
+form#ds-search-form {
+        font-size: 90%;
+}
+
+div#ds-options h3 {
+        position: relative;
+        top: 22px;
+        left: 5px;
+        margin: 0 2px 0 0;
+        padding: 0px;
+        color: rgb(223, 110, 0);
+        background-color: rgb(255, 255, 240);
+}
+
+div#ds-options h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: rgb(210, 100, 0);
+        background-color: inherit;
+}
+
+div#ds-options ul {
+        margin: 0px 0px 10px 0px;
+        padding: 0px;
+}
+
+div#ds-options li {
+        margin-left: 15px;
+        padding: 0px;
+        color: rgb(100, 100, 50);
+        background-color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************************************************************
+ds-footer
+******************************************************************/
+div#ds-footer {
+        position: relative;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        height: 80px;
+        float: left;
+        width: 100%;
+        border: 3px solid rgb(240, 240, 210);
+}
+
+span#ds-footer-logo {
+        float: left;
+        clear: both;
+        height: 80px;
+        width: 300px;
+        background-image: url("../images/di_logo.jpg");
+        background-repeat: no-repeat;
+        background-position: 0% 30%;
+        color: inherit;
+        background-color: white;
+}
+
+div#ds-footer p {
+        width: 450px;
+        position: absolute;
+        top: -8px;
+        right: 0px;
+        text-align: right;
+        padding: 5px;
+        font-size: smaller;
+}
+
+div#ds-footer-links {
+        position: absolute;
+        top: 57px;
+        right: 0px;
+        padding-right: 5px;
+        text-align: right;
+        font-size: smaller;
+}
+
+div#ds-footer a#ds-logo-link {
+        text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+*****************************************************************
+*****************************************************************
+*****************************************************************
+*****************************************************************
+
+bds: The rest of this document has not been annotated.
+
+*****************************************************************
+*****************************************************************
+*****************************************************************
+*****************************************************************
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+h1.ds-div-head,h2.ds-div-head,h3.ds-div-head {
+        clear: both;
+}
+
+
+
+
+
+/* License text display during submission */
+div.license-text {
+        border: 1px solid #666;
+        background-color: #EEE;
+        padding: 20px;
+        margin: 20px;
+        margin-top: 5px;
+        font-family: monospace;
+        font-size: 125%;
+}
+
+
+
+
+div#NoticeTransformer_div_general-message h1.ds-div-head {
+    position: absolute;
+    top: 11px;
+    left: 42px;
+    margin: 0;
+    padding: 0 5px;
+    font-size: small;
+}
+
+p.hidden {
+    display: none;
+}
+
+h1.ds-div-head, h2.ds-div-head, h3.ds-div-head {
+    clear:both;
+}
+
+span.fade {
+    color: gray;
+    font-size: 90%;
+}
+
+span.fade a {
+    color: gray;
+    text-decoration: none;
+}
+
+span.fade a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+span.warn {
+    color: red;
+    font-weight: bolder;
+}
+
+/* System-wide alerts */
+div#ds-system-wide-alert {
+    background-color: rgb(255, 255, 240);
+    border: 1px solid rgb(240, 240, 210);
+    padding: 6px;
+        margin: 10px 30px 10px 30px;
+    color: rgb(213, 80, 40);
+}
+
+
+
+
+/** Additions for Authority Control elements **/
+/* for scriptaculous autocomplete */
+div.autocomplete {
+  position:absolute;
+  width:250px;
+  background-color:white;
+  border:1px solid #888;
+  margin:0;
+  padding:0;
+}
+div.autocomplete ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+div.autocomplete ul li.selected { background-color: #ffb;}
+div.autocomplete ul li {
+  list-style-type:none;
+  display:block;
+  margin:0;
+  padding:2px;
+/*  height:32px; */
+  cursor:pointer;
+}
+div.autocomplete ul li span.value { display:none; }
+
+/* this magic gets the 16x16 icon to show up.. setting height/width didn't
+   do it, but adding padding actually made it show up. */
+img.ds-authority-confidence
+{ width: 16px; height: 16px; margin: 0px 2px; padding: 0px; vertical-align: bottom;}
+
+img.ds-authority-confidence.cf-unset
+  { background: transparent url(../images/confidence/bug.png); }
+img.ds-authority-confidence.cf-novalue
+  /* { background: transparent } */
+  { background: transparent url(../images/confidence/3-circleslash.gif); }
+img.ds-authority-confidence.cf-rejected,
+img.ds-authority-confidence.cf-failed
+  { background: transparent url(../images/confidence/2-errortriangle.gif); }
+img.ds-authority-confidence.cf-notfound
+  { background: transparent url(../images/confidence/3-thumb2.gif); }
+img.ds-authority-confidence.cf-ambiguous
+  { background: transparent url(../images/confidence/4-question.gif); }
+img.ds-authority-confidence.cf-uncertain
+  { background: transparent url(../images/confidence/5-pinion.gif); }
+img.ds-authority-confidence.cf-accepted
+  { background: transparent url(../images/confidence/6-thumb2.gif); }
+
+/* hide authority-value inputs in forms */
+input.ds-authority-value { display:none; }
+/** XXX Change to this to get the authority value to show up for debugging:
+ input.ds-authority-value { display:inline; }
+**/
+
+/* ..except, show authority-value inputs in on the Item EditMetadata page */
+input.ds-authority-value.ds-authority-visible { display: inline; }
+
+/* for lock button */
+input.ds-authority-lock
+  { vertical-align: bottom; height: 24px; width:
+    24px; background-repeat: no-repeat; background-color: transparent; }
+input.ds-authority-lock.is-locked
+  { background-image: url(../images/lock24.png); }
+input.ds-authority-lock.is-unlocked
+  { background-image: url(../images/unlock24.png); }
+
+
+/* Example of authority display: this makes authors with an authority
+   value show up as red in the item summary view: */
+span.ds-dc_contributor_author-authority { color: #982521; }

@@ -59,8 +59,9 @@ div#osu-Navbar
 	font-family: Arial, Helvetica, sans-serif;
 	position: relative;
 	min-height: 2.7em;
-	margin: 0;
+	margin: 0 auto;
 	padding: 0;
+        width: 100%;
 }
 
 /* Bread-crumb */

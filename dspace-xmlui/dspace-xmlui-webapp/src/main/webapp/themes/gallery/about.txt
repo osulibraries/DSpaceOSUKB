@@ -2,14 +2,6 @@
 
     <h2>About the Gallery Theme</h2>
 
-    <p>The image zoomer is modifiable. To do so, mouse over the image such that the image zoom rectangle appears, then:
-    <ul>
-        <li>To Zoom IN: left mouse click and move mouse UP</li>
-        <li>To Zoom OUT: left mouse click and move mouse DOWN</li>
-        <li>To enlarge the zoom box: left mouse click and move mouse RIGHT</li>
-        <li>To shrink the zoom box: left mouse click and move mouse LEFT</li>
-
-
     <p>This Manakin theme provides a gallery display for image collections. It assumes DSpace items
         in the collection have a DSpace-generated thumbnail, and it displays details and the
         thumbail in embedded popups in the gallery interface. </p>

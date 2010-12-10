@@ -1,0 +1,13 @@
+<fieldset>
+<field>dc.title</field>
+<field>dc.creator</field>
+<field>dc.publisher</field>
+<field>dc.date.issued</field>
+<field>dc.description.abstract</field>
+<field>dc.description</field>
+<field>dc.relation.ispartofseries</field>
+<field>dc.relation.relateditem</field>
+<field>dc.identifier.doi</field>
+<field>dc.identifier.uri</field>
+<field>dc.identifier.citation</field>
+</fieldset>

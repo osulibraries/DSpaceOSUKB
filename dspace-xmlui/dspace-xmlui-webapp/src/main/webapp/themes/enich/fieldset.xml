@@ -1,0 +1,11 @@
+<fieldset>
+<field>dc.title</field>
+<field>dc.creator</field>
+<field>dc.date.issued</field>
+<field>dc.publisher</field>
+<field>dc.relation.ispartofseries</field>
+<field>dc.description</field>
+<field>dc.coverage.spatial</field>
+<field>dc.relation.relateditem</field>
+<field>dc.identifier.uri</field>
+</fieldset>

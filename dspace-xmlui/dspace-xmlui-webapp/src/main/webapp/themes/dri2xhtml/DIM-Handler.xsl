@@ -3,9 +3,9 @@
 <!--
   DS-METS-1.0-DIM.xsl
 
-  Version: $Revision: 4648 $
+  Version: $Revision: 4901 $
  
-  Date: $Date: 2009-12-23 11:24:52 -0500 (Wed, 23 Dec 2009) $
+  Date: $Date: 2010-05-10 00:27:40 -0400 (Mon, 10 May 2010) $
  
   Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
   Institute of Technology.  All rights reserved.
@@ -59,7 +59,8 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xalan="http://xml.apache.org/xalan" 
     xmlns:encoder="xalan://java.net.URLEncoder"
-    exclude-result-prefixes="xalan encoder i18n dri mets dim  xlink xsl">
+    exclude-result-prefixes="i18n dri mets dim xlink xsl oreatom ore atom xalan encoder ">
+        <!-- bds: added oreatom ore atom to above exclusions, not currently used, was causing display errors -->
     <!--  
     the above should be replaced with if Saxon is going to be used.
     
@@ -116,11 +117,12 @@
     <!-- An item rendered in the summaryList pattern. Commonly encountered in various browse-by pages
         and search results. -->
     <xsl:template name="itemSummaryList-DIM">
+        <!-- bds: moving thumbnail first so that the CSS floats work right -->
+        <!-- Generate the thunbnail, if present, from the file section -->
+        <xsl:apply-templates select="./mets:fileSec" mode="artifact-preview"/>
         <!-- Generate the info about the item from the metadata section -->
         <xsl:apply-templates select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
             mode="itemSummaryList-DIM"/>
-        <!-- Generate the thunbnail, if present, from the file section -->
-        <xsl:apply-templates select="./mets:fileSec" mode="artifact-preview"/>
     </xsl:template>
     
     <!-- Generate the info about the item from the metadata section -->
@@ -139,10 +141,11 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
+<!-- bds: no COinS, for now; causes big mouse-over gobbledy-gook
                     <span class="Z3988">
                         <xsl:attribute name="title">
                             <xsl:call-template name="renderCOinS"/>
-                        </xsl:attribute>
+                        </xsl:attribute>-->
                         <xsl:choose>
                             <xsl:when test="dim:field[@element='title']">
                                 <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
@@ -151,11 +154,29 @@
                                 <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
                             </xsl:otherwise>
                         </xsl:choose>
-                    </span>
+<!--                    </span>-->
                 </xsl:element>    
             </div>
             <div class="artifact-info">
                 <span class="author">
+<!-- bds: replacing authors in item browse with our own version, including linkify to author browse -->
+                    <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
+                        <!-- bds: link to author browse magic -->
+                        <a>
+
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="$context-path"/>
+                                <xsl:text>/browse?value=</xsl:text>
+                                <xsl:copy-of select="node()"/>
+                                <xsl:text>&amp;type=author</xsl:text>
+                            </xsl:attribute>
+                            <xsl:copy-of select="node()"/>
+                        </a>
+                        <xsl:if test="count(following-sibling::dim:field[@element='creator' and not(@qualifier)]) != 0">
+                            <xsl:text>; </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+<!-- bds: end of our customized author display for item browse, here is the original:
                     <xsl:choose>
                         <xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
                             <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
@@ -189,9 +210,10 @@
                         <xsl:otherwise>
                             <i18n:text>xmlui.dri2xhtml.METS-1.0.no-author</i18n:text>
                         </xsl:otherwise>
-                    </xsl:choose>
+                    </xsl:choose>-->
                 </span>
                 <xsl:text> </xsl:text>
+<!-- bds: also removing this combined publisher and date field, making a separate date display
                 <xsl:if test="dim:field[@element='date' and @qualifier='issued'] or dim:field[@element='publisher']">
 	                <span class="publisher-date">
 	                    <xsl:text>(</xsl:text>
@@ -201,6 +223,15 @@
 	                        </span>
 	                        <xsl:text>, </xsl:text>
 	                    </xsl:if>
+	                    <span class="date">
+	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+	                    </span>
+	                    <xsl:text>)</xsl:text>
+	                </span>
+                </xsl:if>-->
+                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+	                <span class="publisher-date">
+	                    <xsl:text>(</xsl:text>
 	                    <span class="date">
 	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
 	                    </span>
@@ -397,9 +428,7 @@
     <!-- An item rendered in the summaryView pattern. This is the default way to view a DSpace item in Manakin. -->
     <xsl:template name="itemSummaryView-DIM">
         <!-- Generate the info about the item from the metadata section -->
-        <xsl:apply-templates select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
-        mode="itemSummaryView-DIM"/>
-        
+        <!-- bds: moving file info above metadata -->
         <!-- Generate the bitstream information from the file section -->
         <xsl:choose>
             <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL']">
@@ -412,8 +441,8 @@
             <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='ORE']">
                 <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='ORE']"/>
             </xsl:when>
-            <xsl:otherwise>
-                <h2><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h2> 
+            <xsl:otherwise> <!-- bds: when would this otherwise occur? -->
+                <!-- <h2><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h2> -->
                 <table class="ds-table file-list">
                     <tr class="ds-table-header-row">
                         <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-file</i18n:text></th>
@@ -430,6 +459,11 @@
             </xsl:otherwise>
         </xsl:choose>
 
+        <br />
+
+        <xsl:apply-templates select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
+        mode="itemSummaryView-DIM"/>
+
         <!-- Generate the Creative Commons license information from the file section (DSpace deposit license hidden by default)-->
         <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='CC-LICENSE']"/>
 
@@ -442,10 +476,13 @@
          <xsl:call-template name="itemSummaryView-DIM-fields">
          </xsl:call-template>
         </table>
+        <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
+        <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
     </xsl:template>
 
+<!-- bds: this entire template is overridden in simple_item_fields.xsl -->
     <!-- render each field on a row, alternating phase between odd and even -->
-    <!-- recursion needed since not every row appears for each Item. -->
+<!--     recursion needed since not every row appears for each Item.
     <xsl:template name="itemSummaryView-DIM-fields">
       <xsl:param name="clause" select="'1'"/>
       <xsl:param name="phase" select="'even'"/>
@@ -462,7 +499,7 @@
 
       <xsl:choose>
 
-            <!--  artifact?
+              artifact?
             <tr class="ds-table-row odd">
                 <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-preview</i18n:text>:</span></td>
                 <td>
@@ -483,9 +520,9 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </td>
-            </tr>-->
+            </tr>
             
-          <!-- Title row -->
+           Title row 
           <xsl:when test="$clause = 1">
             <tr class="ds-table-row {$phase}">
                 <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-title</i18n:text>: </span></td>
@@ -519,7 +556,7 @@
             </xsl:call-template>
           </xsl:when>
 
-          <!-- Author(s) row -->
+           Author(s) row 
           <xsl:when test="$clause = 2 and (dim:field[@element='contributor'][@qualifier='author'] or dim:field[@element='creator'] or dim:field[@element='contributor'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-author</i18n:text>:</span></td>
@@ -566,7 +603,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- Abstract row -->
+           Abstract row 
           <xsl:when test="$clause = 3 and (dim:field[@element='description' and @qualifier='abstract'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text>:</span></td>
@@ -591,7 +628,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- Description row -->
+           Description row 
           <xsl:when test="$clause = 4 and (dim:field[@element='description' and not(@qualifier)])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-description</i18n:text>:</span></td>
@@ -616,7 +653,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- identifier.uri row -->
+           identifier.uri row 
           <xsl:when test="$clause = 5 and (dim:field[@element='identifier' and @qualifier='uri'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text>:</span></td>
@@ -640,7 +677,7 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- date.issued row -->
+           date.issued row 
           <xsl:when test="$clause = 6 and (dim:field[@element='date' and @qualifier='issued'])">
                     <tr class="ds-table-row {$phase}">
 	                <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-date</i18n:text>:</span></td>
@@ -659,9 +696,9 @@
               </xsl:call-template>
           </xsl:when>
 
-          <!-- recurse without changing phase if we didn't output anything -->
+           recurse without changing phase if we didn't output anything 
           <xsl:otherwise>
-            <!-- IMPORTANT: This test should be updated if clauses are added! -->
+             IMPORTANT: This test should be updated if clauses are added! 
             <xsl:if test="$clause &lt; 7">
               <xsl:call-template name="itemSummaryView-DIM-fields">
                 <xsl:with-param name="clause" select="($clause + 1)"/>
@@ -671,7 +708,7 @@
           </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+-->
     
     <!-- The summaryView of communities and collections is undefined. -->
     <xsl:template name="collectionSummaryView-DIM">
@@ -758,11 +795,12 @@
     
     <!-- The block of templates used to render the complete DIM contents of a DRI object -->
     <xsl:template match="dim:dim" mode="itemDetailView-DIM">
+<!-- bds: no COinS for now, causes mouse-over gobbledy-gook
         <span class="Z3988">
             <xsl:attribute name="title">
                  <xsl:call-template name="renderCOinS"/>
             </xsl:attribute>
-        </span>                
+        </span>-->
 		<table class="ds-includeSet-table">
 		    <xsl:apply-templates mode="itemDetailView-DIM"/>
 		</table>
@@ -813,28 +851,32 @@
     </xsl:template>
     
     <!-- Generate the info about the collection from the metadata section -->
+    <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
+    <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
     <xsl:template match="dim:dim" mode="collectionDetailView-DIM"> 
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
-            <p class="intro-text">
-                <xsl:copy-of select="dim:field[@element='description'][not(@qualifier)]/node()"/>
-            </p>
+            <div class="intro-text">
+                <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+            </div>
         </xsl:if>
-        
+
+        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
+                    we ususally have used for related links -->
         <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;0">
         	<div class="detail-view-news">
-        		<h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3>
-        		<p class="news-text">
-        			<xsl:copy-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()"/>
-        		</p>
+        		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
+        		<div class="news-text">
+        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
+        		</div>
         	</div>
         </xsl:if>
         
-        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0 or string-length(dim:field[@element='rights'][@qualifier='license'])&gt;0">
+        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
         	<div class="detail-view-rights-and-license">
 		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-		            <p class="copyright-text">
-		                <xsl:copy-of select="dim:field[@element='rights'][not(@qualifier)]/node()"/>
-		            </p>
+		            <div class="copyright-text">
+		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+		            </div>
 		        </xsl:if>
         	</div>
         </xsl:if>
@@ -959,28 +1001,34 @@
     </xsl:template>
     
     <!-- Generate the info about the community from the metadata section -->
-    <xsl:template match="dim:dim" mode="communityDetailView-DIM"> 
+    <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
+    <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
+    <xsl:template match="dim:dim" mode="communityDetailView-DIM">
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
-            <p class="intro-text">
-                <xsl:copy-of select="dim:field[@element='description'][not(@qualifier)]/node()"/>
-            </p>
+            <div class="intro-text">
+                <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+            </div>
         </xsl:if>
-        
+
+        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
+                    we ususally have used for related links -->
         <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;0">
         	<div class="detail-view-news">
-        		<h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3>
-        		<p class="news-text">
-        			<xsl:copy-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()"/>
-        		</p>
+        		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
+        		<div class="news-text">
+        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
+        		</div>
         	</div>
         </xsl:if>
-        
+
         <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
         	<div class="detail-view-rights-and-license">
-	            <p class="copyright-text">
-	                <xsl:copy-of select="dim:field[@element='rights'][not(@qualifier)]/node()"/>
-	            </p>
-            </div>
+		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
+		            <div class="copyright-text">
+		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+		            </div>
+		        </xsl:if>
+        	</div>
         </xsl:if>
     </xsl:template>
    
@@ -1010,7 +1058,7 @@
 
     This Code does not parse authors names, instead relying on dc.contributor to populate the
     coins
-     -->
+     
 
     <xsl:template name="renderCOinS">
        <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
@@ -1026,7 +1074,7 @@
                 <xsl:text>&amp;</xsl:text>
             </xsl:if>
         </xsl:for-each>
-    </xsl:template>
+    </xsl:template>-->
     
     
 </xsl:stylesheet>
