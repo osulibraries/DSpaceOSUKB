@@ -852,7 +852,7 @@
     
     <!-- Generate the info about the collection from the metadata section -->
     <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
-    <!--        also using disabl-output-escaping because these are CDATA sections of HTML -->
+    <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
     <xsl:template match="dim:dim" mode="collectionDetailView-DIM"> 
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
             <div class="intro-text">
@@ -1002,7 +1002,7 @@
     
     <!-- Generate the info about the community from the metadata section -->
     <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
-    <!--        also using disabl-output-escaping because these are CDATA sections of HTML -->
+    <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
     <xsl:template match="dim:dim" mode="communityDetailView-DIM">
         <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
             <div class="intro-text">

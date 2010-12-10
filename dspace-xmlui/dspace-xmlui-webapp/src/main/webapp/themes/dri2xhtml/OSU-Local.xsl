@@ -43,6 +43,14 @@
             </xsl:attribute>
             <xsl:text>var x=0;</xsl:text>
         </script>
+        <!-- Google webfont Cantarell, see http://code.google.com/webfonts/ -->
+        <link rel='stylesheet' type='text/css'>
+            <xsl:attribute name="href">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
+                <xsl:text>://fonts.googleapis.com/css?family=Cantarell:regular,italic,bold,bolditalic</xsl:text>
+            </xsl:attribute>
+        </link>
+
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
             var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");

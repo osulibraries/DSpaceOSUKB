@@ -1,6 +1,6 @@
 
 body {
-        font-family: Corbel, Optima, Verdana, sans-serif;
+        font-family: Cantarell, Corbel, Optima, sans-serif;
         font-size: .9em;
         background-color: #C2CEC2;
 	margin: 0;
@@ -44,8 +44,7 @@ td.span.bold {
 
 tr.ds-table-header-row {
     color: inherit;
-    background-color: #f9f9f9;
-    text-align: center;
+    background-color: #dee1de;
 }
 
 tr.ds-table-header-row.subheader {
@@ -59,7 +58,7 @@ tr.ds-table-row.odd {
 
 tr.ds-table-row.even {
     color: inherit;
-    background-color: #dee1de;
+    background-color: #f6f4f4;
 
 }
 
@@ -274,7 +273,7 @@ div#body-and-options {
     width:100%;
     position:relative;
     right:794px;
-    background:#edeaea; /* column 1 background colour */
+    background:#f6f4f4; /* column 1 background colour */
 }
 div#ds-body {
     float:left;
@@ -284,28 +283,39 @@ div#ds-body {
     overflow:hidden;
     color: inherit;
     margin: 0;
-    padding: 2px;
+    padding: 2px 0;
+    
 
 }
 
 div#ds-options {
     float:left;
-    width:205px;
+    width:210px;
     position:relative;
     left:0px;
     overflow:hidden;
     color: inherit;
+    font-size: 0.8em;
+}
 
+ul.ds-options-list {
+    
 }
 
 div#homepage-body {
-    padding: 5px;
+    padding: 5px 20px;
+}
+div#homepage-body h1 {
+    padding: 0 !important;
+    margin: 0 !important;
 }
 div#homepage-featured {
+    border-left: 1px solid #CCCCCC;
     float: right;
-    background-color: #edeaea;
-    width: 200px;
+    margin: 20px 0;
     padding: 10px;
+    width: 200px;
+    background: url("../images/bkgd.png") repeat-x;
 }
 
 
@@ -364,6 +374,7 @@ div#ds-global-search a {
     color: #003333;
     position: absolute;
     right: 58px;
+    top: 158px;
     font-size: 0.85em;
 }
 
@@ -375,10 +386,15 @@ input#ds-global-search-box {
 
 input#ds-global-search-button {
     float: right;
+    height: 35px;
 }
 
-div#ds-global-search-scope {
-  
+div#ds-global-search-scope label {
+    margin: 2px 4px 0 0;
+}
+
+div#ds-global-search-scope input {
+  vertical-align: middle;
 }
 
 .input-prompt {
@@ -394,11 +410,11 @@ div#ds-global-search-scope {
 
 
 div#ds-body h1 {
-    font-size: 1.5em;
+    font-size: 1.2em;
     padding: 8px 2px;
-    margin: 0 0 10px 0;
-    color: #000;
-    font-weight: bold;
+    margin: 40px 0 10px 14px;
+    color: #900;
+    font-weight: normal;
 
 }
 
@@ -455,7 +471,7 @@ text-decoration: underline;
 }
 
 div#ds-options h3 {
-    background-color: #CABFBF;
+    background-color: #e6e2e2;
     font-size: 1em;
     color:#330000;
     margin:0 0 0 0;
@@ -540,17 +556,17 @@ div#ds-footer-links {
 
 
 div.notice {
-    background-color: #f9f9f9;
-    border: 1px solid #777;
-    padding: 6px;
-    text-align: center;
-    margin: 10px auto;
-    width: 500px;
+    margin: 10px 0;
+    width: 640px;
+    color: #bd5908;
+    font-weight: bold;
 }
 div.notice p {
     margin: 0;
 }
-
+div.notice a {
+    color: #cc6600;
+}
 
 p.ds-paragraph {
     margin: 0 0 5px 0;
@@ -575,9 +591,9 @@ div.ds-logo-wrapper {
 
 
 div.search-browse {
-    border: 4px solid #cabfbf;
-    background: #edeaea;
-    width: 210px;
+    border: 2px solid #dee1de;
+    background: #f6f4f4;
+    width: 224px;
     margin: 5px 10px;
     padding: 5px !important;
     float: right;
@@ -721,7 +737,7 @@ ul.ds-artifact-list li div.artifact-preview {
 }
 
 div.ds-static-div {
-    padding: 0 5px;
+    padding: 0 20px;
 }
 
 
@@ -735,17 +751,16 @@ element.style {
 }
 
 table.file-list {
-    text-align: center;
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
+    width: auto;
+    margin: 0;
     border: 2px solid #c2cec2;
+    font-size: 0.8em;
 }
 table.file-list th {
     padding: 4px;
 }
 table.file-list td {
-    padding: 4px;
+    padding: 4px 12px;
 }
 table.file-list a:link {
 text-decoration: none;
@@ -809,9 +824,10 @@ form.controls {
 */
 
 table.ds-includeSet-table {
-    width: 740px;
-    margin: 5px auto 20px;
+    width: 752px;
+    margin: 5px 0 20px;
     display: table;
+    border: 2px solid #dee1de;
 }
 
 
@@ -1197,9 +1213,10 @@ div.pagination-masked {
 }
 
 a.previous-page-link {
-        position: absolute;
-        left: 10px;
-        top: 8px;
+        position: relative;
+        left: 70px;
+        top: 0px;
+        float: left;
 }
 
 p.pagination-info {
@@ -1207,9 +1224,10 @@ p.pagination-info {
 }
 
 a.next-page-link {
-        position: absolute;
-        right: 10px;
-        top: 8px;
+        position: relative;
+        right: 70px;
+        top: -25px;
+        float: right;
 }
 
 ul.pagination-links {

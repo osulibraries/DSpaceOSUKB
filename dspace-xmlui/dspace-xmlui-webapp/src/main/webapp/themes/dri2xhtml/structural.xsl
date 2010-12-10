@@ -2603,7 +2603,7 @@
                             <i18n:text>xmlui.dri2xhtml.structural.pagination-previous</i18n:text>
                         </a>
                     </xsl:if>
-                    <p class="pagination-info">
+                    <span class="pagination-info">
                         <i18n:translate>
                             <i18n:text>xmlui.dri2xhtml.structural.pagination-info</i18n:text>
                             <i18n:param><xsl:value-of select="parent::node()/@firstItemIndex"/></i18n:param>
@@ -2618,7 +2618,7 @@
                         <xsl:text> of </xsl:text>
                         <xsl:value-of select="parent::node()/@itemsTotal"/>
                             -->
-                    </p>
+                    </span>
                     <xsl:if test="parent::node()/@nextPage">
                         <a class="next-page-link">
                             <xsl:attribute name="href">
