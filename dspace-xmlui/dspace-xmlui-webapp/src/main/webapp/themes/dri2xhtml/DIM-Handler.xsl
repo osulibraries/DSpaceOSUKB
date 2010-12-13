@@ -243,7 +243,7 @@
     </xsl:template>
     
 
-    <!-- A collection rendered in the summaryList pattern. Encountered on the community-list page -->
+    <!-- A collection rendered in the summaryList pattern. Encountered on the collection-list page -->
     <xsl:template name="collectionSummaryList-DIM">
         <xsl:variable name="data" select="./mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim"/>
         <a href="{@OBJID}">
