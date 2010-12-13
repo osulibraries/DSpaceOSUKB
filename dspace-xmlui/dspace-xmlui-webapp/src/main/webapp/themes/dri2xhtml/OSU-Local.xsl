@@ -78,10 +78,18 @@
                 <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
             </xsl:attribute>
             <xsl:text> </xsl:text>
-        </script>        <script rel="text/javascript">
+        </script>
+        <script rel="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/ba-linkify.min.js</xsl:text>
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
@@ -89,6 +97,14 @@
             jQuery(document).ready(function()
             {
                 jQuery("#breadCrumb0").jBreadCrumb();
+                
+                /* Linkify All Item Metadata content */
+                $('tr.ds-table-row td').not('td.addthis').each(function(){
+                    var that = $(this),
+                    txt = that.html(),
+                    options = {callback: function( text, href ) {return href ? '<a href="' + href + '" title="' + href + '">' + text + '</a>' : text;}};
+                    that.html(linkify(txt, options ));
+                });
             })
         </script>
         <link rel="icon" type="image/x-icon">
