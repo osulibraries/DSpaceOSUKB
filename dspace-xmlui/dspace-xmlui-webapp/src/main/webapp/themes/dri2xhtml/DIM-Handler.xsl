@@ -841,7 +841,7 @@
 	
     <!-- A collection rendered in the detailView pattern; default way of viewing a collection. -->
     <xsl:template name="collectionDetailView-DIM">
-        <div class="detail-view">&#160;
+        <div class="detail-view">
             <!-- Generate the logo, if present, from the file section -->
             <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='LOGO']"/>
             <!-- Generate the info about the collections from the metadata section -->
@@ -991,7 +991,7 @@
     
     <!-- A community rendered in the detailView pattern; default way of viewing a community. -->
     <xsl:template name="communityDetailView-DIM">
-        <div class="detail-view">&#160;
+        <div class="detail-view">
             <!-- Generate the logo, if present, from the file section -->
             <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='LOGO']"/>
             <!-- Generate the info about the collections from the metadata section -->

@@ -808,6 +808,13 @@
         handle the attributes, and then apply the templates for the all children except the head. The id
         attribute is -->
     <xsl:template match="dri:div" priority="1">
+        <!-- bds: output the browse-by box before the h1 dri:head so that float works -->
+        <xsl:if test="@n='community-home'">
+            <xsl:apply-templates select="dri:div[@n='community-search-browse']"/>
+        </xsl:if>
+        <xsl:if test="@n='collection-home'">
+            <xsl:apply-templates select="dri:div[@n='collection-search-browse']"/>
+        </xsl:if>
         <xsl:apply-templates select="dri:head"/>
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">top</xsl:with-param>
@@ -818,7 +825,7 @@
             <xsl:choose>
                     <!--  does this element have any children -->
                     <xsl:when test="child::node()">
-                                <xsl:apply-templates select="*[not(name()='head')]"/>
+                                <xsl:apply-templates select="*[not(name()='head' or @n='community-search-browse' or @n='collection-search-browse')]"/>
                     </xsl:when>
                         <!-- if no children are found we add a space to eliminate self closing tags -->
                         <xsl:otherwise>
@@ -1653,7 +1660,7 @@
             <!-- bds: Prefer to have this only apply to h1 tags, and not things like "Recent Submissions",
                 so I'm adding this if clause here. This helps avoid styling conflicts. -->
             <xsl:if test="$head_count = 1">
-                <xsl:variable name="font-sizing" select="225 - string-length(current())"></xsl:variable>
+                <xsl:variable name="font-sizing" select="195 - string-length(current())"></xsl:variable>
                 <xsl:choose>
                     <xsl:when test="$font-sizing &lt; 130">
                         <xsl:attribute name="style">font-size: 130%;</xsl:attribute>

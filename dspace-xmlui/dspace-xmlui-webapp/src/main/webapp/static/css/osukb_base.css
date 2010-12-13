@@ -415,7 +415,6 @@ div#ds-body h1 {
     margin: 40px 0 10px 14px;
     color: #900;
     font-weight: normal;
-
 }
 
 div#ds-body h2 {
@@ -425,7 +424,7 @@ div#ds-body h2 {
     color: #000;
     background-color: inherit;
     font-weight: bolder;
-
+    clear: both;
 }
 
 div#ds-body h3 {
@@ -433,9 +432,8 @@ div#ds-body h3 {
 
 }
 
-div.intro-text {
-    padding: 4px;
-    background-color: #FFF;
+div.detail-view {
+    padding: 15px;
 }
 
 
@@ -569,7 +567,7 @@ div.notice a {
 }
 
 p.ds-paragraph {
-    margin: 0 0 5px 0;
+    margin: 5px 0;
 }
 
 div.license-info {
@@ -584,9 +582,11 @@ p.copyright-text {
         color: #222;
 }
 
+
 div.ds-logo-wrapper {
     float: right;
     padding: 20px 5px 5px 10px;
+    clear: both;
 }
 
 
@@ -594,9 +594,10 @@ div.search-browse {
     border: 2px solid #dee1de;
     background: #f6f4f4;
     width: 140px;
-    margin: 5px 10px;
+    margin: 5px 15px;
     padding: 5px !important;
     float: right;
+    font-size: 0.9em;
 }
 
 div.search-browse h3 {
@@ -606,7 +607,7 @@ div.search-browse h3 {
 }
 div.search-browse li {
     margin: 0px;
-    font-size: 0.8em;
+    display: block;
 }
 
 ul.collection-browse, ul.community-browse {
@@ -1061,7 +1062,7 @@ form.ds-interactive-div li.ds-form-item.last {
 form.ds-interactive-div.primary {
 
         clear: both;
-        padding: 0px;
+        padding: 0px 20px;
         margin-bottom: 10px;
 }
 
