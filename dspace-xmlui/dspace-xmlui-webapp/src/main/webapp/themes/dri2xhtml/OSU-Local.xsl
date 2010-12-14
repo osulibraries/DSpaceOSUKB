@@ -47,7 +47,7 @@
         <link rel='stylesheet' type='text/css'>
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
-                <xsl:text>://fonts.googleapis.com/css?family=Cantarell:regular,italic,bold,bolditalic</xsl:text>
+                <xsl:text>://fonts.googleapis.com/css?family=Droid+Sans:regular,bold</xsl:text>
             </xsl:attribute>
         </link>
 
