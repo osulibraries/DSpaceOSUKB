@@ -272,7 +272,7 @@ div#body-and-options {
     float:left;
     width:100%;
     position:relative;
-    right:794px;
+    right:790px;
     background:#f6f4f4; /* column 1 background colour */
 }
 div#ds-body {
@@ -473,7 +473,7 @@ div#ds-options h3 {
     font-size: 1em;
     color:#330000;
     margin:0 0 0 0;
-    padding:5px 0 4px 8px;
+    padding:5px 0 5px 10px;
     position:relative;
 }
 
@@ -500,14 +500,14 @@ div#ds-options h4 {
 
 /* This width setting seems necessary to keep IE happy.. */
 div#ds-options ul {
-        width: 220px;
+        width: 200px;
         margin: 0px 0px 5px 0px;
         padding: 0px;
 }
 
 div#ds-options li {
         
-        margin-left: 14px;
+        margin-left: 18px;
         padding: 0px;
         list-style: none;
 }
@@ -815,15 +815,29 @@ ul.alphabet li {
 */
 
 form.navigation {
-    margin: 0 auto;
+    border-top: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
     display: table;
+    margin: 0 auto;
+    padding: 5px;
     text-align: center;
+    width: 560px;
 }
 
 form.controls {
-    margin: 0 auto;
+    border-bottom: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
     display: table;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    width: 560px;
 }
+
 
 
 
@@ -1203,15 +1217,21 @@ ul.horizontal li span.bold a { color: black; }
 
 
 
+span.pagination-info {
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+
+}
 
 
 div.pagination {
-        position: relative;
-        padding: 8px;
-        clear: both;
-        margin: 0px 150px;
+    clear: both;
+    margin: 0 auto;
+    padding: 8px 0;
+    width: 500px;
+    text-align: center;
 }
-
 
 
 div.pagination-masked {
@@ -1222,19 +1242,12 @@ div.pagination-masked {
 
 a.previous-page-link {
         position: relative;
-        left: 70px;
-        top: 0px;
         float: left;
 }
 
-p.pagination-info {
-    text-align: center;
-}
 
 a.next-page-link {
         position: relative;
-        right: 70px;
-        top: -25px;
         float: right;
 }
 

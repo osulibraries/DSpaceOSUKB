@@ -228,7 +228,7 @@
                     <xsl:when test="dim:field[@element='identifier'][@qualifier='uri']">
                         <tr class="ds-table-row {$phase}">
                             <td class="field-label"></td>
-                            <td class="field-data"><xsl:call-template name="addthis_button"/></td>
+                            <td class="addthis"><xsl:call-template name="addthis_button"/></td>
                         </tr>
                     </xsl:when>
                 </xsl:choose>
