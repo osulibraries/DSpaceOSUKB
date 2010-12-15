@@ -217,54 +217,26 @@
   </xsl:template>
 
 
-<!-- bds: FAIL .. this only works with URLs that are followed by spaces...
-
-wish I could use this regex:
-\b(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|!:,.;]*[A-Z0-9+&@#/%=~_|]
- or maybe
-/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:;,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:;,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:;,.]*\)|[A-Z0-9+&@#\/%=~_|$])/ix
-but alas, this is XSLT 1.0 ..d'oh..
-
-
-<xsl:template name="parseurls">
-  <xsl:param name="text"/>
-  <xsl:choose>
-    <xsl:when test="contains($text, 'http://')">
-      <xsl:variable name="after_scheme" select="substring-after($text, 'http://')" />
-      <xsl:value-of select="substring-before($text, 'http://')"/>
-      <xsl:choose>
-	<xsl:when test="contains($after_scheme, ' ')">
-	  <xsl:variable name="url" select="concat('http://', substring-before($after_scheme, ' '))" />
-	  <xsl:call-template name="linkify"><xsl:with-param name="url" select="$url"/></xsl:call-template>
-	  <xsl:text> </xsl:text>
-	  <xsl:call-template name="parseurls">
-	    <xsl:with-param name="text" select="substring-after($after_scheme, ' ')"/>
-	  </xsl:call-template>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:variable name="url" select="concat('http://', $after_scheme)"/>
-	  <xsl:call-template name="linkify"><xsl:with-param name="url" select="$url"/></xsl:call-template>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$text"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template name="linkify">
-    <xsl:param name="url"/>
-    <xsl:element name="a">
-        <xsl:attribute name="href"><xsl:value-of select="$url"/></xsl:attribute>
-        <xsl:value-of select="$url"/>
-    </xsl:element>
-</xsl:template>
-
--->
-
 <!-- bds: remove search box from community/collection pages -->
 <xsl:template match="dri:div[@id='aspect.artifactbrowser.CollectionViewer.div.collection-search'] | dri:div[@id='aspect.artifactbrowser.CommunityViewer.div.community-search']">
 </xsl:template>
+
+<!-- bds: recent submissions box -->
+<!-- adding the 'View all' link -->
+<xsl:template match="dri:div[@n='collection-recent-submission'] | dri:div[@n='community-recent-submission']">
+    <xsl:apply-templates select="./dri:head"/>
+    <ul class="ds-artifact-list">
+        <xsl:apply-templates select="./dri:referenceSet" mode="summaryList"/>
+    </ul>
+    <div id="more-link">
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="/dri:document/dri:body/dri:div/dri:div/dri:div/dri:list/dri:item[3]/dri:xref/@target"/>
+            </xsl:attribute>
+            <xsl:text>View all submissions ></xsl:text>
+        </a>
+    </div>
+</xsl:template>
+
 
 </xsl:stylesheet>

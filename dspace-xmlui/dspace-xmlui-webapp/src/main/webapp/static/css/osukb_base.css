@@ -551,6 +551,10 @@ div#ds-footer-links {
 }
 
 
+div#more-link {
+    float: right;
+    padding: 2px;
+}
 
 
 div.notice {
