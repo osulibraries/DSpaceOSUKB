@@ -34,8 +34,10 @@
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:cc="http://creativecommons.org/ns#"
+                xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns:encoder="xalan://java.net.URLEncoder"
                 xmlns="http://www.w3.org/1999/xhtml"
-                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc rdf cc">
+                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc rdf cc xalan encoder">
 
     <xsl:output indent="yes"/>
 
@@ -544,11 +546,10 @@
                         <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
                             <!-- bds: link to author browse magic -->
                             <a>
-
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="$context-path"/>
                                     <xsl:text>/browse?value=</xsl:text>
-                                    <xsl:value-of select="node()"/>
+                                    <xsl:value-of select="encoder:encode(string(.))"/>
                                     <xsl:text>&amp;type=author</xsl:text>
                                 </xsl:attribute>
                                 <xsl:copy-of select="node()"/>

@@ -163,11 +163,10 @@
                     <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
                         <!-- bds: link to author browse magic -->
                         <a>
-
                             <xsl:attribute name="href">
                                 <xsl:value-of select="$context-path"/>
                                 <xsl:text>/browse?value=</xsl:text>
-                                <xsl:copy-of select="node()"/>
+                                <xsl:value-of select="encoder:encode(string(.))"/>
                                 <xsl:text>&amp;type=author</xsl:text>
                             </xsl:attribute>
                             <xsl:copy-of select="node()"/>
