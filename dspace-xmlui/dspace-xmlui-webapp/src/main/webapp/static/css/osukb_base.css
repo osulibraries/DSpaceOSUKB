@@ -10,7 +10,7 @@ body {
 background: url('../images/bkgd.png') repeat-x transparent;
 */
 p {
-    margin: 0;
+    margin: 0 0 10px;
     padding: 0;
 }
 a {
@@ -283,7 +283,7 @@ div#ds-body {
     overflow:hidden;
     color: inherit;
     margin: 0;
-    padding: 2px 0;
+    padding: 2px 0 10px;
     
 
 }
@@ -307,12 +307,12 @@ div#homepage-body {
 }
 div#homepage-body h1 {
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 4px 0 12px 0 !important;
 }
 div#homepage-featured {
     border-left: 1px solid #CCCCCC;
     float: right;
-    margin: 20px 0;
+    margin: 20px 0 20px 10px;
     padding: 10px;
     width: 200px;
     background: url("../images/bkgd.png") repeat-x;
@@ -419,7 +419,7 @@ div#ds-body h1 {
 
 div#ds-body h2 {
     font-size: 1.3em;
-    padding: 6px 0;
+    padding: 4px 0;
     margin-bottom: 0px;
     color: #000;
     background-color: inherit;
@@ -585,18 +585,18 @@ p.copyright-text {
 
 div.ds-logo-wrapper {
     float: right;
-    padding: 20px 5px 5px 10px;
+    padding: 10px 5px 10px 5px;
     clear: both;
+    margin-top: -74px;
 }
 
 
 div.search-browse {
     border: 2px solid #dee1de;
     background: #f6f4f4;
-    width: 140px;
+    width: 300px;
     margin: 5px 15px;
     padding: 5px !important;
-    float: right;
     font-size: 0.9em;
 }
 
@@ -607,16 +607,16 @@ div.search-browse h3 {
 }
 div.search-browse li {
     margin: 0px;
-    display: block;
+    display: inline;
 }
 
 ul.collection-browse, ul.community-browse {
     margin: 0;
-    padding: 0 0 0 5px;
+    padding: 0 0 0 0px;
 }
 
 ul.collection-browse li,ul.community-browse li {
-    margin: 0 0 0 22px;
+    margin: 0 8px;
     padding: 2px 0px;
 }
 
@@ -1104,7 +1104,7 @@ span.ds-form-label,label.ds-form-label {
         float: left;
         clear: left;
         padding: 5px 20px 3px 10px;
-        width: 150px;
+        width: 220px;
         font-weight: bold;
         vertical-align: middle;
         overflow: hidden;
