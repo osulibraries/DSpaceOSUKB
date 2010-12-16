@@ -813,7 +813,7 @@
                     <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
                     <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
                 </xsl:attribute>
-                <td>
+                <td class="detail-field-label">
                     <xsl:value-of select="./@mdschema"/>
                     <xsl:text>.</xsl:text>
                     <xsl:value-of select="./@element"/>
@@ -822,7 +822,7 @@
                         <xsl:value-of select="./@qualifier"/>
                     </xsl:if>
                 </td>
-            <td>
+            <td class="detail-field-data">
               <xsl:copy-of select="./node()"/>
               <xsl:if test="./@authority and ./@confidence">
                 <xsl:call-template name="authorityConfidenceIcon">
@@ -830,7 +830,7 @@
                 </xsl:call-template>
               </xsl:if>
             </td>
-                <td><xsl:value-of select="./@language"/></td>
+                <td class="detail-field-language"><xsl:value-of select="./@language"/></td>
             </tr>
         </xsl:if>
     </xsl:template>
