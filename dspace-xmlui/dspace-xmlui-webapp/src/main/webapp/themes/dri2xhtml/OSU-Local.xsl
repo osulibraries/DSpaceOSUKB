@@ -43,7 +43,7 @@
             </xsl:attribute>
             <xsl:text>var x=0;</xsl:text>
         </script>
-        <!-- Google webfont Cantarell, see http://code.google.com/webfonts/ -->
+        <!-- Google webfont Droid Sans, see http://code.google.com/webfonts/ -->
         <link rel='stylesheet' type='text/css'>
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
@@ -70,27 +70,6 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <!-- bds: breadcrumb trail shrinker -->
-        <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
-        <script rel="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text> </xsl:text>
-        </script>        <script rel="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text> </xsl:text>
-        </script>
-        <script type="text/javascript">
-            jQuery(document).ready(function()
-            {
-                jQuery("#breadCrumb0").jBreadCrumb();
-            })
-        </script>
         <link rel="icon" type="image/x-icon">
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
@@ -103,6 +82,28 @@
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
             </xsl:attribute>
         </link>
+                <!-- bds: breadcrumb trail shrinker -->
+        <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script type="text/javascript">
+            jQuery(document).ready(function()
+            {
+                jQuery("#breadCrumb0").jBreadCrumb();
+            })
+        </script>
     </xsl:template>
 
     <!-- 2010-05-04 PMBMD - Adds the html pieces of the osu navbar -->

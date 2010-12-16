@@ -172,10 +172,9 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	height: 21px;
 	display: block;
 }
-.breadCrumb ul li.ds-trail-link
+.breadCrumb ul li
 {
-    
-
+        white-space: nowrap;
     	display: block;
 	float: left;
 	position: relative;
