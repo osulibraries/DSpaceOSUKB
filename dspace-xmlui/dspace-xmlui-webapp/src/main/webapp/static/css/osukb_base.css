@@ -60,8 +60,7 @@ tr.ds-table-row.odd {
 
 tr.ds-table-row.even {
     color: inherit;
-    background-color: #f6f4f4;
-
+    background-color: #eef1ee;
 }
 
 /* ds-main is the outer container for the other four sections:
@@ -700,7 +699,7 @@ ul.ds-artifact-list li.odd {
 
 ul.ds-artifact-list li.even {
     color: inherit;
-    background-color: #dee1de;
+    background-color: #eef1ee;
 }
 
 ul.ds-artifact-list li {
@@ -877,7 +876,9 @@ table.ds-includeSet-table {
     border: 2px solid #dee1de;
 }
 
-
+table.ds-includeSet-table tr {
+    background-color: #f6f4f4 !important;
+}
 
 
 
@@ -1089,7 +1090,7 @@ form.ds-interactive-div li.odd {
 
 form.ds-interactive-div li.even {
         color: inherit;
-        background-color: #eef1ee;
+        background-color: #f5faff;
 }
 
 form.ds-interactive-div li.ds-form-item.last {
