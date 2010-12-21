@@ -89,13 +89,7 @@
         {
             if (i > _options.beginingElementsToLeaveOpen && i < itemsToRemove) 
             {
-            // TODO: improve this width function to better account for kerning of text.
-            // it is doing calculations on another font before the webfont is loaded
-            // need to use webfont loader and the active() callback to call on jBreadCrumb
-            // after the font has finished loading so that these widths are calculated correctly.
-            // see: http://code.google.com/apis/webfonts/docs/webfont_loader.html
-            // the + value at the end of the next line makes up for the error for now.
-                jQuery(listElement).find('a').wrap('<span></span>').width(jQuery(listElement).find('a').width() + 15);
+                jQuery(listElement).find('a').wrap('<span></span>').width(jQuery(listElement).find('a').width() + 3);
                 
                 // Add the overlay png.
                 jQuery(listElement).append(jQuery('<div class="' + _options.overlayClass + '"></div>').css(

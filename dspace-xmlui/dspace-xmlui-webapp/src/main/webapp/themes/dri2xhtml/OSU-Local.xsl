@@ -99,7 +99,9 @@
             <xsl:text> </xsl:text>
         </script>
         <script type="text/javascript">
-            jQuery(document).ready(function()
+        <!-- bds: had to change this from jQuery(document) to $(document) so that it would wait
+                for the font to finish loading before making text width calculations -->
+            $(document).ready(function()
             {
                 jQuery("#breadCrumb0").jBreadCrumb();
             })
