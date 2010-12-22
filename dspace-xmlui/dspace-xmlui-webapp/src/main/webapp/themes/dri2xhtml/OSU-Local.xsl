@@ -136,6 +136,13 @@
 $(document).ready(function() {
     $("#breadCrumb0").jBreadCrumb();
 	$(".column").equalHeights();
+	/* Linkify All Item Metadata content */
+    $('tr.ds-table-row td').not('td.addthis').each(function(){
+       var that = $(this),
+       txt = that.html(),
+       options = {callback: function( text, href ) {return href ? '<a href="' + href + '" title="' + href + '">' + text + '</a>' : text;}};
+       that.html(linkify(txt, options ));
+    });
 });
         </script>
     </xsl:template>
