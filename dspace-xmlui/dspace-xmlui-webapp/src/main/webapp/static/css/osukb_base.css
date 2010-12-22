@@ -308,9 +308,30 @@ div.feature-item-logo {
 }
 
 
+div.top-downloads {
+    font-size: 0.8em;
+}
 
+div.top-downloads {
+    width: auto;
+}
 
+div.top-downloads li {
+    padding: 2px 4px;
+    width: auto !important;
+    
+}
 
+div.top-downloads li.odd {
+    background-color: #e6d2a1 !important;
+    border: 1px solid #333;
+}
+
+div.top-downloads li.even {
+    background-color: #f2ebda !important;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
 
 
 
@@ -683,7 +704,9 @@ ul.ds-artifact-list li {
 ul.ds-artifact-list li img {
     border: 0px;
     max-height: 80px;
-    max-width: 80px;
+    max-width: 100px;
+    margin: 3px 5px;
+
 }
 
 
