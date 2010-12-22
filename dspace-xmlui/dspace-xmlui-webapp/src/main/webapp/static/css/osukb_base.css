@@ -1,6 +1,6 @@
 
 body {
-        font-family: 'Droid Sans', Corbel, Optima, sans-serif;
+        font-family: Corbel, Optima, sans-serif;
         background-color: #C2CEC2;
         font-size: 0.95em;
 	margin: 0;
@@ -160,7 +160,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	display: block;
 	height: 21px;
 	overflow: hidden;
-	width: 785px;
+	width: 780px;
 	padding:5px;
 	border:none 1px #dedede;
 	background:#ffffff;
@@ -252,43 +252,21 @@ div#body-and-options {
     background-color: #999
 }
 
-/* bds: container1 and contatiner2 are nested inside body-and-options and are used
-        to help create equal-height columns. See:
-        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
-*/
-#container2 {
-    clear:left;
-    float:left;
-    width:100%;
-    overflow:hidden;
-    background:#ffffff; /* column 2 background colour */
-}
-#container1 {
-    float:left;
-    width:100%;
-    position:relative;
-    right:790px;
-    background:#f6f4f4; /* column 1 background colour */
-}
+
 div#ds-body {
-    float:left;
+    float:right;
     width:790px;
+    background: #ffffff;
     position:relative;
-    left:1000px;
-    overflow:hidden;
     color: inherit;
     margin: 0;
-    padding: 2px 0 10px;
-    
-
 }
 
 div#ds-options {
     float:left;
     width:210px;
+    background:#f6f4f4;
     position:relative;
-    left:0px;
-    overflow:hidden;
     color: inherit;
     font-size: 0.8em;
 }
@@ -446,7 +424,7 @@ div.detail-view {
 div.ds-option-set {
 
     padding: 12px 2px 3px 2px;
-    margin: -3px 0px 8px 0px;
+    margin: 0px 0px 8px 0px;
     color: inherit;
 }
 

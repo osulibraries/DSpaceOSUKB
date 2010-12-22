@@ -36,20 +36,21 @@
             </xsl:attribute>
         </link>
         <!-- TODO not currently calling IE specific navbar css files. -->
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/osu-navbar-media/js/searchform.js</xsl:text>
             </xsl:attribute>
             <xsl:text>var x=0;</xsl:text>
         </script>
+
         <!-- Google webfont Droid Sans, see http://code.google.com/webfonts/ -->
-        <link rel='stylesheet' type='text/css'>
+<!--        <link rel='stylesheet' type='text/css'>
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
                 <xsl:text>://fonts.googleapis.com/css?family=Droid+Sans:regular,bold</xsl:text>
             </xsl:attribute>
-        </link>
+        </link>-->
 
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
@@ -98,13 +99,44 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <script type="text/javascript">
-        <!-- bds: had to change this from jQuery(document) to $(document) so that it would wait
-                for the font to finish loading before making text width calculations -->
-            $(document).ready(function()
-            {
-                jQuery("#breadCrumb0").jBreadCrumb();
-            })
+        <script rel="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.equalheights.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+
+
+<!--<script type="text/javascript">
+    <xsl:attribute name="src">
+        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
+        <xsl:text>://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js</xsl:text>
+    </xsl:attribute>
+    <xsl:text> </xsl:text>
+</script>
+
+<script type="text/javascript">
+  WebFont.load({
+        "google": {
+            "families": ['Droid Sans:regular,bold']
+        },
+        "active": function() {
+                $("#breadCrumb0").jBreadCrumb();
+                $(".column").equalHeights();
+        }
+    });
+</script>-->
+
+<!--         bds: equal height columns trick
+                from http://www.cssnewbie.com/equalheights-jquery-plugin/  -->
+
+    <script>
+
+$(document).ready(function() {
+    $("#breadCrumb0").jBreadCrumb();
+	$(".column").equalHeights();
+});
         </script>
     </xsl:template>
 

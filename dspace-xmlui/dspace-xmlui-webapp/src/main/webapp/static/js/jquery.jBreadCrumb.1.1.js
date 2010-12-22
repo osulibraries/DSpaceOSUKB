@@ -89,7 +89,7 @@
         {
             if (i > _options.beginingElementsToLeaveOpen && i < itemsToRemove) 
             {
-                jQuery(listElement).find('a').wrap('<span></span>').width(jQuery(listElement).find('a').width() + 3);
+                jQuery(listElement).find('a').wrap('<span></span>').width(jQuery(listElement).find('a').width() + 10);
                 
                 // Add the overlay png.
                 jQuery(listElement).append(jQuery('<div class="' + _options.overlayClass + '"></div>').css(

@@ -159,11 +159,7 @@
         http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
 -->
                     <div id="body-and-options">
-                        <div id="container2">
-                            <div id="container1">
-                                <xsl:apply-templates />
-                            </div>
-                        </div>
+                        <xsl:apply-templates />
                     </div>
 
                     <xsl:call-template name="buildFooter"/>
@@ -358,7 +354,9 @@
                     <xsl:value-of select="$context-path"/>
                     <xsl:text>/</xsl:text>
                 </xsl:attribute>
-                <span id="ds-header-logo"></span>
+                <span id="ds-header-logo">
+                    <xsl:text> </xsl:text>
+                </span>
             </a>
         </div>
     </xsl:template>
@@ -373,7 +371,7 @@
         <div id="ds-footer">
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
             <div id="osu-footer-logo">
-                <span> </span>
+                <span><xsl:text> </xsl:text></span>
             </div>
             <div id="osu-logo-text">
                 <p>© 2010, The Ohio State University</p>
@@ -407,6 +405,7 @@
                     <xsl:value-of select="$context-path"/>
                     <xsl:text>/htmlmap</xsl:text>
                 </xsl:attribute>
+                <xsl:text> </xsl:text>
             </a>
         </div>
     </xsl:template>
@@ -418,7 +417,7 @@
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-        <div id="ds-body">
+        <div id="ds-body" class="column">
             <xsl:call-template name="trail"/>
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
                 <div id="ds-system-wide-alert">
@@ -657,7 +656,7 @@
     -->
     <!-- TODO: figure out why i18n tags break the go button -->
     <xsl:template match="dri:options">
-        <div id="ds-options">
+        <div id="ds-options" class="column">
 <!-- bds: adding help and about links bit -->
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
