@@ -159,11 +159,7 @@
         http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
 -->
                     <div id="body-and-options">
-                        <div id="container2">
-                            <div id="container1">
-                                <xsl:apply-templates />
-                            </div>
-                        </div>
+                        <xsl:apply-templates />
                     </div>
 
                     <xsl:call-template name="buildFooter"/>
@@ -358,7 +354,9 @@
                     <xsl:value-of select="$context-path"/>
                     <xsl:text>/</xsl:text>
                 </xsl:attribute>
-                <span id="ds-header-logo"></span>
+                <span id="ds-header-logo">
+                    <xsl:text> </xsl:text>
+                </span>
             </a>
         </div>
     </xsl:template>
@@ -373,7 +371,7 @@
         <div id="ds-footer">
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
             <div id="osu-footer-logo">
-                <span> </span>
+                <span><xsl:text> </xsl:text></span>
             </div>
             <div id="osu-logo-text">
                 <p>© 2010, The Ohio State University</p>
@@ -407,6 +405,7 @@
                     <xsl:value-of select="$context-path"/>
                     <xsl:text>/htmlmap</xsl:text>
                 </xsl:attribute>
+                <xsl:text> </xsl:text>
             </a>
         </div>
     </xsl:template>
@@ -418,7 +417,7 @@
         templates of the body's child elements (which consists entirely of dri:div tags).
     -->
     <xsl:template match="dri:body">
-        <div id="ds-body">
+        <div id="ds-body" class="column">
             <xsl:call-template name="trail"/>
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
                 <div id="ds-system-wide-alert">
@@ -611,12 +610,12 @@
     <xsl:template match="dri:trail">
         <li>
             <xsl:attribute name="class">
-                <xsl:text>ds-trail-link </xsl:text>
+                <xsl:text>ds-trail-link</xsl:text>
                 <xsl:if test="position()=1">
-                    <xsl:text>first-link </xsl:text>
+                    <xsl:text> first-link</xsl:text>
                 </xsl:if>
                 <xsl:if test="position()=last()">
-                    <xsl:text>last-link</xsl:text>
+                    <xsl:text> last-link</xsl:text>
                 </xsl:if>
             </xsl:attribute>
             <!-- Determine whether we are dealing with a link or plain text trail link -->
@@ -657,7 +656,7 @@
     -->
     <!-- TODO: figure out why i18n tags break the go button -->
     <xsl:template match="dri:options">
-        <div id="ds-options">
+        <div id="ds-options" class="column">
 <!-- bds: adding help and about links bit -->
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
@@ -808,7 +807,13 @@
         handle the attributes, and then apply the templates for the all children except the head. The id
         attribute is -->
     <xsl:template match="dri:div" priority="1">
-        <xsl:apply-templates select="dri:head"/>
+<!--        <xsl:if test="@n='community-home' | @n='collection-home'">
+            <xsl:apply-templates select="dri:div[@n='community-search-browse']"/>
+        </xsl:if>
+        <xsl:if test="@n='collection-home'">
+            <xsl:apply-templates select="dri:div[@n='collection-search-browse']"/>
+        </xsl:if>-->
+       <xsl:apply-templates select="dri:head"/>
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">top</xsl:with-param>
         </xsl:apply-templates>
@@ -818,7 +823,7 @@
             <xsl:choose>
                     <!--  does this element have any children -->
                     <xsl:when test="child::node()">
-                                <xsl:apply-templates select="*[not(name()='head')]"/>
+                           <xsl:apply-templates select="*[not(name()='head')]"/><!-- or @n='community-search-browse' or @n='collection-search-browse'-->
                     </xsl:when>
                         <!-- if no children are found we add a space to eliminate self closing tags -->
                         <xsl:otherwise>
@@ -1653,7 +1658,7 @@
             <!-- bds: Prefer to have this only apply to h1 tags, and not things like "Recent Submissions",
                 so I'm adding this if clause here. This helps avoid styling conflicts. -->
             <xsl:if test="$head_count = 1">
-                <xsl:variable name="font-sizing" select="225 - string-length(current())"></xsl:variable>
+                <xsl:variable name="font-sizing" select="195 - string-length(current())"></xsl:variable>
                 <xsl:choose>
                     <xsl:when test="$font-sizing &lt; 130">
                         <xsl:attribute name="style">font-size: 130%;</xsl:attribute>
@@ -3413,3 +3418,4 @@
     </xsl:template>
 
 </xsl:stylesheet>
+
