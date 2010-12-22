@@ -163,11 +163,10 @@
                     <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
                         <!-- bds: link to author browse magic -->
                         <a>
-
                             <xsl:attribute name="href">
                                 <xsl:value-of select="$context-path"/>
                                 <xsl:text>/browse?value=</xsl:text>
-                                <xsl:copy-of select="node()"/>
+                                <xsl:value-of select="encoder:encode(string(.))"/>
                                 <xsl:text>&amp;type=author</xsl:text>
                             </xsl:attribute>
                             <xsl:copy-of select="node()"/>
@@ -243,7 +242,7 @@
     </xsl:template>
     
 
-    <!-- A collection rendered in the summaryList pattern. Encountered on the community-list page -->
+    <!-- A collection rendered in the summaryList pattern. Encountered on the collection-list page -->
     <xsl:template name="collectionSummaryList-DIM">
         <xsl:variable name="data" select="./mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim"/>
         <a href="{@OBJID}">
@@ -814,7 +813,7 @@
                     <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
                     <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
                 </xsl:attribute>
-                <td>
+                <td class="detail-field-label">
                     <xsl:value-of select="./@mdschema"/>
                     <xsl:text>.</xsl:text>
                     <xsl:value-of select="./@element"/>
@@ -823,7 +822,7 @@
                         <xsl:value-of select="./@qualifier"/>
                     </xsl:if>
                 </td>
-            <td>
+            <td class="detail-field-data">
               <xsl:copy-of select="./node()"/>
               <xsl:if test="./@authority and ./@confidence">
                 <xsl:call-template name="authorityConfidenceIcon">
@@ -831,7 +830,7 @@
                 </xsl:call-template>
               </xsl:if>
             </td>
-                <td><xsl:value-of select="./@language"/></td>
+                <td class="detail-field-language"><xsl:value-of select="./@language"/></td>
             </tr>
         </xsl:if>
     </xsl:template>
@@ -841,7 +840,7 @@
 	
     <!-- A collection rendered in the detailView pattern; default way of viewing a collection. -->
     <xsl:template name="collectionDetailView-DIM">
-        <div class="detail-view">&#160;
+        <div class="detail-view">
             <!-- Generate the logo, if present, from the file section -->
             <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='LOGO']"/>
             <!-- Generate the info about the collections from the metadata section -->
@@ -991,7 +990,7 @@
     
     <!-- A community rendered in the detailView pattern; default way of viewing a community. -->
     <xsl:template name="communityDetailView-DIM">
-        <div class="detail-view">&#160;
+        <div class="detail-view">
             <!-- Generate the logo, if present, from the file section -->
             <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='LOGO']"/>
             <!-- Generate the info about the collections from the metadata section -->
