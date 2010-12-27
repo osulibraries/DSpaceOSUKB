@@ -146,6 +146,11 @@
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_identifier">Identifier</message>
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_language">Language (ISO)</message>
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_keyword">Keyword</message>
+
+        <!-- bds: adding some labels that were missing per mpw -->
+        <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Type</message>
+	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_place">Place</message>
+	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type_id">Identifier</message>
    
    <!--  some common other possibilities for Advanced Search Fields -->
    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_contributor">Contributor</message>
@@ -634,7 +639,7 @@
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_help">The item has more than one title, <i>e.g. a translated title</i></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item: </message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Published</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release Date or Publication Date</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">The item has a release date or publication date</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.date_issued">Date Issued</message>
@@ -734,7 +739,7 @@
 	<message key="xmlui.Submission.submit.CompletedStep.head">Submission complete</message>	
 	<message key="xmlui.Submission.submit.CompletedStep.info1">Your submission will now go through the review process for this collection. You will receive e-mail notification as soon as your submission has joined the collection, or if there is a problem with your submission. You may also check on the status of your submission by visiting your submissions page.</message>	
 	<message key="xmlui.Submission.submit.CompletedStep.go_submission">Go to the Submissions page</message>	
-	<message key="xmlui.Submission.submit.CompletedStep.submit_again">Submit another item</message>		
+	<message key="xmlui.Submission.submit.CompletedStep.submit_again">Submit another item to the same collection</message>
 
 	<!-- org.dspace.app.xmlui.Submission.workflow.PerformTaskStep -->
 	<message key="xmlui.Submission.workflow.PerformTaskStep.info1">Actions you may perform on this task:</message>
