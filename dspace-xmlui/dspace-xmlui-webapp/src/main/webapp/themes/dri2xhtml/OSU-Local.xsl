@@ -75,7 +75,7 @@
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
             </xsl:attribute>
         </link>
-                <!-- bds: breadcrumb trail shrinker -->
+        <!-- bds: jQuery breadcrumb trail shrinker, uses easing plugin -->
         <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
         <script type="text/javascript">
             <xsl:attribute name="src">
@@ -91,21 +91,9 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <script type="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/js/jquery.equalheights.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text> </xsl:text>
-        </script>
-
-<!--         bds: equal height columns trick
-                from http://www.cssnewbie.com/equalheights-jquery-plugin/  -->
-                <!--$(".column").equalHeights();-->
         <script>
-            $(window).load(function() {
+            $(document).ready(function() {
                 $("#breadCrumb0").jBreadCrumb();
-                
             });
         </script>
     </xsl:template>
