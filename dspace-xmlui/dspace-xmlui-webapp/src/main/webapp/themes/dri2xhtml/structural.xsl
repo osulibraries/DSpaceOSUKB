@@ -47,16 +47,16 @@
 -->
 
 <xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
-        xmlns:dri="http://di.tamu.edu/DRI/1.0/"
-        xmlns:mets="http://www.loc.gov/METS/"
-        xmlns:xlink="http://www.w3.org/TR/xlink/"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-        xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:mods="http://www.loc.gov/mods/v3"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns="http://www.w3.org/1999/xhtml"
-        exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
+                xmlns:dri="http://di.tamu.edu/DRI/1.0/"
+                xmlns:mets="http://www.loc.gov/METS/"
+                xmlns:xlink="http://www.w3.org/TR/xlink/"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+                xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
+                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns="http://www.w3.org/1999/xhtml"
+                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
 
     <xsl:output indent="yes"/>
 
@@ -121,29 +121,29 @@
             <xsl:call-template name="buildHead"/>
             <!-- Then proceed to the body -->
             <xsl:choose>
-              <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='framing'][@qualifier='popup']">
-                <xsl:apply-templates select="dri:body/*"/>
-                <!-- add setup JS code if this is a choices lookup page -->
-                <xsl:if test="dri:body/dri:div[@n='lookup']">
-                  <xsl:call-template name="choiceLookupPopUpSetup"/>
-                </xsl:if>
-              </xsl:when>
-              <xsl:otherwise>
-            <body>
+                <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='framing'][@qualifier='popup']">
+                    <xsl:apply-templates select="dri:body/*"/>
+                    <!-- add setup JS code if this is a choices lookup page -->
+                    <xsl:if test="dri:body/dri:div[@n='lookup']">
+                        <xsl:call-template name="choiceLookupPopUpSetup"/>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <body>
 
-                <!-- bds: see OSU-local.xsl for buildBodyOSU -->
+                        <!-- bds: see OSU-local.xsl for buildBodyOSU -->
                 <!--      (really just builds OSU navbar) -->
-                <xsl:call-template name="buildBodyOSU"/>
-                                <div id="ds-main">
-                    <!--
+                        <xsl:call-template name="buildBodyOSU"/>
+                        <div id="ds-main">
+                        <!--
                         The header div, complete with title, subtitle, trail and other junk. The trail is
                         built by applying a template over pageMeta's trail children. -->
-                    <xsl:call-template name="buildHeader"/>
+                        <xsl:call-template name="buildHeader"/>
 
-                <!-- bds: the following items have been separated from their original containers -->
-                    <xsl:call-template name="scarlet-bar"/>
-                    <xsl:call-template name="grey-bar"/>
-                    <!-- bds: trail moving to inside ds-body
+                        <!-- bds: the following items have been separated from their original containers -->
+                        <xsl:call-template name="scarlet-bar"/>
+                        <xsl:call-template name="grey-bar"/>
+                        <!-- bds: trail moving to inside ds-body
                     <xsl:call-template name="trail"/>-->
 
                     <!--
@@ -158,19 +158,20 @@
         to help create equal-height columns. See:
         http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
 -->
-                    <div id="body-and-options">
-                        <xsl:apply-templates />
-                    </div>
+                        <div id="body-and-options">
+                            <xsl:apply-templates />
+                            <div id="clearBody" />
+                            </div>
 
-                    <xsl:call-template name="buildFooter"/>
-                </div>
-            </body>
-              </xsl:otherwise>
+                            <xsl:call-template name="buildFooter"/>
+                        </div>
+                    </body>
+                </xsl:otherwise>
             </xsl:choose>
         </html>
     </xsl:template>
-    
-    
+
+
     <!-- The HTML head element contains references to CSS as well as embedded JavaScript code. Most of this
         information is either user-provided bits of post-processing (as in the case of the JavaScript), or
         references to stylesheets pulled directly from the pageMeta element. -->
@@ -178,13 +179,13 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <meta name="Generator">
-              <xsl:attribute name="content">
-                <xsl:text>DSpace</xsl:text>
-                <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='dspace'][@qualifier='version']">
-                  <xsl:text> </xsl:text>
-                  <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='dspace'][@qualifier='version']"/>
-                </xsl:if>
-              </xsl:attribute>
+                <xsl:attribute name="content">
+                    <xsl:text>DSpace</xsl:text>
+                    <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='dspace'][@qualifier='version']">
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='dspace'][@qualifier='version']"/>
+                    </xsl:if>
+                </xsl:attribute>
             </meta>
             <xsl:call-template name="extraHead-top"/>
             <!-- bds: see OSU-local.xsl for buildHeadOSU -->
@@ -211,7 +212,7 @@
                     </xsl:attribute>
                 </link>
             </xsl:for-each>
-            
+
             <!-- Add syndication feeds -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']">
                 <link rel="alternate" type="application">
@@ -224,7 +225,7 @@
                     </xsl:attribute>
                 </link>
             </xsl:for-each>
-            
+
             <!--  Add OpenSearch auto-discovery link -->
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='opensearch'][@qualifier='shortName']">
                 <link rel="search" type="application/opensearchdescription+xml">
@@ -244,40 +245,40 @@
                     </xsl:attribute>
                 </link>
             </xsl:if>
-            
+
             <!-- The following javascript removes the default text of empty text areas when they are focused on or submitted -->
             <!-- There is also javascript to disable submitting a form when the 'enter' key is pressed. -->
-                        <script type="text/javascript">
-                                //Clear default text of emty text areas on focus
-                                function tFocus(element)
-                                {
-                                        if (element.value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){element.value='';}
-                                }
-                                //Clear default text of emty text areas on submit
-                                function tSubmit(form)
-                                {
-                                        var defaultedElements = document.getElementsByTagName("textarea");
-                                        for (var i=0; i != defaultedElements.length; i++){
-                                                if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
-                                                        defaultedElements[i].value='';}}
-                                }
-                                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start over)
-                                function disableEnterKey(e)
-                                {
-                                     var key;
-                                
-                                     if(window.event)
-                                          key = window.event.keyCode;     //Internet Explorer
-                                     else
-                                          key = e.which;     //Firefox and Netscape
-                                
-                                     if(key == 13)  //if "Enter" pressed, then disable!
-                                          return false;
-                                     else
-                                          return true;
-                                }
+            <script type="text/javascript">
+                //Clear default text of emty text areas on focus
+                function tFocus(element)
+                {
+                if (element.value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){element.value='';}
+                }
+                //Clear default text of emty text areas on submit
+                function tSubmit(form)
+                {
+                var defaultedElements = document.getElementsByTagName("textarea");
+                for (var i=0; i != defaultedElements.length; i++){
+                if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
+                defaultedElements[i].value='';}}
+                }
+                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start over)
+                function disableEnterKey(e)
+                {
+                var key;
+
+                if(window.event)
+                key = window.event.keyCode;     //Internet Explorer
+                else
+                key = e.which;     //Firefox and Netscape
+
+                if(key == 13)  //if "Enter" pressed, then disable!
+                return false;
+                else
+                return true;
+                }
             </script>
-            
+
             <!-- Add theme javascipt  -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
                 <script type="text/javascript">
@@ -287,9 +288,9 @@
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
                         <xsl:text>/</xsl:text>
                         <xsl:value-of select="."/>
-                    </xsl:attribute>&#160;</script>
+                </xsl:attribute>&#160;</script>
             </xsl:for-each>
-            
+
             <!-- add "shared" javascript from static, path is relative to webapp root-->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][@qualifier='static']">
                 <script type="text/javascript">
@@ -297,36 +298,36 @@
                         <xsl:value-of select="$context-path"/>
                         <xsl:text>/</xsl:text>
                         <xsl:value-of select="."/>
-                    </xsl:attribute>&#160;</script>
+                </xsl:attribute>&#160;</script>
             </xsl:for-each>
-            
-            
+
+
             <!-- Add a google analytics script if the key is present -->
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
-                                <script type="text/javascript">
-                                        <xsl:text>var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");</xsl:text>
-                                        <xsl:text>document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</xsl:text>
-                                </script>
+                <script type="text/javascript">
+                    <xsl:text>var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");</xsl:text>
+                    <xsl:text>document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</xsl:text>
+                </script>
 
-                                <script type="text/javascript">
-                                        <xsl:text>try {</xsl:text>
-                                                <xsl:text>var pageTracker = _gat._getTracker("</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']"/><xsl:text>");</xsl:text>
-                                                <xsl:text>pageTracker._trackPageview();</xsl:text>
-                                        <xsl:text>} catch(err) {}</xsl:text>
-                                </script>
+                <script type="text/javascript">
+                    <xsl:text>try {</xsl:text>
+                    <xsl:text>var pageTracker = _gat._getTracker("</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']"/><xsl:text>");</xsl:text>
+                    <xsl:text>pageTracker._trackPageview();</xsl:text>
+                    <xsl:text>} catch(err) {}</xsl:text>
+                </script>
             </xsl:if>
-            
-            
+
+
             <!-- Add the title in -->
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']" />
             <title>
                 <xsl:choose>
-                        <xsl:when test="not($page_title)">
-                                <xsl:text>  </xsl:text>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:copy-of select="$page_title/node()" />
-                        </xsl:otherwise>
+                    <xsl:when test="not($page_title)">
+                        <xsl:text>  </xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="$page_title/node()" />
+                    </xsl:otherwise>
                 </xsl:choose>
             </title>
 
@@ -344,7 +345,7 @@
 
 
 
-    
+
     <!-- The header (distinct from the HTML head element) contains the title, subtitle, login box and various
         placeholders for header images -->
     <xsl:template name="buildHeader">
@@ -365,7 +366,7 @@
 
 
 
-    
+
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
@@ -377,7 +378,7 @@
                 <p>© 2010, The Ohio State University</p>
             </div>
             <div id="ds-footer-links">
-<!-- bds: JSPUI didn't have a contact link, so I comment this one out too
+                <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
                                 <a>
                     <xsl:attribute name="href">
                         <xsl:value-of select="$context-path"/>
@@ -409,9 +410,9 @@
             </a>
         </div>
     </xsl:template>
-    
 
-    
+
+
     <!--
         The template to handle the dri:body element. It simply creates the ds-body div and applies
         templates of the body's child elements (which consists entirely of dri:div tags).
@@ -445,7 +446,7 @@
 
 
 
-<!-- bds: scarlet bar for user-box -->
+    <!-- bds: scarlet bar for user-box -->
     <xsl:template name="scarlet-bar">
         <div id="scarlet-bar">
             <xsl:choose>
@@ -455,20 +456,20 @@
                             <a>
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='url']"/>
+                                                  dri:metadata[@element='identifier' and @qualifier='url']"/>
                                 </xsl:attribute>
                                 <i18n:text>xmlui.dri2xhtml.structural.profile</i18n:text>
                                 <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                    dri:metadata[@element='identifier' and @qualifier='firstName']"/>
+                                              dri:metadata[@element='identifier' and @qualifier='firstName']"/>
                                 <xsl:text> </xsl:text>
                                 <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                    dri:metadata[@element='identifier' and @qualifier='lastName']"/>
+                                              dri:metadata[@element='identifier' and @qualifier='lastName']"/>
                             </a>
                             <xsl:text> | </xsl:text>
                             <a>
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
+                                                  dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
                                 </xsl:attribute>
                                 <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
                             </a>
@@ -481,7 +482,7 @@
                             <a>
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
-                                        dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
+                                                  dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
                                 </xsl:attribute>
                                 <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
                             </a>
@@ -502,10 +503,10 @@
 
 
 
-<!-- bds: grey bar for search-box -->
+    <!-- bds: grey bar for search-box -->
     <xsl:template name="grey-bar">
         <div id="grey-bar">
-<!-- bds: copied search box from options bar to here -->
+            <!-- bds: copied search box from options bar to here -->
             <div id="ds-global-search">
                 <form id="ds-search-form" method="post">
                     <xsl:attribute name="action">
@@ -551,13 +552,13 @@
                                         </xsl:attribute>
                                     </input>
                                     <xsl:choose>
-            <!-- bds : temporary hack to get container type [community|collection], since the following test is broken (not found in DRI)
+                                        <!-- bds : temporary hack to get container type [community|collection], since the following test is broken (not found in DRI)
                                         <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
-              -->                       <xsl:when test="/dri:document/dri:options/dri:list[@n='browse']/dri:list[@n='context']/dri:head/i18n:text/text() = 'xmlui.ArtifactBrowser.Navigation.head_this_community'">
-                                                <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
+                                        -->                       <xsl:when test="/dri:document/dri:options/dri:list[@n='browse']/dri:list[@n='context']/dri:head/i18n:text/text() = 'xmlui.ArtifactBrowser.Navigation.head_this_community'">
+                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                                <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
+                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
                                         </xsl:otherwise>
 
                                     </xsl:choose>
@@ -574,20 +575,20 @@
                 </a>
             </div>
         </div>
-     </xsl:template>
+    </xsl:template>
 
 
 
 
 
-<!-- bds: moving the trail in here, copied from the original in the buildHeader section -->
+    <!-- bds: moving the trail in here, copied from the original in the buildHeader section -->
 <!--      also setting it to not appear on the home page or on the CC list page  -->
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
         <xsl:choose>
             <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
-            or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
-            or /dri:document/dri:body/dri:div[@rend]='primary submission'">
+                      or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
+                      or /dri:document/dri:body/dri:div[@rend]='primary submission'">
 
             </xsl:when>
             <xsl:otherwise>
@@ -605,7 +606,7 @@
                 </div>
             </xsl:otherwise>
         </xsl:choose>
-     </xsl:template>
+    </xsl:template>
 
     <xsl:template match="dri:trail">
         <li>
@@ -657,7 +658,7 @@
     <!-- TODO: figure out why i18n tags break the go button -->
     <xsl:template match="dri:options">
         <div id="ds-options" class="column">
-<!-- bds: adding help and about links bit -->
+            <!-- bds: adding help and about links bit -->
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
             </h3>
@@ -669,7 +670,7 @@
                 </ul>
             </div>
 
-<!-- bds: removing search box from options box -->
+            <!-- bds: removing search box from options box -->
             <!--<h3 id="ds-search-option-head" class="ds-option-set-head"><i18n:text>xmlui.dri2xhtml.structural.search</i18n:text></h3>
             <div id="ds-search-option" class="ds-option-set">
                  The form, complete with a text box and a button, all built from attributes referenced
@@ -758,7 +759,7 @@
             <xsl:if test="count(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']) != 0">
                 <h3 id="ds-feed-option-head" class="ds-option-set-head"><xsl:text>RSS Feeds</xsl:text></h3>
                 <div id="ds-feed-option" class="ds-option-set">
-<!-- bds: see OSU-local.xsl for addRSSLinks -->
+                    <!-- bds: see OSU-local.xsl for addRSSLinks -->
                     <ul><xsl:call-template name="addRSSLinks"/></ul>
                 </div>
             </xsl:if>
@@ -807,13 +808,13 @@
         handle the attributes, and then apply the templates for the all children except the head. The id
         attribute is -->
     <xsl:template match="dri:div" priority="1">
-<!--        <xsl:if test="@n='community-home' | @n='collection-home'">
+        <!--        <xsl:if test="@n='community-home' | @n='collection-home'">
             <xsl:apply-templates select="dri:div[@n='community-search-browse']"/>
         </xsl:if>
         <xsl:if test="@n='collection-home'">
             <xsl:apply-templates select="dri:div[@n='collection-search-browse']"/>
         </xsl:if>-->
-       <xsl:apply-templates select="dri:head"/>
+        <xsl:apply-templates select="dri:head"/>
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">top</xsl:with-param>
         </xsl:apply-templates>
@@ -821,15 +822,15 @@
                 <xsl:with-param name="class">ds-static-div</xsl:with-param>
             </xsl:call-template>
             <xsl:choose>
-                    <!--  does this element have any children -->
-                    <xsl:when test="child::node()">
-                           <xsl:apply-templates select="*[not(name()='head')]"/><!-- or @n='community-search-browse' or @n='collection-search-browse'-->
-                    </xsl:when>
-                        <!-- if no children are found we add a space to eliminate self closing tags -->
-                        <xsl:otherwise>
-                                &#160;
-                        </xsl:otherwise>
-                </xsl:choose>
+                <!--  does this element have any children -->
+                <xsl:when test="child::node()">
+                    <xsl:apply-templates select="*[not(name()='head')]"/><!-- or @n='community-search-browse' or @n='collection-search-browse'-->
+                </xsl:when>
+                <!-- if no children are found we add a space to eliminate self closing tags -->
+                <xsl:otherwise>
+                    &#160;
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">bottom</xsl:with-param>
@@ -861,33 +862,33 @@
                 <xsl:attribute name="enctype">multipart/form-data</xsl:attribute>
             </xsl:if>
             <xsl:attribute name="onsubmit">javascript:tSubmit(this);</xsl:attribute>
-                        <!--For Item Submission process, disable ability to submit a form by pressing 'Enter'-->
-                        <xsl:if test="starts-with(@n,'submit')">
-                                <xsl:attribute name="onkeydown">javascript:return disableEnterKey(event);</xsl:attribute>
+            <!--For Item Submission process, disable ability to submit a form by pressing 'Enter'-->
+            <xsl:if test="starts-with(@n,'submit')">
+                <xsl:attribute name="onkeydown">javascript:return disableEnterKey(event);</xsl:attribute>
             </xsl:if>
-                        <xsl:apply-templates select="*[not(name()='head')]"/>
+            <xsl:apply-templates select="*[not(name()='head')]"/>
 
         </form>
         <!-- JS to scroll form to DIV parent of "Add" button if jump-to -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='jumpTo']">
-          <script type="text/javascript">
-            <xsl:text>var button = document.getElementById('</xsl:text>
-            <xsl:value-of select="translate(@id,'.','_')"/>
-            <xsl:text>').elements['</xsl:text>
-            <xsl:value-of select="concat('submit_',/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='jumpTo'],'_add')"/>
-            <xsl:text>'];</xsl:text>
-            <xsl:text>
-                      if (button != null) {
-                        var n = button.parentNode;
-                        for (; n != null; n = n.parentNode) {
-                            if (n.tagName == 'DIV') {
-                              n.scrollIntoView(false);
-                              break;
-                           }
-                        }
-                      }
-            </xsl:text>
-          </script>
+            <script type="text/javascript">
+                <xsl:text>var button = document.getElementById('</xsl:text>
+                <xsl:value-of select="translate(@id,'.','_')"/>
+                <xsl:text>').elements['</xsl:text>
+                <xsl:value-of select="concat('submit_',/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='jumpTo'],'_add')"/>
+                <xsl:text>'];</xsl:text>
+                <xsl:text>
+                    if (button != null) {
+                    var n = button.parentNode;
+                    for (; n != null; n = n.parentNode) {
+                    if (n.tagName == 'DIV') {
+                    n.scrollIntoView(false);
+                    break;
+                    }
+                    }
+                    }
+                </xsl:text>
+            </script>
         </xsl:if>
         <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">bottom</xsl:with-param>
@@ -901,7 +902,7 @@
             <xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">ds-notice-div</xsl:with-param>
             </xsl:call-template>
-                <xsl:apply-templates />
+            <xsl:apply-templates />
         </div>
     </xsl:template>
 
@@ -1026,12 +1027,12 @@
             <xsl:choose>
                 <!--  does this element have any children -->
                 <xsl:when test="child::node()">
-                        <xsl:apply-templates />
-                        </xsl:when>
-                        <!-- if no children are found we add a space to eliminate self closing tags -->
-                        <xsl:otherwise>
-                                &#160;
-                        </xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:when>
+                <!-- if no children are found we add a space to eliminate self closing tags -->
+                <xsl:otherwise>
+                    &#160;
+                </xsl:otherwise>
             </xsl:choose>
 
         </p>
@@ -1256,82 +1257,82 @@
         This is done partly to ensure that the resulting HTML form follows accessibility guidelines. -->
 
     <xsl:template match="dri:list[@type='form']" priority="3">
-    <xsl:choose>
-       <xsl:when test="ancestor::dri:list[@type='form']">
+        <xsl:choose>
+            <xsl:when test="ancestor::dri:list[@type='form']">
 
-            <li>
-            <fieldset>
-            <xsl:call-template name="standardAttributes">
-                <xsl:with-param name="class">
-                    <!-- Provision for the sub list -->
-                    <xsl:text>ds-form-</xsl:text>
-                    <xsl:if test="ancestor::dri:list[@type='form']">
-                        <xsl:text>sub</xsl:text>
-                    </xsl:if>
-                    <xsl:text>list </xsl:text>
-                    <xsl:if test="count(dri:item) > 3">
-                        <xsl:text>thick </xsl:text>
-                    </xsl:if>
-                </xsl:with-param>
-            </xsl:call-template>
-            <xsl:apply-templates select="dri:head"/>
+                <li>
+                    <fieldset>
+                        <xsl:call-template name="standardAttributes">
+                            <xsl:with-param name="class">
+                                <!-- Provision for the sub list -->
+                                <xsl:text>ds-form-</xsl:text>
+                                <xsl:if test="ancestor::dri:list[@type='form']">
+                                    <xsl:text>sub</xsl:text>
+                                </xsl:if>
+                                <xsl:text>list </xsl:text>
+                                <xsl:if test="count(dri:item) > 3">
+                                    <xsl:text>thick </xsl:text>
+                                </xsl:if>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                        <xsl:apply-templates select="dri:head"/>
 
-            <ol>
-                <xsl:apply-templates select="*[not(name()='label' or name()='head')]" />
-            </ol>
-            </fieldset>
-            </li>
+                        <ol>
+                            <xsl:apply-templates select="*[not(name()='label' or name()='head')]" />
+                        </ol>
+                    </fieldset>
+                </li>
             </xsl:when>
             <xsl:otherwise>
-            <fieldset>
-            <xsl:call-template name="standardAttributes">
-                <xsl:with-param name="class">
-                    <!-- Provision for the sub list -->
-                    <xsl:text>ds-form-</xsl:text>
-                    <xsl:if test="ancestor::dri:list[@type='form']">
-                        <xsl:text>sub</xsl:text>
-                    </xsl:if>
-                    <xsl:text>list </xsl:text>
-                    <xsl:if test="count(dri:item) > 3">
-                        <xsl:text>thick </xsl:text>
-                    </xsl:if>
-                </xsl:with-param>
-            </xsl:call-template>
-            <xsl:apply-templates select="dri:head"/>
+                <fieldset>
+                    <xsl:call-template name="standardAttributes">
+                        <xsl:with-param name="class">
+                            <!-- Provision for the sub list -->
+                            <xsl:text>ds-form-</xsl:text>
+                            <xsl:if test="ancestor::dri:list[@type='form']">
+                                <xsl:text>sub</xsl:text>
+                            </xsl:if>
+                            <xsl:text>list </xsl:text>
+                            <xsl:if test="count(dri:item) > 3">
+                                <xsl:text>thick </xsl:text>
+                            </xsl:if>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:apply-templates select="dri:head"/>
 
-            <ol>
-                <xsl:apply-templates select="*[not(name()='label' or name()='head')]" />
-            </ol>
-            </fieldset>
+                    <ol>
+                        <xsl:apply-templates select="*[not(name()='label' or name()='head')]" />
+                    </ol>
+                </fieldset>
             </xsl:otherwise>
-            </xsl:choose>
+        </xsl:choose>
     </xsl:template>
 
     <!-- TODO: Account for the dri:hi/dri:field kind of nesting here and everywhere else... -->
     <xsl:template match="dri:list[@type='form']/dri:item" priority="3">
         <li>
-                <xsl:call-template name="standardAttributes">
+            <xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">
                     <xsl:text>ds-form-item </xsl:text>
-                <xsl:choose>
-                    <!-- Makes sure that the dark always falls on the last item -->
-                    <xsl:when test="count(../dri:item) mod 2 = 0">
-                        <xsl:if test="count(../dri:item) > 3">
-                            <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 0)">even </xsl:if>
-                            <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 1)">odd </xsl:if>
-                        </xsl:if>
-                    </xsl:when>
-                    <xsl:when test="count(../dri:item) mod 2 = 1">
-                        <xsl:if test="count(../dri:item) > 3">
-                            <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 1)">even </xsl:if>
-                            <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 0)">odd </xsl:if>
-                        </xsl:if>
-                    </xsl:when>
-                </xsl:choose>
-                <!-- The last row is special if it contains only buttons -->
-                <xsl:if test="position()=last() and dri:field[@type='button'] and not(dri:field[not(@type='button')])">last </xsl:if>
-                <!-- The row is also tagged specially if it contains another "form" list -->
-                <xsl:if test="dri:list[@type='form']">sublist </xsl:if>
+                    <xsl:choose>
+                        <!-- Makes sure that the dark always falls on the last item -->
+                        <xsl:when test="count(../dri:item) mod 2 = 0">
+                            <xsl:if test="count(../dri:item) > 3">
+                                <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 0)">even </xsl:if>
+                                <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 1)">odd </xsl:if>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:when test="count(../dri:item) mod 2 = 1">
+                            <xsl:if test="count(../dri:item) > 3">
+                                <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 1)">even </xsl:if>
+                                <xsl:if test="(count(preceding-sibling::dri:item) mod 2 = 0)">odd </xsl:if>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
+                    <!-- The last row is special if it contains only buttons -->
+                    <xsl:if test="position()=last() and dri:field[@type='button'] and not(dri:field[not(@type='button')])">last </xsl:if>
+                    <!-- The row is also tagged specially if it contains another "form" list -->
+                    <xsl:if test="dri:list[@type='form']">sublist </xsl:if>
                 </xsl:with-param>
             </xsl:call-template>
 
@@ -1349,9 +1350,9 @@
                         <xsl:apply-templates />
                         <!-- special name used in submission UI review page -->
                         <xsl:if test="@n = 'submit-review-field-with-authority'">
-                          <xsl:call-template name="authorityConfidenceIcon">
-                            <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
-                          </xsl:call-template>
+                            <xsl:call-template name="authorityConfidenceIcon">
+                                <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
+                            </xsl:call-template>
                         </xsl:if>
                     </div>
                 </xsl:otherwise>
@@ -1362,30 +1363,30 @@
     <!-- An item in a nested "form" list -->
     <xsl:template match="dri:list[@type='form']//dri:list[@type='form']/dri:item" priority="3">
         <li>
-                <xsl:call-template name="standardAttributes">
+            <xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">
                     <xsl:text>ds-form-item </xsl:text>
 
-                <!-- Row counting voodoo, meant to impart consistent row alternation colors to the form lists.
+                    <!-- Row counting voodoo, meant to impart consistent row alternation colors to the form lists.
                     Should probably be chnaged to a system that is more straitforward. -->
-                <xsl:choose>
-                    <xsl:when test="(count(../../..//dri:item) - count(../../..//dri:list[@type='form'])) mod 2 = 0">
-                        <!--<xsl:if test="count(../dri:item) > 3">-->
+                    <xsl:choose>
+                        <xsl:when test="(count(../../..//dri:item) - count(../../..//dri:list[@type='form'])) mod 2 = 0">
+                            <!--<xsl:if test="count(../dri:item) > 3">-->
                             <xsl:if test="(count(preceding-sibling::dri:item | ../../preceding-sibling::dri:item/dri:list[@type='form']/dri:item) mod 2 = 0)">even </xsl:if>
                             <xsl:if test="(count(preceding-sibling::dri:item | ../../preceding-sibling::dri:item/dri:list[@type='form']/dri:item) mod 2 = 1)">odd </xsl:if>
 
-                    </xsl:when>
-                    <xsl:when test="(count(../../..//dri:item) - count(../../..//dri:list[@type='form'])) mod 2 = 1">
-                        <!--<xsl:if test="count(../dri:item) > 3">-->
+                        </xsl:when>
+                        <xsl:when test="(count(../../..//dri:item) - count(../../..//dri:list[@type='form'])) mod 2 = 1">
+                            <!--<xsl:if test="count(../dri:item) > 3">-->
                             <xsl:if test="(count(preceding-sibling::dri:item | ../../preceding-sibling::dri:item/dri:list[@type='form']/dri:item) mod 2 = 1)">even </xsl:if>
                             <xsl:if test="(count(preceding-sibling::dri:item | ../../preceding-sibling::dri:item/dri:list[@type='form']/dri:item) mod 2 = 0)">odd </xsl:if>
 
-                    </xsl:when>
-                </xsl:choose>
-                <!--
+                        </xsl:when>
+                    </xsl:choose>
+                    <!--
                 <xsl:if test="position()=last() and dri:field[@type='button'] and not(dri:field[not(@type='button')])">last</xsl:if>
                     -->
-               </xsl:with-param>
+                </xsl:with-param>
             </xsl:call-template>
 
             <xsl:call-template name="pick-label"/>
@@ -1399,9 +1400,9 @@
                         <xsl:apply-templates />
                         <!-- special name used in submission UI review page -->
                         <xsl:if test="@n = 'submit-review-field-with-authority'">
-                          <xsl:call-template name="authorityConfidenceIcon">
-                            <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
-                          </xsl:call-template>
+                            <xsl:call-template name="authorityConfidenceIcon">
+                                <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
+                            </xsl:call-template>
                         </xsl:if>
                     </div>
                 </xsl:otherwise>
@@ -1413,53 +1414,53 @@
         <xsl:choose>
             <xsl:when test="dri:field/dri:label">
                 <label class="ds-form-label">
-                        <xsl:choose>
-                                <xsl:when test="./dri:field/@id">
-                                        <xsl:attribute name="for">
-                                                <xsl:value-of select="translate(./dri:field/@id,'.','_')"/>
-                                        </xsl:attribute>
-                                </xsl:when>
-                                <xsl:otherwise></xsl:otherwise>
-                        </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="./dri:field/@id">
+                            <xsl:attribute name="for">
+                                <xsl:value-of select="translate(./dri:field/@id,'.','_')"/>
+                            </xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise></xsl:otherwise>
+                    </xsl:choose>
                     <xsl:apply-templates select="dri:field/dri:label" mode="formComposite"/>
                     <xsl:text>:</xsl:text>
                 </label>
             </xsl:when>
             <xsl:when test="string-length(string(preceding-sibling::*[1][local-name()='label'])) > 0">
                 <xsl:choose>
-                        <xsl:when test="./dri:field/@id">
-                                <label>
-                                        <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>
-                                    <xsl:text>:</xsl:text>
-                                </label>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <span>
-                                        <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>
-                                    <xsl:text>:</xsl:text>
-                                </span>
-                        </xsl:otherwise>
+                    <xsl:when test="./dri:field/@id">
+                        <label>
+                            <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>
+                            <xsl:text>:</xsl:text>
+                        </label>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <span>
+                            <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>
+                            <xsl:text>:</xsl:text>
+                        </span>
+                    </xsl:otherwise>
                 </xsl:choose>
 
             </xsl:when>
             <xsl:when test="dri:field">
                 <xsl:choose>
-                        <xsl:when test="preceding-sibling::*[1][local-name()='label']">
-                                <label class="ds-form-label">
-                                        <xsl:choose>
-                                                <xsl:when test="./dri:field/@id">
-                                                        <xsl:attribute name="for">
-                                                                <xsl:value-of select="translate(./dri:field/@id,'.','_')"/>
-                                                        </xsl:attribute>
-                                                </xsl:when>
-                                                <xsl:otherwise></xsl:otherwise>
-                                        </xsl:choose>
-                                    <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>&#160;
-                                </label>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>&#160;
-                            </xsl:otherwise>
+                    <xsl:when test="preceding-sibling::*[1][local-name()='label']">
+                        <label class="ds-form-label">
+                            <xsl:choose>
+                                <xsl:when test="./dri:field/@id">
+                                    <xsl:attribute name="for">
+                                        <xsl:value-of select="translate(./dri:field/@id,'.','_')"/>
+                                    </xsl:attribute>
+                                </xsl:when>
+                                <xsl:otherwise></xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>&#160;
+                        </label>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>&#160;
+                    </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
@@ -1471,21 +1472,21 @@
     </xsl:template>
 
     <xsl:template match="dri:list[@type='form']/dri:label" priority="3">
-                <xsl:attribute name="class">
-                <xsl:text>ds-form-label</xsl:text>
-               <xsl:if test="@rend">
-                     <xsl:text> </xsl:text>
-                     <xsl:value-of select="@rend"/>
-                 </xsl:if>
+        <xsl:attribute name="class">
+            <xsl:text>ds-form-label</xsl:text>
+            <xsl:if test="@rend">
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="@rend"/>
+            </xsl:if>
         </xsl:attribute>
         <xsl:choose>
-                <xsl:when test="following-sibling::dri:item[1]/dri:field/@id">
-                        <xsl:attribute name="for">
-                                <xsl:value-of select="translate(following-sibling::dri:item[1]/dri:field/@id,'.','_')" />
-                        </xsl:attribute>
-                </xsl:when>
-                <xsl:otherwise>
-                </xsl:otherwise>
+            <xsl:when test="following-sibling::dri:item[1]/dri:field/@id">
+                <xsl:attribute name="for">
+                    <xsl:value-of select="translate(following-sibling::dri:item[1]/dri:field/@id,'.','_')" />
+                </xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+            </xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates />
     </xsl:template>
@@ -1497,7 +1498,7 @@
 
     <xsl:template match="dri:list[@type='form']/dri:head" priority="5">
         <legend>
-                <xsl:apply-templates />
+            <xsl:apply-templates />
         </legend>
     </xsl:template>
 
@@ -1510,30 +1511,30 @@
             <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:choose>
-              <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
-                <xsl:message terminate="yes">
-                  <xsl:text>ERROR: Input field with "suggest" (autocomplete) choice behavior is not implemented for Composite (e.g. "name") fields.</xsl:text>
-                </xsl:message>
-              </xsl:when>
-              <!-- lookup popup includes its own Add button if necessary. -->
-              <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
-                <xsl:call-template name="addLookupButton">
-                  <xsl:with-param name="isName" select="'true'"/>
-                  <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
-                </xsl:call-template>
-              </xsl:when>
+                <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
+                    <xsl:message terminate="yes">
+                        <xsl:text>ERROR: Input field with "suggest" (autocomplete) choice behavior is not implemented for Composite (e.g. "name") fields.</xsl:text>
+                    </xsl:message>
+                </xsl:when>
+                <!-- lookup popup includes its own Add button if necessary. -->
+                <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
+                    <xsl:call-template name="addLookupButton">
+                        <xsl:with-param name="isName" select="'true'"/>
+                        <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
+                    </xsl:call-template>
+                </xsl:when>
             </xsl:choose>
             <xsl:if test="dri:params/@authorityControlled">
-              <xsl:variable name="confValue" select="dri:field/dri:value[@type='authority'][1]/@confidence"/>
-              <xsl:call-template name="authorityConfidenceIcon">
-                <xsl:with-param name="confidence" select="$confValue"/>
-                <xsl:with-param name="id" select="$confidenceIndicatorID"/>
-              </xsl:call-template>
-              <xsl:call-template name="authorityInputFields">
-                <xsl:with-param name="name" select="@n"/>
-                <xsl:with-param name="authValue" select="dri:field/dri:value[@type='authority'][1]/text()"/>
-                <xsl:with-param name="confValue" select="$confValue"/>
-              </xsl:call-template>
+                <xsl:variable name="confValue" select="dri:field/dri:value[@type='authority'][1]/@confidence"/>
+                <xsl:call-template name="authorityConfidenceIcon">
+                    <xsl:with-param name="confidence" select="$confValue"/>
+                    <xsl:with-param name="id" select="$confidenceIndicatorID"/>
+                </xsl:call-template>
+                <xsl:call-template name="authorityInputFields">
+                    <xsl:with-param name="name" select="@n"/>
+                    <xsl:with-param name="authValue" select="dri:field/dri:value[@type='authority'][1]/text()"/>
+                    <xsl:with-param name="confValue" select="$confValue"/>
+                </xsl:call-template>
             </xsl:if>
         </div>
     </xsl:template>
@@ -1794,41 +1795,41 @@
             <xsl:apply-templates select="dri:field" mode="compositeComponent"/>
             <xsl:if test="contains(dri:params/@operations,'add')">
                 <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
-               <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
-                  <!-- Make invisible if we have choice-lookup operation that provides its own Add. -->
-                  <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
-                    <xsl:attribute name="style">
-                      <xsl:text>display:none;</xsl:text>
-                    </xsl:attribute>
-            </xsl:if>
-               </input>
+                <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
+                    <!-- Make invisible if we have choice-lookup operation that provides its own Add. -->
+                    <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+                        <xsl:attribute name="style">
+                            <xsl:text>display:none;</xsl:text>
+                        </xsl:attribute>
+                    </xsl:if>
+                </input>
             </xsl:if>
             <!-- insert choice mechansim and/or Add button here -->
             <xsl:choose>
-              <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
-                <xsl:message terminate="yes">
-                  <xsl:text>ERROR: Input field with "suggest" (autocomplete) choice behavior is not implemented for Composite (e.g. "name") fields.</xsl:text>
-                </xsl:message>
-              </xsl:when>
-              <!-- lookup popup includes its own Add button if necessary. -->
-              <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
-                <xsl:call-template name="addLookupButton">
-                  <xsl:with-param name="isName" select="'true'"/>
-                  <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
-                </xsl:call-template>
-              </xsl:when>
+                <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
+                    <xsl:message terminate="yes">
+                        <xsl:text>ERROR: Input field with "suggest" (autocomplete) choice behavior is not implemented for Composite (e.g. "name") fields.</xsl:text>
+                    </xsl:message>
+                </xsl:when>
+                <!-- lookup popup includes its own Add button if necessary. -->
+                <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
+                    <xsl:call-template name="addLookupButton">
+                        <xsl:with-param name="isName" select="'true'"/>
+                        <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
+                    </xsl:call-template>
+                </xsl:when>
             </xsl:choose>
             <!-- place to store authority value -->
             <xsl:if test="dri:params/@authorityControlled">
-              <xsl:call-template name="authorityConfidenceIcon">
-                <xsl:with-param name="confidence" select="dri:value[@type='authority']/@confidence"/>
-                <xsl:with-param name="id" select="$confidenceIndicatorID"/>
-              </xsl:call-template>
-              <xsl:call-template name="authorityInputFields">
-                <xsl:with-param name="name" select="@n"/>
-                <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
-                <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
-              </xsl:call-template>
+                <xsl:call-template name="authorityConfidenceIcon">
+                    <xsl:with-param name="confidence" select="dri:value[@type='authority']/@confidence"/>
+                    <xsl:with-param name="id" select="$confidenceIndicatorID"/>
+                </xsl:call-template>
+                <xsl:call-template name="authorityInputFields">
+                    <xsl:with-param name="name" select="@n"/>
+                    <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
+                    <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
+                </xsl:call-template>
             </xsl:if>
             <xsl:if test="dri:instance or dri:field/dri:instance">
                 <div class="ds-previous-values">
@@ -1913,9 +1914,9 @@
 
             <!-- look for authority value in instance. -->
             <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
-              <xsl:call-template name="authorityConfidenceIcon">
-                <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
-              </xsl:call-template>
+                <xsl:call-template name="authorityConfidenceIcon">
+                    <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
+                </xsl:call-template>
             </xsl:if>
             <br/>
             <xsl:call-template name="simpleFieldIterator">
@@ -1935,12 +1936,12 @@
         </input>
         <!-- XXX do we want confidence icon here?? -->
         <xsl:if test="dri:value[@type='authority']">
-          <xsl:call-template name="authorityInputFields">
-            <xsl:with-param name="name" select="../@n"/>
-            <xsl:with-param name="position" select="position()"/>
-            <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
-            <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
-          </xsl:call-template>
+            <xsl:call-template name="authorityInputFields">
+                <xsl:with-param name="name" select="../@n"/>
+                <xsl:with-param name="position" select="position()"/>
+                <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
+                <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
+            </xsl:call-template>
         </xsl:if>
     </xsl:template>
 
@@ -1982,46 +1983,46 @@
 
         <xsl:if test="contains(dri:params/@operations,'add')">
             <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
-           <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
-              <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
-              <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
-                <xsl:attribute name="style">
-                  <xsl:text>display:none;</xsl:text>
-                </xsl:attribute>
-        </xsl:if>
-           </input>
+            <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
+                <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
+                <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+                    <xsl:attribute name="style">
+                        <xsl:text>display:none;</xsl:text>
+                    </xsl:attribute>
+                </xsl:if>
+            </input>
         </xsl:if>
 
         <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
         <xsl:if test="dri:params/@authorityControlled">
-          <!-- XXX note that this is wrong and won't get any authority values, but
+            <!-- XXX note that this is wrong and won't get any authority values, but
              - for instanced inputs the entry box starts out empty anyway.
             -->
-          <xsl:call-template name="authorityConfidenceIcon">
-            <xsl:with-param name="confidence" select="dri:value[@type='authority']/@confidence"/>
-            <xsl:with-param name="id" select="$confidenceIndicatorID"/>
-          </xsl:call-template>
-          <xsl:call-template name="authorityInputFields">
-            <xsl:with-param name="name" select="@n"/>
-            <xsl:with-param name="id" select="@id"/>
-            <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
-            <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
-          </xsl:call-template>
+            <xsl:call-template name="authorityConfidenceIcon">
+                <xsl:with-param name="confidence" select="dri:value[@type='authority']/@confidence"/>
+                <xsl:with-param name="id" select="$confidenceIndicatorID"/>
+            </xsl:call-template>
+            <xsl:call-template name="authorityInputFields">
+                <xsl:with-param name="name" select="@n"/>
+                <xsl:with-param name="id" select="@id"/>
+                <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
+                <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
+            </xsl:call-template>
         </xsl:if>
         <xsl:choose>
-          <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
-            <xsl:call-template name="addAuthorityAutocomplete">
-              <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
-            </xsl:call-template>
-          </xsl:when>
-          <!-- lookup popup includes its own Add button if necessary. -->
+            <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
+                <xsl:call-template name="addAuthorityAutocomplete">
+                    <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
+                </xsl:call-template>
+            </xsl:when>
+            <!-- lookup popup includes its own Add button if necessary. -->
           <!-- XXX does this need a Confidence Icon? -->
-          <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
-            <xsl:call-template name="addLookupButton">
-              <xsl:with-param name="isName" select="'true'"/>
-              <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
-            </xsl:call-template>
-          </xsl:when>
+            <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
+                <xsl:call-template name="addLookupButton">
+                    <xsl:with-param name="isName" select="'true'"/>
+                    <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
+                </xsl:call-template>
+            </xsl:when>
         </xsl:choose>
         <br/>
         <xsl:if test="dri:instance or dri:field/dri:instance">
@@ -2052,12 +2053,12 @@
         <xsl:param name="position"/>
         <!-- add authority value for this instance -->
         <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
-          <xsl:call-template name="authorityInputFields">
-            <xsl:with-param name="name" select="@n"/>
-            <xsl:with-param name="position" select="$position"/>
-            <xsl:with-param name="authValue" select="dri:instance[position()=$position]/dri:value[@type='authority']/text()"/>
-            <xsl:with-param name="confValue" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
-          </xsl:call-template>
+            <xsl:call-template name="authorityInputFields">
+                <xsl:with-param name="name" select="@n"/>
+                <xsl:with-param name="position" select="$position"/>
+                <xsl:with-param name="authValue" select="dri:instance[position()=$position]/dri:value[@type='authority']/text()"/>
+                <xsl:with-param name="confValue" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
+            </xsl:call-template>
         </xsl:if>
         <xsl:choose>
             <!-- First check to see if the composite itself has a non-empty instance value in that
@@ -2066,7 +2067,7 @@
                 <input type="checkbox" value="{concat(@n,'_',$position)}" name="{concat(@n,'_selected')}"/>
                 <xsl:apply-templates select="dri:instance[position()=$position]" mode="interpreted"/>
                 <xsl:call-template name="authorityConfidenceIcon">
-                  <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
+                    <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
                 </xsl:call-template>
                 <br/>
                 <xsl:call-template name="fieldIterator">
@@ -2235,24 +2236,24 @@
 
     <!-- The handling of component fields, that is fields that are part of a composite field type -->
     <xsl:template match="dri:field" mode="compositeComponent">
-            <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
-            <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
+        <xsl:apply-templates select="dri:help" mode="compositeComponent"/>
+        <xsl:apply-templates select="dri:error" mode="compositeComponent"/>
         <xsl:choose>
-                <xsl:when test="@type = 'checkbox'  or @type='radio'">
+            <xsl:when test="@type = 'checkbox'  or @type='radio'">
+                <xsl:apply-templates select="." mode="normalField"/>
+                <br/>
+                <xsl:apply-templates select="dri:label" mode="compositeComponent"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <label class="ds-composite-component">
+                    <xsl:if test="position()=last()">
+                        <xsl:attribute name="class">ds-composite-component last</xsl:attribute>
+                    </xsl:if>
                     <xsl:apply-templates select="." mode="normalField"/>
                     <br/>
                     <xsl:apply-templates select="dri:label" mode="compositeComponent"/>
-                </xsl:when>
-                <xsl:otherwise>
-                        <label class="ds-composite-component">
-                            <xsl:if test="position()=last()">
-                                <xsl:attribute name="class">ds-composite-component last</xsl:attribute>
-                            </xsl:if>
-                            <xsl:apply-templates select="." mode="normalField"/>
-                            <br/>
-                            <xsl:apply-templates select="dri:label" mode="compositeComponent"/>
-                        </label>
-                </xsl:otherwise>
+                </label>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -2288,99 +2289,99 @@
         <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
         <xsl:choose>
             <!-- TODO: this has changed drammatically (see form3.xml) -->
-                        <xsl:when test="@type= 'select'">
-                                <select>
-                                    <xsl:call-template name="fieldAttributes"/>
-                                    <xsl:apply-templates/>
-                                </select>
-                        </xsl:when>
+            <xsl:when test="@type= 'select'">
+                <select>
+                    <xsl:call-template name="fieldAttributes"/>
+                    <xsl:apply-templates/>
+                </select>
+            </xsl:when>
             <xsl:when test="@type= 'textarea'">
-                                <textarea>
-                                    <xsl:call-template name="fieldAttributes"/>
+                <textarea>
+                    <xsl:call-template name="fieldAttributes"/>
 
-                                    <!--
+                    <!--
                                         if the cols and rows attributes are not defined we need to call
                                         the tempaltes for them since they are required attributes in strict xhtml
                                      -->
-                                    <xsl:choose>
-                                        <xsl:when test="not(./dri:params[@cols])">
-                                                        <xsl:call-template name="textAreaCols"/>
-                                        </xsl:when>
-                                    </xsl:choose>
-                                    <xsl:choose>
-                                        <xsl:when test="not(./dri:params[@rows])">
-                                                <xsl:call-template name="textAreaRows"/>
-                                        </xsl:when>
-                                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="not(./dri:params[@cols])">
+                            <xsl:call-template name="textAreaCols"/>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="not(./dri:params[@rows])">
+                            <xsl:call-template name="textAreaRows"/>
+                        </xsl:when>
+                    </xsl:choose>
 
-                                    <xsl:apply-templates />
-                                    <xsl:choose>
-                                        <xsl:when test="./dri:value[@type='raw']">
-                                            <xsl:copy-of select="./dri:value[@type='raw']/node()"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:copy-of select="./dri:value[@type='default']/node()"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                    <xsl:if  test="string-length(./dri:value) &lt; 1">
-                                       <i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>
-                                    </xsl:if>
-                                </textarea>
+                    <xsl:apply-templates />
+                    <xsl:choose>
+                        <xsl:when test="./dri:value[@type='raw']">
+                            <xsl:copy-of select="./dri:value[@type='raw']/node()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy-of select="./dri:value[@type='default']/node()"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if  test="string-length(./dri:value) &lt; 1">
+                        <i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>
+                    </xsl:if>
+                </textarea>
 
 
-              <!-- add place to store authority value -->
-              <xsl:if test="dri:params/@authorityControlled">
-                <xsl:variable name="confidence">
-                  <xsl:if test="./dri:value[@type='authority']">
-                   <xsl:value-of select="./dri:value[@type='authority']/@confidence"/>
-                  </xsl:if>
-                </xsl:variable>
-                <!-- add authority confidence widget -->
-                <xsl:call-template name="authorityConfidenceIcon">
-                  <xsl:with-param name="confidence" select="$confidence"/>
-                  <xsl:with-param name="id" select="$confidenceIndicatorID"/>
-                </xsl:call-template>
-                <xsl:call-template name="authorityInputFields">
-                  <xsl:with-param name="name" select="@n"/>
-                  <xsl:with-param name="id" select="@id"/>
-                  <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
-                  <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
-                  <xsl:with-param name="confIndicatorID" select="$confidenceIndicatorID"/>
-                  <xsl:with-param name="unlockButton" select="dri:value[@type='authority']/dri:field[@rend='ds-authority-lock']/@n"/>
-                  <xsl:with-param name="unlockHelp" select="dri:value[@type='authority']/dri:field[@rend='ds-authority-lock']/dri:help"/>
-                </xsl:call-template>
-              </xsl:if>
-              <!-- add choice mechanisms -->
-              <xsl:choose>
-                <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
-                  <xsl:call-template name="addAuthorityAutocomplete">
-                    <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
-                    <xsl:with-param name="confidenceName">
-                      <xsl:value-of select="concat(@n,'_confidence')"/>
-                    </xsl:with-param>
-                  </xsl:call-template>
-            </xsl:when>
-                <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
-                  <xsl:call-template name="addLookupButton">
-                    <xsl:with-param name="isName" select="'false'"/>
-                    <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
-                  </xsl:call-template>
-                </xsl:when>
-              </xsl:choose>
+                <!-- add place to store authority value -->
+                <xsl:if test="dri:params/@authorityControlled">
+                    <xsl:variable name="confidence">
+                        <xsl:if test="./dri:value[@type='authority']">
+                            <xsl:value-of select="./dri:value[@type='authority']/@confidence"/>
+                        </xsl:if>
+                    </xsl:variable>
+                    <!-- add authority confidence widget -->
+                    <xsl:call-template name="authorityConfidenceIcon">
+                        <xsl:with-param name="confidence" select="$confidence"/>
+                        <xsl:with-param name="id" select="$confidenceIndicatorID"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="authorityInputFields">
+                        <xsl:with-param name="name" select="@n"/>
+                        <xsl:with-param name="id" select="@id"/>
+                        <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
+                        <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
+                        <xsl:with-param name="confIndicatorID" select="$confidenceIndicatorID"/>
+                        <xsl:with-param name="unlockButton" select="dri:value[@type='authority']/dri:field[@rend='ds-authority-lock']/@n"/>
+                        <xsl:with-param name="unlockHelp" select="dri:value[@type='authority']/dri:field[@rend='ds-authority-lock']/dri:help"/>
+                    </xsl:call-template>
+                </xsl:if>
+                <!-- add choice mechanisms -->
+                <xsl:choose>
+                    <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
+                        <xsl:call-template name="addAuthorityAutocomplete">
+                            <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
+                            <xsl:with-param name="confidenceName">
+                                <xsl:value-of select="concat(@n,'_confidence')"/>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
+                        <xsl:call-template name="addLookupButton">
+                            <xsl:with-param name="isName" select="'false'"/>
+                            <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                </xsl:choose>
             </xsl:when>
 
             <!-- This is changing drammatically -->
             <xsl:when test="@type= 'checkbox' or @type= 'radio'">
                 <fieldset>
                     <xsl:call-template name="standardAttributes">
-                                    <xsl:with-param name="class">
-                                        <xsl:text>ds-</xsl:text><xsl:value-of select="@type"/><xsl:text>-field </xsl:text>
-                                        <xsl:if test="dri:error">
-                                            <xsl:text>error </xsl:text>
-                                        </xsl:if>
-                                    </xsl:with-param>
-                                </xsl:call-template>
-                                <xsl:attribute name="id"><xsl:value-of select="generate-id()"/></xsl:attribute>
+                        <xsl:with-param name="class">
+                            <xsl:text>ds-</xsl:text><xsl:value-of select="@type"/><xsl:text>-field </xsl:text>
+                            <xsl:if test="dri:error">
+                                <xsl:text>error </xsl:text>
+                            </xsl:if>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:attribute name="id"><xsl:value-of select="generate-id()"/></xsl:attribute>
                     <xsl:if test="dri:label">
                         <legend><xsl:apply-templates select="dri:label" mode="compositeComponent" /></legend>
                     </xsl:if>
@@ -2405,68 +2406,68 @@
                 </span>
                 <!--<xsl:apply-templates select="dri:help" mode="compositeComponent"/>-->
             </xsl:when>
-                    <!-- text, password, file, and hidden types are handled the same.
+            <!-- text, password, file, and hidden types are handled the same.
                         Buttons: added the xsl:if check which will override the type attribute button
                             with the value 'submit'. No reset buttons for now...
                     -->
-                    <xsl:otherwise>
-                        <input>
-                            <xsl:call-template name="fieldAttributes"/>
-                            <xsl:if test="@type='button'">
-                                <xsl:attribute name="type">submit</xsl:attribute>
-                            </xsl:if>
-                            <xsl:attribute name="value">
-                                <xsl:choose>
-                                    <xsl:when test="./dri:value[@type='raw']">
-                                        <xsl:value-of select="./dri:value[@type='raw']"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="./dri:value[@type='default']"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:attribute>
-                            <xsl:if test="dri:value/i18n:text">
-                                <xsl:attribute name="i18n:attr">value</xsl:attribute>
-                            </xsl:if>
-                            <xsl:apply-templates />
-                        </input>
-
-                        <xsl:variable name="confIndicatorID" select="concat(@id,'_confidence_indicator')"/>
-                        <xsl:if test="dri:params/@authorityControlled">
-                          <xsl:variable name="confidence">
-                            <xsl:if test="./dri:value[@type='authority']">
-                              <xsl:value-of select="./dri:value[@type='authority']/@confidence"/>
-                            </xsl:if>
-                          </xsl:variable>
-                          <!-- add authority confidence widget -->
-                          <xsl:call-template name="authorityConfidenceIcon">
-                            <xsl:with-param name="confidence" select="$confidence"/>
-                            <xsl:with-param name="id" select="$confidenceIndicatorID"/>
-                          </xsl:call-template>
-                          <xsl:call-template name="authorityInputFields">
-                            <xsl:with-param name="name" select="@n"/>
-                            <xsl:with-param name="id" select="@id"/>
-                            <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
-                            <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
-                          </xsl:call-template>
-                        </xsl:if>
+            <xsl:otherwise>
+                <input>
+                    <xsl:call-template name="fieldAttributes"/>
+                    <xsl:if test="@type='button'">
+                        <xsl:attribute name="type">submit</xsl:attribute>
+                    </xsl:if>
+                    <xsl:attribute name="value">
                         <xsl:choose>
-                          <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
-                            <xsl:call-template name="addAuthorityAutocomplete">
-                              <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
-                              <xsl:with-param name="confidenceName">
-                                <xsl:value-of select="concat(@n,'_confidence')"/>
-                              </xsl:with-param>
-                            </xsl:call-template>
-                          </xsl:when>
-                          <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
-                            <xsl:call-template name="addLookupButton">
-                              <xsl:with-param name="isName" select="'false'"/>
-                              <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
-                            </xsl:call-template>
-                          </xsl:when>
+                            <xsl:when test="./dri:value[@type='raw']">
+                                <xsl:value-of select="./dri:value[@type='raw']"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="./dri:value[@type='default']"/>
+                            </xsl:otherwise>
                         </xsl:choose>
-                    </xsl:otherwise>
+                    </xsl:attribute>
+                    <xsl:if test="dri:value/i18n:text">
+                        <xsl:attribute name="i18n:attr">value</xsl:attribute>
+                    </xsl:if>
+                    <xsl:apply-templates />
+                </input>
+
+                <xsl:variable name="confIndicatorID" select="concat(@id,'_confidence_indicator')"/>
+                <xsl:if test="dri:params/@authorityControlled">
+                    <xsl:variable name="confidence">
+                        <xsl:if test="./dri:value[@type='authority']">
+                            <xsl:value-of select="./dri:value[@type='authority']/@confidence"/>
+                        </xsl:if>
+                    </xsl:variable>
+                    <!-- add authority confidence widget -->
+                    <xsl:call-template name="authorityConfidenceIcon">
+                        <xsl:with-param name="confidence" select="$confidence"/>
+                        <xsl:with-param name="id" select="$confidenceIndicatorID"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="authorityInputFields">
+                        <xsl:with-param name="name" select="@n"/>
+                        <xsl:with-param name="id" select="@id"/>
+                        <xsl:with-param name="authValue" select="dri:value[@type='authority']/text()"/>
+                        <xsl:with-param name="confValue" select="dri:value[@type='authority']/@confidence"/>
+                    </xsl:call-template>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="dri:params/@choicesPresentation = 'suggest'">
+                        <xsl:call-template name="addAuthorityAutocomplete">
+                            <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
+                            <xsl:with-param name="confidenceName">
+                                <xsl:value-of select="concat(@n,'_confidence')"/>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
+                        <xsl:call-template name="addLookupButton">
+                            <xsl:with-param name="isName" select="'false'"/>
+                            <xsl:with-param name="confIndicator" select="$confidenceIndicatorID"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -2484,13 +2485,13 @@
             <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:if>
         <xsl:if test="@type != 'checkbox' and @type != 'radio' ">
-                <xsl:attribute name="name"><xsl:value-of select="@n"/></xsl:attribute>
+            <xsl:attribute name="name"><xsl:value-of select="@n"/></xsl:attribute>
         </xsl:if>
         <xsl:if test="@type != 'select' and @type != 'textarea' and @type != 'checkbox' and @type != 'radio' ">
-                <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
+            <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
         </xsl:if>
         <xsl:if test="@type= 'textarea'">
-                <xsl:attribute name="onfocus">javascript:tFocus(this);</xsl:attribute>
+            <xsl:attribute name="onfocus">javascript:tFocus(this);</xsl:attribute>
         </xsl:if>
     </xsl:template>
 
@@ -2567,9 +2568,9 @@
     <xsl:template match="dri:error" mode="error">
         <span class="error">* <xsl:apply-templates/></span>
     </xsl:template>
-    
-    
-    
+
+
+
     <!-- Help elements are turning into tooltips. There might be a better way to do this -->
     <xsl:template match="dri:help">
         <xsl:attribute name="title"><xsl:value-of select="."/></xsl:attribute>
@@ -2600,119 +2601,131 @@
         <xsl:choose>
             <xsl:when test=". = 'simple'">
                 <div class="pagination {$position}">
-                    <xsl:if test="parent::node()/@previousPage">
-                        <a class="previous-page-link">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="parent::node()/@previousPage"/>
-                            </xsl:attribute>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-previous</i18n:text>
-                        </a>
-                    </xsl:if>
-                    <span class="pagination-info">
-                        <i18n:translate>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-info</i18n:text>
-                            <i18n:param><xsl:value-of select="parent::node()/@firstItemIndex"/></i18n:param>
-                            <i18n:param><xsl:value-of select="parent::node()/@lastItemIndex"/></i18n:param>
-                            <i18n:param><xsl:value-of select="parent::node()/@itemsTotal"/></i18n:param>
-                        </i18n:translate>
-                        <!--
-                        <xsl:text>Now showing items </xsl:text>
-                        <xsl:value-of select="parent::node()/@firstItemIndex"/>
-                        <xsl:text>-</xsl:text>
-                        <xsl:value-of select="parent::node()/@lastItemIndex"/>
-                        <xsl:text> of </xsl:text>
-                        <xsl:value-of select="parent::node()/@itemsTotal"/>
-                            -->
-                    </span>
-                    <xsl:if test="parent::node()/@nextPage">
-                        <a class="next-page-link">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="parent::node()/@nextPage"/>
-                            </xsl:attribute>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-next</i18n:text>
-                        </a>
-                    </xsl:if>
+                    <div class="previous-page-link">
+                        <xsl:if test="parent::node()/@previousPage">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="parent::node()/@previousPage"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-previous</i18n:text>
+                            </a>
+                        </xsl:if><xsl:text>&#160;</xsl:text>
+                    </div>
+                    <div class="pagination-info">
+                        <p>
+                            <i18n:translate>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-info</i18n:text>
+                                <i18n:param><xsl:value-of select="parent::node()/@firstItemIndex"/></i18n:param>
+                                <i18n:param><xsl:value-of select="parent::node()/@lastItemIndex"/></i18n:param>
+                                <i18n:param><xsl:value-of select="parent::node()/@itemsTotal"/></i18n:param>
+                            </i18n:translate>
+                            <!--
+                            <xsl:text>Now showing items </xsl:text>
+                            <xsl:value-of select="parent::node()/@firstItemIndex"/>
+                            <xsl:text>-</xsl:text>
+                            <xsl:value-of select="parent::node()/@lastItemIndex"/>
+                            <xsl:text> of </xsl:text>
+                            <xsl:value-of select="parent::node()/@itemsTotal"/>
+                                -->
+                        </p>
+                    </div>
+                    <div class="next-page-link">
+                        <xsl:if test="parent::node()/@nextPage">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="parent::node()/@nextPage"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-next</i18n:text>
+                            </a>
+                        </xsl:if><xsl:text>&#160;</xsl:text>
+                    </div>
                 </div>
             </xsl:when>
             <xsl:when test=". = 'masked'">
                 <div class="pagination-masked {$position}">
-                    <xsl:if test="not(parent::node()/@firstItemIndex = 0 or parent::node()/@firstItemIndex = 1)">
-                        <a class="previous-page-link">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
-                                <xsl:value-of select="parent::node()/@currentPage - 1"/>
-                                <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
-                            </xsl:attribute>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-previous</i18n:text>
-                        </a>
-                    </xsl:if>
-                    <p class="pagination-info">
-                        <i18n:translate>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-info</i18n:text>
-                            <i18n:param><xsl:value-of select="parent::node()/@firstItemIndex"/></i18n:param>
-                            <i18n:param><xsl:value-of select="parent::node()/@lastItemIndex"/></i18n:param>
-                            <i18n:param><xsl:value-of select="parent::node()/@itemsTotal"/></i18n:param>
-                        </i18n:translate>
-                    </p>
-                    <ul class="pagination-links">
-                        <xsl:if test="(parent::node()/@currentPage - 4) &gt; 0">
-                            <li class="first-page-link">
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                    <div class="previous-page-link">
+                        <xsl:if test="not(parent::node()/@firstItemIndex = 0 or parent::node()/@firstItemIndex = 1)">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                    <xsl:value-of select="parent::node()/@currentPage - 1"/>
+                                    <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-previous</i18n:text>
+                            </a>
+                        </xsl:if><xsl:text>&#160;</xsl:text>
+                    </div>
+                    <div class="pagination-info">
+                        <p>
+                            <i18n:translate>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-info</i18n:text>
+                                <i18n:param><xsl:value-of select="parent::node()/@firstItemIndex"/></i18n:param>
+                                <i18n:param><xsl:value-of select="parent::node()/@lastItemIndex"/></i18n:param>
+                                <i18n:param><xsl:value-of select="parent::node()/@itemsTotal"/></i18n:param>
+                            </i18n:translate>
+                        </p>
+                        <ul class="pagination-links">
+                            <xsl:if test="(parent::node()/@currentPage - 4) &gt; 0">
+                                <li class="first-page-link">
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                            <xsl:text>1</xsl:text>
+                                            <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                        </xsl:attribute>
                                         <xsl:text>1</xsl:text>
-                                        <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
-                                    </xsl:attribute>
-                                    <xsl:text>1</xsl:text>
-                                </a>
-                                <xsl:text> . . . </xsl:text>
-                            </li>
-                        </xsl:if>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">-3</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">-2</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">-1</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">0</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">1</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">2</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:call-template name="offset-link">
-                            <xsl:with-param name="pageOffset">3</xsl:with-param>
-                        </xsl:call-template>
-                        <xsl:if test="(parent::node()/@currentPage + 4) &lt;= (parent::node()/@pagesTotal)">
-                            <li class="last-page-link">
-                                <xsl:text> . . . </xsl:text>
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                    </a>
+                                    <xsl:text> . . . </xsl:text>
+                                </li>
+                            </xsl:if>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">-3</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">-2</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">-1</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">0</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">1</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">2</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="offset-link">
+                                <xsl:with-param name="pageOffset">3</xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:if test="(parent::node()/@currentPage + 4) &lt;= (parent::node()/@pagesTotal)">
+                                <li class="last-page-link">
+                                    <xsl:text> . . . </xsl:text>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                            <xsl:value-of select="parent::node()/@pagesTotal"/>
+                                            <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                        </xsl:attribute>
                                         <xsl:value-of select="parent::node()/@pagesTotal"/>
-                                        <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
-                                    </xsl:attribute>
-                                    <xsl:value-of select="parent::node()/@pagesTotal"/>
-                                </a>
-                            </li>
-                        </xsl:if>
-                    </ul>
-                    <xsl:if test="not(parent::node()/@lastItemIndex = parent::node()/@itemsTotal)">
-                        <a class="next-page-link">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
-                                <xsl:value-of select="parent::node()/@currentPage + 1"/>
-                                <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
-                            </xsl:attribute>
-                            <i18n:text>xmlui.dri2xhtml.structural.pagination-next</i18n:text>
-                        </a>
-                    </xsl:if>
+                                    </a>
+                                </li>
+                            </xsl:if>
+                        </ul>
+                    </div>
+                    <div class="next-page-link">
+                        <xsl:if test="not(parent::node()/@lastItemIndex = parent::node()/@itemsTotal)">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="substring-before(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                    <xsl:value-of select="parent::node()/@currentPage + 1"/>
+                                    <xsl:value-of select="substring-after(parent::node()/@pageURLMask,'{pageNum}')"/>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.dri2xhtml.structural.pagination-next</i18n:text>
+                            </a>
+                        </xsl:if><xsl:text>&#160;</xsl:text>
+                    </div>
                 </div>
             </xsl:when>
         </xsl:choose>
@@ -2722,7 +2735,7 @@
     <xsl:template name="offset-link">
         <xsl:param name="pageOffset"/>
         <xsl:if test="((parent::node()/@currentPage + $pageOffset) &gt; 0) and
-            ((parent::node()/@currentPage + $pageOffset) &lt;= (parent::node()/@pagesTotal))">
+                ((parent::node()/@currentPage + $pageOffset) &lt;= (parent::node()/@pagesTotal))">
             <li class="page-link">
                 <xsl:if test="$pageOffset = 0">
                     <xsl:attribute name="class">current-page-link</xsl:attribute>
@@ -2782,7 +2795,7 @@
 
 
 
-<!-- This is the end of the structural elements section. From here to the end of the document come
+    <!-- This is the end of the structural elements section. From here to the end of the document come
     templates devoted to handling the referenceSet and reference elements. Although they are considered
     structural elements, neither of the two contains actual content. Instead, references contain references
     to object metadata under objectMeta, while referenceSets group references together.
@@ -2991,11 +3004,11 @@
 
     <!-- templates for required textarea attributes used if not found in DRI document -->
     <xsl:template name="textAreaCols">
-      <xsl:attribute name="cols">60</xsl:attribute>
+        <xsl:attribute name="cols">60</xsl:attribute>
     </xsl:template>
 
     <xsl:template name="textAreaRows">
-      <xsl:attribute name="rows">5</xsl:attribute>
+        <xsl:attribute name="rows">5</xsl:attribute>
     </xsl:template>
 
 
@@ -3025,56 +3038,56 @@
       -  that the context is a dri:field, where dri:params/@choices is true.
      -->
     <xsl:template name="addLookupButton">
-      <xsl:param name="isName" select="'missing value'"/>
-      <!-- optional param if you want to send authority value to diff field -->
-      <xsl:param name="authorityInput" select="concat(@n,'_authority')"/>
-      <!-- optional param for confidence indicator ID -->
-      <xsl:param name="confIndicator" select="''"/>
-      <input type="button" name="{concat('lookup_',@n)}" class="ds-button-field ds-add-button" >
-        <xsl:attribute name="value">
-          <xsl:text>Lookup</xsl:text>
-          <xsl:if test="contains(dri:params/@operations,'add')">
-            <xsl:text> &amp; Add</xsl:text>
-          </xsl:if>
-        </xsl:attribute>
-        <xsl:attribute name="onClick">
-          <xsl:text>javascript:DSpaceChoiceLookup('</xsl:text>
-          <!-- URL -->
-          <xsl:value-of select="concat($context-path,'/admin/lookup')"/>
-          <xsl:text>', '</xsl:text>
-          <!-- field -->
-          <xsl:value-of select="dri:params/@choices"/>
-          <xsl:text>', '</xsl:text>
-          <!-- formID -->
-          <xsl:value-of select="translate(ancestor::dri:div[@interactive='yes']/@id,'.','_')"/>
-          <xsl:text>', '</xsl:text>
-          <!-- valueInput -->
-          <xsl:value-of select="@n"/>
-          <xsl:text>', '</xsl:text>
-          <!-- authorityInput, name of field to get authority -->
-          <xsl:value-of select="$authorityInput"/>
-          <xsl:text>', '</xsl:text>
-          <!-- Confidence Indicator's ID so lookup can frob it -->
-          <xsl:value-of select="$confIndicator"/>
-          <xsl:text>', </xsl:text>
-          <!-- Collection ID for context -->
-          <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']">
-              <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>-1</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:text>, </xsl:text>
-          <!-- isName -->
-          <xsl:value-of select="$isName"/>
-          <xsl:text>, </xsl:text>
-          <!-- isRepating -->
-          <xsl:value-of select="boolean(contains(dri:params/@operations,'add'))"/>
-          <xsl:text>);</xsl:text>
-        </xsl:attribute>
-      </input>
+        <xsl:param name="isName" select="'missing value'"/>
+        <!-- optional param if you want to send authority value to diff field -->
+        <xsl:param name="authorityInput" select="concat(@n,'_authority')"/>
+        <!-- optional param for confidence indicator ID -->
+        <xsl:param name="confIndicator" select="''"/>
+        <input type="button" name="{concat('lookup_',@n)}" class="ds-button-field ds-add-button" >
+            <xsl:attribute name="value">
+                <xsl:text>Lookup</xsl:text>
+                <xsl:if test="contains(dri:params/@operations,'add')">
+                    <xsl:text> &amp; Add</xsl:text>
+                </xsl:if>
+            </xsl:attribute>
+            <xsl:attribute name="onClick">
+                <xsl:text>javascript:DSpaceChoiceLookup('</xsl:text>
+                <!-- URL -->
+                <xsl:value-of select="concat($context-path,'/admin/lookup')"/>
+                <xsl:text>', '</xsl:text>
+                <!-- field -->
+                <xsl:value-of select="dri:params/@choices"/>
+                <xsl:text>', '</xsl:text>
+                <!-- formID -->
+                <xsl:value-of select="translate(ancestor::dri:div[@interactive='yes']/@id,'.','_')"/>
+                <xsl:text>', '</xsl:text>
+                <!-- valueInput -->
+                <xsl:value-of select="@n"/>
+                <xsl:text>', '</xsl:text>
+                <!-- authorityInput, name of field to get authority -->
+                <xsl:value-of select="$authorityInput"/>
+                <xsl:text>', '</xsl:text>
+                <!-- Confidence Indicator's ID so lookup can frob it -->
+                <xsl:value-of select="$confIndicator"/>
+                <xsl:text>', </xsl:text>
+                <!-- Collection ID for context -->
+                <xsl:choose>
+                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']">
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>-1</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:text>, </xsl:text>
+                <!-- isName -->
+                <xsl:value-of select="$isName"/>
+                <xsl:text>, </xsl:text>
+                <!-- isRepating -->
+                <xsl:value-of select="boolean(contains(dri:params/@operations,'add'))"/>
+                <xsl:text>);</xsl:text>
+            </xsl:attribute>
+        </input>
     </xsl:template>
 
     <!-- Fragment to display an authority confidence icon.
@@ -3083,35 +3096,35 @@
        -  "confidence" param is confidence _value_, i.e. symbolic name
       -->
     <xsl:template name="authorityConfidenceIcon">
-      <!-- default confidence value won't show any image. -->
-      <xsl:param name="confidence" select="'blank'"/>
-      <xsl:param name="id" select="''"/>
-      <xsl:variable name="lcConfidence" select="translate($confidence,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
-      <img i18n:attr="title">
-        <xsl:if test="string-length($id) > 0">
-          <xsl:attribute name="id">
-             <xsl:value-of select="$id"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
-        </xsl:attribute>
-        <xsl:attribute name="class">
-          <xsl:text>ds-authority-confidence </xsl:text>
-          <xsl:choose>
-            <xsl:when test="string-length($lcConfidence) > 0">
-              <xsl:value-of select="concat('cf-',$lcConfidence,' ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>cf-blank </xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <xsl:attribute name="title">
-          <xsl:text>xmlui.authority.confidence.description.cf_</xsl:text>
-          <xsl:value-of select="$lcConfidence"/>
-        </xsl:attribute>
-      </img>
+        <!-- default confidence value won't show any image. -->
+        <xsl:param name="confidence" select="'blank'"/>
+        <xsl:param name="id" select="''"/>
+        <xsl:variable name="lcConfidence" select="translate($confidence,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+        <img i18n:attr="title">
+            <xsl:if test="string-length($id) > 0">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="$id"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="src">
+                <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
+            </xsl:attribute>
+            <xsl:attribute name="class">
+                <xsl:text>ds-authority-confidence </xsl:text>
+                <xsl:choose>
+                    <xsl:when test="string-length($lcConfidence) > 0">
+                        <xsl:value-of select="concat('cf-',$lcConfidence,' ')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>cf-blank </xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+                <xsl:text>xmlui.authority.confidence.description.cf_</xsl:text>
+                <xsl:value-of select="$lcConfidence"/>
+            </xsl:attribute>
+        </img>
     </xsl:template>
 
     <!-- Fragment to include an authority confidence hidden input
@@ -3119,189 +3132,189 @@
        -  param is confidence _value_, i.e. integer 0-6
       -->
     <xsl:template name="authorityConfidenceInput">
-      <xsl:param name="confidence"/>
-      <xsl:param name="name"/>
-      <input class="ds-authority-confidence-input" type="hidden">
-        <xsl:attribute name="name">
-          <xsl:value-of select="$name"/>
-        </xsl:attribute>
-        <xsl:attribute name="value">
-          <xsl:value-of select="$confidence"/>
-        </xsl:attribute>
-      </input>
+        <xsl:param name="confidence"/>
+        <xsl:param name="name"/>
+        <input class="ds-authority-confidence-input" type="hidden">
+            <xsl:attribute name="name">
+                <xsl:value-of select="$name"/>
+            </xsl:attribute>
+            <xsl:attribute name="value">
+                <xsl:value-of select="$confidence"/>
+            </xsl:attribute>
+        </input>
     </xsl:template>
 
 
     <!-- insert fields needed by Scriptaculous autocomplete -->
     <xsl:template name="addAuthorityAutocompleteWidgets">
-      <!-- "spinner" indicator to signal "loading", managed by autocompleter -->
+        <!-- "spinner" indicator to signal "loading", managed by autocompleter -->
       <!--  put it next to input field -->
-      <span style="display:none;">
-        <xsl:attribute name="id">
-         <xsl:value-of select="concat(translate(@id,'.','_'),'_indicator')"/>
-        </xsl:attribute>
-        <img alt="Loading...">
-          <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/suggest-indicator.gif')"/>
-          </xsl:attribute>
-        </img>
-      </span>
-      <!-- This is the anchor for autocomplete popup, div id="..._container" -->
+        <span style="display:none;">
+            <xsl:attribute name="id">
+                <xsl:value-of select="concat(translate(@id,'.','_'),'_indicator')"/>
+            </xsl:attribute>
+            <img alt="Loading...">
+                <xsl:attribute name="src">
+                    <xsl:value-of select="concat($theme-path,'/images/suggest-indicator.gif')"/>
+                </xsl:attribute>
+            </img>
+        </span>
+        <!-- This is the anchor for autocomplete popup, div id="..._container" -->
       <!--  put it below input field, give ID to autocomplete below -->
-      <div class="autocomplete">
-        <xsl:attribute name="id">
-         <xsl:value-of select="concat(translate(@id,'.','_'),'_container')"/>
-        </xsl:attribute>
-        <xsl:text> </xsl:text>
-      </div>
+        <div class="autocomplete">
+            <xsl:attribute name="id">
+                <xsl:value-of select="concat(translate(@id,'.','_'),'_container')"/>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </div>
     </xsl:template>
 
     <!-- adds autocomplete fields and setup script to "normal" submit input -->
     <xsl:template name="addAuthorityAutocomplete">
-      <xsl:param name="confidenceIndicatorID" select="''"/>
-      <xsl:param name="confidenceName" select="''"/>
-      <xsl:call-template name="addAuthorityAutocompleteWidgets"/>
-      <xsl:call-template name="autocompleteSetup">
-        <xsl:with-param name="formID"        select="translate(ancestor::dri:div[@interactive='yes']/@id,'.','_')"/>
-        <xsl:with-param name="metadataField" select="@n"/>
-        <xsl:with-param name="inputName"     select="@n"/>
-        <xsl:with-param name="authorityName" select="concat(@n,'_authority')"/>
-        <xsl:with-param name="containerID"   select="concat(translate(@id,'.','_'),'_container')"/>
-        <xsl:with-param name="indicatorID"   select="concat(translate(@id,'.','_'),'_indicator')"/>
-        <xsl:with-param name="isClosed"      select="contains(dri:params/@choicesClosed,'true')"/>
-        <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
-        <xsl:with-param name="confidenceName" select="$confidenceName"/>
-        <xsl:with-param name="collectionID">
-          <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']">
-              <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>-1</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:with-param>
-      </xsl:call-template>
+        <xsl:param name="confidenceIndicatorID" select="''"/>
+        <xsl:param name="confidenceName" select="''"/>
+        <xsl:call-template name="addAuthorityAutocompleteWidgets"/>
+        <xsl:call-template name="autocompleteSetup">
+            <xsl:with-param name="formID"        select="translate(ancestor::dri:div[@interactive='yes']/@id,'.','_')"/>
+            <xsl:with-param name="metadataField" select="@n"/>
+            <xsl:with-param name="inputName"     select="@n"/>
+            <xsl:with-param name="authorityName" select="concat(@n,'_authority')"/>
+            <xsl:with-param name="containerID"   select="concat(translate(@id,'.','_'),'_container')"/>
+            <xsl:with-param name="indicatorID"   select="concat(translate(@id,'.','_'),'_indicator')"/>
+            <xsl:with-param name="isClosed"      select="contains(dri:params/@choicesClosed,'true')"/>
+            <xsl:with-param name="confidenceIndicatorID" select="$confidenceIndicatorID"/>
+            <xsl:with-param name="confidenceName" select="$confidenceName"/>
+            <xsl:with-param name="collectionID">
+                <xsl:choose>
+                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']">
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='choice'][@qualifier='collection']"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>-1</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:with-param>
+        </xsl:call-template>
     </xsl:template>
 
     <!-- generate the script that sets up autocomplete feature on input field -->
     <!-- ..it has lots of params -->
     <xsl:template name="autocompleteSetup">
-      <xsl:param name="formID" select="'missing value'"/>
-      <xsl:param name="metadataField" select="'missing value'"/>
-      <xsl:param name="inputName" select="'missing value'"/>
-      <xsl:param name="authorityName" select="''"/>
-      <xsl:param name="containerID" select="'missing value'"/>
-      <xsl:param name="collectionID" select="'-1'"/>
-      <xsl:param name="indicatorID" select="'missing value'"/>
-      <xsl:param name="confidenceIndicatorID" select="''"/>
-      <xsl:param name="confidenceName" select="''"/>
-      <xsl:param name="isClosed" select="'false'"/>
-      <script type="text/javascript">
-        <xsl:text>var gigo = DSpaceSetupAutocomplete('</xsl:text>
-        <xsl:value-of select="$formID"/>
-        <xsl:text>', { metadataField: '</xsl:text>
-        <xsl:value-of select="$metadataField"/>
-        <xsl:text>', isClosed: '</xsl:text>
-        <xsl:value-of select="$isClosed"/>
-        <xsl:text>', inputName: '</xsl:text>
-        <xsl:value-of select="$inputName"/>
-        <xsl:text>', authorityName: '</xsl:text>
-        <xsl:value-of select="$authorityName"/>
-        <xsl:text>', containerID: '</xsl:text>
-        <xsl:value-of select="$containerID"/>
-        <xsl:text>', indicatorID: '</xsl:text>
-        <xsl:value-of select="$indicatorID"/>
-        <xsl:text>', confidenceIndicatorID: '</xsl:text>
-        <xsl:value-of select="$confidenceIndicatorID"/>
-        <xsl:text>', confidenceName: '</xsl:text>
-        <xsl:value-of select="$confidenceName"/>
-        <xsl:text>', collection: </xsl:text>
-        <xsl:value-of select="$collectionID"/>
-        <xsl:text>, contextPath: '</xsl:text>
-        <xsl:value-of select="$context-path"/>
-        <xsl:text>'});</xsl:text>
-      </script>
+        <xsl:param name="formID" select="'missing value'"/>
+        <xsl:param name="metadataField" select="'missing value'"/>
+        <xsl:param name="inputName" select="'missing value'"/>
+        <xsl:param name="authorityName" select="''"/>
+        <xsl:param name="containerID" select="'missing value'"/>
+        <xsl:param name="collectionID" select="'-1'"/>
+        <xsl:param name="indicatorID" select="'missing value'"/>
+        <xsl:param name="confidenceIndicatorID" select="''"/>
+        <xsl:param name="confidenceName" select="''"/>
+        <xsl:param name="isClosed" select="'false'"/>
+        <script type="text/javascript">
+            <xsl:text>var gigo = DSpaceSetupAutocomplete('</xsl:text>
+            <xsl:value-of select="$formID"/>
+            <xsl:text>', { metadataField: '</xsl:text>
+            <xsl:value-of select="$metadataField"/>
+            <xsl:text>', isClosed: '</xsl:text>
+            <xsl:value-of select="$isClosed"/>
+            <xsl:text>', inputName: '</xsl:text>
+            <xsl:value-of select="$inputName"/>
+            <xsl:text>', authorityName: '</xsl:text>
+            <xsl:value-of select="$authorityName"/>
+            <xsl:text>', containerID: '</xsl:text>
+            <xsl:value-of select="$containerID"/>
+            <xsl:text>', indicatorID: '</xsl:text>
+            <xsl:value-of select="$indicatorID"/>
+            <xsl:text>', confidenceIndicatorID: '</xsl:text>
+            <xsl:value-of select="$confidenceIndicatorID"/>
+            <xsl:text>', confidenceName: '</xsl:text>
+            <xsl:value-of select="$confidenceName"/>
+            <xsl:text>', collection: </xsl:text>
+            <xsl:value-of select="$collectionID"/>
+            <xsl:text>, contextPath: '</xsl:text>
+            <xsl:value-of select="$context-path"/>
+            <xsl:text>'});</xsl:text>
+        </script>
     </xsl:template>
 
     <!-- add the extra _authority{_n?} and _confidence input fields -->
     <xsl:template name="authorityInputFields">
-      <xsl:param name="name" select="''"/>
-      <xsl:param name="id" select="''"/>
-      <xsl:param name="position" select="''"/>
-      <xsl:param name="authValue" select="''"/>
-      <xsl:param name="confValue" select="''"/>
-      <xsl:param name="confIndicatorID" select="''"/>
-      <xsl:param name="unlockButton" select="''"/>
-      <xsl:param name="unlockHelp" select="''"/>
-      <xsl:variable name="authFieldID" select="concat(translate(@id,'.','_'),'_authority')"/>
-      <xsl:variable name="confFieldID" select="concat(translate(@id,'.','_'),'_confidence')"/>
-      <!-- the authority key value -->
-      <input>
-        <xsl:attribute name="class">
-          <xsl:text>ds-authority-value </xsl:text>
-          <xsl:if test="$unlockButton">
-            <xsl:text>ds-authority-visible </xsl:text>
-          </xsl:if>
-        </xsl:attribute>
-        <xsl:attribute name="type"><xsl:value-of select="$authorityInputType"/></xsl:attribute>
-        <xsl:attribute name="readonly"><xsl:text>readonly</xsl:text></xsl:attribute>
-        <xsl:attribute name="name">
-          <xsl:value-of select="concat($name,'_authority')"/>
-          <xsl:if test="$position">
-            <xsl:value-of select="concat('_', $position)"/>
-          </xsl:if>
-        </xsl:attribute>
-        <xsl:if test="$id">
-          <xsl:attribute name="id">
-            <xsl:value-of select="$authFieldID"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:attribute name="value">
-          <xsl:value-of select="$authValue"/>
-        </xsl:attribute>
-        <!-- this updates confidence after a manual change to authority value -->
-        <xsl:attribute name="onChange">
-          <xsl:text>javascript: return DSpaceAuthorityOnChange(this, '</xsl:text>
-          <xsl:value-of select="$confFieldID"/>
-          <xsl:text>','</xsl:text>
-          <xsl:value-of select="$confIndicatorID"/>
-          <xsl:text>');</xsl:text>
-        </xsl:attribute>
-      </input>
-      <!-- optional "unlock" button on (visible) authority value field -->
-      <xsl:if test="$unlockButton">
-        <input type="image" class="ds-authority-lock is-locked ">
-          <xsl:attribute name="onClick">
-            <xsl:text>javascript: return DSpaceToggleAuthorityLock(this, '</xsl:text>
-            <xsl:value-of select="$authFieldID"/>
-            <xsl:text>');</xsl:text>
-          </xsl:attribute>
-          <xsl:attribute name="src">
-             <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
-          </xsl:attribute>
-          <xsl:attribute name="i18n:attr">title</xsl:attribute>
-          <xsl:attribute name="title">
-            <xsl:value-of select="$unlockHelp"/>
-          </xsl:attribute>
+        <xsl:param name="name" select="''"/>
+        <xsl:param name="id" select="''"/>
+        <xsl:param name="position" select="''"/>
+        <xsl:param name="authValue" select="''"/>
+        <xsl:param name="confValue" select="''"/>
+        <xsl:param name="confIndicatorID" select="''"/>
+        <xsl:param name="unlockButton" select="''"/>
+        <xsl:param name="unlockHelp" select="''"/>
+        <xsl:variable name="authFieldID" select="concat(translate(@id,'.','_'),'_authority')"/>
+        <xsl:variable name="confFieldID" select="concat(translate(@id,'.','_'),'_confidence')"/>
+        <!-- the authority key value -->
+        <input>
+            <xsl:attribute name="class">
+                <xsl:text>ds-authority-value </xsl:text>
+                <xsl:if test="$unlockButton">
+                    <xsl:text>ds-authority-visible </xsl:text>
+                </xsl:if>
+            </xsl:attribute>
+            <xsl:attribute name="type"><xsl:value-of select="$authorityInputType"/></xsl:attribute>
+            <xsl:attribute name="readonly"><xsl:text>readonly</xsl:text></xsl:attribute>
+            <xsl:attribute name="name">
+                <xsl:value-of select="concat($name,'_authority')"/>
+                <xsl:if test="$position">
+                    <xsl:value-of select="concat('_', $position)"/>
+                </xsl:if>
+            </xsl:attribute>
+            <xsl:if test="$id">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="$authFieldID"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="value">
+                <xsl:value-of select="$authValue"/>
+            </xsl:attribute>
+            <!-- this updates confidence after a manual change to authority value -->
+            <xsl:attribute name="onChange">
+                <xsl:text>javascript: return DSpaceAuthorityOnChange(this, '</xsl:text>
+                <xsl:value-of select="$confFieldID"/>
+                <xsl:text>','</xsl:text>
+                <xsl:value-of select="$confIndicatorID"/>
+                <xsl:text>');</xsl:text>
+            </xsl:attribute>
         </input>
-      </xsl:if>
-      <input class="ds-authority-confidence-input" type="hidden">
-        <xsl:attribute name="name">
-          <xsl:value-of select="concat($name,'_confidence')"/>
-          <xsl:if test="$position">
-            <xsl:value-of select="concat('_', $position)"/>
-          </xsl:if>
-        </xsl:attribute>
-        <xsl:if test="$id">
-          <xsl:attribute name="id">
-            <xsl:value-of select="$confFieldID"/>
-          </xsl:attribute>
+        <!-- optional "unlock" button on (visible) authority value field -->
+        <xsl:if test="$unlockButton">
+            <input type="image" class="ds-authority-lock is-locked ">
+                <xsl:attribute name="onClick">
+                    <xsl:text>javascript: return DSpaceToggleAuthorityLock(this, '</xsl:text>
+                    <xsl:value-of select="$authFieldID"/>
+                    <xsl:text>');</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="src">
+                    <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
+                </xsl:attribute>
+                <xsl:attribute name="i18n:attr">title</xsl:attribute>
+                <xsl:attribute name="title">
+                    <xsl:value-of select="$unlockHelp"/>
+                </xsl:attribute>
+            </input>
         </xsl:if>
-        <xsl:attribute name="value">
-          <xsl:value-of select="$confValue"/>
-        </xsl:attribute>
-      </input>
+        <input class="ds-authority-confidence-input" type="hidden">
+            <xsl:attribute name="name">
+                <xsl:value-of select="concat($name,'_confidence')"/>
+                <xsl:if test="$position">
+                    <xsl:value-of select="concat('_', $position)"/>
+                </xsl:if>
+            </xsl:attribute>
+            <xsl:if test="$id">
+                <xsl:attribute name="id">
+                    <xsl:value-of select="$confFieldID"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="value">
+                <xsl:value-of select="$confValue"/>
+            </xsl:attribute>
+        </input>
     </xsl:template>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
@@ -3309,35 +3322,35 @@
 
     <!-- indicator spinner -->
     <xsl:template match="dri:item[@id='aspect.general.ChoiceLookupTransformer.item.select']/dri:figure">
-      <img id="lookup_indicator_id" alt="Loading..." style="display:none;">
-        <xsl:attribute name="src">
-         <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
-        </xsl:attribute>
-      </img>
+        <img id="lookup_indicator_id" alt="Loading..." style="display:none;">
+            <xsl:attribute name="src">
+                <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
+            </xsl:attribute>
+        </img>
     </xsl:template>
 
     <!-- This inline JS must be added to the popup page for choice lookups -->
     <xsl:template name="choiceLookupPopUpSetup">
-      <script type="text/javascript">
-        var form = document.getElementById('aspect_general_ChoiceLookupTransformer_div_lookup');
-        DSpaceChoicesSetup(form);
-      </script>
+        <script type="text/javascript">
+            var form = document.getElementById('aspect_general_ChoiceLookupTransformer_div_lookup');
+            DSpaceChoicesSetup(form);
+        </script>
     </xsl:template>
 
     <!-- Special select widget for lookup popup -->
     <xsl:template match="dri:field[@id='aspect.general.ChoiceLookupTransformer.field.chooser']">
-      <div>
-        <select onChange="javascript:DSpaceChoicesSelectOnChange();">
-          <xsl:call-template name="fieldAttributes"/>
-          <xsl:apply-templates/>
-          <xsl:comment>space filler because "unclosed" select annoys browsers</xsl:comment>
-        </select>
-        <img class="choices-lookup" id="lookup_indicator_id" alt="Loading..." style="display:none;">
-          <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
-          </xsl:attribute>
-        </img>
-      </div>
+        <div>
+            <select onChange="javascript:DSpaceChoicesSelectOnChange();">
+                <xsl:call-template name="fieldAttributes"/>
+                <xsl:apply-templates/>
+                <xsl:comment>space filler because "unclosed" select annoys browsers</xsl:comment>
+            </select>
+            <img class="choices-lookup" id="lookup_indicator_id" alt="Loading..." style="display:none;">
+                <xsl:attribute name="src">
+                    <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
+                </xsl:attribute>
+            </img>
+        </div>
     </xsl:template>
 
     <!-- Generate buttons with onClick attribute, since it is the easiest
@@ -3346,45 +3359,45 @@
 
     <!-- choice popup "accept" button -->
     <xsl:template match="dri:field[@id='aspect.general.ChoiceLookupTransformer.field.accept']">
-      <xsl:call-template name="choiceLookupButton">
-        <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesAcceptOnClick();'"/>
-      </xsl:call-template>
+        <xsl:call-template name="choiceLookupButton">
+            <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesAcceptOnClick();'"/>
+        </xsl:call-template>
     </xsl:template>
 
     <!-- choice popup "more" button -->
     <xsl:template match="dri:field[@id='aspect.general.ChoiceLookupTransformer.field.more']">
-      <xsl:call-template name="choiceLookupButton">
-        <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesMoreOnClick();'"/>
-      </xsl:call-template>
+        <xsl:call-template name="choiceLookupButton">
+            <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesMoreOnClick();'"/>
+        </xsl:call-template>
     </xsl:template>
 
     <!-- choice popup "cancel" button -->
     <xsl:template match="dri:field[@id='aspect.general.ChoiceLookupTransformer.field.cancel']">
-      <xsl:call-template name="choiceLookupButton">
-        <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesCancelOnClick();'"/>
-      </xsl:call-template>
+        <xsl:call-template name="choiceLookupButton">
+            <xsl:with-param name="onClick" select="'javascript:DSpaceChoicesCancelOnClick();'"/>
+        </xsl:call-template>
     </xsl:template>
 
     <!-- button markup: special handling needed because these must not be <input type=submit> -->
     <xsl:template name="choiceLookupButton">
-      <xsl:param name="onClick"/>
-      <input type="button" onClick="{$onClick}">
-        <xsl:call-template name="fieldAttributes"/>
-        <xsl:attribute name="value">
-            <xsl:choose>
-                <xsl:when test="./dri:value[@type='raw']">
-                    <xsl:value-of select="./dri:value[@type='raw']"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="./dri:value[@type='default']"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:attribute>
-        <xsl:if test="dri:value/i18n:text">
-            <xsl:attribute name="i18n:attr">value</xsl:attribute>
-        </xsl:if>
-        <xsl:apply-templates />
-      </input>
+        <xsl:param name="onClick"/>
+        <input type="button" onClick="{$onClick}">
+            <xsl:call-template name="fieldAttributes"/>
+            <xsl:attribute name="value">
+                <xsl:choose>
+                    <xsl:when test="./dri:value[@type='raw']">
+                        <xsl:value-of select="./dri:value[@type='raw']"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="./dri:value[@type='default']"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:if test="dri:value/i18n:text">
+                <xsl:attribute name="i18n:attr">value</xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates />
+        </input>
     </xsl:template>
 
     <!-- - - - - - End templates for Choice/Authority control - - - - -  -->

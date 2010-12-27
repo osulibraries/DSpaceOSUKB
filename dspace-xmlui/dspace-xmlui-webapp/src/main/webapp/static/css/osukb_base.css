@@ -250,23 +250,27 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
         This was added to allow for more flexibility in styling colors and positioning.
 */
 div#body-and-options {
-    background-color: #999
+    background: url("../images/bkgd_body-and-options.png") repeat-y;
+}
+div#clearBody{
+    clear: both;
 }
 
 
 div#ds-body {
     float:right;
     width:790px;
-    background: #ffffff;
+/*    background: #ffffff;*/
     position:relative;
     color: inherit;
     margin: 0;
+        
 }
 
 div#ds-options {
     float:left;
     width:210px;
-    background:#f6f4f4;
+/*    background:#f6f4f4;*/
     position:relative;
     color: inherit;
     font-size: 0.8em;
@@ -286,10 +290,10 @@ div#homepage-body h1 {
 div#homepage-featured {
     border-left: 1px solid #CCCCCC;
     float: right;
-    margin: 20px 0 20px 10px;
-    padding: 10px;
+    margin: 20px 0 0 10px;
+    padding: 10px 12px 40px 10px;
     width: 200px;
-    background: url("../images/bkgd.png") repeat-x;
+    background: url("../images/bkgd_featured.png") repeat-x;
 }
 
 
@@ -1237,48 +1241,63 @@ ul.horizontal li span.bold a { color: black; }
 
 
 
-span.pagination-info {
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
 
-}
 
 
 div.pagination {
     clear: both;
-    margin: 0 auto;
+    margin: 0 auto 16px;
     padding: 8px 0;
     width: 500px;
     text-align: center;
+    display: block;
 }
 
 
 div.pagination-masked {
-        position: relative;
-        color: inherit;
-        margin-bottom: 5px;
+    clear: both;
+    margin: 0 auto 36px;
+    padding: 8px 0;
+    width: 500px;
+    text-align: center;
+    display: block;
 }
 
-a.previous-page-link {
+div.previous-page-link {
         position: relative;
+        margin: 0;
         float: left;
+        width: 100px;
 }
 
+div.pagination-info {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 300px;
+}
 
-a.next-page-link {
+div.pagination-info p {
+    margin: 0;
+    padding: 0;
+}
+
+div.next-page-link {
         position: relative;
-        float: right;
+        margin: 0;
+        float: left;
+        width: 100px;
 }
+
+
 
 ul.pagination-links {
         position: relative;
         text-align: center;
-        top: -5px;
-        width: 360px;
+        padding: 0;
         margin: 0 auto;
         padding: 0;
-        line-height: 12px;
 }
 
 *.pagination-links li {

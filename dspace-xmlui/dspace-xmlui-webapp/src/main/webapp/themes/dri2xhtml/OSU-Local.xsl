@@ -44,14 +44,6 @@
             <xsl:text>var x=0;</xsl:text>
         </script>
 
-        <!-- Google webfont Droid Sans, see http://code.google.com/webfonts/ -->
-<!--        <link rel='stylesheet' type='text/css'>
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
-                <xsl:text>://fonts.googleapis.com/css?family=Droid+Sans:regular,bold</xsl:text>
-            </xsl:attribute>
-        </link>-->
-
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
             var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
@@ -64,7 +56,7 @@
 
         <!-- bds: text-field-prompt.js for global search box, uses jQuery -->
         <!-- see http://kyleschaeffer.com/best-practices/input-prompt-text/ -->
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/text-field-prompt.js</xsl:text>
@@ -85,21 +77,21 @@
         </link>
                 <!-- bds: breadcrumb trail shrinker -->
         <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/jquery.equalheights.js</xsl:text>
@@ -107,36 +99,14 @@
             <xsl:text> </xsl:text>
         </script>
 
-
-<!--<script type="text/javascript">
-    <xsl:attribute name="src">
-        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
-        <xsl:text>://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js</xsl:text>
-    </xsl:attribute>
-    <xsl:text> </xsl:text>
-</script>
-
-<script type="text/javascript">
-  WebFont.load({
-        "google": {
-            "families": ['Droid Sans:regular,bold']
-        },
-        "active": function() {
-                $("#breadCrumb0").jBreadCrumb();
-                $(".column").equalHeights();
-        }
-    });
-</script>-->
-
 <!--         bds: equal height columns trick
                 from http://www.cssnewbie.com/equalheights-jquery-plugin/  -->
-
-    <script>
-
-$(document).ready(function() {
-    $("#breadCrumb0").jBreadCrumb();
-	$(".column").equalHeights();
-});
+                <!--$(".column").equalHeights();-->
+        <script>
+            $(window).load(function() {
+                $("#breadCrumb0").jBreadCrumb();
+                
+            });
         </script>
     </xsl:template>
 
