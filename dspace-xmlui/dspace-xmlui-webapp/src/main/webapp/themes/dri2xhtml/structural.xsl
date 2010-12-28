@@ -1124,11 +1124,11 @@
             </xsl:attribute>
             <xsl:apply-templates />
         </li>
-        <xsl:if test="not(position()=last())">
+<!--        <xsl:if test="not(position()=last())">
             <li class="arrow">
                 <xsl:text>&#8594;</xsl:text>
             </li>
-        </xsl:if>
+        </xsl:if>-->
     </xsl:template>
 
 
