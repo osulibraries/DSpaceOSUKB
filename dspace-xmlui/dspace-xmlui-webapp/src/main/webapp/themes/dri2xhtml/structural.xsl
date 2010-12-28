@@ -387,11 +387,13 @@
                     <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
                 </a>
                 -->
-                <a target="_blank" href="http://www.dspace.org/">DSpace</a>
+                <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
                 <xsl:text> | </xsl:text>
                 <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
                 <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
+                <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
+                <xsl:text> | </xsl:text>
+                <a target="_blank" href="http://www.dspace.org/">DSpace</a>
                 <xsl:text> | </xsl:text>
                 <a>
                     <xsl:attribute name="href">
@@ -588,7 +590,7 @@
         <xsl:choose>
             <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
                       or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
-                      or /dri:document/dri:body/dri:div[@rend]='primary submission'">
+                      or /dri:document/dri:body/dri:div[@rend='primary submission']">
 
             </xsl:when>
             <xsl:otherwise>
@@ -662,7 +664,7 @@
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
             </h3>
-            <div id="ds-partners-option" class="ds-option-set">
+            <div class="ds-option-set">
                 <ul>
                     <li><a href="http://library.osu.edu/">Help</a></li>
                     <li><a href="http://library.osu.edu/">About</a></li>
@@ -740,19 +742,6 @@
             <!-- Once the search box is built, the other parts of the options are added -->
             <xsl:apply-templates />
 
-            <!-- bds: KB partners links -->
-            <h3 id="ds-partners-option-head" class="ds-option-set-head">
-                <xsl:text>Partners</xsl:text>
-            </h3>
-            <div id="ds-partners-option" class="ds-option-set">
-                <ul>
-                    <!--<li><a href="http://library.osu.edu/sites/dlib/kb/projects.html">Digital Initiatives at OSU</a></li>-->
-                    <li><a href="http://www.ohiolink.edu">OhioLink</a></li>
-                    <li><a href="http://www.ohiolink.edu/etd">OhioLink-ETD Center</a></li>
-                    <li><a href="http://library.osu.edu/sites/copyright/">Copyright Help Center</a></li>
-                    <li><a href="http://wmc.ohio-state.edu">Web Media Collective</a></li>
-                </ul>
-            </div>
 
             <!-- Peter: Add RSS Links to Page -->
             <!-- bds: xsl:if test prevents box from appearing when there aren't any RSS feeds for a page -->
