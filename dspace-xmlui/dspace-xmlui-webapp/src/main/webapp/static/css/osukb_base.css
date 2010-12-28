@@ -1,8 +1,8 @@
 
 body {
-        font-family: Corbel, Optima, sans-serif;
+        font-family: Optima, Calibri, Verdana, sans-serif;
         background-color: #C2CEC2;
-        font-size: 0.95em;
+        font-size: 0.93em;
 	margin: 0;
         padding: 0;
 }
@@ -847,7 +847,7 @@ form.navigation {
     margin: 0 auto;
     padding: 5px;
     text-align: center;
-    width: 560px;
+    width: 580px;
 }
 
 form.controls {
@@ -859,7 +859,7 @@ form.controls {
     margin: 0 auto;
     padding: 5px;
     text-align: center;
-    width: 560px;
+    width: 580px;
 }
 
 
@@ -1128,7 +1128,7 @@ span.ds-form-label,label.ds-form-label {
         float: left;
         clear: left;
         padding: 5px 20px 3px 6px;
-        width: 220px;
+        width: 500px;
         font-weight: bold;
         vertical-align: middle;
         overflow: hidden;
@@ -1248,7 +1248,7 @@ div.pagination {
     clear: both;
     margin: 0 auto 16px;
     padding: 8px 0;
-    width: 500px;
+    width: 540px;
     text-align: center;
     display: block;
 }
@@ -1258,7 +1258,7 @@ div.pagination-masked {
     clear: both;
     margin: 0 auto 36px;
     padding: 8px 0;
-    width: 500px;
+    width: 540px;
     text-align: center;
     display: block;
 }
@@ -1267,7 +1267,7 @@ div.previous-page-link {
         position: relative;
         margin: 0;
         float: left;
-        width: 100px;
+        width: 110px;
 }
 
 div.pagination-info {
@@ -1275,7 +1275,7 @@ div.pagination-info {
     padding: 0;
     position: relative;
     float: left;
-    width: 300px;
+    width: 320px;
 }
 
 div.pagination-info p {
@@ -1287,7 +1287,7 @@ div.next-page-link {
         position: relative;
         margin: 0;
         float: left;
-        width: 100px;
+        width: 110px;
 }
 
 
