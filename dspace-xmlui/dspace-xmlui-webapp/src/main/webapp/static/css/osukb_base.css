@@ -1029,7 +1029,7 @@ fieldset.ds-form-list.thick {
 fieldset.ds-form-list ol {
         padding: 0;
         margin: 0;
-        width: 100%;
+        width: 728px;
 }
 
 fieldset.ds-form-list legend {
@@ -1125,10 +1125,10 @@ li.ds-form-item {
 
 div.ds-form-content {
         float: left;
-        clear: right;
+        clear: both;
         display: block;
         padding: 0px 7px;
-        width: 100%;
+
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -1136,7 +1136,6 @@ span.ds-form-label,label.ds-form-label {
         float: left;
         clear: left;
         padding: 5px 20px 3px 6px;
-        width: 500px;
         font-weight: bold;
         vertical-align: middle;
         overflow: hidden;

@@ -723,9 +723,9 @@
 
 	<!-- org.dspace.app.xmlui.Submission.submit.LicenseStep -->
 	<message key="xmlui.Submission.submit.LicenseStep.head">Distribution License</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for the Knowledge Bank to reproduce, translate and distribute your submission worldwide, you must agree to the following terms.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info2">Grant the standard distribution license by selecting 'I Grant the License'; and then click 'Complete Submission'.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info3">If you have questions regarding this license please contact the system administrators.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for Knowledge Bank to reproduce, translate and distribute your submission worldwide, your agreement to the following terms is necessary. Please take a moment to read the terms of this license, and click on one of the buttons at the bottom of the page.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info2">By checking the box marked "I Grant the License" and clicking "Next", you indicate that you grant the following terms of the license.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info3">Not granting the license will not delete your submission. Your item will remain in your "Submissions" page. You can then either remove the submission from the system, or agree to the license later once any queries you might have are resolved. If you have questions regarding this license please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_label">Distribution license</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_checkbox">I Grant the License</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_error">You must grant this license to complete your submission. If you are unable to grant this license at this time you may save your work and return later or remove the submission by clicking the 'Save &amp; Exit' button below.</message>
