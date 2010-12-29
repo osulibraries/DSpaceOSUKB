@@ -824,11 +824,11 @@
                 </td>
             <td class="detail-field-data">
               <xsl:copy-of select="./node()"/>
-              <xsl:if test="./@authority and ./@confidence">
+<!--              <xsl:if test="./@authority and ./@confidence">
                 <xsl:call-template name="authorityConfidenceIcon">
                   <xsl:with-param name="confidence" select="./@confidence"/>
                 </xsl:call-template>
-              </xsl:if>
+              </xsl:if>-->
             </td>
                 <td class="detail-field-language"><xsl:value-of select="./@language"/></td>
             </tr>
