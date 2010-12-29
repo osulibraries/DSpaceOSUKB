@@ -638,10 +638,10 @@
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.close_set">)</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_help">The item has more than one title, <i>e.g. a translated title</i></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item: </message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release Date or Publication Date</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item:<br /></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date or publication date</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">The item has a release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:<br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.date_issued">Date Issued</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.citation">Citation</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.publisher">Publisher</message>

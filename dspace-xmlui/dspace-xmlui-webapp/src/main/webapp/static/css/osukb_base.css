@@ -925,6 +925,11 @@ ul.ds-progress-list li.button {
 }
 input.ds-button-field {
         margin: 0 3px 0 0;
+        padding: 1px 8px;
+}
+
+input.ds-text-field {
+    padding: 1px;
 }
 
 ul.ds-progress-list li.button input.ds-button-field {
@@ -950,7 +955,9 @@ ul.ds-progress-list li.arrow {
 
 
 
-
+div.ds-previous-values {
+    clear: both;
+}
 
 
 
@@ -1121,7 +1128,7 @@ div.ds-form-content {
         clear: right;
         display: block;
         padding: 0px 7px;
-        width: 660px;
+        width: 100%;
 }
 
 span.ds-form-label,label.ds-form-label {
@@ -1161,7 +1168,11 @@ div.spacer {
         clear: both;
 }
 
-
+div.license-text {
+    background: #eee;
+    border: 1px solid #999;
+    padding: 4px;
+}
 
 
 
