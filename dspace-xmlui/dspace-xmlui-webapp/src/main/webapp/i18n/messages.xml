@@ -122,11 +122,11 @@
    <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.dateissued">issue date</message>
    <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.dateaccessioned">submit date</message>
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.relevance">relevance</message>
-	<message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by">Sort items by</message>
-	<message key="xmlui.ArtifactBrowser.AbstractSearch.order">in order</message>
+	<message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by">Sort items by </message>
+	<message key="xmlui.ArtifactBrowser.AbstractSearch.order">in order </message>
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.order.asc">ascending</message>
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.order.desc">descending</message>
-	<message key="xmlui.ArtifactBrowser.AbstractSearch.rpp">Results/page</message>
+	<message key="xmlui.ArtifactBrowser.AbstractSearch.rpp">Results/page </message>
 
     <!-- org.dspace.app.xmlui.artifactbrowser.AdvancedSearch.java -->
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.title">Advanced Search</message>
@@ -146,6 +146,11 @@
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_identifier">Identifier</message>
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_language">Language (ISO)</message>
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_keyword">Keyword</message>
+
+        <!-- bds: adding some labels that were missing per mpw -->
+        <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Type</message>
+	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_place">Place</message>
+	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type_id">Identifier</message>
    
    <!--  some common other possibilities for Advanced Search Fields -->
    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_contributor">Contributor</message>
@@ -633,10 +638,10 @@
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.close_set">)</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_help">The item has more than one title, <i>e.g. a translated title</i></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item: </message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Published</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item:<br /></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date or publication date</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">The item has a release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:<br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.date_issued">Date Issued</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.citation">Citation</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.publisher">Publisher</message>
@@ -718,9 +723,9 @@
 
 	<!-- org.dspace.app.xmlui.Submission.submit.LicenseStep -->
 	<message key="xmlui.Submission.submit.LicenseStep.head">Distribution License</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for the Knowledge Bank to reproduce, translate and distribute your submission worldwide, you must agree to the following terms.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info2">Grant the standard distribution license by selecting 'I Grant the License'; and then click 'Complete Submission'.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info3">If you have questions regarding this license please contact the system administrators.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for Knowledge Bank to reproduce, translate and distribute your submission worldwide, your agreement to the following terms is necessary. Please take a moment to read the terms of this license, and click on one of the buttons at the bottom of the page.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info2">By checking the box marked "I Grant the License" and clicking "Next", you indicate that you grant the following terms of the license.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info3">Not granting the license will not delete your submission. Your item will remain in your "Submissions" page. You can then either remove the submission from the system, or agree to the license later once any queries you might have are resolved. If you have questions regarding this license please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_label">Distribution license</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_checkbox">I Grant the License</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_error">You must grant this license to complete your submission. If you are unable to grant this license at this time you may save your work and return later or remove the submission by clicking the 'Save &amp; Exit' button below.</message>
@@ -734,7 +739,7 @@
 	<message key="xmlui.Submission.submit.CompletedStep.head">Submission complete</message>	
 	<message key="xmlui.Submission.submit.CompletedStep.info1">Your submission will now go through the review process for this collection. You will receive e-mail notification as soon as your submission has joined the collection, or if there is a problem with your submission. You may also check on the status of your submission by visiting your submissions page.</message>	
 	<message key="xmlui.Submission.submit.CompletedStep.go_submission">Go to the Submissions page</message>	
-	<message key="xmlui.Submission.submit.CompletedStep.submit_again">Submit another item</message>		
+	<message key="xmlui.Submission.submit.CompletedStep.submit_again">Submit another item to the same collection</message>
 
 	<!-- org.dspace.app.xmlui.Submission.workflow.PerformTaskStep -->
 	<message key="xmlui.Submission.workflow.PerformTaskStep.info1">Actions you may perform on this task:</message>

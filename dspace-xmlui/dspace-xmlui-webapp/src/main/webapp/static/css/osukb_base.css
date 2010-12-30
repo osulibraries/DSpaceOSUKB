@@ -1,8 +1,8 @@
 
 body {
-        font-family: Corbel, Optima, sans-serif;
+        font-family: Optima, Calibri, Verdana, sans-serif;
         background-color: #C2CEC2;
-        font-size: 0.95em;
+        font-size: 0.93em;
 	margin: 0;
         padding: 0;
 }
@@ -34,12 +34,13 @@ table {
     width: 100%;
 }
 
-.subheader th {
-    padding-left: 5px;
-    font-weight: 100;
+th {
+    text-align: left;
+    padding: 4px;
 }
 
 td {
+    text-align: left;
     padding: 4px;
 }
 
@@ -249,23 +250,27 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
         This was added to allow for more flexibility in styling colors and positioning.
 */
 div#body-and-options {
-    background-color: #999
+    background: url("../images/bkgd_body-and-options.png") repeat-y;
+}
+div#clearBody{
+    clear: both;
 }
 
 
 div#ds-body {
     float:right;
     width:790px;
-    background: #ffffff;
+/*    background: #ffffff;*/
     position:relative;
     color: inherit;
     margin: 0;
+        
 }
 
 div#ds-options {
     float:left;
     width:210px;
-    background:#f6f4f4;
+/*    background:#f6f4f4;*/
     position:relative;
     color: inherit;
     font-size: 0.8em;
@@ -285,10 +290,10 @@ div#homepage-body h1 {
 div#homepage-featured {
     border-left: 1px solid #CCCCCC;
     float: right;
-    margin: 20px 0 20px 10px;
-    padding: 10px;
+    margin: 20px 0 0 10px;
+    padding: 10px 12px 40px 10px;
     width: 200px;
-    background: url("../images/bkgd.png") repeat-x;
+    background: url("../images/bkgd_featured.png") repeat-x;
 }
 
 
@@ -364,6 +369,10 @@ div#ds-global-search {
     font-size: 0.8em;
 }
 
+div#ds-global-search-scope {
+    vertical-align: middle;
+}
+
 div#ds-global-search a {
     color: #003333;
     position: absolute;
@@ -385,11 +394,12 @@ input#ds-global-search-button {
 
 div#ds-global-search-scope label {
     margin: 2px 10px 0 0;
+    vertical-align: middle;
 }
 
 div#ds-global-search-scope input {
-  vertical-align: middle;   
-  margin: 0 2px 0 0;
+  vertical-align: middle;
+  margin: 0 3px 0 0;
 }
 
 .input-prompt {
@@ -842,7 +852,7 @@ form.navigation {
     margin: 0 auto;
     padding: 5px;
     text-align: center;
-    width: 560px;
+    width: 580px;
 }
 
 form.controls {
@@ -854,7 +864,7 @@ form.controls {
     margin: 0 auto;
     padding: 5px;
     text-align: center;
-    width: 560px;
+    width: 580px;
 }
 
 
@@ -909,17 +919,28 @@ ul.ds-progress-list li {
 ul.ds-progress-list li.button {
         background-color: inherit;
         border: none;
-        padding: 1px !important;
+        padding: 0px !important;
         margin-top: 2px;
         margin-left: 0px !important;
+}
+input.ds-button-field {
+        margin: 0 3px 0 0;
+        padding: 1px 8px;
+}
+
+input.ds-text-field {
+    padding: 1px;
 }
 
 ul.ds-progress-list li.button input.ds-button-field {
         font-size: smaller;
+        border: 2px outset #aaa;
+        margin: 0;
 }
 
 ul.ds-progress-list li.current.button input.ds-button-field {
         color: #900;
+        border: 3px solid #300;
 }
 
 ul.ds-progress-list li.disabled.button input.ds-button-field {
@@ -927,24 +948,16 @@ ul.ds-progress-list li.disabled.button input.ds-button-field {
 }
 
 
-ul.ds-progress-list li.current {
-        color: rgb(80, 183, 40);
-        background-color: inherit;
-        border-color: rgb(216, 245, 216);
-}
 
 ul.ds-progress-list li.arrow {
-        border: none;
-        background: none;
-        font-size: 40%;
-        font-weight: normal;
-        margin-left: 0px;
-        margin-right: 0px;
+        display: none;
 }
 
 
 
-
+div.ds-previous-values {
+    clear: both;
+}
 
 
 
@@ -1016,7 +1029,7 @@ fieldset.ds-form-list.thick {
 fieldset.ds-form-list ol {
         padding: 0;
         margin: 0;
-        width: 100%;
+        width: 728px;
 }
 
 fieldset.ds-form-list legend {
@@ -1112,18 +1125,17 @@ li.ds-form-item {
 
 div.ds-form-content {
         float: left;
-        clear: right;
+        clear: both;
         display: block;
         padding: 0px 7px;
-        width: 580px;
+
 }
 
 span.ds-form-label,label.ds-form-label {
         display: block;
         float: left;
         clear: left;
-        padding: 5px 20px 3px 10px;
-        width: 220px;
+        padding: 5px 20px 3px 6px;
         font-weight: bold;
         vertical-align: middle;
         overflow: hidden;
@@ -1155,7 +1167,11 @@ div.spacer {
         clear: both;
 }
 
-
+div.license-text {
+    background: #eee;
+    border: 1px solid #999;
+    padding: 4px;
+}
 
 
 
@@ -1236,48 +1252,63 @@ ul.horizontal li span.bold a { color: black; }
 
 
 
-span.pagination-info {
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
 
-}
 
 
 div.pagination {
     clear: both;
-    margin: 0 auto;
+    margin: 0 auto 16px;
     padding: 8px 0;
-    width: 500px;
+    width: 540px;
     text-align: center;
+    display: block;
 }
 
 
 div.pagination-masked {
-        position: relative;
-        color: inherit;
-        margin-bottom: 5px;
+    clear: both;
+    margin: 0 auto 36px;
+    padding: 8px 0;
+    width: 540px;
+    text-align: center;
+    display: block;
 }
 
-a.previous-page-link {
+div.previous-page-link {
         position: relative;
+        margin: 0;
         float: left;
+        width: 110px;
 }
 
+div.pagination-info {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 320px;
+}
 
-a.next-page-link {
+div.pagination-info p {
+    margin: 0;
+    padding: 0;
+}
+
+div.next-page-link {
         position: relative;
-        float: right;
+        margin: 0;
+        float: left;
+        width: 110px;
 }
+
+
 
 ul.pagination-links {
         position: relative;
         text-align: center;
-        top: -5px;
-        width: 360px;
+        padding: 0;
         margin: 0 auto;
         padding: 0;
-        line-height: 12px;
 }
 
 *.pagination-links li {
