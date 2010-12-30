@@ -1751,8 +1751,9 @@
     <xsl:template match="dri:xref">
         <a>
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
-            <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
-            <xsl:apply-templates />
+            <xsl:if test="@rend">
+                <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
+            </xsl:if>
         </a>
     </xsl:template>
 
