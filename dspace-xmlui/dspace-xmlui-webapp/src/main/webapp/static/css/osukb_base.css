@@ -559,7 +559,7 @@ div#more-link {
     padding: 5px;
 }
 
-
+/* div.notice is used for things like please use this identifier... */
 div.notice {
     margin: 10px 0;
     width: 100%;
@@ -571,6 +571,11 @@ div.notice p {
 }
 div.notice a {
     color: #cc6600;
+}
+/* ds-notice-div is used when notices are placed in places other than static divs,
+    for example after adding a bitstream to an item it says 'The new bitstream was successfully uploaded.' */
+div.ds-notice-div p {
+    margin: 0 0 0 15px;
 }
 
 p.ds-paragraph {
