@@ -150,7 +150,7 @@
         <!-- bds: adding some labels that were missing per mpw -->
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Type</message>
 	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_place">Place</message>
-	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type_id">Identifier</message>
+	<message key="xmlui.ArtifactBrowser.AdvancedSearch.type_id">Identifier</message>
    
    <!--  some common other possibilities for Advanced Search Fields -->
    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_contributor">Contributor</message>

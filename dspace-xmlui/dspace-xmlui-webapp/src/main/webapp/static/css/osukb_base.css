@@ -1,6 +1,6 @@
 
 body {
-        font-family: Optima, Calibri, Verdana, sans-serif;
+        font-family: sans-serif;
         background-color: #C2CEC2;
         font-size: 0.93em;
 	margin: 0;
@@ -520,7 +520,7 @@ div#ds-options li {
 div#ds-footer {
     position: relative;
     margin-bottom: 40px;
-    height: 80px;
+    height: 100px;
     float: left;
     width: 100%;
     border: none;
@@ -536,12 +536,12 @@ div#osu-footer-logo {
     height: 58px;
     margin: 5px;
     width: 58px;
-    float: left;
 }
 
 div#osu-logo-text p {
-    font-size: .8em;
-    margin: 5px 0 0 0;
+    font-size: 0.75em;
+    margin: 5px 0 0 7px;
+    width: 550px;
 }
 
 div#ds-footer-links {
@@ -550,7 +550,7 @@ div#ds-footer-links {
     top: 2px;
     padding-right: 5px;
     text-align: right;
-    font-size: inherit;
+    font-size: 0.9em;
 }
 
 
@@ -907,11 +907,9 @@ ul.ds-progress-list {
 
 
 ul.ds-progress-list li {
-        font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
-        background-color: rgb(255, 255, 240);
-        border: 1px solid rgb(240, 240, 210);
-        color: rgb(233, 160, 80);
+        background: #F6F4F4;
+        border: 2px solid #DEE1DE;
         overflow: hidden;
         display: inline;
         padding: 4px 3px;
