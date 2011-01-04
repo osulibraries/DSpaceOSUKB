@@ -202,8 +202,8 @@
                     <xsl:choose>
                         <xsl:when test="dim:field[@element='title']">
                             <xsl:choose>
-                                <xsl:when test="string-length($artifactTitle) >= 40">
-                                <xsl:value-of select="substring($artifactTitle,1,40)"/>... </xsl:when>
+                                <xsl:when test="string-length($artifactTitle) >= 50">
+                                <xsl:value-of select="substring($artifactTitle,1,50)"/>... </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of select="$artifactTitle"/>
                                 </xsl:otherwise>
@@ -216,6 +216,18 @@
                     </xsl:choose>
                 </a>
 
+                <!-- bds: We would prefer to add issue date or submit date depending on the type
+                            of browse that is happening, but the data provided by the DRI is
+                            not helpful for this. Instead just copying the date part from regular browse.-->
+                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+	                <span class="publisher-date">
+	                    <xsl:text>(</xsl:text>
+	                    <span class="date">
+	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+	                    </span>
+	                    <xsl:text>)</xsl:text>
+	                </span>
+                </xsl:if>
 
 	</xsl:template>
 
