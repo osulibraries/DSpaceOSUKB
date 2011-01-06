@@ -852,33 +852,30 @@
     <!-- Generate the info about the collection from the metadata section -->
     <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
     <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
-    <xsl:template match="dim:dim" mode="collectionDetailView-DIM"> 
-        <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
+    <xsl:template match="dim:dim" mode="collectionDetailView-DIM">
+        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
+                    we ususally have used for related links. Moving this bit before the
+                    intro-text so the floats work as desired.
+                    Needed to use &gt;2 instead of &gt;0 because even empty fields have a two-byte
+                    blank space in them.
+                    -->
+        <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;2">
+            <div class="detail-view-news">
+                <!--<h3>Related links</h3>-->
+                <xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
+            </div>
+        </xsl:if>
+        <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;2">
             <div class="intro-text">
                 <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
             </div>
         </xsl:if>
-
-        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
-                    we ususally have used for related links -->
-        <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;0">
-        	<div class="detail-view-news">
-        		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
-        		<div class="news-text">
-        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
-        		</div>
-        	</div>
+        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;2">
+            <div class="detail-view-rights-and-license">
+                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+            </div>
         </xsl:if>
-        
-        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-        	<div class="detail-view-rights-and-license">
-		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-		            <div class="copyright-text">
-		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
-		            </div>
-		        </xsl:if>
-        	</div>
-        </xsl:if>
+        <xsl:text> </xsl:text> <!-- in case of none of the above, keeps a proper empty div -->
     </xsl:template>
     
     
@@ -1003,32 +1000,29 @@
     <!-- bds: changing <p> tag wrapper to <div> tag, because we usually already have <p> tags embedded -->
     <!--        also using disable-output-escaping because these are CDATA sections of HTML -->
     <xsl:template match="dim:dim" mode="communityDetailView-DIM">
-        <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;0">
+        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
+                    we ususally have used for related links. Moving this bit before the
+                    intro-text so the floats work as desired.
+                    Needed to use &gt;2 instead of &gt;0 because even empty fields have a two-byte
+                    blank space in them. 
+                    -->
+        <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;2">
+            <div class="detail-view-news">
+                <!--<h3>Related links</h3>-->
+                <xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
+            </div>
+        </xsl:if>
+        <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;2">
             <div class="intro-text">
                 <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
             </div>
         </xsl:if>
-
-        <!-- bds: this isn't really used as 'News', in JSPUI was sidebar text, which
-                    we ususally have used for related links -->
-        <xsl:if test="string-length(dim:field[@element='description'][@qualifier='tableofcontents'])&gt;0">
-        	<div class="detail-view-news">
-        		<!-- <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.news</i18n:text></h3> -->
-        		<div class="news-text">
-        			<xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
-        		</div>
-        	</div>
+        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;2">
+            <div class="detail-view-rights-and-license">
+                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
+            </div>
         </xsl:if>
-
-        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-        	<div class="detail-view-rights-and-license">
-		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
-		            <div class="copyright-text">
-		                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
-		            </div>
-		        </xsl:if>
-        	</div>
-        </xsl:if>
+        <xsl:text> </xsl:text> <!-- in case of none of the above, keeps a proper empty div -->
     </xsl:template>
    
     

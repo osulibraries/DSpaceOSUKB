@@ -435,7 +435,7 @@ div#ds-body h3 {
 }
 
 div.detail-view {
-    padding: 15px;
+
 }
 
 
@@ -579,7 +579,7 @@ div.ds-notice-div p {
 }
 
 p.ds-paragraph {
-    margin: 5px 10px;
+    margin: 0px;
 }
 
 div.license-info {
@@ -587,6 +587,7 @@ div.license-info {
     padding: 10px 0 10px 0;
 }
 
+/* Items in the knowledge bank are protected by copyright.... */
 p.copyright-text {
         font-style: italic;
         font-size: .8em;
@@ -594,13 +595,32 @@ p.copyright-text {
         color: #222;
 }
 
-
+/* Community and collection page metadata */
 div.ds-logo-wrapper {
     float: right;
     padding: 10px 5px 10px 5px;
     clear: both;
     margin-top: -115px;
 }
+div.intro-text {
+}
+div.detail-view-news {  /* 'Related links' */
+    float: right;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    background: #f2f4f6;
+    width: 200px;
+    font-size: 0.8em;
+    padding: 4px;
+}
+div.detail-view-rights-and-license {
+    font-size: 0.75em;
+    font-style: italic;
+    clear: both;
+    padding: 6px 0;
+}
+
+
 
 
 div.search-browse {
@@ -638,44 +658,6 @@ ul.collection-browse a:link,ul.community-browse a:link {
 ul.collection-browse a:visited,ul.community-browse a:visited {
     text-decoration: underline;
 }
-/*
-ul.collection-browse ul,ul.community-browse ul {
-        margin: 0;
-	padding: 0;
-	cursor: default;
-	list-style-type: none;
-	display: inline;
-}
-
-ul.collection-browse li,ul.community-browse li {
-        display: table-cell;
-	position: relative;
-	padding: 2px 6px;
-}
-
-
-
-*.collection-search-browse td,*.community-search-browse td {
-        white-space: nowrap;
-}
-
-*.collection-search-browse h4,*.community-search-browse h4 {
-        display: block;
-}
-
-*.collection-search-browse select,*.community-search-browse select {
-        width: auto;
-        max-width: 200px;
-}
-
-*.collection-search-browse input,*.community-search-browse input {
-        width: auto;
-        max-width: 195px;
-}
-
-*/
-
-
 
 
 
