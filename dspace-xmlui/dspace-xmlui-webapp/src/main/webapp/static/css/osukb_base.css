@@ -1,8 +1,8 @@
 
 body {
-        font-family: Cantarell, Corbel, Optima, sans-serif;
-        font-size: .9em;
+        font-family: sans-serif;
         background-color: #C2CEC2;
+        font-size: 0.93em;
 	margin: 0;
         padding: 0;
 }
@@ -10,7 +10,7 @@ body {
 background: url('../images/bkgd.png') repeat-x transparent;
 */
 p {
-    margin: 0;
+    margin: 0 0 10px;
     padding: 0;
 }
 a {
@@ -24,6 +24,8 @@ fieldset {
 
 ul {
     list-style-type: none;
+    margin: 5px;
+    padding: 5px;
 }
 table {
     clear: both;
@@ -32,14 +34,14 @@ table {
     width: 100%;
 }
 
-.subheader th {
-    padding-left: 5px;
-    font-weight: 100;
+th {
+    text-align: left;
+    padding: 4px;
 }
 
-td.span.bold {
-    text-align: right;
-    vertical-align: text-top;
+td {
+    text-align: left;
+    padding: 4px;
 }
 
 tr.ds-table-header-row {
@@ -58,8 +60,7 @@ tr.ds-table-row.odd {
 
 tr.ds-table-row.even {
     color: inherit;
-    background-color: #f6f4f4;
-
+    background-color: #eef1ee;
 }
 
 /* ds-main is the outer container for the other four sections:
@@ -113,17 +114,15 @@ div#ds-header h1,div#ds-header h2 {
 
 
 div#ds-user-box {
-
     text-align: right;
+    padding: 0 4px;
 }
 
 div#ds-user-box p {
-    font-size: 90%;
+    font-size: .85em;
     color: inherit;
     background-color: inherit;
     height: 12px;
-    padding: 0px;
-    margin: 0px;
 }
 
 div#ds-user-box a {
@@ -131,8 +130,6 @@ div#ds-user-box a {
     color: #eee;
     background-color: inherit;
     height: 12px;
-    padding: 0px;
-    margin: 0px;
 }
 div#ds-user-box a:hover {
     text-decoration: underline;
@@ -164,7 +161,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	display: block;
 	height: 21px;
 	overflow: hidden;
-	width: 785px;
+	width: 780px;
 	padding:5px;
 	border:none 1px #dedede;
 	background:#ffffff;
@@ -176,10 +173,9 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	height: 21px;
 	display: block;
 }
-.breadCrumb ul li.ds-trail-link
+.breadCrumb ul li
 {
-    
-
+        white-space: nowrap;
     	display: block;
 	float: left;
 	position: relative;
@@ -254,46 +250,28 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
         This was added to allow for more flexibility in styling colors and positioning.
 */
 div#body-and-options {
-    background-color: #999
+    background: url("../images/bkgd_body-and-options.png") repeat-y;
+}
+div#clearBody{
+    clear: both;
 }
 
-/* bds: container1 and contatiner2 are nested inside body-and-options and are used
-        to help create equal-height columns. See:
-        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
-*/
-#container2 {
-    clear:left;
-    float:left;
-    width:100%;
-    overflow:hidden;
-    background:#ffffff; /* column 2 background colour */
-}
-#container1 {
-    float:left;
-    width:100%;
-    position:relative;
-    right:794px;
-    background:#f6f4f4; /* column 1 background colour */
-}
+
 div#ds-body {
-    float:left;
+    float:right;
     width:790px;
+/*    background: #ffffff;*/
     position:relative;
-    left:1000px;
-    overflow:hidden;
     color: inherit;
     margin: 0;
-    padding: 2px 0;
-    
-
+        
 }
 
 div#ds-options {
     float:left;
     width:210px;
+/*    background:#f6f4f4;*/
     position:relative;
-    left:0px;
-    overflow:hidden;
     color: inherit;
     font-size: 0.8em;
 }
@@ -307,15 +285,15 @@ div#homepage-body {
 }
 div#homepage-body h1 {
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 4px 0 12px 0 !important;
 }
 div#homepage-featured {
     border-left: 1px solid #CCCCCC;
     float: right;
-    margin: 20px 0;
-    padding: 10px;
+    margin: 20px 0 0 10px;
+    padding: 10px 12px 40px 10px;
     width: 200px;
-    background: url("../images/bkgd.png") repeat-x;
+    background: url("../images/bkgd_featured.png") repeat-x;
 }
 
 
@@ -335,9 +313,30 @@ div.feature-item-logo {
 }
 
 
+div.top-downloads {
+    font-size: 0.8em;
+}
 
+div.top-downloads {
+    width: auto;
+}
 
+div.top-downloads li {
+    padding: 2px 4px;
+    width: auto !important;
+    
+}
 
+div.top-downloads li.odd {
+    background-color: #e6d2a1 !important;
+    border: 1px solid #333;
+}
+
+div.top-downloads li.even {
+    background-color: #f2ebda !important;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
 
 
 
@@ -370,11 +369,15 @@ div#ds-global-search {
     font-size: 0.8em;
 }
 
+div#ds-global-search-scope {
+    vertical-align: middle;
+}
+
 div#ds-global-search a {
     color: #003333;
     position: absolute;
     right: 58px;
-    top: 158px;
+    top: 160px;
     font-size: 0.85em;
 }
 
@@ -390,17 +393,19 @@ input#ds-global-search-button {
 }
 
 div#ds-global-search-scope label {
-    margin: 2px 4px 0 0;
+    margin: 2px 10px 0 0;
+    vertical-align: middle;
 }
 
 div#ds-global-search-scope input {
   vertical-align: middle;
+  margin: 0 3px 0 0;
 }
 
 .input-prompt {
   position: absolute;
   right: 62px;
-  top: 139px;
+  top: 140px;
   font-style: italic;
   color: #555;
 }
@@ -410,32 +415,27 @@ div#ds-global-search-scope input {
 
 
 div#ds-body h1 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     padding: 8px 2px;
     margin: 40px 0 10px 14px;
     color: #900;
     font-weight: normal;
-
 }
 
 div#ds-body h2 {
-    font-size: 1.3em;
-    padding: 6px 0;
-    margin-bottom: 0px;
-    color: #000;
-    background-color: inherit;
+    font-size: 1.2em;
+    margin: 10px 0 5px;
     font-weight: bolder;
-
+    clear: both;
 }
 
 div#ds-body h3 {
-    margin-bottom: 5px;
-
+    margin: 10px 0 5px;
+    clear: both;
 }
 
-div.intro-text {
-    padding: 4px;
-    background-color: #FFF;
+div.detail-view {
+
 }
 
 
@@ -455,7 +455,7 @@ div.intro-text {
 div.ds-option-set {
 
     padding: 12px 2px 3px 2px;
-    margin: -3px 0px 8px 0px;
+    margin: 0px 0px 8px 0px;
     color: inherit;
 }
 
@@ -475,7 +475,7 @@ div#ds-options h3 {
     font-size: 1em;
     color:#330000;
     margin:0 0 0 0;
-    padding:5px 0 4px 8px;
+    padding:5px 0 5px 10px;
     position:relative;
 }
 
@@ -502,16 +502,17 @@ div#ds-options h4 {
 
 /* This width setting seems necessary to keep IE happy.. */
 div#ds-options ul {
-        width: 220px;
+        width: 200px;
         margin: 0px 0px 5px 0px;
         padding: 0px;
 }
 
 div#ds-options li {
         
-        margin-left: 14px;
+        margin-left: 18px;
         padding: 0px;
         list-style: none;
+        line-height: 1.3;
 }
 
 
@@ -519,7 +520,7 @@ div#ds-options li {
 div#ds-footer {
     position: relative;
     margin-bottom: 40px;
-    height: 80px;
+    height: 100px;
     float: left;
     width: 100%;
     border: none;
@@ -535,12 +536,12 @@ div#osu-footer-logo {
     height: 58px;
     margin: 5px;
     width: 58px;
-    float: left;
 }
 
 div#osu-logo-text p {
-    font-size: .8em;
-    margin: 5px 0 0 0;
+    font-size: 0.75em;
+    margin: 5px 0 0 7px;
+    width: 550px;
 }
 
 div#ds-footer-links {
@@ -549,15 +550,19 @@ div#ds-footer-links {
     top: 2px;
     padding-right: 5px;
     text-align: right;
-    font-size: inherit;
+    font-size: 0.9em;
 }
 
 
+div#more-link {
+    float: right;
+    padding: 5px;
+}
 
-
+/* div.notice is used for things like please use this identifier... */
 div.notice {
     margin: 10px 0;
-    width: 640px;
+    width: 100%;
     color: #bd5908;
     font-weight: bold;
 }
@@ -567,9 +572,14 @@ div.notice p {
 div.notice a {
     color: #cc6600;
 }
+/* ds-notice-div is used when notices are placed in places other than static divs,
+    for example after adding a bitstream to an item it says 'The new bitstream was successfully uploaded.' */
+div.ds-notice-div p {
+    margin: 0 0 0 15px;
+}
 
 p.ds-paragraph {
-    margin: 0 0 5px 0;
+    margin: 5px 10px;
 }
 
 div.license-info {
@@ -577,6 +587,7 @@ div.license-info {
     padding: 10px 0 10px 0;
 }
 
+/* Items in the knowledge bank are protected by copyright.... */
 p.copyright-text {
         font-style: italic;
         font-size: .8em;
@@ -584,32 +595,60 @@ p.copyright-text {
         color: #222;
 }
 
+/* Community and collection page metadata */
 div.ds-logo-wrapper {
     float: right;
-    padding: 20px 5px 5px 10px;
+    padding: 10px 5px 10px 5px;
+    clear: both;
+    margin-top: -115px;
 }
+div.intro-text {
+}
+div.detail-view-news {  /* 'Related links' */
+    float: right;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    background: #f2f4f6;
+    width: 200px;
+    font-size: 0.8em;
+    padding: 4px;
+}
+div.detail-view-rights-and-license {
+    font-size: 0.75em;
+    font-style: italic;
+    clear: both;
+    padding: 6px 0;
+}
+
+
 
 
 div.search-browse {
     border: 2px solid #dee1de;
     background: #f6f4f4;
-    width: 224px;
-    margin: 5px 10px;
+    width: 300px;
+    margin: 5px 15px;
     padding: 5px !important;
-    float: right;
+    font-size: 0.9em;
 }
 
 div.search-browse h3 {
+    margin: 0px 6px;
+    padding: 0px;
+    line-height: 1.3;
+}
+div.search-browse li {
     margin: 0px;
+    display: inline;
 }
 
 ul.collection-browse, ul.community-browse {
     margin: 0;
-    padding: 0 0 0 5px;
+    padding: 0 0 0 0px;
 }
 
 ul.collection-browse li,ul.community-browse li {
-    margin: 0 0 0 22px;
+    margin: 0 8px;
     padding: 2px 0px;
 }
 
@@ -619,44 +658,6 @@ ul.collection-browse a:link,ul.community-browse a:link {
 ul.collection-browse a:visited,ul.community-browse a:visited {
     text-decoration: underline;
 }
-/*
-ul.collection-browse ul,ul.community-browse ul {
-        margin: 0;
-	padding: 0;
-	cursor: default;
-	list-style-type: none;
-	display: inline;
-}
-
-ul.collection-browse li,ul.community-browse li {
-        display: table-cell;
-	position: relative;
-	padding: 2px 6px;
-}
-
-
-
-*.collection-search-browse td,*.community-search-browse td {
-        white-space: nowrap;
-}
-
-*.collection-search-browse h4,*.community-search-browse h4 {
-        display: block;
-}
-
-*.collection-search-browse select,*.community-search-browse select {
-        width: auto;
-        max-width: 200px;
-}
-
-*.collection-search-browse input,*.community-search-browse input {
-        width: auto;
-        max-width: 195px;
-}
-
-*/
-
-
 
 
 
@@ -674,11 +675,10 @@ text-decoration: underline;
 }
 
 ul.ds-artifact-list {
-    margin: 4px;
+    margin: 4px auto;
     padding: 2px;
     list-style-type: none;
-    float: left;
-    width: 760px;
+    width: 100%;
 }
 
 ul.ds-artifact-list li.odd {
@@ -688,7 +688,7 @@ ul.ds-artifact-list li.odd {
 
 ul.ds-artifact-list li.even {
     color: inherit;
-    background-color: #dee1de;
+    background-color: #eef1ee;
 }
 
 ul.ds-artifact-list li {
@@ -701,7 +701,9 @@ ul.ds-artifact-list li {
 ul.ds-artifact-list li img {
     border: 0px;
     max-height: 80px;
-    max-width: 80px;
+    max-width: 100px;
+    margin: 3px 5px;
+
 }
 
 
@@ -737,9 +739,12 @@ ul.ds-artifact-list li div.artifact-preview {
 }
 
 div.ds-static-div {
+    padding: 0 2px;
+    margin: 0 0 12px;
+}
+div.ds-static-div.primary {
     padding: 0 20px;
 }
-
 
 #file_news_div_news {
     font-size: 1em;
@@ -748,6 +753,11 @@ div.ds-static-div {
 
 element.style {
     font-size: 100%;
+}
+
+p.item-view-toggle {
+    font-size: 0.8em;
+    margin: 0 0 8px;
 }
 
 table.file-list {
@@ -782,6 +792,20 @@ td.field-label {
 td.field-data {
     padding: 3px;
 }
+td.detail-field-label {
+    text-align: right;
+    font-weight: bold;
+    vertical-align: top;
+    width: 10em;
+    padding: 5px;
+}
+td.detail-field-data {
+    padding: 3px;
+}
+td.detail-field-language {
+    padding: 3px;
+    vertical-align: top;
+}
 .aspect_artifactbrowser_SimpleSearch_field_scope {
     font-size: .5em;
 }
@@ -807,15 +831,29 @@ ul.alphabet li {
 */
 
 form.navigation {
-    margin: 0 auto;
+    border-top: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
     display: table;
+    margin: 0 auto;
+    padding: 5px;
     text-align: center;
+    width: 580px;
 }
 
 form.controls {
-    margin: 0 auto;
+    border-bottom: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
     display: table;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    width: 580px;
 }
+
 
 
 
@@ -830,7 +868,9 @@ table.ds-includeSet-table {
     border: 2px solid #dee1de;
 }
 
-
+table.ds-includeSet-table tr {
+    background-color: #f6f4f4 !important;
+}
 
 
 
@@ -849,11 +889,9 @@ ul.ds-progress-list {
 
 
 ul.ds-progress-list li {
-        font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
-        background-color: rgb(255, 255, 240);
-        border: 1px solid rgb(240, 240, 210);
-        color: rgb(233, 160, 80);
+        background: #F6F4F4;
+        border: 2px solid #DEE1DE;
         overflow: hidden;
         display: inline;
         padding: 4px 3px;
@@ -866,17 +904,28 @@ ul.ds-progress-list li {
 ul.ds-progress-list li.button {
         background-color: inherit;
         border: none;
-        padding: 1px !important;
+        padding: 0px !important;
         margin-top: 2px;
         margin-left: 0px !important;
+}
+input.ds-button-field {
+        margin: 0 3px 0 0;
+        padding: 1px 8px;
+}
+
+input.ds-text-field {
+    padding: 1px;
 }
 
 ul.ds-progress-list li.button input.ds-button-field {
         font-size: smaller;
+        border: 2px outset #aaa;
+        margin: 0;
 }
 
 ul.ds-progress-list li.current.button input.ds-button-field {
         color: #900;
+        border: 3px solid #300;
 }
 
 ul.ds-progress-list li.disabled.button input.ds-button-field {
@@ -884,24 +933,16 @@ ul.ds-progress-list li.disabled.button input.ds-button-field {
 }
 
 
-ul.ds-progress-list li.current {
-        color: rgb(80, 183, 40);
-        background-color: inherit;
-        border-color: rgb(216, 245, 216);
-}
 
 ul.ds-progress-list li.arrow {
-        border: none;
-        background: none;
-        font-size: 40%;
-        font-weight: normal;
-        margin-left: 0px;
-        margin-right: 0px;
+        display: none;
 }
 
 
 
-
+div.ds-previous-values {
+    clear: both;
+}
 
 
 
@@ -963,9 +1004,7 @@ fieldset.ds-checkbox-field label,fieldset.ds-radio-field label {
 fieldset.ds-form-list {
         border: 1px solid #777;
         padding: 0;
-        color: inherit;
-        background-color: #f6f4f4;
-        margin: 0 10px;
+        margin: 8px 10px;
 }
 
 fieldset.ds-form-list.thick {
@@ -975,7 +1014,7 @@ fieldset.ds-form-list.thick {
 fieldset.ds-form-list ol {
         padding: 0;
         margin: 0;
-        width: 100%;
+        width: 728px;
 }
 
 fieldset.ds-form-list legend {
@@ -1037,12 +1076,12 @@ form.ds-interactive-div li.ds-form-item {
 
 form.ds-interactive-div li.odd {
         color: inherit;
-        background-color: #ffffff;
+        background-color: #f5faff;
 }
 
 form.ds-interactive-div li.even {
         color: inherit;
-        background-color: #eef1ee;
+        background-color: #ffffff;
 }
 
 form.ds-interactive-div li.ds-form-item.last {
@@ -1054,7 +1093,7 @@ form.ds-interactive-div li.ds-form-item.last {
 form.ds-interactive-div.primary {
 
         clear: both;
-        padding: 0px;
+        padding: 0px 20px;
         margin-bottom: 10px;
 }
 
@@ -1071,18 +1110,17 @@ li.ds-form-item {
 
 div.ds-form-content {
         float: left;
-        clear: right;
+        clear: both;
         display: block;
-        padding: 7px;
-        width: 580px;
+        padding: 0px 7px;
+
 }
 
 span.ds-form-label,label.ds-form-label {
         display: block;
         float: left;
         clear: left;
-        padding: 5px 20px 5px 10px;
-        width: 115px;
+        padding: 5px 20px 3px 6px;
         font-weight: bold;
         vertical-align: middle;
         overflow: hidden;
@@ -1114,7 +1152,11 @@ div.spacer {
         clear: both;
 }
 
-
+div.license-text {
+    background: #eee;
+    border: 1px solid #999;
+    padding: 4px;
+}
 
 
 
@@ -1197,47 +1239,61 @@ ul.horizontal li span.bold a { color: black; }
 
 
 
-div.pagination {
-        position: relative;
-        padding: 8px;
-        clear: both;
-        margin: 0px 150px;
-}
 
+div.pagination {
+    clear: both;
+    margin: 0 auto 16px;
+    padding: 8px 0;
+    width: 540px;
+    text-align: center;
+    display: block;
+}
 
 
 div.pagination-masked {
-        position: relative;
-        color: inherit;
-        margin-bottom: 5px;
-}
-
-a.previous-page-link {
-        position: relative;
-        left: 70px;
-        top: 0px;
-        float: left;
-}
-
-p.pagination-info {
+    clear: both;
+    margin: 0 auto 36px;
+    padding: 8px 0;
+    width: 540px;
     text-align: center;
+    display: block;
 }
 
-a.next-page-link {
+div.previous-page-link {
         position: relative;
-        right: 70px;
-        top: -25px;
-        float: right;
+        margin: 0;
+        float: left;
+        width: 110px;
 }
+
+div.pagination-info {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 320px;
+}
+
+div.pagination-info p {
+    margin: 0;
+    padding: 0;
+}
+
+div.next-page-link {
+        position: relative;
+        margin: 0;
+        float: left;
+        width: 110px;
+}
+
+
 
 ul.pagination-links {
         position: relative;
         text-align: center;
-        top: -5px;
-        width: 360px;
+        padding: 0;
         margin: 0 auto;
         padding: 0;
-        line-height: 12px;
 }
 
 *.pagination-links li {

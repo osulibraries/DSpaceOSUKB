@@ -14,11 +14,11 @@
 
     // Private variables
     
-    var _options = {};
-    var _container = {};
-    var _breadCrumbElements = {};
+    var _options = {}
+    var _container = {}
+    var _breadCrumbElements = {}
     var _autoIntervalArray = [];
-	var _easingEquation;
+    var _easingEquation;
     
     // Public functions
     
@@ -32,21 +32,21 @@
             setupBreadCrumb();
         });
         
-    };
+    }
     
     // Private functions
-    
+
     function setupBreadCrumb()
     {
-		//Check if easing plugin exists. If it doesn't, use "swing"
-		if(typeof(jQuery.easing) == 'object')
-		{
-			_easingEquation = 'easeOutQuart'
-		}
-		else
-		{
-			_easingEquation = 'swing'
-		}
+        //Check if easing plugin exists. If it doesn't, use "swing"
+        if(typeof(jQuery.easing) == 'object')
+        {
+            _easingEquation = 'easeOutQuart'
+        }
+        else
+        {
+            _easingEquation = 'swing'
+        }
     
         //The reference object containing all of the breadcrumb elements
         _breadCrumbElements = jQuery(_container).find('li');
@@ -67,41 +67,15 @@
             if (_breadCrumbElements.length > _options.minimumCompressionElements) 
             {
                 compressBreadCrumb();
-            };
-                    };
-            };
-    
+            }
+        }
+    }
+
+
+
     function compressBreadCrumb()
     {
-    
-        // Factor to determine if we should compress the element at all
-        var finalElement = jQuery(_breadCrumbElements[_breadCrumbElements.length - 1]);
-        
-        
-        // If the final element is really long, compress more elements
-        if (jQuery(finalElement).width() > _options.maxFinalElementLength) 
-        {
-            if (_options.beginingElementsToLeaveOpen > 0) 
-            {
-                _options.beginingElementsToLeaveOpen--;
-                
-            }
-            if (_options.endElementsToLeaveOpen > 0) 
-            {
-                _options.endElementsToLeaveOpen--;
-            }
-        }
-        // If the final element is within the short and long range, compress to the default end elements and 1 less beginning elements
-        if (jQuery(finalElement).width() < _options.maxFinalElementLength && jQuery(finalElement).width() > _options.minFinalElementLength) 
-        {
-            if (_options.beginingElementsToLeaveOpen > 0) 
-            {
-                _options.beginingElementsToLeaveOpen--;
-                
-            }
-        }
-        
-        var itemsToRemove = _breadCrumbElements.length - 1 - _options.endElementsToLeaveOpen;
+        var itemsToRemove = _breadCrumbElements.length - 1;
         
         // We compress only elements determined by the formula setting below
         
@@ -115,7 +89,6 @@
         {
             if (i > _options.beginingElementsToLeaveOpen && i < itemsToRemove) 
             {
-            
                 jQuery(listElement).find('a').wrap('<span></span>').width(jQuery(listElement).find('a').width() + 10);
                 
                 // Add the overlay png.
@@ -142,7 +115,7 @@
                     isAnimating: false,
                     element: jQuery(listElement).find('span')
                 
-                };
+                }
                 jQuery(listElement).bind('mouseover', options, expandBreadCrumb).bind('mouseout', options, shrinkBreadCrumb);
                 jQuery(listElement).find('a').unbind('mouseover', expandBreadCrumb).unbind('mouseout', shrinkBreadCrumb);
                 listElement.autoInterval = setInterval(function()
@@ -157,7 +130,7 @@
             }
         });
         
-    };
+    }
     
     function expandBreadCrumb(e)
     {
@@ -174,8 +147,7 @@
             queue: false
         });
         return false;
-        
-    };
+    }
     
     function shrinkBreadCrumb(e)
     {
@@ -191,13 +163,13 @@
             queue: false
         });
         return false;
-    };
+    }
     
     function isIE6OrLess()
     {
         var isIE6 = $.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent);
         return isIE6;
-    };
+    }
     // Fix The Overlay for IE6
     function fixPNG(element)
     {
@@ -211,30 +183,29 @@
             image = $(element).css('backgroundImage');
             image.match(/^url\(["']?(.*\.png)["']?\)$/i);
             image = RegExp.$1;
-            ;
         }
         $(element).css(
         {
             'backgroundImage': 'none',
             'filter': "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src='" + image + "')"
         });
-    };
+    }
     
     // Public global variables
     
     jQuery.fn.jBreadCrumb.defaults = 
     {
-        maxFinalElementLength: 450,
-        minFinalElementLength: 250,
-        minimumCompressionElements: 1,
-        endElementsToLeaveOpen: 1,
+        maxFinalElementLength: 250,
+        minFinalElementLength: 200,
+        minimumCompressionElements: 0,
+        endElementsToLeaveOpen: 0,
         beginingElementsToLeaveOpen: 0,
         timeExpansionAnimation: 600,
         timeCompressionAnimation: 900,
         timeInitialCollapse: 0,
         easing: _easingEquation,
         overlayClass: 'chevronOverlay',
-        previewWidth: 30
-    };
+        previewWidth: 40
+    }
     
 })(jQuery);
