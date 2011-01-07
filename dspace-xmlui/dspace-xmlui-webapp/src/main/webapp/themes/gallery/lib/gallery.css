@@ -14,8 +14,7 @@
         border: 1px solid #000000;
 }
 .ds-artifact-list li img {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto !important;
     display: block;
     clear: both;
 }
@@ -23,11 +22,18 @@
 	padding:0px;
 	margin-top:8px;
 }
+span.publisher-date {
+	font-size: 0.7em;
+        text-align: center;
+        display: block;
+        margin: 0 auto;
+}
 .fancy-box-link {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     display: block;
+    font-size: 0.9em;
 }
 
 .ds-artifact-item p {

@@ -32,63 +32,10 @@
 			// Hide all except top level
 			$("ul", $(this)).addClass('hide');
 
-                        /*
-                        // Check parents if necessary
-			if (defaults.checkParents) {
-				$("input:checked").parents("li").find("input[type='checkbox']:first").attr('checked', true);
-			}
-			// Check children if necessary
-			if (defaults.checkChildren) {
-				$("input:checked").parent("li").find("input[type='checkbox']").attr('checked', true);
-			}*/
-			// Show checked and immediate children of checked
-			$("li:has(input:checked) > ul", $(this)).removeClass('hide');
-
 			// Add tree links
-			$("li", $(this)).prepend('<span>&nbsp;</span>');
+			$("li", $(this)).prepend('<span class="something">&nbsp;</span>');
 			$("li:has(> ul:not(.hide)) > span", $(this)).addClass('expanded').html('-');
 			$("li:has(> ul.hide) > span", $(this)).addClass('collapsed').html('+');
-
-			// Checkbox function
-			$("input[type='checkbox']", $(this)).click(function(){
-
-				/*/ If checking ...
-				if ($(this).is(":checked")) {
-
-					// Show immediate children  of checked
-					$("> ul", $(this).parent("li")).removeClass('hide');
-					// Update the tree
-					$("> span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('-');
-
-					// Check parents if necessary
-					if (defaults.checkParents) {
-						$(this).parents("li").find("input[type='checkbox']:first").attr('checked', true);
-					}
-
-					// Check children if necessary
-					if (defaults.checkChildren) {
-						$(this).parent("li").find("input[type='checkbox']").attr('checked', true);
-						// Show all children of checked
-						$("ul", $(this).parent("li")).removeClass('hide');
-						// Update the tree
-						$("span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('-');
-					}
-
-
-				// If unchecking...
-				} else {
-
-					// Uncheck children if necessary
-					if (defaults.uncheckChildren) {
-						$(this).parent("li").find("input[type='checkbox']").attr('checked', false);
-						// Hide all children
-						$("ul", $(this).parent("li")).addClass('hide');
-						// Update the tree
-						$("span.expanded", $(this).parent("li")).removeClass("expanded").addClass("collapsed").html('+');
-					}
-				}
-			*/
-			});
 
 			// Tree function
 			$("li:has(> ul) span", $(this)).click(function(){
@@ -134,8 +81,7 @@
 			$("#default").click(function () {
 				// Hide all except top level
 				$("ul", $root).addClass('hide');
-				// Show checked and immediate children of checked
-				$("li:has(input:checked) > ul", $root).removeClass('hide');
+
 				// and update the html
 				$("li:has(> ul:not(.hide)) > span", $root).removeClass('collapsed').addClass('expanded').html('-');
 				$("li:has(> ul.hide) > span", $root).removeClass('expanded').addClass('collapsed').html('+');

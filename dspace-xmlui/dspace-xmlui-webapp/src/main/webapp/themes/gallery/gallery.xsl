@@ -179,42 +179,10 @@
 
 
 		<!-- item title -->
-		<p class="ds-artifact-title">
-			<xsl:variable name="artifactTitle">
-				<xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-			</xsl:variable>
-			<xsl:choose>
-				<xsl:when test="dim:field[@element='title']">
-					<xsl:choose>
-                                            <!-- bds: lowered this to 26 because sometimes was wide enough at 30 to wrap the Show Details link below the thumbnail box -->
-						<xsl:when test="string-length($artifactTitle) >= 26">
-							<xsl:value-of select="substring($artifactTitle,1,26)"/>... </xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$artifactTitle"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					<!--<xsl:value-of select="dim:field[@element='title'][1]/node()"/>-->
-				</xsl:when>
-				<xsl:otherwise>
-					<i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
-				</xsl:otherwise>
-			</xsl:choose>
-		</p>
-
-
-		<a>
-                    <!-- bds: adding a class to the details link so it can be styled independtly -->
-                        <xsl:attribute name="class">
-                            <xsl:text>fancy-box-link</xsl:text>
-                        </xsl:attribute>
-			<xsl:attribute name="id">
-				<xsl:text>anchor</xsl:text>
-				<xsl:value-of select="$itemid"/>
-			</xsl:attribute>
-<!--			<xsl:attribute name="href">
-				<xsl:text>#</xsl:text>
-				<xsl:value-of select="$itemid"/>
-			</xsl:attribute>-->
+                <a>
+                    <xsl:variable name="artifactTitle">
+                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                    </xsl:variable>
                     <xsl:attribute name="href">
                         <xsl:choose>
                             <xsl:when test="$itemWithdrawn">
@@ -225,139 +193,41 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
-                        <xsl:attribute name="title">
-                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                        </xsl:attribute>
-			Show Details</a>
+                    <xsl:attribute name="class">
+                        <xsl:text>fancy-box-link</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="title">
+                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="dim:field[@element='title']">
+                            <xsl:choose>
+                                <xsl:when test="string-length($artifactTitle) >= 50">
+                                <xsl:value-of select="substring($artifactTitle,1,50)"/>... </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="$artifactTitle"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <!--<xsl:value-of select="dim:field[@element='title'][1]/node()"/>-->
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </a>
 
-
-		<!-- FancyBox popup content-->
-<!--		<div style="display:none">
-			<xsl:attribute name="id">
-				<xsl:value-of select="$itemid"/>
-			</xsl:attribute>
-
- bds: trying out using structures from simple_item_fields.xsl to insert fields to popup
-
-<xsl:element name="a">
-    <xsl:attribute name="href">
-        <xsl:choose>
-            <xsl:when test="$itemWithdrawn">
-                <xsl:value-of select="ancestor::mets:METS/@OBJEDIT"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="ancestor::mets:METS/@OBJID"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:attribute>
-
-    <xsl:choose>
-        <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
-            <xsl:variable name="thumbnailUrl"
-select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
-            <img alt="Thumbnail"  class="detail" align="right">
-                <xsl:attribute name="src">
-                    <xsl:value-of
-                        select="$thumbnailUrl"
-                        />
-                </xsl:attribute>
-            </img>
-        </xsl:when>
-        <xsl:otherwise>
-            <img alt="Thumbnail" class="detail" align="right">
-                <xsl:attribute name="src">
-                    <xsl:value-of select="$themePath"/>
-                    <xsl:text>lib/nothumbnail.png</xsl:text>
-                </xsl:attribute>
-            </img>
-        </xsl:otherwise>
-    </xsl:choose>
-
-</xsl:element>
-
-
-
-<table>
-    <tr class="ds-table-row">
-        <td class="field-label"><span class="bold"><i18n:text>metadata.dc.title</i18n:text>: </span></td>
-        <td class="field-data">
-             bds: removing COinS for now
-                <span class="Z3988">
-<xsl:attribute name="title">
-<xsl:call-template name="renderCOinS"/>
-</xsl:attribute>
-            <xsl:choose>
-                <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) &gt; 1">
-                    <xsl:for-each select="dim:field[@element='title'][not(@qualifier)]">
-                        <xsl:value-of select="./node()"/>
-                        <xsl:if test="count(following-sibling::dim:field[@element='title'][not(@qualifier)]) != 0">
-                            <xsl:text>; </xsl:text><br/>
-                        </xsl:if>
-                    </xsl:for-each>
-                </xsl:when>
-                <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) = 1">
-                    <xsl:value-of select="dim:field[@element='title'][not(@qualifier)][1]/node()"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
-                </xsl:otherwise>
-            </xsl:choose>
-                            </span>
-        </td>
-    </tr>
-
-
-    <xsl:if test="dim:field[@element='creator' and not(@qualifier)]">
-        <tr class="ds-table-row">
-            <td class="field-label"><span class="bold"><i18n:text>metadata.dc.creator</i18n:text>:</span></td>
-            <td class="field-data">
-                <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
-                     bds: link to author browse magic
-                    <a>
-
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="$context-path"/>
-                            <xsl:text>/browse?value=</xsl:text>
-                            <xsl:value-of select="node()"/>
-                            <xsl:text>&amp;type=author</xsl:text>
-                        </xsl:attribute>
-                        <xsl:copy-of select="node()"/>
-                    </a>
-                    <xsl:if test="count(following-sibling::dim:field[@element='creator' and not(@qualifier)]) != 0">
-                        <xsl:text>; </xsl:text>
-                    </xsl:if>
-                </xsl:for-each>
-            </td>
-        </tr>
-    </xsl:if>
-
-
-    <xsl:if test="dim:field[@element='description' and not(@qualifier)]">
-        <tr class="ds-table-row">
-            <td class="field-label"><span class="bold"><i18n:text>metadata.dc.description</i18n:text>:</span></td>
-            <td class="field-data">
-                <xsl:for-each select="dim:field[@element='description' and not(@qualifier)]">
-                     bds: this if clause specifically for Ukrainian, to block TGN line from appearing
-                    <xsl:if test="not(contains(node(),'TGN'))">
-                    <span>
-<xsl:call-template name="parseurls">
-	    <xsl:with-param name="text" select="node()"/>
-	  </xsl:call-template>
-                    </span>
-                    <br />
-                    </xsl:if>
-                </xsl:for-each>
-            </td>
-        </tr>
-    </xsl:if>
-</table>
-
-
-
-
-			<p class="detail-link"><a  href="{ancestor::mets:METS/@OBJID}">View full image and item record</a></p>
-
-		</div>-->
+                <!-- bds: We would prefer to add issue date or submit date depending on the type
+                            of browse that is happening, but the data provided by the DRI is
+                            not helpful for this. Instead just copying the date part from regular browse.-->
+                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+	                <span class="publisher-date">
+	                    <xsl:text>(</xsl:text>
+	                    <span class="date">
+	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+	                    </span>
+	                    <xsl:text>)</xsl:text>
+	                </span>
+                </xsl:if>
 
 	</xsl:template>
 

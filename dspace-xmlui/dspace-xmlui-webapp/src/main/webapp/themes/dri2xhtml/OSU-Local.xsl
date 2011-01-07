@@ -36,20 +36,13 @@
             </xsl:attribute>
         </link>
         <!-- TODO not currently calling IE specific navbar css files. -->
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/osu-navbar-media/js/searchform.js</xsl:text>
             </xsl:attribute>
             <xsl:text>var x=0;</xsl:text>
         </script>
-        <!-- Google webfont Cantarell, see http://code.google.com/webfonts/ -->
-        <link rel='stylesheet' type='text/css'>
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
-                <xsl:text>://fonts.googleapis.com/css?family=Cantarell:regular,italic,bold,bolditalic</xsl:text>
-            </xsl:attribute>
-        </link>
 
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
@@ -63,33 +56,12 @@
 
         <!-- bds: text-field-prompt.js for global search box, uses jQuery -->
         <!-- see http://kyleschaeffer.com/best-practices/input-prompt-text/ -->
-        <script rel="text/javascript">
+        <script type="text/javascript">
             <xsl:attribute name="src">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/js/text-field-prompt.js</xsl:text>
             </xsl:attribute>
             <xsl:text> </xsl:text>
-        </script>
-        <!-- bds: breadcrumb trail shrinker -->
-        <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
-        <script rel="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text> </xsl:text>
-        </script>        <script rel="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text> </xsl:text>
-        </script>
-        <script type="text/javascript">
-            jQuery(document).ready(function()
-            {
-                jQuery("#breadCrumb0").jBreadCrumb();
-            })
         </script>
         <link rel="icon" type="image/x-icon">
             <xsl:attribute name="href">
@@ -103,6 +75,27 @@
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
             </xsl:attribute>
         </link>
+        <!-- bds: jQuery breadcrumb trail shrinker, uses easing plugin -->
+        <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
+        <script type="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.easing.1.3.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script type="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/static/js/jquery.jBreadCrumb.1.1.js</xsl:text>
+            </xsl:attribute>
+            <xsl:text> </xsl:text>
+        </script>
+        <script>
+            $(document).ready(function() {
+                $("#breadCrumb0").jBreadCrumb();
+            });
+        </script>
     </xsl:template>
 
     <!-- 2010-05-04 PMBMD - Adds the html pieces of the osu navbar -->
@@ -217,54 +210,26 @@
   </xsl:template>
 
 
-<!-- bds: FAIL .. this only works with URLs that are followed by spaces...
-
-wish I could use this regex:
-\b(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|!:,.;]*[A-Z0-9+&@#/%=~_|]
- or maybe
-/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:;,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:;,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:;,.]*\)|[A-Z0-9+&@#\/%=~_|$])/ix
-but alas, this is XSLT 1.0 ..d'oh..
-
-
-<xsl:template name="parseurls">
-  <xsl:param name="text"/>
-  <xsl:choose>
-    <xsl:when test="contains($text, 'http://')">
-      <xsl:variable name="after_scheme" select="substring-after($text, 'http://')" />
-      <xsl:value-of select="substring-before($text, 'http://')"/>
-      <xsl:choose>
-	<xsl:when test="contains($after_scheme, ' ')">
-	  <xsl:variable name="url" select="concat('http://', substring-before($after_scheme, ' '))" />
-	  <xsl:call-template name="linkify"><xsl:with-param name="url" select="$url"/></xsl:call-template>
-	  <xsl:text> </xsl:text>
-	  <xsl:call-template name="parseurls">
-	    <xsl:with-param name="text" select="substring-after($after_scheme, ' ')"/>
-	  </xsl:call-template>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:variable name="url" select="concat('http://', $after_scheme)"/>
-	  <xsl:call-template name="linkify"><xsl:with-param name="url" select="$url"/></xsl:call-template>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$text"/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template name="linkify">
-    <xsl:param name="url"/>
-    <xsl:element name="a">
-        <xsl:attribute name="href"><xsl:value-of select="$url"/></xsl:attribute>
-        <xsl:value-of select="$url"/>
-    </xsl:element>
-</xsl:template>
-
--->
-
 <!-- bds: remove search box from community/collection pages -->
 <xsl:template match="dri:div[@id='aspect.artifactbrowser.CollectionViewer.div.collection-search'] | dri:div[@id='aspect.artifactbrowser.CommunityViewer.div.community-search']">
 </xsl:template>
+
+<!-- bds: recent submissions box -->
+<!-- adding the 'View all' link -->
+<xsl:template match="dri:div[@n='collection-recent-submission'] | dri:div[@n='community-recent-submission']">
+    <xsl:apply-templates select="./dri:head"/>
+    <ul class="ds-artifact-list">
+        <xsl:apply-templates select="./dri:referenceSet" mode="summaryList"/>
+    </ul>
+    <div id="more-link">
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="/dri:document/dri:body/dri:div/dri:div/dri:div/dri:list/dri:item[3]/dri:xref/@target"/>
+            </xsl:attribute>
+            <xsl:text>View all submissions ></xsl:text>
+        </a>
+    </div>
+</xsl:template>
+
 
 </xsl:stylesheet>
