@@ -382,6 +382,21 @@ public class SyndicationFeed
                                 }
                             }
                         }
+                        //Also try to add an external value from dc.identifier.other
+                        // We are assuming that if this is set, then it is a media file
+                        DCValue[] externalMedia = item.getMetadata("dc.identifier.other");
+                        if(externalMedia.length > 0)
+                        {
+                            for(int i = 0; i< externalMedia.length; i++)
+                            {
+                                SyndEnclosure enc = new SyndEnclosureImpl();
+                                enc.setType("audio/x-mpeg");
+                                enc.setLength(1);
+                                enc.setUrl(externalMedia[i].value);
+                                enclosures.add(enc);
+                            }
+                        }
+
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
