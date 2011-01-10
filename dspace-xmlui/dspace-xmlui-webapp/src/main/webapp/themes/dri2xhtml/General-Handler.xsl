@@ -156,6 +156,8 @@
                 <!-- Otherwise, iterate over and display all of them -->
                 <xsl:otherwise>
                     <xsl:apply-templates select="mets:file">
+                     	<xsl:sort data-type="number" select="boolean(./@ID=$primaryBitstream)" order="descending" />
+                        <xsl:sort select="mets:FLocat[@LOCTYPE='URL']/@xlink:title"/> 
                         <xsl:with-param name="context" select="$context"/>
                     </xsl:apply-templates>
                 </xsl:otherwise>
@@ -310,8 +312,8 @@
                 <xsl:comment> CC_license_RDF_URL: <xsl:value-of select="$CC_license_RDF_URL"/> </xsl:comment>
                 <!-- bds: extract the creativecommons.org link from the RDF -->
                 <xsl:variable name="CC_license_URL" select="document($CC_license_RDF_URL)/rdf:RDF/cc:License[1]/@*['rdf:about']" />
-                <p>This item is licensed under a <a href="{$CC_license_URL}">Creative Commons License</a><br /><br />
-                <a href="{$CC_license_URL}"><img src="{$context-path}/static/images/cc-somerights.gif" border="0" alt="Creative Commons" /></a></p>
+                <p>This item is licensed under a <a href="{$CC_license_URL}">Creative Commons License</a></p>
+                <p><a href="{$CC_license_URL}"><img src="{$context-path}/static/images/cc-somerights.gif" border="0" alt="Creative Commons" /></a></p>
             </xsl:if>
         </div>
     </xsl:template>

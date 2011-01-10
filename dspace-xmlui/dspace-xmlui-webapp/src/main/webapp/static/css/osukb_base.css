@@ -282,12 +282,14 @@ ul.ds-options-list {
 
 div#homepage-body {
     padding: 5px 20px;
+    font-size: 0.9em;
 }
 div#homepage-body h1 {
     padding: 0 !important;
     margin: 4px 0 12px 0 !important;
 }
 div#homepage-featured {
+    font-size: 0.8em;
     border-left: 1px solid #CCCCCC;
     float: right;
     margin: 20px 0 0 10px;
@@ -415,7 +417,7 @@ div#ds-global-search-scope input {
 
 
 div#ds-body h1 {
-    font-size: 1.3em;
+    font-size: 1.5em;
     padding: 8px 2px;
     margin: 40px 0 10px 14px;
     color: #900;
@@ -584,7 +586,7 @@ p.ds-paragraph {
 
 div.license-info {
     text-align: center;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 0 0;
 }
 
 /* Items in the knowledge bank are protected by copyright.... */
@@ -880,6 +882,23 @@ table.ds-includeSet-table tr {
 /*
     bds: submission form stylings
 */
+
+input#aspect_submission_submit_ResumeStep_field_showfull {
+    display: block;
+    margin: 0 auto;
+}
+input#aspect_submission_submit_ResumeStep_field_showsimple {
+    display: block;
+    margin: 0 auto;
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showfull {
+    display: block;
+    margin: 0 auto; 
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showsimple {
+    display: block;
+    margin: 0 auto;
+}
 
 ul.ds-progress-list {
         margin: 0 0 10px 0;
