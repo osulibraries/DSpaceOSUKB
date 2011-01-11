@@ -10,7 +10,7 @@ body {
 background: url('../images/bkgd.png') repeat-x transparent;
 */
 p {
-    margin: 0 0 10px;
+    margin: 10px 0;
     padding: 0;
 }
 a {
@@ -123,6 +123,7 @@ div#ds-user-box p {
     color: inherit;
     background-color: inherit;
     height: 12px;
+    margin: 0;
 }
 
 div#ds-user-box a {
@@ -282,12 +283,14 @@ ul.ds-options-list {
 
 div#homepage-body {
     padding: 5px 20px;
+    font-size: 0.9em;
 }
 div#homepage-body h1 {
     padding: 0 !important;
     margin: 4px 0 12px 0 !important;
 }
 div#homepage-featured {
+    font-size: 0.8em;
     border-left: 1px solid #CCCCCC;
     float: right;
     margin: 20px 0 0 10px;
@@ -296,9 +299,17 @@ div#homepage-featured {
     background: url("../images/bkgd_featured.png") repeat-x;
 }
 
+div#homepage-featured img {
+    border: none;
+}
 
+div#homepage-featured h2 {
 
-
+}
+div#homepage-featured h3 {
+    text-align: center;
+    font-size: 1.2em;
+}
 
 
 
@@ -313,9 +324,6 @@ div.feature-item-logo {
 }
 
 
-div.top-downloads {
-    font-size: 0.8em;
-}
 
 div.top-downloads {
     width: auto;
@@ -324,6 +332,7 @@ div.top-downloads {
 div.top-downloads li {
     padding: 2px 4px;
     width: auto !important;
+    font-size: 0.8em;
     
 }
 
@@ -415,7 +424,7 @@ div#ds-global-search-scope input {
 
 
 div#ds-body h1 {
-    font-size: 1.3em;
+    font-size: 1.5em;
     padding: 8px 2px;
     margin: 40px 0 10px 14px;
     color: #900;
@@ -423,8 +432,9 @@ div#ds-body h1 {
 }
 
 div#ds-body h2 {
-    font-size: 1.2em;
+    font-size: 1.4em;
     margin: 10px 0 5px;
+    color: #900;
     font-weight: bolder;
     clear: both;
 }
@@ -432,6 +442,11 @@ div#ds-body h2 {
 div#ds-body h3 {
     margin: 10px 0 5px;
     clear: both;
+}
+
+div#ds-body h4 {
+    margin: 0px;
+    color: #000;
 }
 
 div.detail-view {
@@ -584,7 +599,7 @@ p.ds-paragraph {
 
 div.license-info {
     text-align: center;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 0 0;
 }
 
 /* Items in the knowledge bank are protected by copyright.... */
@@ -612,6 +627,7 @@ div.detail-view-news {  /* 'Related links' */
     width: 200px;
     font-size: 0.8em;
     padding: 4px;
+    margin: 4px;
 }
 div.detail-view-rights-and-license {
     font-size: 0.75em;
@@ -880,6 +896,23 @@ table.ds-includeSet-table tr {
 /*
     bds: submission form stylings
 */
+
+input#aspect_submission_submit_ResumeStep_field_showfull {
+    display: block;
+    margin: 0 auto;
+}
+input#aspect_submission_submit_ResumeStep_field_showsimple {
+    display: block;
+    margin: 0 auto;
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showfull {
+    display: block;
+    margin: 0 auto; 
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showsimple {
+    display: block;
+    margin: 0 auto;
+}
 
 ul.ds-progress-list {
         margin: 0 0 10px 0;
