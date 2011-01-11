@@ -1023,7 +1023,6 @@
                     &#160;
                 </xsl:otherwise>
             </xsl:choose>
-
         </p>
     </xsl:template>
 
@@ -1744,7 +1743,7 @@
             <xsl:if test="@rend">
                 <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
             </xsl:if>
-	        <xsl:apply-templates />
+            <xsl:apply-templates />
         </a>
     </xsl:template>
 
@@ -2401,11 +2400,17 @@
                         Buttons: added the xsl:if check which will override the type attribute button
                             with the value 'submit'. No reset buttons for now...
                     -->
+
             <xsl:otherwise>
                 <input>
                     <xsl:call-template name="fieldAttributes"/>
                     <xsl:if test="@type='button'">
                         <xsl:attribute name="type">submit</xsl:attribute>
+                    </xsl:if>
+                    <!-- bds: Disabled buttons, like in the submission steps progress bar,
+                            should do nothing. Setting type='button' does the trick. -->
+                    <xsl:if test="@type='button' and ../@rend='disabled'">
+                        <xsl:attribute name="type">button</xsl:attribute>
                     </xsl:if>
                     <xsl:attribute name="value">
                         <xsl:choose>

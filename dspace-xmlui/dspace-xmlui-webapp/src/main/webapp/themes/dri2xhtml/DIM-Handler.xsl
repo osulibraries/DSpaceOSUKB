@@ -476,6 +476,7 @@
          </xsl:call-template>
         </table>
         <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
+        <!--        see also match="dim:dim" mode="itemDetailView-DIM"  -->
         <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
     </xsl:template>
 
@@ -751,9 +752,7 @@
     <!-- An item rendered in the detailView pattern, the "full item record" view of a DSpace item in Manakin. -->
     <xsl:template name="itemDetailView-DIM">
         
-        <!-- Output all of the metadata about the item from the metadata section -->
-        <xsl:apply-templates select="mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
-            mode="itemDetailView-DIM"/>
+        <!-- bds: moving file info above metadata -->
         
 		<!-- Generate the bitstream information from the file section -->
         <xsl:choose>
@@ -784,7 +783,10 @@
                 </table>
             </xsl:otherwise>
         </xsl:choose>
-
+        <br />
+                <!-- Output all of the metadata about the item from the metadata section -->
+        <xsl:apply-templates select="mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
+            mode="itemDetailView-DIM"/>
         
         <!-- Generate the Creative Commons license information from the file section (DSpace deposit license hidden by default) -->
         <xsl:apply-templates select="mets:fileSec/mets:fileGrp[@USE='CC-LICENSE']"/>
@@ -803,6 +805,10 @@
 		<table class="ds-includeSet-table">
 		    <xsl:apply-templates mode="itemDetailView-DIM"/>
 		</table>
+        <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
+        <!--        see also match="dim:dim" mode="itemSummaryView-DIM"  -->
+        <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
+
     </xsl:template>
             
     <xsl:template match="dim:field" mode="itemDetailView-DIM">
