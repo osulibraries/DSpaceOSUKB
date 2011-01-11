@@ -675,7 +675,7 @@
 	<message key="xmlui.Submission.submit.UploadStep.column4">Description</message>
 	<message key="xmlui.Submission.submit.UploadStep.column5">Format</message>
 	<message key="xmlui.Submission.submit.UploadStep.column6"></message>
-	<message key="xmlui.Submission.submit.UploadStep.unknown_name">Unknown</message>
+	<message key="xmlui.Submission.submit.UploadStep.unknown_name"></message>
 	<message key="xmlui.Submission.submit.UploadStep.unknown_format">unknown format</message>
 	<message key="xmlui.Submission.submit.UploadStep.supported">(Supported)</message>
 	<message key="xmlui.Submission.submit.UploadStep.known">(Known)</message>

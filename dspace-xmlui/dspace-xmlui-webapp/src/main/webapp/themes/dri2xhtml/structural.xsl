@@ -1023,7 +1023,6 @@
                     &#160;
                 </xsl:otherwise>
             </xsl:choose>
-
         </p>
     </xsl:template>
 
@@ -1744,7 +1743,7 @@
             <xsl:if test="@rend">
                 <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
             </xsl:if>
-	        <xsl:apply-templates />
+            <xsl:apply-templates />
         </a>
     </xsl:template>
 
