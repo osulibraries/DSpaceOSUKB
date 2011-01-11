@@ -123,6 +123,7 @@ div#ds-user-box p {
     color: inherit;
     background-color: inherit;
     height: 12px;
+    margin: 0;
 }
 
 div#ds-user-box a {
