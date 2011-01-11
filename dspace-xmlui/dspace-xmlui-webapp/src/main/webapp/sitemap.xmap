@@ -206,6 +206,7 @@
                         <map:action name="StartAuthentication" src="org.dspace.app.xmlui.aspect.eperson.StartAuthenticationAction"/>
                         <map:action name="DSpacePropertyFileReader" src="org.dspace.app.xmlui.cocoon.DSpacePropertyFileReader" />
                         <map:action name="PropertyFileReader" src="org.dspace.app.xmlui.cocoon.PropertyFileReader" />
+                        <map:action name="ClearCache" src="org.apache.cocoon.acting.ClearCacheAction" />
                 </map:actions>
                 <map:pipes default="caching">
                         <map:pipe name="noncaching" src="org.apache.cocoon.components.pipeline.impl.NonCachingProcessingPipeline">
@@ -231,6 +232,14 @@
 
         <!-- =========================== Pipelines ================================= -->
         <map:pipelines>
+                <map:pipeline type="noncaching" internal-only="false">
+                    <map:match pattern="clearcache.html">
+                        <map:act type="ClearCache">
+                            <map:generate src="status" type="status"/>
+                            <map:serialize type="xml"/>
+                        </map:act>
+                    </map:match>
+                </map:pipeline>
                 
                 
                 <!-- Bitstream pipeline -->
