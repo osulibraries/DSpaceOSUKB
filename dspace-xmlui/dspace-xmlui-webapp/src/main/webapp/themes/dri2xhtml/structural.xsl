@@ -666,9 +666,9 @@
             </h3>
             <div class="ds-option-set">
                 <ul>
-                    <li><a href="http://library.osu.edu/">Help</a></li>
-                    <li><a href="http://library.osu.edu/">About</a></li>
-                    <li><a href="http://library.osu.edu/">Contact Us</a></li>
+                    <li><a href="https://kb.osu.edu/dspace/help/index.html" target="_blank">Help</a></li>
+                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/">About</a></li>
+                    <li><a href="http://library.osu.edu/about/contact-us/it-service-request/knowledge-bank/">Contact Us</a></li>
                 </ul>
             </div>
 
