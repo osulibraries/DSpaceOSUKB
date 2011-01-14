@@ -51,8 +51,8 @@
 		-->
 		<map:component-configurations>
 			<global-variables>
-				<theme-path>article</theme-path>
-				<theme-name>article</theme-name>
+				<theme-path>archives</theme-path>
+				<theme-name>archives</theme-name>
 			</global-variables>
 		</map:component-configurations>
 		
