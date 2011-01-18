@@ -7,11 +7,11 @@ span.something {
     font-size: 1.2em;
     font-weight: bold;
 }
-ul {
+#ds-body ul {
     margin: -4px 5px 3px 0;
     padding: 0;
 }
-li {
+#ds-body li {
     margin: 8px 0 0 0;
     padding: 2px 0 0 0;
 }
