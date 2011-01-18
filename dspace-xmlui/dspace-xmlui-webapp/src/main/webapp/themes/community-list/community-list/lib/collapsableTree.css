@@ -1,0 +1,17 @@
+#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser ul {
+	padding-left:20px;
+}
+#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser li {
+	list-style:none;
+}
+#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser ul.hide {
+	display:none;
+}
+#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser span {
+	color:#999;
+	font-family:"Courier New", Courier, monospace;
+	cursor:default;
+}
+#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser span.expanded, #aspect_artifactbrowser_CommunityBrowser_list_comunity-browser span.collapsed {
+	cursor:pointer;
+}
