@@ -209,7 +209,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	overflow: hidden;
 	float: left;
 }
-.breadCrumb ul li.first a
+/*.breadCrumb ul li.first a
 {
 	height: 16px !important;
 	text-indent:-1000em;
@@ -222,7 +222,7 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 .breadCrumb ul li.first a:hover
 {
 	background-position: 0 -16px;
-}
+}*/
 .breadCrumb ul li.last
 {
 	background: none;
@@ -1209,7 +1209,7 @@ p.creative-commons-button input {
     display: block;
     margin: 20px auto;
     text-align: center;
-    padding: 10px;
+    padding: 6px 10px;
 }
 
 

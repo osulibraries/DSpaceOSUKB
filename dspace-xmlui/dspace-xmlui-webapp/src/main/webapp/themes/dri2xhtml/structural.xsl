@@ -587,27 +587,27 @@
 <!--      also setting it to not appear on the home page or on the CC list page  -->
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
-        <xsl:choose>
+<!--        <xsl:choose>
             <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
                       or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
                       or /dri:document/dri:body/dri:div[@rend='primary submission']">
 
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:otherwise>-->
                 <div id="breadCrumb0" class="breadCrumb">
                     <ul id="ds-trail">
-                        <xsl:choose>
+<!--                        <xsl:choose>
                             <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
                                 <li class="ds-trail-link first-link"> - </li>
                             </xsl:when>
-                            <xsl:otherwise>
+                            <xsl:otherwise>-->
                                 <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+<!--                            </xsl:otherwise>
+                        </xsl:choose>-->
                     </ul>
                 </div>
-            </xsl:otherwise>
-        </xsl:choose>
+<!--            </xsl:otherwise>
+        </xsl:choose>-->
     </xsl:template>
 
     <xsl:template match="dri:trail">
