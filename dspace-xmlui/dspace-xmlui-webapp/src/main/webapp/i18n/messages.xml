@@ -715,8 +715,8 @@
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.CCLicenseStep -->
 	<message key="xmlui.Submission.submit.CCLicenseStep.head">Creative Commons License</message>
-	<message key="xmlui.Submission.submit.CCLicenseStep.info1">If you wish, you may add a <a href="http://creativecommons.org/">Creative Commons</a> License to your item. <strong>Creative Commons licenses govern what people who read your work may then do with it.</strong> If you wish to select a Creative Commons license click the button below. You will be taken to the Creative Commons website, where you will be presented with several licensing options.  After selecting a license, you will be returned to this page.</message>
-	<message key="xmlui.Submission.submit.CCLicenseStep.submit_to_creative_commons">Proceed to Creative Commons website to select a license</message>
+	<message key="xmlui.Submission.submit.CCLicenseStep.info1">If you wish, you may add a <a href="http://creativecommons.org/">Creative Commons</a> License to your item. To select a Creative Commons license click the button below. You will be taken to the Creative Commons website, where you will be presented with several licensing options.  After selecting a license, click the 'proceed' link to return to this page.</message>
+	<message key="xmlui.Submission.submit.CCLicenseStep.submit_to_creative_commons">To add a Creative Commons license to your item, click here.</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.license">License</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.submit_remove">Remove this Creative Commons License</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.no_license">no creative commons license selected</message>
