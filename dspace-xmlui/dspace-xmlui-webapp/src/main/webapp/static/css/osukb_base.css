@@ -941,6 +941,11 @@ ul.ds-progress-list li.button {
         margin-top: 2px;
         margin-left: 0px !important;
 }
+
+
+ul.ds-progress-list li.disabled.button {
+        background-color: #fff;
+}
 input.ds-button-field {
         margin: 0 3px 0 0;
         padding: 1px 8px;
@@ -958,15 +963,19 @@ ul.ds-progress-list li.button input.ds-button-field {
         font-size: smaller;
         border: 2px outset #aaa;
         margin: 0;
+        background-color: #EDEAEA;
 }
 
 ul.ds-progress-list li.current.button input.ds-button-field {
-        color: #900;
-        border: 3px solid #300;
+        color: #300;
+        font-weight: bold;
+        border: 4px solid #900;
+
 }
 
 ul.ds-progress-list li.disabled.button input.ds-button-field {
-        color: #999;
+        color: #aaa;
+        background-color: #D4D0C8;
 }
 
 
