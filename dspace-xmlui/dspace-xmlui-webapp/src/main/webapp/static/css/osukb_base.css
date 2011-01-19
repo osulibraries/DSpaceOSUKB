@@ -946,6 +946,10 @@ input.ds-button-field {
         padding: 1px 8px;
 }
 
+input.ds-delete-button {
+    margin: 3px 3px 0 0;
+}
+
 input.ds-text-field {
     padding: 1px;
 }
@@ -975,6 +979,7 @@ ul.ds-progress-list li.arrow {
 
 div.ds-previous-values {
     clear: both;
+    margin: 0 20px;
 }
 
 
@@ -1142,7 +1147,6 @@ li.ds-form-item {
 }
 
 div.ds-form-content {
-        float: left;
         clear: both;
         display: block;
         padding: 0px 7px;
