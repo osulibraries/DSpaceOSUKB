@@ -1542,11 +1542,11 @@ function doEditItemBitstreams(itemID)
 			assertAuthorized(Constants.BITSTREAM,bitstreamID,Constants.WRITE)
 		    result = doEditBitstream(itemID, bitstreamID);
 		}
-		else if (cocoon.request.get("submit_delete") && cocoon.request.get("remove"))
+		else if (cocoon.request.get("submit_delete") && cocoon.request.get("bitstreamID"))
 		{
 			// Delete the bitstream
 			assertAuthorized(Constants.ITEM,itemID,Constants.REMOVE);
-			var bitstreamIDs = cocoon.request.getParameterValues("remove");
+			var bitstreamIDs = cocoon.request.getParameterValues("bitstreamID");
 			
 			result = doDeleteBitstreams(itemID,bitstreamIDs)
 		}

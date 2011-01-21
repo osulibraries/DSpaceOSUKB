@@ -93,6 +93,7 @@ public class EditItemBitstreamsForm extends AbstractDSpaceTransformer {
 	private static final Message T_bundle_label = message("xmlui.administrative.item.EditItemBitstreamsForm.bundle_label");
 	private static final Message T_primary_label = message("xmlui.administrative.item.EditItemBitstreamsForm.primary_label");
 	private static final Message T_view_link = message("xmlui.administrative.item.EditItemBitstreamsForm.view_link");
+	private static final Message T_add_bitstream_label = message("xmlui.administrative.item.EditItemBitstreamsForm.add_bitstream_label");
 	private static final Message T_submit_add = message("xmlui.administrative.item.EditItemBitstreamsForm.submit_add");
 	private static final Message T_submit_delete = message("xmlui.administrative.item.EditItemBitstreamsForm.submit_delete");
 
@@ -177,16 +178,11 @@ public class EditItemBitstreamsForm extends AbstractDSpaceTransformer {
 					format = bitstreamFormat.getShortDescription();
 				String editURL = contextPath + "/admin/item?administrative-continue="+knot.getId()+"&bitstreamID="+bitstream.getID()+"&submit_edit";
 				String viewURL = contextPath + "/bitstream/id/"+bitstream.getID()+"/"+bitstream.getName();
+				String bitstreamBundlePair = bitstream.getBundles()[0].getID()+"/"+bitstream.getID();
+                                String deleteURL = contextPath + "/admin/item?administrative-continue="+knot.getId()+"&bitstreamID="+bitstreamBundlePair+"&submit_delete";
 
 
 				Row row = files.addRow();
-				CheckBox remove = row.addCell().addCheckBox("remove");
-				remove.setLabel("remove");
-				remove.addOption(bundle.getID() + "/" +bitstream.getID() );
-				if (!AuthorizeManager.authorizeActionBoolean(context, item, Constants.REMOVE))
-				{
-					remove.setDisabled();
-				}
 
 				if (AuthorizeManager.authorizeActionBoolean(context, bitstream, Constants.WRITE))
 				{
@@ -215,17 +211,31 @@ public class EditItemBitstreamsForm extends AbstractDSpaceTransformer {
 				highlight.addContent("[");
 				highlight.addXref(viewURL,T_view_link);
 				highlight.addContent("]");
+
+				// Provide a link to delete just this one
+                                Highlight deleteLink = row.addCell().addHighlight("fade");
+                                deleteLink.addContent("[");
+                                if (AuthorizeManager.authorizeActionBoolean(context, item, Constants.REMOVE))
+                                {
+                                    deleteLink.addXref(deleteURL,"delete");
+                                } else {
+                                    deleteLink.addContent("delete");
+                                }
+                                deleteLink.addContent("]");
+
 			}
 		}
 
+		Cell addBitstreamHeader = files.addRow(Row.ROLE_HEADER).addCell(1, 5);
+                addBitstreamHeader.addContent(T_add_bitstream_label);
 		if (AuthorizeManager.authorizeActionBoolean(context, item, Constants.ADD))
 		{
-			Cell cell = files.addRow().addCell(1, 5);
+			Cell cell = files.addRow().addCell("", Row.ROLE_DATA, 1, 5, "add_bitstream");
 			cell.addXref(contextPath+"/admin/item?administrative-continue="+knot.getId()+"&submit_add",T_submit_add);
 		}
 		else
 		{
-			Cell cell = files.addRow().addCell(1, 5);
+			Cell cell = files.addRow().addCell("", Row.ROLE_DATA, 1, 5, "add_bitstream");
 			cell.addHighlight("fade").addContent(T_no_upload);
 		}
 
@@ -233,17 +243,6 @@ public class EditItemBitstreamsForm extends AbstractDSpaceTransformer {
 		
 		// PARA: actions
 		Para actions = main.addPara("editItemActionsP","editItemActionsP" );
-        // Only System Administrators can delete bitstreams
-		if (AuthorizeManager.authorizeActionBoolean(context, item, Constants.REMOVE))
-			actions.addButton("submit_delete").setValue(T_submit_delete);
-		else
-		{
-			Button button = actions.addButton("submit_delete");
-			button.setValue(T_submit_delete);
-			button.setDisabled();
-			
-			main.addPara().addHighlight("fade").addContent(T_no_remove);
-		}
 		actions.addButton("submit_return").setValue(T_submit_return);
 
 

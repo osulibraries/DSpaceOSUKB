@@ -128,8 +128,22 @@
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
+    <xsl:when test="$clause = 15">
+        <xsl:call-template name="itemFieldDisplay.dc.identifier.other">
+            <xsl:with-param name="clause" select="$clause" />
+            <xsl:with-param name="phase" select="$phase" />
+            <xsl:with-param name="otherPhase" select="$otherPhase" />
+        </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="$clause = 16">
+        <xsl:call-template name="itemFieldDisplay.dc.rights">
+            <xsl:with-param name="clause" select="$clause" />
+            <xsl:with-param name="phase" select="$phase" />
+            <xsl:with-param name="otherPhase" select="$otherPhase" />
+        </xsl:call-template>
+    </xsl:when>
     <xsl:otherwise>
-        <xsl:if test="$clause &lt; 15">
+        <xsl:if test="$clause &lt; 17">
             <xsl:call-template name="itemSummaryView-DIM-fields">
                     <xsl:with-param name="clause" select="($clause + 1)"/>
                     <xsl:with-param name="phase" select="$phase"/>

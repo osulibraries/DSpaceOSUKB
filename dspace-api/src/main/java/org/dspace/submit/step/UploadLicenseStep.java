@@ -56,9 +56,12 @@ import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
 import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
+import org.dspace.content.Collection;
 import org.dspace.content.FormatIdentifier;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+import org.dspace.eperson.Group;
+import org.dspace.handle.HandleManager;
 import org.dspace.submit.AbstractProcessingStep;
 
 /**
@@ -259,6 +262,9 @@ public class UploadLicenseStep extends AbstractProcessingStep
     }
 
     /**
+     * Determine if the Upload License Step is visible to the user. Currently
+     * the step is only available to super-admins and collection admins.
+     *
      * Retrieves the number of pages that this "step" extends over. This method
      * is used to build the progress bar.
      * <P>
@@ -285,11 +291,21 @@ public class UploadLicenseStep extends AbstractProcessingStep
     {
         //if isAdmin, 1, else 0
         try {
-            if (!AuthorizeManager.isAdmin(subInfo.getContext())) {
-                return STATUS_COMPLETE;
-            } else
+            Context context = subInfo.getContext();
+            Collection submittedCollection = (Collection) HandleManager.resolveToObject(context, subInfo.getCollectionHandle());
+            Group adminGroup = submittedCollection.getAdministrators();
+            Boolean isCollAdmin = false;
+            if(adminGroup != null)
+            {
+                isCollAdmin = adminGroup.isMember(context.getCurrentUser());
+            }
+
+            if (isCollAdmin || AuthorizeManager.isAdmin(context))
             {
                 return 1;
+            } else
+            {
+                return STATUS_COMPLETE;
             }
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(UploadLicenseStep.class.getName()).log(Level.SEVERE, null, ex);
