@@ -117,6 +117,7 @@ public class SyndicationFeed
     private static String defaultAuthorField = "dc.contributor.author";
     private static String defaultDateField = "dc.date.issued";
     private static String defaultDescriptionFields = "dc.description.abstract, dc.description, dc.title.alternative, dc.title";
+    private static String defaultExternalMedia = "dc.source.uri";
 
     // metadata field for Item title in entry:
     private static String titleField =
@@ -132,6 +133,9 @@ public class SyndicationFeed
 
     private static String authorField =
         getDefaultedConfiguration("webui.feed.item.author", defaultAuthorField);
+
+    // metadata field for Item external media source url
+    private static String sourceField = getDefaultedConfiguration("webui.feed.item.sourceuri", defaultExternalMedia);
 
     // metadata field for Item dc:creator field in entry's DCModule (no default)
     private static String dcCreatorField = ConfigurationManager.getProperty("webui.feed.item.dc.creator");
@@ -384,7 +388,7 @@ public class SyndicationFeed
                         }
                         //Also try to add an external value from dc.identifier.other
                         // We are assuming that if this is set, then it is a media file
-                        DCValue[] externalMedia = item.getMetadata("dc.identifier.other");
+                        DCValue[] externalMedia = item.getMetadata(sourceField);
                         if(externalMedia.length > 0)
                         {
                             for(int i = 0; i< externalMedia.length; i++)

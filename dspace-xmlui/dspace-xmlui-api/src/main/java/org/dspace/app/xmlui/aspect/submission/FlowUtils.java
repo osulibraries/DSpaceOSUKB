@@ -64,6 +64,7 @@ import org.dspace.content.Collection;
 import org.dspace.content.InProgressSubmission;
 import org.dspace.content.Item;
 import org.dspace.content.WorkspaceItem;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.handle.HandleManager;
@@ -469,7 +470,8 @@ public class FlowUtils {
 		
 		String reason = request.getParameter("reason");
 
-		if (reason != null && reason.length() > 1)
+                Boolean reasonRequired = ConfigurationManager.getBooleanProperty("xmlui.submission.reject.reason-required", true);
+		if (!reasonRequired || (reason != null && reason.length() > 1))
 		{
             WorkspaceItem wsi = WorkflowManager.reject(context, workflowItem,context.getCurrentUser(), reason);
 			
