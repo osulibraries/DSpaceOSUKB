@@ -753,6 +753,16 @@
                 </div>
             </xsl:if>
 
+            <!-- bds: Add Forms links for proxy and community setup -->
+            <h3 id="ds-forms-option-head" class="ds-option-set-head">
+                <xsl:text>Forms</xsl:text>
+            </h3>
+            <div class="ds-option-set">
+                <ul>
+                    <li><a href="http://library.osu.edu/sites/kbinfo/kbsetupform.htm">Community Setup Form</a></li>
+                    <li><a href="http://library.osu.edu/sites/kbinfo/Knowledge_Bank_License_Agreement_2010.pdf">KB License Agreement</a></li>
+                </ul>
+            </div>
         </div>
     </xsl:template>
 
