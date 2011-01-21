@@ -2,9 +2,9 @@
 <!--
 	sitemap.xmap
 	
-	Version: $Revision: 3705 $
+	Version: $Revision$
 	
-	Date: $Date: 2009-04-11 13:02:24 -0400 (Sat, 11 Apr 2009) $
+	Date: $Date$
 	
 	Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
 	Institute of Technology.  All rights reserved.
@@ -51,8 +51,8 @@
 		-->
 		<map:component-configurations>
 			<global-variables>
-				<theme-path>archives</theme-path>
-				<theme-name>archives</theme-name>
+				<theme-path>community-list</theme-path>
+				<theme-name>The theme template</theme-name>
 			</global-variables>
 		</map:component-configurations>
 		
@@ -130,6 +130,10 @@
 						<map:transform type="IncludePageMeta">
 							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
 							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
+                                                        <map:parameter name="stylesheet.screen#3" value="lib/collapsableTree.css"/>
+                                                        <map:parameter name="javascript#1" value="lib/collapsableTree.js" />
+                                                        <map:parameter name="javascript#2" value="lib/community-list.js" />
+                                                        
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
@@ -138,6 +142,10 @@
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
 							<map:parameter name="stylesheet.screen" value="lib/style.css"/>
+                                                        <map:parameter name="stylesheet.screen#1" value="lib/collapsableTree.css"/>
+                                                        <map:parameter name="javascript#1" value="lib/collapsableTree.js" />
+                                                        <map:parameter name="javascript#2" value="lib/community-list.js" />
+                                                        
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
@@ -151,7 +159,7 @@
 				</map:match>
 				
 				<!-- Step 3: Transform to XHTML -->
-				<map:transform src="template.xsl"/>
+				<map:transform src="{global:theme-path}.xsl"/>
 			    <!-- <map:transform src="template.xsl"/> -->
 				
 				<!-- Step 4: Localize the page -->

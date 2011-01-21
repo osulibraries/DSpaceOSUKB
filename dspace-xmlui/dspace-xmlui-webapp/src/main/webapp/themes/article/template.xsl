@@ -12,7 +12,7 @@
                 exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
 
 <xsl:import href="../dri2xhtml.xsl"/>
-<xsl:output indent="yes"/>
+<xsl:output indent="yes"/>            
 <xsl:template name="itemSummaryView-DIM-fields">
 <xsl:param name="clause" select="'1'"/>
 <xsl:param name="phase" select="'even'"/>
@@ -28,8 +28,8 @@
 </xsl:variable>
 
 <xsl:choose>
-
-
+            
+        
     <xsl:when test="$clause = 1">
         <xsl:call-template name="itemFieldDisplay.dc.title">
             <xsl:with-param name="clause" select="$clause" />
@@ -149,8 +149,15 @@
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
+    <xsl:when test="$clause = 18">
+        <xsl:call-template name="itemFieldDisplay.dc.rights">
+            <xsl:with-param name="clause" select="$clause" />
+            <xsl:with-param name="phase" select="$phase" />
+            <xsl:with-param name="otherPhase" select="$otherPhase" />
+        </xsl:call-template>
+    </xsl:when>
     <xsl:otherwise>
-        <xsl:if test="$clause &lt; 18">
+        <xsl:if test="$clause &lt; 19">
             <xsl:call-template name="itemSummaryView-DIM-fields">
                     <xsl:with-param name="clause" select="($clause + 1)"/>
                     <xsl:with-param name="phase" select="$phase"/>
@@ -159,6 +166,6 @@
     </xsl:otherwise>
 </xsl:choose>
 </xsl:template>
-
+                    
 </xsl:stylesheet>
-
+                
