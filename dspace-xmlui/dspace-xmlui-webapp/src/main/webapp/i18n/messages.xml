@@ -610,6 +610,7 @@
 	<message key="xmlui.Submission.submit.progressbar.verify">Review</message>
 	<message key="xmlui.Submission.submit.progressbar.creative-commons">Creative Commons</message>
 	<message key="xmlui.Submission.submit.progressbar.license">License</message>
+	<message key="xmlui.Submission.submit.progressbar.proxy-license">Proxy</message>
 	<message key="xmlui.Submission.submit.progressbar.complete">Complete</message>
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.ResumeStep -->
