@@ -58,7 +58,7 @@
 		--> 
 	
 	<!-- General keys -->
-	<message key="xmlui.general.dspace_home">Knowledge Bank Home</message>
+	<message key="xmlui.general.dspace_home">KB Home</message>
 	<message key="xmlui.general.search">Search</message>
 	<message key="xmlui.general.go">Go</message>
 	<message key="xmlui.general.go_home">Go to Knowledge Bank home</message>
@@ -554,7 +554,7 @@
 	<message key="xmlui.Submission.Submissions.trail">Submissions</message>
 	<message key="xmlui.Submission.Submissions.head">Submissions &amp; workflow tasks</message>
 	<message key="xmlui.Submission.Submissions.untitled"><i>Untitled</i></message>
-	<message key="xmlui.Submission.Submissions.email">email: </message>
+	<message key="xmlui.Submission.Submissions.email"></message>
 	<!-- Same transformer, workflow section -->
 	<message key="xmlui.Submission.Submissions.workflow_head1">Workflow tasks</message>
 	<message key="xmlui.Submission.Submissions.workflow_info1">These tasks are items that are awaiting approval before they are added to the repository. There are two task queues, one for tasks which you have chosen to accept and another for tasks which have not been taken by anyone yet.</message>
@@ -610,7 +610,6 @@
 	<message key="xmlui.Submission.submit.progressbar.verify">Review</message>
 	<message key="xmlui.Submission.submit.progressbar.creative-commons">Creative Commons</message>
 	<message key="xmlui.Submission.submit.progressbar.license">License</message>
-        <message key="xmlui.Submission.submit.progressbar.license-upload">Proxy</message>
 	<message key="xmlui.Submission.submit.progressbar.complete">Complete</message>
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.ResumeStep -->
@@ -632,7 +631,7 @@
 	
 	<!-- org.dpspace.app.xmlui.Submission.submit.InitialQuestionsStep -->
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.head">Initial Questions</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.important_note">Important Note: </message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.important_note"><b>Important Note:</b><br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.and"> and </message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.separator">, </message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.open_set"> (</message>
@@ -716,8 +715,8 @@
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.CCLicenseStep -->
 	<message key="xmlui.Submission.submit.CCLicenseStep.head">Creative Commons License</message>
-	<message key="xmlui.Submission.submit.CCLicenseStep.info1">If you wish, you may add a <a href="http://creativecommons.org/">Creative Commons</a> License to your item. <strong>Creative Commons licenses govern what people who read your work may then do with it.</strong> If you wish to select a Creative Commons license click the button below. You will be taken to the Creative Commons website, where you will be presented with several licensing options.  After selecting a license, you will be returned to this page.</message>
-	<message key="xmlui.Submission.submit.CCLicenseStep.submit_to_creative_commons">Proceed to Creative Commons website to select a license</message>
+	<message key="xmlui.Submission.submit.CCLicenseStep.info1">If you wish, you may add a <a href="http://creativecommons.org/">Creative Commons</a> License to your item. To select a Creative Commons license click the button below. You will be taken to the Creative Commons website, where you will be presented with several licensing options.  After selecting a license, click the 'proceed' link to return to this page.</message>
+	<message key="xmlui.Submission.submit.CCLicenseStep.submit_to_creative_commons">To add a Creative Commons license to your item, click here.</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.license">License</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.submit_remove">Remove this Creative Commons License</message>
 	<message key="xmlui.Submission.submit.CCLicenseStep.no_license">no creative commons license selected</message>
@@ -725,7 +724,7 @@
 	<!-- org.dspace.app.xmlui.Submission.submit.LicenseStep -->
 	<message key="xmlui.Submission.submit.LicenseStep.head">Distribution License</message>
 	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for Knowledge Bank to reproduce, translate and distribute your submission worldwide, your agreement to the following terms is necessary. Please take a moment to read the terms of this license.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info2">By checking the box marked "I Grant the License" and clicking "Next", you indicate that you grant the following terms of the license.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info2"><b>By checking the box marked "I Grant the License" and clicking "Next", you indicate that you grant the following terms of the license.</b></message>
 	<message key="xmlui.Submission.submit.LicenseStep.info3">Not granting the license will not delete your submission. Your item will remain in your "Submissions" page. You can then either remove the submission from the system, or agree to the license later once any queries you might have are resolved. If you have questions regarding this license please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_label">Distribution license</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_checkbox">I Grant the License</message>
@@ -1856,7 +1855,7 @@
         <message key="metadata.dc.relation.hasversion">View Online Version</message>
 	<message key="metadata.dc.relation.ispartofseries">Series/Report no.</message>
 	<message key="metadata.dc.relation.issupplementedby">Supplementary Item</message>
-	<message key="metadata.dc.rights.ALL">Rights</message>
+	<message key="metadata.dc.rights">Rights</message>
 	<message key="metadata.dc.source.uri">OSU Library Catalog</message>
 	<message key="metadata.dc.subject">Keywords</message>
 	<message key="metadata.dc.subject.lcsh">Subjects (LCSH)</message>

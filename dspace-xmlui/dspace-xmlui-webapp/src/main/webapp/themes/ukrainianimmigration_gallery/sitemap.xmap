@@ -51,8 +51,8 @@
 		-->
 		<map:component-configurations>
 			<global-variables>
-				<theme-path>archives</theme-path>
-				<theme-name>archives</theme-name>
+				<theme-path>ukrainianimmigration_gallery</theme-path>
+				<theme-name>ukrainianimmigration_gallery</theme-name>
 			</global-variables>
 		</map:component-configurations>
 		
@@ -128,8 +128,13 @@
 				<map:select type="browser">
 					<map:when test="explorer">
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
-							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
+							<map:parameter name="stylesheet.screen#1" value="../ukrainianimmigration/lib/style.css"/>
+							<map:parameter name="stylesheet.screen#2" value="../ukrainianimmigration/lib/style-ie.css"/>
+							<map:parameter name="stylesheet.screen#3" value="../gallery/lib/gallery.css"/>
+                                                        <map:parameter name="stylesheet.screen#4" value="../gallery/lib/thickbox/thickbox.css"/>
+                                                        <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
+                                                        <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
+                                                        <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
 							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
@@ -137,8 +142,16 @@
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen" value="lib/style.css"/>
-							
+							<map:parameter name="stylesheet.screen#1" value="../ukrainianimmigration/lib/style.css"/>
+                                                        <map:parameter name="stylesheet.screen#2" value="../gallery/lib/gallery.css"/>
+                                                        <map:parameter name="stylesheet.screen#3" value="../gallery/lib/thickbox/thickbox.css"/>
+                                                        <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
+                                                        <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
+                                                        <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
+                                                        <map:parameter name="javascript#4" value="../gallery/lib/jquerytools/jquery.tools.min.js"/>
+                                                        <map:parameter name="stylesheet.screen#4" value="../gallerylib/jquerytools/scrollable-horizontal.css"/>
+                                                        <map:parameter name="stylesheet.screen#5" value="../gallerylib/jquerytools/scrollable-buttons.css"/>
+
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
 						</map:transform>

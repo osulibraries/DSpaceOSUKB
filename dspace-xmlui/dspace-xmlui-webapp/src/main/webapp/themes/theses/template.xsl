@@ -73,42 +73,42 @@
         </xsl:call-template>
     </xsl:when>
     <xsl:when test="$clause = 7">
-        <xsl:call-template name="itemFieldDisplay.dc.source.uri">
-            <xsl:with-param name="clause" select="$clause" />
-            <xsl:with-param name="phase" select="$phase" />
-            <xsl:with-param name="otherPhase" select="$otherPhase" />
-        </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$clause = 8">
         <xsl:call-template name="itemFieldDisplay.dc.relation.ispartofseries">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$clause = 9">
+    <xsl:when test="$clause = 8">
         <xsl:call-template name="itemFieldDisplay.dc.subject">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$clause = 10">
+    <xsl:when test="$clause = 9">
         <xsl:call-template name="itemFieldDisplay.dc.description.sponsorship">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$clause = 11">
+    <xsl:when test="$clause = 10">
         <xsl:call-template name="itemFieldDisplay.dc.description">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$clause = 12">
+    <xsl:when test="$clause = 11">
         <xsl:call-template name="itemFieldDisplay.dc.identifier.uri">
+            <xsl:with-param name="clause" select="$clause" />
+            <xsl:with-param name="phase" select="$phase" />
+            <xsl:with-param name="otherPhase" select="$otherPhase" />
+        </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="$clause = 12">
+        <xsl:call-template name="itemFieldDisplay.dc.rights">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />

@@ -43,22 +43,26 @@
 
 <!-- bds: the default field set
 
-        itemFieldDisplay.dc.title
-        itemFieldDisplay.dc.title.alternative
-        itemFieldDisplay.dc.creator
-        itemFieldDisplay.dc.contributor.ALL
-        itemFieldDisplay.dc.subject
-        itemFieldDisplay.dc.date.issued
-        itemFieldDisplay.dc.publisher
-        itemFieldDisplay.dc.identifier.citation
-        itemFieldDisplay.dc.relation.ispartofseries
-        itemFieldDisplay.dc.description.abstract
-        itemFieldDisplay.dc.identifier.govdoc
-        itemFieldDisplay.dc.identifier.uri
-        itemFieldDisplay.dc.identifier.isbn
-        itemFieldDisplay.dc.identifier.issn
-        itemFieldDisplay.dc.identifier.ismn
-        itemFieldDisplay.dc.identifier
+<fieldset name="default">
+	<field>dc.title</field>
+	<field>dc.title.alternative</field>
+	<field>dc.creator</field>
+	<field>dc.contributor.ALL</field>
+	<field>dc.subject</field>
+	<field>dc.date.issued</field>
+	<field>dc.publisher</field>
+	<field>dc.identifier.citation</field>
+	<field>dc.relation.ispartofseries</field>
+	<field>dc.description.abstract</field>
+	<field>dc.identifier.govdoc</field>
+	<field>dc.identifier.uri</field>
+	<field>dc.identifier.isbn</field>
+	<field>dc.identifier.issn</field>
+	<field>dc.identifier.ismn</field>
+	<field>dc.identifier</field>
+	<field>dc.identifier.other</field>
+	<field>dc.rights</field>
+</fieldset>
 -->
 
     <xsl:template name="itemSummaryView-DIM-fields">
@@ -206,6 +210,22 @@
                 </xsl:call-template>
             </xsl:when>
 
+            <xsl:when test="$clause = 17">
+                <xsl:call-template name="itemFieldDisplay.dc.identifier.other">
+                    <xsl:with-param name="clause" select="$clause" />
+                    <xsl:with-param name="phase" select="$phase" />
+                    <xsl:with-param name="otherPhase" select="$otherPhase" />
+                </xsl:call-template>
+            </xsl:when>
+
+            <xsl:when test="$clause = 18">
+                <xsl:call-template name="itemFieldDisplay.dc.rights">
+                    <xsl:with-param name="clause" select="$clause" />
+                    <xsl:with-param name="phase" select="$phase" />
+                    <xsl:with-param name="otherPhase" select="$otherPhase" />
+                </xsl:call-template>
+            </xsl:when>
+
             <!--<xsl:otherwise>
 
                 <xsl:if test="$clause &lt; 17">
@@ -217,7 +237,7 @@
             </xsl:otherwise>-->
             
             <!-- bds: the following is used to catch missing values in the above set -->
-            <xsl:when test="$clause &lt; 17">
+            <xsl:when test="$clause &lt; 19">
                 <xsl:call-template name="itemSummaryView-DIM-fields">
                     <xsl:with-param name="clause" select="($clause + 1)"/>
                     <xsl:with-param name="phase" select="$phase"/>
@@ -345,7 +365,7 @@
         itemFieldDisplay.dc.relation.hasversion
         itemFieldDisplay.dc.relation.ispartofseries
         itemFieldDisplay.dc.relation.issupplementedby
-        itemFieldDisplay.dc.rights.ALL  (.*)
+        itemFieldDisplay.dc.rights
         itemFieldDisplay.dc.source.uri
         itemFieldDisplay.dc.subject
         itemFieldDisplay.dc.subject.lcsh
@@ -1339,7 +1359,7 @@
 
 
 
-    <xsl:template name="itemFieldDisplay.dc.rights.ALL"> <!-- .ALL = .* -->
+    <xsl:template name="itemFieldDisplay.dc.rights">
         <xsl:param name="clause" />
         <xsl:param name="phase" />
         <xsl:param name="otherPhase" />
@@ -1347,9 +1367,9 @@
 
             <xsl:when test="dim:field[@element='rights']">
                 <tr class="ds-table-row {$phase}">
-                    <td class="field-label"><span class="bold"><i18n:text>metadata.dc.rights.ALL</i18n:text>:</span></td>
+                    <td class="field-label"><span class="bold"><i18n:text>metadata.dc.rights</i18n:text>:</span></td>
                     <td class="field-data">
-                        <xsl:for-each select="dim:field[@element='rights']">
+                        <xsl:for-each select="dim:field[@element='rights' and not(@qualifier)]">
                             <span>
                                 <xsl:copy-of select="node()"/>
                             </span>
