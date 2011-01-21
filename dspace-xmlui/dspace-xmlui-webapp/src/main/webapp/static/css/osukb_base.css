@@ -160,12 +160,10 @@ bds: from the jQuery add-on for magic shrinking breadcrumbs
 	padding: 0;
 	float: left;
 	display: block;
-	height: 21px;
+	height: 25px;
 	overflow: hidden;
 	width: 780px;
 	padding:5px;
-	border:none 1px #dedede;
-	background:#ffffff;
 }
 .breadCrumb ul
 {
@@ -947,7 +945,7 @@ ul.ds-progress-list li.disabled.button {
         background-color: #fff;
 }
 input.ds-button-field {
-        margin: 0 3px 0 0;
+        margin: 0;
         padding: 1px 8px;
 }
 
@@ -989,6 +987,22 @@ ul.ds-progress-list li.arrow {
 div.ds-previous-values {
     clear: both;
     margin: 0 20px;
+}
+
+
+input#aspect_submission_StepTransformer_field_submit_prev {
+    position: absolute;
+    left: 35px;
+    bottom: 16px;
+}
+input#aspect_submission_StepTransformer_field_submit_cancel {
+    display: block;
+    margin: 0 auto;
+}
+input#aspect_submission_StepTransformer_field_submit_next {
+    position: absolute;
+    right: 35px;
+    bottom: 16px;
 }
 
 
@@ -1132,7 +1146,6 @@ form.ds-interactive-div li.even {
 }
 
 form.ds-interactive-div li.ds-form-item.last {
-        border-top: 1px solid #777;
         color: inherit;
         background-color: #dee1de;
 }

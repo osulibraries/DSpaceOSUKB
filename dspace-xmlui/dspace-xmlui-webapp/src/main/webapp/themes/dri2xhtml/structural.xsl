@@ -1447,7 +1447,7 @@
                         </label>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/>&#160;
+                        <xsl:apply-templates select="preceding-sibling::*[1][local-name()='label']"/><xsl:text> </xsl:text>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
