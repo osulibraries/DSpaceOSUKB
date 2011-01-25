@@ -610,7 +610,6 @@
 	<message key="xmlui.Submission.submit.progressbar.verify">Review</message>
 	<message key="xmlui.Submission.submit.progressbar.creative-commons">Creative Commons</message>
 	<message key="xmlui.Submission.submit.progressbar.license">License</message>
-	<message key="xmlui.Submission.submit.progressbar.proxy-license">Proxy</message>
 	<message key="xmlui.Submission.submit.progressbar.complete">Complete</message>
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.ResumeStep -->
@@ -633,16 +632,16 @@
 	<!-- org.dpspace.app.xmlui.Submission.submit.InitialQuestionsStep -->
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.head">Initial Questions</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.important_note"><b>Important Note:</b><br /></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.and"> and </message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.separator">, </message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.and"></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.separator"><br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.open_set"> (</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.close_set">)</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_help">The item has more than one title, <i>e.g. a translated title</i></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item:<br /></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">The item has a release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:<br /></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date, publication date, publisher or citation</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">Check this box if the item has a release date, publication date, or if you wish to enter a publisher or citation for this item.</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following <b>will be removed</b> from the item:<br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.date_issued">Date Issued</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.citation">Citation</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.publisher">Publisher</message>
@@ -1251,7 +1250,6 @@
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.THUMBNAIL">Thumbnails</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.LICENSE">Licenses</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.CC_LICENSE">Creative Commons Licenses</message>
-	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.PROXY-LICENSE">Proxy License</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.file_label">File</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.file_help">Please enter the name of the file on your computer corresponding to your item. If you click "Browse...", a new window will appear in which you can locate and select the file from your computer.</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.description_label">Description</message>
@@ -1313,15 +1311,14 @@
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.title">Item Bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.trail">Item bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.head1">Bitstreams</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column1">Name</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column2">Description</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column3">Format</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column4">View</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column5">Delete</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column1"></message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column2">Name</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column3">Description</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column4">Format</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column5">View</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.bundle_label"><strong>Bundle: {0}</strong></message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.primary_label"> (primary) </message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.view_link">view</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.add_bitstream_label"><strong>More Files</strong></message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.submit_add">Upload a new bitstream</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.submit_delete">Delete bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.no_upload">You need the ADD &amp; WRITE privilege on the item and bundles to be able to upload new bitstreams.</message>
