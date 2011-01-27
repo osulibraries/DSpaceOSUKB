@@ -324,12 +324,12 @@ div.feature-item-logo {
 
 
 div.top-downloads {
-    width: auto;
+    width: 186px;
 }
 
 div.top-downloads li {
     padding: 2px 4px;
-    width: auto !important;
+    width: 100%;
     font-size: 0.8em;
     
 }
@@ -901,19 +901,19 @@ table.ds-includeSet-table tr {
 
 input#aspect_submission_submit_ResumeStep_field_showfull {
     display: block;
-    margin: 0 auto;
+    margin: 0 291px;
 }
 input#aspect_submission_submit_ResumeStep_field_showsimple {
     display: block;
-    margin: 0 auto;
+    margin: 0 279px;
 }
 input#aspect_submission_workflow_PerformTaskStep_field_showfull {
     display: block;
-    margin: 0 auto; 
+    margin: 0 291px;
 }
 input#aspect_submission_workflow_PerformTaskStep_field_showsimple {
     display: block;
-    margin: 0 auto;
+    margin: 0 279px;
 }
 
 ul.ds-progress-list {
@@ -1001,11 +1001,12 @@ input#aspect_submission_StepTransformer_field_submit_prev {
 }
 input#aspect_submission_StepTransformer_field_submit_cancel {
     display: block;
-    margin: 0 auto;
+    margin: 0 313px; /* IE forces us to be specific */
+
 }
 input#aspect_submission_StepTransformer_field_submit_next {
     position: absolute;
-    right: 35px;
+    right: 33px;
     bottom: 16px;
 }
 
@@ -1070,6 +1071,7 @@ fieldset.ds-form-list {
         border: 1px solid #777;
         padding: 0;
         margin: 8px 10px;
+        width: 730px
 }
 
 fieldset.ds-form-list.thick {
@@ -1079,7 +1081,7 @@ fieldset.ds-form-list.thick {
 fieldset.ds-form-list ol {
         padding: 0;
         margin: 0;
-        width: 728px;
+        width: 730px;
 }
 
 fieldset.ds-form-list legend {
@@ -1224,7 +1226,7 @@ div.license-text {
 
 p.creative-commons-button input {
     display: block;
-    margin: 20px auto;
+    margin: 20px 173px;
     text-align: center;
     padding: 6px 10px;
 }
