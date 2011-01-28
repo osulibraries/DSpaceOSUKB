@@ -585,16 +585,16 @@
 
 
     <!-- bds: moving the trail in here, copied from the original in the buildHeader section -->
-<!--      also setting it to not appear on the home page or on the CC list page  -->
+<!--      also setting it to not appear on the home page  -->
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
-<!--        <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
-                      or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
-                      or /dri:document/dri:body/dri:div[@rend='primary submission']">
+        <xsl:choose>
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
+                <!--      or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
+                      or /dri:document/dri:body/dri:div[@rend='primary submission']">-->
 
             </xsl:when>
-            <xsl:otherwise>-->
+            <xsl:otherwise>
                 <div id="breadCrumb0" class="breadCrumb">
                     <ul id="ds-trail">
 <!--                        <xsl:choose>
@@ -607,8 +607,8 @@
                         </xsl:choose>-->
                     </ul>
                 </div>
-<!--            </xsl:otherwise>
-        </xsl:choose>-->
+<!-- -->           </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="dri:trail">
