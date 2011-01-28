@@ -155,9 +155,7 @@
                 </xsl:when>
                 <!-- Otherwise, iterate over and display all of them -->
                 <xsl:otherwise>
-                    <xsl:apply-templates select="mets:file">
-                     	<xsl:sort data-type="number" select="boolean(./@ID=$primaryBitstream)" order="descending" />
-                        <xsl:sort select="mets:FLocat[@LOCTYPE='URL']/@xlink:title"/> 
+                    <xsl:apply-templates select="mets:file"> 
                         <xsl:with-param name="context" select="$context"/>
                     </xsl:apply-templates>
                 </xsl:otherwise>
