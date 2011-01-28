@@ -803,7 +803,7 @@
             </xsl:attribute>
         </span>-->
 		<table class="ds-includeSet-table">
-		    <xsl:apply-templates mode="itemDetailView-DIM"/>
+		    <xsl:apply-templates mode="itemDetailView-DIM"/><xsl:text> </xsl:text>
 		</table>
         <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
         <!--        see also match="dim:dim" mode="itemSummaryView-DIM"  -->

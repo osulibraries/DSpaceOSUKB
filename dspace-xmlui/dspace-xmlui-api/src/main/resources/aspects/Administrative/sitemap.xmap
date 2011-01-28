@@ -945,12 +945,12 @@ to administer DSpace.
 
                   <map:match pattern="admin/**">
                     <map:transform type="IncludePageMeta">
-                      <!-- javascript libraries and utils for the choice and authority-control -->
+                      <!-- javascript libraries and utils for the choice and authority-control 
                       <map:parameter name="javascript.static#1" value="static/js/scriptaculous/prototype.js"/>
                       <map:parameter name="javascript.static#2" value="static/js/scriptaculous/effects.js"/>
                       <map:parameter name="javascript.static#3" value="static/js/scriptaculous/builder.js"/>
                       <map:parameter name="javascript.static#4" value="static/js/scriptaculous/controls.js"/>
-                      <map:parameter name="javascript.static#5" value="static/js/choice-support.js"/>
+                      <map:parameter name="javascript.static#5" value="static/js/choice-support.js"/>-->
                     </map:transform>
                   </map:match>
 

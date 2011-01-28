@@ -298,7 +298,7 @@
             
           </map:match> <!-- flow match-->
           
-          <!-- javascript libraries and utils for choice/authority-control -->
+          <!-- javascript libraries and utils for choice/authority-control 
           <map:match type="regexp" pattern="(^submit)|(^handle/.*/submit)|(^handle/.*/workflow)">
             <map:transform type="IncludePageMeta">
               <map:parameter name="javascript.static#1" value="static/js/scriptaculous/prototype.js"/>
@@ -307,7 +307,7 @@
               <map:parameter name="javascript.static#4" value="static/js/scriptaculous/controls.js"/>
               <map:parameter name="javascript.static#5" value="static/js/choice-support.js"/>
             </map:transform>
-          </map:match>
+          </map:match>-->
 
           <map:serialize type="xml"/>
           
