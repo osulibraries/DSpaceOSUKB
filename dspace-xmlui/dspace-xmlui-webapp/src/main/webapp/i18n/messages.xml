@@ -192,7 +192,7 @@
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.order.asc">ascending</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.order.desc">descending</message>
 
-	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.author.column_heading">Authors Name</message>
+	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.author.column_heading">Author Name</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.subject.column_heading">Subject</message>
 
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.title.metadata.author">Browsing {0} by Author {1}</message>
@@ -281,9 +281,9 @@
 	<message key="xmlui.ArtifactBrowser.Navigation.head_browse">Browse</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.head_all_of_dspace">All of Knowledge Bank</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.communities_and_collections">Communities &amp; Collections</message>
-	<message key="xmlui.ArtifactBrowser.Navigation.browse_title">Titles</message>
-	<message key="xmlui.ArtifactBrowser.Navigation.browse_author">Authors</message>
-	<message key="xmlui.ArtifactBrowser.Navigation.browse_subject">Subjects</message>
+	<message key="xmlui.ArtifactBrowser.Navigation.browse_title">Title</message>
+	<message key="xmlui.ArtifactBrowser.Navigation.browse_author">Author</message>
+	<message key="xmlui.ArtifactBrowser.Navigation.browse_subject">Subject</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_dateissued">Issue Date</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_dateaccessioned">Submit Date</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.head_this_collection">This Collection</message>
@@ -610,7 +610,6 @@
 	<message key="xmlui.Submission.submit.progressbar.verify">Review</message>
 	<message key="xmlui.Submission.submit.progressbar.creative-commons">Creative Commons</message>
 	<message key="xmlui.Submission.submit.progressbar.license">License</message>
-	<message key="xmlui.Submission.submit.progressbar.proxy-license">Proxy</message>
 	<message key="xmlui.Submission.submit.progressbar.complete">Complete</message>
 	
 	<!-- org.dspace.app.xmlui.Submission.submit.ResumeStep -->
@@ -633,16 +632,16 @@
 	<!-- org.dpspace.app.xmlui.Submission.submit.InitialQuestionsStep -->
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.head">Initial Questions</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.important_note"><b>Important Note:</b><br /></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.and"> and </message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.separator">, </message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.and"></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.separator"><br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.open_set"> (</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.close_set">)</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_help">The item has more than one title, <i>e.g. a translated title</i></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.multiple_titles_note">If the checkbox above is unchecked then the following title(s) will be removed from the item:<br /></message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">The item has a release date or publication date</message>
-	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following will be removed from the item:<br /></message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before">Release date, publication date, publisher or citation</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_help">Check this box if the item has a release date, publication date, or if you wish to enter a publisher or citation for this item.</message>
+	<message key="xmlui.Submission.submit.InitialQuestionsStep.published_before_note">If the checkbox above is unchecked then the following <b>will be removed</b> from the item:<br /></message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.date_issued">Date Issued</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.citation">Citation</message>
 	<message key="xmlui.Submission.submit.InitialQuestionsStep.publisher">Publisher</message>
@@ -725,7 +724,7 @@
 	<!-- org.dspace.app.xmlui.Submission.submit.LicenseStep -->
 	<message key="xmlui.Submission.submit.LicenseStep.head">Distribution License</message>
 	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for Knowledge Bank to reproduce, translate and distribute your submission worldwide, your agreement to the following terms is necessary. Please take a moment to read the terms of this license.</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info2"><b>By checking the box marked "I Grant the License" and clicking "Next", you indicate that you grant the following terms of the license.</b></message>
+	<message key="xmlui.Submission.submit.LicenseStep.info2"><b>By checking the box marked "I Grant the License", you indicate that you grant the following terms of the license.</b></message>
 	<message key="xmlui.Submission.submit.LicenseStep.info3">Not granting the license will not delete your submission. Your item will remain in your "Submissions" page. You can then either remove the submission from the system, or agree to the license later once any queries you might have are resolved. If you have questions regarding this license please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_label">Distribution license</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_checkbox">I Grant the License</message>
@@ -1251,7 +1250,6 @@
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.THUMBNAIL">Thumbnails</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.LICENSE">Licenses</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.CC_LICENSE">Creative Commons Licenses</message>
-	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.PROXY-LICENSE">Proxy License</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.file_label">File</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.file_help">Please enter the name of the file on your computer corresponding to your item. If you click "Browse...", a new window will appear in which you can locate and select the file from your computer.</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.description_label">Description</message>
@@ -1313,15 +1311,14 @@
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.title">Item Bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.trail">Item bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.head1">Bitstreams</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column1">Name</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column2">Description</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column3">Format</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column4">View</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column5">Delete</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column1"></message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column2">Name</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column3">Description</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column4">Format</message>
+	<message key="xmlui.administrative.item.EditItemBitstreamsForm.column5">View</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.bundle_label"><strong>Bundle: {0}</strong></message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.primary_label"> (primary) </message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.view_link">view</message>
-	<message key="xmlui.administrative.item.EditItemBitstreamsForm.add_bitstream_label"><strong>More Files</strong></message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.submit_add">Upload a new bitstream</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.submit_delete">Delete bitstreams</message>
 	<message key="xmlui.administrative.item.EditItemBitstreamsForm.no_upload">You need the ADD &amp; WRITE privilege on the item and bundles to be able to upload new bitstreams.</message>

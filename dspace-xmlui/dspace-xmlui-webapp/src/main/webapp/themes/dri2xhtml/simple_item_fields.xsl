@@ -300,14 +300,14 @@
             <span>
                 <a>
                     <xsl:attribute name="href">
-                        <xsl:text>http://www.addthis.com/bookmark.php</xsl:text>
+                        <xsl:text>https://www.addthis.com/bookmark.php</xsl:text>
                     </xsl:attribute>
                     <xsl:attribute name="class">
                         <xsl:text>addthis_button</xsl:text>
                     </xsl:attribute>
                     <img>
                         <xsl:attribute name="src">
-                            <xsl:text>http://s7.addthis.com/static/btn/v2/lg-share-en.gif</xsl:text>
+                            <xsl:text>https://s7.addthis.com/static/btn/v2/lg-share-en.gif</xsl:text>
                         </xsl:attribute>
                         <xsl:attribute name="width">
                             <xsl:text>125</xsl:text>
@@ -326,7 +326,7 @@
             </span>
         <script>
             <xsl:attribute name="type">text/javascript</xsl:attribute>
-            <xsl:attribute name="src">http://s7.addthis.com/js/250/addthis_widget.js</xsl:attribute>
+            <xsl:attribute name="src">https://s7.addthis.com/js/250/addthis_widget.js</xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
 
