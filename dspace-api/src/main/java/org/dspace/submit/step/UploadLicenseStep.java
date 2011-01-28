@@ -59,6 +59,7 @@ import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
 import org.dspace.content.FormatIdentifier;
 import org.dspace.content.Item;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.eperson.Group;
 import org.dspace.handle.HandleManager;
@@ -289,7 +290,12 @@ public class UploadLicenseStep extends AbstractProcessingStep
     public int getNumberOfPages(HttpServletRequest request,
             SubmissionInfo subInfo) throws ServletException
     {
-        //if isAdmin, 1, else 0
+        
+        //Allow for configurable way to disabled proxy-license submission
+        if(ConfigurationManager.getBooleanProperty("submit.proxy-license.disabled", false)){
+            return 0;
+        }
+
         try {
             Context context = subInfo.getContext();
             Collection submittedCollection = (Collection) HandleManager.resolveToObject(context, subInfo.getCollectionHandle());

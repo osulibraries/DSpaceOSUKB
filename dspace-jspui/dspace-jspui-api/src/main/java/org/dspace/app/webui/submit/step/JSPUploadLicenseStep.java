@@ -342,9 +342,9 @@ public class JSPUploadLicenseStep extends JSPStep
             boolean justUploaded) throws SQLException, ServletException,
             IOException
     {
-        if(!AuthorizeManager.isAdmin(context)){
+        /*if(!AuthorizeManager.isAdmin(context)){
             return; //Only admins do license upload
-        }
+        }*/
         boolean fileAlreadyUploaded = false;
 
         if (!justUploaded)
