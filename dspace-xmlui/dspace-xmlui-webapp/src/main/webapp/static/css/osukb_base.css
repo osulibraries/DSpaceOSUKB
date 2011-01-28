@@ -804,8 +804,8 @@ td.field-label {
     text-align: right;
     font-weight: bold;
     vertical-align: top;
-    width: 10em;
-    padding: 5px;
+    width: 11em;
+    padding: 3px;
 }
 td.field-data {
     padding: 3px;
@@ -814,8 +814,8 @@ td.detail-field-label {
     text-align: right;
     font-weight: bold;
     vertical-align: top;
-    width: 10em;
-    padding: 5px;
+    width: 11em;
+    padding: 3px;
 }
 td.detail-field-data {
     padding: 3px;
