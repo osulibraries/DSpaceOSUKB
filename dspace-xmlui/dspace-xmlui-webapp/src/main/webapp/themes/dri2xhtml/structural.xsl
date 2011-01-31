@@ -2509,6 +2509,10 @@
         <xsl:if test="@type= 'textarea'">
             <xsl:attribute name="onfocus">javascript:tFocus(this);</xsl:attribute>
         </xsl:if>
+        <!-- bds: bigger boxes for title, citation, etc. -->
+        <xsl:if test="@rend='submit-text'">
+            <xsl:attribute name="size">60</xsl:attribute>
+        </xsl:if>
     </xsl:template>
 
     <!-- Since the field element contains only the type attribute, all other attributes commonly associated
