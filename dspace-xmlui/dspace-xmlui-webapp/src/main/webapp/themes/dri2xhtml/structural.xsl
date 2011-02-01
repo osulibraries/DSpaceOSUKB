@@ -589,9 +589,10 @@
 <!--      individual trail links are built with the match="dri:trail" template below -->
     <xsl:template name="trail">
         <xsl:choose>
-            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'">
+            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.general.dspace_home'
+                            or /dri:document/dri:body/dri:div[@rend='primary submission']">
                 <!--      or /dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:text='xmlui.ArtifactBrowser.CommunityBrowser.title'
-                      or /dri:document/dri:body/dri:div[@rend='primary submission']">-->
+                      -->
 
             </xsl:when>
             <xsl:otherwise>
@@ -667,7 +668,7 @@
             </h3>
             <div class="ds-option-set">
                 <ul>
-                    <li><a href="http://kb.osu.edu/dspace/help/index.html" target="_blank">Help</a></li>
+                    <!--<li><a href="http://kb.osu.edu/dspace/help/index.html" target="_blank">Help</a></li>-->
                     <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/">About</a></li>
                     <li><a href="http://library.osu.edu/about/contact-us/it-service-request/knowledge-bank/">Contact Us</a></li>
                 </ul>
@@ -1116,6 +1117,11 @@
             </xsl:call-template>
             <xsl:apply-templates select="dri:item"/>
         </ul>
+    </xsl:template>
+
+    <!-- bds: removing useless progress buttons in registration steps -->
+    <xsl:template match="dri:list[@n='registration-progress']" priority="3">
+        <xsl:apply-templates select="dri:head"/>
     </xsl:template>
 
     <xsl:template match="dri:list[@type='progress']/dri:item" priority="2">
