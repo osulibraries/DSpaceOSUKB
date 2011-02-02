@@ -761,7 +761,7 @@
             </h3>
             <div class="ds-option-set">
                 <ul>
-                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/tools/set-up-form?stage=Stage">Community Setup Form</a></li>
+                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/tools/set-up-form">Community Setup Form</a></li>
                     <li><a href="http://library.osu.edu/sites/kbinfo/Knowledge_Bank_License_Agreement_2010.pdf">KB License Agreement</a></li>
                 </ul>
             </div>
