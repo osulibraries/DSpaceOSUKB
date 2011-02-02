@@ -622,6 +622,7 @@ div.ds-logo-wrapper {
 div.intro-text {
 }
 div.detail-view-news {  /* 'Related links' */
+    clear: both; /* sit below the logo, if any */
     float: right;
     border-left: 1px solid #aaa;
     border-right: 1px solid #aaa;
