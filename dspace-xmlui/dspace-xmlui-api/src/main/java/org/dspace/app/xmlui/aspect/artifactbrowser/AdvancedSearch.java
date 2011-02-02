@@ -42,8 +42,6 @@ package org.dspace.app.xmlui.aspect.artifactbrowser;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -260,28 +258,24 @@ public class AdvancedSearch extends AbstractSearch implements CacheableProcessin
         
         Select select = cell.addSelect("field" + row);
 
-        Map<String, Message> searchTypes = new HashMap<String, Message>();
-        
-        int i = 1;
-        String sindex = ConfigurationManager.getProperty("search.index." + i);
-        while(sindex != null)
-        {
-            String field = sindex.split(":")[0];               
-            searchTypes.put(field, message("xmlui.ArtifactBrowser.AdvancedSearch.type_" + field));
-            
-            sindex = ConfigurationManager.getProperty("search.index." + ++i);
-        }
-            
-        
-        
         // Special case ANY
         select.addOption((current == null), "ANY").addContent(
                 message("xmlui.ArtifactBrowser.AdvancedSearch.type_ANY"));
 
-        for (String key : searchTypes.keySet())
+        ArrayList<String> usedSearchTypes = new ArrayList<String>();
+        int i = 1;
+        String sindex = ConfigurationManager.getProperty("search.index." + i);
+        while(sindex != null)
         {
-            select.addOption(key.equals(current), key).addContent(
-                    searchTypes.get(key));
+            String field = sindex.split(":")[0];
+
+            if(! usedSearchTypes.contains(field))
+            {
+                usedSearchTypes.add(field);
+                select.addOption(field.equals(current), field).addContent(message("xmlui.ArtifactBrowser.AdvancedSearch.type_" + field));
+            }
+   
+            sindex = ConfigurationManager.getProperty("search.index." + ++i);
         }
     }
 
