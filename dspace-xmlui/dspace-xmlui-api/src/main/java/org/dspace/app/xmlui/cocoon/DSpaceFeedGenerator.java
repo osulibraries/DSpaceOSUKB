@@ -135,8 +135,9 @@ import com.sun.syndication.io.WireFeedOutput;
  */
 
 public class DSpaceFeedGenerator extends AbstractGenerator
-                implements Configurable, CacheableProcessingComponent, Recyclable
+                implements Configurable, CacheableProcessingComponent, Recyclable, Serializable
 {
+    private static final long serialVersionUID = 2L;
     private static final Logger log = Logger.getLogger(DSpaceFeedGenerator.class);
 
     /** The feed's requested format */
@@ -231,7 +232,7 @@ public class DSpaceFeedGenerator extends AbstractGenerator
      */
     public void configure(Configuration conf) throws ConfigurationException
     {
-        itemCount = ConfigurationManager.getIntProperty("webui.feed.items");
+            itemCount = ConfigurationManager.getIntProperty("webui.feed.items");
     }
     
     
