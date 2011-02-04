@@ -79,6 +79,11 @@
     -->
     <xsl:variable name="theme-path" select="concat($context-path,'/themes/',/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path'])"/>
 
+<!-- bds: This is rather ungraceful.. I wasn't able to get apply-templates with-param name="browseMode" to work
+        with the summaryList sections, so by last resort I am shamefully using this global variable.
+        This allows us to detect browse type so as to display submit dates when browsing by submit date.-->
+    <xsl:variable name="browseMode" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/i18n:translate/i18n:text/text()"/>
+
     <!--
     This style sheet will be written in several stages:
         1. Establish all the templates that catch all the elements
