@@ -62,6 +62,7 @@ import org.dspace.app.xmlui.wing.element.CheckBox;
 import org.dspace.app.xmlui.wing.element.Composite;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.Field;
+import org.dspace.app.xmlui.wing.element.Hidden;
 import org.dspace.app.xmlui.wing.element.Instance;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.PageMeta;
@@ -211,6 +212,10 @@ public class DescribeStep extends AbstractSubmissionStep
 
                 List form = div.addList("submit-describe",List.TYPE_FORM);
                 form.setHead(T_head);
+
+                // Added to allow us to recontinue this item submission in case we are logged out.
+                Hidden hiddenItemResume = form.addItem().addHidden("workspaceID");
+                hiddenItemResume.setValue(item.getID());
 
                 // Iterate over all inputs and add it to the form.
                 for(DCInput dcInput : inputs)

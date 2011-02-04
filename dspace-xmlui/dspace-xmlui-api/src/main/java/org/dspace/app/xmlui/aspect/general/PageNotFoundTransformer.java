@@ -43,6 +43,7 @@ package org.dspace.app.xmlui.aspect.general;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,14 +55,20 @@ import org.apache.cocoon.util.HashUtil;
 import org.apache.excalibur.source.SourceValidity;
 import org.apache.excalibur.source.impl.validity.NOPValidity;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
+import javax.servlet.http.HttpServletRequest;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingConstants;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.Cell;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.PageMeta;
+import org.dspace.app.xmlui.wing.element.Para;
+import org.dspace.app.xmlui.wing.element.Row;
+import org.dspace.app.xmlui.wing.element.Table;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Item;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -196,13 +203,72 @@ public class PageNotFoundTransformer extends AbstractDSpaceTransformer implement
         if (this.bodyEmpty)
         {
             Division notFound = body.addDivision("page-not-found","primary");
-            
-            notFound.setHead(T_head);
-            
-            notFound.addPara(T_para1); 
-            
-            notFound.addPara().addXref(contextPath + "/",T_go_home);
 
+            HttpServletRequest httpRequest = (HttpServletRequest) objectModel.get(HttpEnvironment.HTTP_REQUEST_OBJECT);
+
+            if(httpRequest.getPathInfo().contains("submit"))
+            {
+                notFound.setHead("You've been logged out");
+                notFound.addPara("For some reason you have been logged out and will have to log back in to continue your submission. " +
+                    "Your submission was saved when you completed a submission step, however, any information filled in since then has been lost." +
+                    "Your submission-in-progress is in your Unfinished Submissions queue. Thank you for your patience.");
+
+                notFound.addPara().addXref(contextPath + "/submissions", "Submissions");
+
+                String workSpaceID = httpRequest.getParameter("workspaceID");
+
+                if(workSpaceID != null && workSpaceID.length() > 0)
+                {
+
+                    Integer workSpaceIDint = Integer.parseInt(workSpaceID);
+                    notFound.addPara().addXref(contextPath + "/submit?workspaceID=" + workSpaceIDint, "Resume submitting item:" + workSpaceID);
+                }
+
+
+                notFound.addPara();
+                notFound.addPara("Below is the information you have tried to submit, not all of this information has been saved." );
+
+                Table table = notFound.addTable("page-not-found-submission", httpRequest.getParameterMap().keySet().size(), 2);
+                Row headerRow = table.addRow();
+                headerRow.addCell("", Cell.ROLE_HEADER, "label-cell").addContent("Metadata Field");
+                headerRow.addCell("", Cell.ROLE_DATA, "label-cell").addContent("Metadata Value");
+
+
+                for (Iterator<String> it = httpRequest.getParameterMap().keySet().iterator(); it.hasNext();)
+                {
+                    String paramKey = it.next();
+                    String[] values = httpRequest.getParameterValues(paramKey);
+
+                    String valueString = "";
+                    for(int i=0; i<values.length; i++)
+                    {
+                        if(i>0)
+                        {
+                            valueString = valueString + " || ";
+                        }
+                        valueString = valueString + values[i];
+                    }
+
+                    valueString = valueString.trim();
+                    if(valueString.length() > 0)
+                    {
+                        Row metadataRow = table.addRow();
+                        metadataRow.addCell().addContent(paramKey);
+                        metadataRow.addCell().addContent(valueString);
+                    }
+                    
+                }
+
+            } else
+            {
+                notFound.setHead(T_head);
+                notFound.addPara("Not related to submit or some error");
+            
+                notFound.addPara(T_para1);
+
+                notFound.addPara().addXref(contextPath + "/",T_go_home);
+            }
+            
 	    HttpServletResponse response = (HttpServletResponse)objectModel
 		.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
 	    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
