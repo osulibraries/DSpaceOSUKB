@@ -233,7 +233,7 @@
         <!-- =========================== Pipelines ================================= -->
         <map:pipelines>
                 <map:pipeline type="noncaching" internal-only="false">
-                    <map:match pattern="clearcache.html">
+                    <map:match pattern="clearcache">
                         <map:act type="ClearCache">
                             <map:generate src="status" type="status"/>
                             <map:serialize type="xml"/>
