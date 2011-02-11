@@ -146,49 +146,10 @@ public class ItemService
     public static void moveBitstreamToBundleTest() throws SQLException, AuthorizeException, IOException
     {
         Context context = new Context();
-
-        moveBitstreamToBundle(context, 377057, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 377059, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 230169, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 94995, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 94996, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 94999, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426640, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426642, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426645, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426647, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426649, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426651, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426654, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426715, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426655, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 202226, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 202234, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426657, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426718, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426660, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426661, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426664, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426665, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426721, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426667, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426670, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426724, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426727, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426644, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426675, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 426678, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 484542, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 520563, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 520575, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 520582, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 520568, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 538658, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 538922, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 538664, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 538960, "PROXY-LICENSE");
-        moveBitstreamToBundle(context, 538969, "PROXY-LICENSE");
-
+        //TODO: REFACTOR SO I CAN SPECIFY FROM COMMAND LINE, not have to rewrite the code.
+        moveBitstreamToBundle(context, 217683, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 176040, "PROXY-LICENSE");
+        moveBitstreamToBundle(context, 175334, "PROXY-LICENSE");
     }
 
     public static void main(String[] args) throws SQLException, AuthorizeException, IOException

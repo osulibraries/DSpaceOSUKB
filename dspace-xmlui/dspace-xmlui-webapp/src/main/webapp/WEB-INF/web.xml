@@ -49,6 +49,10 @@
         customizations to DSpace's interface.
     </description>
 
+    <session-config>
+        <session-timeout>600</session-timeout>
+    </session-config>
+
     <!-- Context Configuration ========================================== -->
 
     <!--+
