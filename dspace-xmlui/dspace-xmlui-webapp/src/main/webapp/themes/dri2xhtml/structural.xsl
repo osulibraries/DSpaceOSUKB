@@ -674,79 +674,12 @@
             <div class="ds-option-set">
                 <ul>
                     <!--<li><a href="http://kb.osu.edu/dspace/help/index.html" target="_blank">Help</a></li>-->
-                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/">About</a></li>
+                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/open-access-archiving/frequently-asked-questions">FAQs</a></li>
                     <li><a href="http://library.osu.edu/about/contact-us/it-service-request/knowledge-bank/">Contact Us</a></li>
                 </ul>
             </div>
 
-            <!-- bds: removing search box from options box -->
-            <!--<h3 id="ds-search-option-head" class="ds-option-set-head"><i18n:text>xmlui.dri2xhtml.structural.search</i18n:text></h3>
-            <div id="ds-search-option" class="ds-option-set">
-                 The form, complete with a text box and a button, all built from attributes referenced
-                    from under pageMeta.
-                <form id="ds-search-form" method="post">
-                    <xsl:attribute name="action">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
-                    </xsl:attribute>
-                    <fieldset>
-                        <input class="ds-text-field " type="text">
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
-                            </xsl:attribute>
-                        </input>
-                        <input class="ds-button-field " name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
-                            <xsl:attribute name="onclick">
-                                <xsl:text>
-                                    var radio = document.getElementById(&quot;ds-search-form-scope-container&quot;);
-                                    if (radio != undefined &amp;&amp; radio.checked)
-                                    {
-                                    var form = document.getElementById(&quot;ds-search-form&quot;);
-                                    form.action=
-                                </xsl:text>
-                                <xsl:text>&quot;</xsl:text>
-                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
-                                <xsl:text>/handle/&quot; + radio.value + &quot;/search&quot; ; </xsl:text>
-                                <xsl:text>
-                                    }
-                                </xsl:text>
-                            </xsl:attribute>
-                        </input>
-                        <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
-                            <br/>
-                            <label>
-                                <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
-                                <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
-                            </label>
-                            <br/>
-                            <label>
-                                <input id="ds-search-form-scope-container" type="radio" name="scope">
-                                    <xsl:attribute name="value">
-                                        <xsl:value-of select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
-                                    </xsl:attribute>
-                                </input>
-                                <xsl:choose>
-                                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
-                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                            <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
-                                    </xsl:otherwise>
 
-                                </xsl:choose>
-                            </label>
-                        </xsl:if>
-                    </fieldset>
-                </form>
-                 The "Advanced search" link, to be perched underneath the search box
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='advancedURL']"/>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.search-advanced</i18n:text>
-                </a>
-            </div>
-            -->
-            <!-- Once the search box is built, the other parts of the options are added -->
             <xsl:apply-templates />
 
 
@@ -762,12 +695,14 @@
 
             <!-- bds: Add Forms links for proxy and community setup -->
             <h3 id="ds-forms-option-head" class="ds-option-set-head">
-                <xsl:text>Forms</xsl:text>
+                <xsl:text>More</xsl:text>
             </h3>
             <div class="ds-option-set">
                 <ul>
+                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a></li>
                     <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/tools/set-up-form">Community Setup Form</a></li>
                     <li><a href="http://library.osu.edu/sites/kbinfo/Knowledge_Bank_License_Agreement_2010.pdf">KB License Agreement</a></li>
+                    <li><a href="http://library.osu.edu/staff/techservices/KBAppProfile.php">Describing Your Resources</a></li>
                 </ul>
             </div>
         </div>
