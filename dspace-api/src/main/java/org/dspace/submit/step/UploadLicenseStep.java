@@ -292,18 +292,24 @@ public class UploadLicenseStep extends AbstractProcessingStep
     {
         
         //Allow for configurable way to disabled proxy-license submission
-        if(ConfigurationManager.getBooleanProperty("submit.proxy-license.disabled", false)){
-            return 0;
-        }
+        
 
         try {
             Context context = subInfo.getContext();
             Collection submittedCollection = (Collection) HandleManager.resolveToObject(context, subInfo.getCollectionHandle());
             Group adminGroup = submittedCollection.getAdministrators();
             Boolean isCollAdmin = false;
+
+            Boolean allowCollectionAdmin = ConfigurationManager.getBooleanProperty("submit.proxy-license.collection-admin-submit", true);
+
             if(adminGroup != null)
             {
-                isCollAdmin = adminGroup.isMember(context.getCurrentUser());
+                if(allowCollectionAdmin)
+                {
+                    isCollAdmin = adminGroup.isMember(context.getCurrentUser());
+                } else {
+                    isCollAdmin = false;
+                }
             }
 
             if (isCollAdmin || AuthorizeManager.isAdmin(context))
