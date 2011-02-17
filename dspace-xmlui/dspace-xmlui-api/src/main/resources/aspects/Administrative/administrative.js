@@ -567,7 +567,7 @@ function startMetadataImport()
 }
 
 /**
- * Start creating a new collection.
+ * Start creating a new collection. When finished, it will return to the newly created collection.
  */
 function startCreateCollection()
 {
@@ -575,11 +575,14 @@ function startCreateCollection()
 	
 	assertAuthorized(Constants.COMMUNITY,communityID,Constants.ADD);
 	
-	doCreateCollection(communityID);
+	var newCollectionID = doCreateCollection(communityID);
 	
-	// Root level community, cancel out to the global community list.
-	cocoon.redirectTo(cocoon.request.getContextPath()+"/community-list",true);
+        var collection = Collection.find(getDSContext(), newCollectionID);
+	cocoon.redirectTo(cocoon.request.getContextPath()+"/handle/"+collection.getHandle(),true);
 	getDSContext().complete();
+
+        //Clear the cache so that the community/collection page refreshes to include this collection
+        new org.apache.cocoon.acting.ClearCacheAction();
 	cocoon.exit();  
 }
 
@@ -604,17 +607,21 @@ function startEditCollection()
 }
 
 /**
- * Start creating a new community
+ * Start creating a new community. When finished, it will return to the newly created community.
  */
 function startCreateCommunity()
 {
 	var communityID = cocoon.request.get("communityID");
 	
-	doCreateCommunity(communityID);
+	var newCommunityID = doCreateCommunity(communityID);
 	
-	// Root level community, cancel out to the global community list.
-	cocoon.redirectTo(cocoon.request.getContextPath()+"/community-list",true);
+	// Go back to the new community
+        var community = Community.find(getDSContext(), newCommunityID);
+	cocoon.redirectTo(cocoon.request.getContextPath()+"/handle/"+community.getHandle(),true);
 	getDSContext().complete();
+
+        //Clear the cache so that the community/collection page refreshes to include this community
+        new org.apache.cocoon.acting.ClearCacheAction();
 	cocoon.exit(); 
 }
 
@@ -2640,7 +2647,11 @@ function doDeleteCollection(collectionID)
 }
 
 
-// Creating a new collection, given the ID of its parent community 
+/**
+ * Creating a new collection, given the ID of its parent community
+ * @param communityID Parent community that will contain this collection
+ * @return collectionID of the newly created collection
+ */
 function doCreateCollection(communityID)
 {
 	assertAuthorized(Constants.COMMUNITY,communityID,Constants.ADD);
@@ -2661,8 +2672,7 @@ function doCreateCollection(communityID)
 			if (result.getContinue() && result.getParameter("collectionID")) {
 				collectionID = result.getParameter("collectionID");	
 				result = doEditCollection(collectionID,true);
-				// If they return then pass them back to where they came from.
-				return result;
+				return collectionID;
 			}
 		}
 		else if (cocoon.request.get("submit_cancel")) {
@@ -2677,7 +2687,12 @@ function doCreateCollection(communityID)
 
 
 
-// Creating a new community, given the ID of its parent community or an ID of -1 to designate top-level 
+/**
+ * Creates a new community
+ * @param parentCommunityID the parent community's ID, or -1 to designate top-level
+ * @return communityID of the newly created child
+ *
+ */
 function doCreateCommunity(parentCommunityID)
 {
 	var result;
@@ -2708,7 +2723,7 @@ function doCreateCommunity(parentCommunityID)
 			if (result.getContinue() && result.getParameter("communityID")) {
 				newCommunityID = result.getParameter("communityID");	
 				result = doEditCommunity(newCommunityID);
-				return result;
+				return newCommunityID;
 			}
 		}
 		else if (cocoon.request.get("submit_cancel")) {
