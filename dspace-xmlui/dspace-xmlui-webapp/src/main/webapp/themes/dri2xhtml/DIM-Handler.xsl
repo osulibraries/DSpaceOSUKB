@@ -228,15 +228,28 @@
 	                    <xsl:text>)</xsl:text>
 	                </span>
                 </xsl:if>-->
-                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-	                <span class="publisher-date">
-	                    <xsl:text>(</xsl:text>
-	                    <span class="date">
-	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-	                    </span>
-	                    <xsl:text>)</xsl:text>
-	                </span>
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="$browseMode = 'xmlui.ArtifactBrowser.ConfigurableBrowse.title.item.dateaccessioned'">
+                            <span class="publisher-date">
+                                <xsl:text>(submitted </xsl:text>
+                                <span class="date">
+                                    <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
+                                </span>
+                                <xsl:text>)</xsl:text>
+                            </span>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+                                <span class="publisher-date">
+                                    <xsl:text>(</xsl:text>
+                                    <span class="date">
+                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                    </span>
+                                    <xsl:text>)</xsl:text>
+                                </span>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </div>
     </xsl:template>

@@ -4,7 +4,7 @@
    <artifactId>dspace-parent</artifactId>
    <packaging>pom</packaging>
    <version>1.6.1</version>
-   <name>DSpace - Staging</name>
+   <name>DSpace - Production</name>
    <url>http://projects.dspace.org</url>
 
    <organization>

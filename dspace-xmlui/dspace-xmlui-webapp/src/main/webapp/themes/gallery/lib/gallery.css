@@ -194,6 +194,9 @@ span.caption {
     /* some "skinning" */
     background-color:#efefef;
     border:2px solid #fff;
-    outline:1px solid #ddd;
-    -moz-ouline-radius:4px;
+    -moz-outline-radius:4px;
+}
+
+#image-wrap:focus {
+        outline:1px solid #ddd;
 }

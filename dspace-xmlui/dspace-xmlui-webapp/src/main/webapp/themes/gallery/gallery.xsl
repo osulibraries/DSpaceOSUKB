@@ -216,19 +216,29 @@
                     </xsl:choose>
                 </a>
 
-                <!-- bds: We would prefer to add issue date or submit date depending on the type
-                            of browse that is happening, but the data provided by the DRI is
-                            not helpful for this. Instead just copying the date part from regular browse.-->
-                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-	                <span class="publisher-date">
-	                    <xsl:text>(</xsl:text>
-	                    <span class="date">
-	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-	                    </span>
-	                    <xsl:text>)</xsl:text>
-	                </span>
-                </xsl:if>
-
+                <!-- bds: add issue date or submit date depending on the type of browse that is happening -->
+                <xsl:choose>
+                    <xsl:when test="$browseMode = 'xmlui.ArtifactBrowser.ConfigurableBrowse.title.item.dateaccessioned'">
+                            <span class="publisher-date">
+                                <xsl:text>(submitted </xsl:text>
+                                <span class="date">
+                                    <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
+                                </span>
+                                <xsl:text>)</xsl:text>
+                            </span>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+                                <span class="publisher-date">
+                                    <xsl:text>(</xsl:text>
+                                    <span class="date">
+                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                    </span>
+                                    <xsl:text>)</xsl:text>
+                                </span>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
 	</xsl:template>
 
 
