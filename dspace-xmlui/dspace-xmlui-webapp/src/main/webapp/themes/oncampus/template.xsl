@@ -149,15 +149,24 @@
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
+    <xsl:when test="$clause &lt; 18">
+        <xsl:call-template name="itemSummaryView-DIM-fields">
+                <xsl:with-param name="clause" select="($clause + 1)"/>
+                <xsl:with-param name="phase" select="$phase"/>
+        </xsl:call-template>
+    </xsl:when>
     <xsl:otherwise>
-        <xsl:if test="$clause &lt; 18">
-            <xsl:call-template name="itemSummaryView-DIM-fields">
-                    <xsl:with-param name="clause" select="($clause + 1)"/>
-                    <xsl:with-param name="phase" select="$phase"/>
-            </xsl:call-template>
-        </xsl:if>
+            <xsl:choose>
+                    <xsl:when test="dim:field[@element='identifier'][@qualifier='uri']">
+                        <tr class="ds-table-row {$phase}">
+                            <td class="field-label"></td>
+                            <td class="addthis"><xsl:call-template name="addthis_button"/></td>
+                        </tr>
+                    </xsl:when>
+            </xsl:choose>
     </xsl:otherwise>
 </xsl:choose>
+
 </xsl:template>
                     
 </xsl:stylesheet>
