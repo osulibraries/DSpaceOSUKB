@@ -166,7 +166,15 @@
                     <xsl:attribute name="href">
                         <xsl:value-of select="."/>
                     </xsl:attribute>
-                    <xsl:value-of select="@qualifier"/>
+
+                    <xsl:choose>
+                        <xsl:when test="contains(., 'rss_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 1.0 feed" />RSS 1.0</xsl:when>
+                        <xsl:when test="contains(., 'rss_2.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 2.0 feed" />RSS 2.0</xsl:when>
+                        <xsl:when test="contains(., 'atom_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for Atom feed" />Atom</xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="@qualifier"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
             </a></li>
         </xsl:for-each>
     </xsl:template>

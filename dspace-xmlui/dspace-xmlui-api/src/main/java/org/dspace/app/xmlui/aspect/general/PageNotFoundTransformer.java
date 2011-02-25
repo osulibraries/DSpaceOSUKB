@@ -54,6 +54,7 @@ import org.apache.cocoon.util.HashUtil;
 import org.apache.excalibur.source.SourceValidity;
 import org.apache.excalibur.source.impl.validity.NOPValidity;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
+import javax.servlet.http.HttpServletRequest;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingConstants;
@@ -196,13 +197,21 @@ public class PageNotFoundTransformer extends AbstractDSpaceTransformer implement
         if (this.bodyEmpty)
         {
             Division notFound = body.addDivision("page-not-found","primary");
-            
-            notFound.setHead(T_head);
-            
-            notFound.addPara(T_para1); 
-            
-            notFound.addPara().addXref(contextPath + "/",T_go_home);
 
+            HttpServletRequest httpRequest = (HttpServletRequest) objectModel.get(HttpEnvironment.HTTP_REQUEST_OBJECT);
+
+            if(httpRequest.getPathInfo().contains("submit"))
+            {
+                notFound.setHead("You've been logged out");
+                notFound.addPara("Unfortunately, the system has logged you out; to continue your submissions please log back in. Your submission-in-progress is in your Unfinished Submissions, and will resume from the last step you have completed. Information entered since then could not be saved.");
+                notFound.addPara().addXref(contextPath + "/submissions", "Submissions");
+            } else
+            {
+                notFound.setHead(T_head);
+                notFound.addPara(T_para1);
+                notFound.addPara().addXref(contextPath + "/",T_go_home);
+            }
+            
 	    HttpServletResponse response = (HttpServletResponse)objectModel
 		.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
 	    response.setStatus(HttpServletResponse.SC_NOT_FOUND);

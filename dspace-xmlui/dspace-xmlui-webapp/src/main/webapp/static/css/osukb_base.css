@@ -1383,7 +1383,15 @@ li.current-page-link a {
 
 }
 
+div#ds-feed-option img
+{
+    padding-right: 5px;
+}
 
+div#ds-feed-option li
+{
+    padding-top: 4px;
+}
 
 
 
