@@ -87,7 +87,7 @@
                 2 = date issued
                 3 = date accessioned
         -->
-    <xsl:variable name="browseMode" select="/dri:document/dri:body/dri:div/dri:div[@n='browse-controls']/dri:p[2]/dri:field[@n='sort_by']/dri:value/@option"/>
+    <xsl:variable name="browseMode" select="//dri:field[@n='sort_by']/dri:value/@option"/>
 
     <!--
     This style sheet will be written in several stages:

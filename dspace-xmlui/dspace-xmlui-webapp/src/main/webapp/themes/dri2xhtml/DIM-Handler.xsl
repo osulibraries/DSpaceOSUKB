@@ -231,7 +231,7 @@
                 <xsl:choose>
                     <xsl:when test="$browseMode = '3'"> <!-- 3 = date.accessioned -->
                             <span class="publisher-date">
-                                <xsl:text>(submitted </xsl:text>
+                                <xsl:text>(accessioned </xsl:text>
                                 <span class="date">
                                     <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
                                 </span>
