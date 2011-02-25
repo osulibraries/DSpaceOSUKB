@@ -218,7 +218,7 @@
 
                 <!-- bds: add issue date or submit date depending on the type of browse that is happening -->
                 <xsl:choose>
-                    <xsl:when test="$browseMode = 'xmlui.ArtifactBrowser.ConfigurableBrowse.title.item.dateaccessioned'">
+                    <xsl:when test="$browseMode = '3'">
                             <span class="publisher-date">
                                 <xsl:text>(submitted </xsl:text>
                                 <span class="date">

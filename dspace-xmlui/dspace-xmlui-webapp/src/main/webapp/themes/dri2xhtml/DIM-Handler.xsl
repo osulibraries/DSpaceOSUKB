@@ -229,7 +229,7 @@
 	                </span>
                 </xsl:if>-->
                 <xsl:choose>
-                    <xsl:when test="$browseMode = 'xmlui.ArtifactBrowser.ConfigurableBrowse.title.item.dateaccessioned'">
+                    <xsl:when test="$browseMode = '3'"> <!-- 3 = date.accessioned -->
                             <span class="publisher-date">
                                 <xsl:text>(submitted </xsl:text>
                                 <span class="date">
