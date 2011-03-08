@@ -103,7 +103,7 @@
                 $("#breadCrumb0").jBreadCrumb();
 
                 /* Linkify All Item Metadata content */
-                $('#aspect_artifactbrowser_ItemViewer_div_item-view table.ds-includeSet-table tr.ds-table-row td').not('td.addthis').each(function(){
+                $('#aspect_artifactbrowser_ItemViewer_div_item-view table.ds-includeSet-table tr.ds-table-row td span').each(function(){
                     var that = $(this),
                     text = that.html(),
                     options = {callback: function( text, href ) {return href ? '<a href="' + href + '" title="' + text + '">' + text + '</a>' : text;}};
