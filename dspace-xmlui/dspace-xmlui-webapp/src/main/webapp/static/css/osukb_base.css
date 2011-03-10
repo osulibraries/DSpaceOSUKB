@@ -1386,6 +1386,7 @@ li.current-page-link a {
 div#ds-feed-option img
 {
     padding-right: 5px;
+    border: none;
 }
 
 div#ds-feed-option li
