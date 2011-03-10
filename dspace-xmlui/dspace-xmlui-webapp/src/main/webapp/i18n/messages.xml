@@ -1835,6 +1835,7 @@
 	<message key="metadata.dc.description">Description</message>
 	<message key="metadata.dc.description.abstract">Abstract</message>
 	<message key="metadata.dc.description.embargo">Requested Embargo?</message>
+	<message key="metadata.dc.description.embargoterm">Embargo Term</message>
 	<message key="metadata.dc.description.sponsorship">Sponsors</message>
 	<message key="metadata.dc.description.tableofcontents">Contents</message>
 	<message key="metadata.dc.identifier">Other Identifiers</message>
