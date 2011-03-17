@@ -1,3 +1,0 @@
-[submodule "dspace/config"]
-	path = dspace/config
-	url = git@github.com:peterdietz/kb-config.git
