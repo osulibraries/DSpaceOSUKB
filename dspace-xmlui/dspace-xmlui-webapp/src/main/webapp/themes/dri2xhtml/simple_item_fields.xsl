@@ -890,9 +890,15 @@
             <xsl:when test="dim:field[@element='identifier'][@qualifier='doi']">
                 <tr class="ds-table-row {$phase}">
                     <td class="field-label"><span class="bold"><i18n:text>metadata.dc.identifier.doi</i18n:text>:</span></td>
-                    <td class="field-data doi">
+                    <td class="field-data">
                         <xsl:for-each select="dim:field[@element='identifier'][@qualifier='doi']">
-                            <xsl:text>http://dx.doi.org/</xsl:text><xsl:copy-of select="./node()"/>
+
+                            <a>
+                                <xsl:attribute name="href">http://dx.doi.org/<xsl:copy-of select="./node()"/>
+                                </xsl:attribute>
+                                <xsl:copy-of select="./node()"/>
+                            </a>
+
                             <xsl:if test="count(following-sibling::dim:field[@element='identifier'][@qualifier='doi']) != 0">
                                 <br />
                             </xsl:if>
