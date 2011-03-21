@@ -1,41 +1,9 @@
-/*
- * ItemTag.java
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision$
- *
- * Date: $Date$
- *
- * Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
- * Institute of Technology.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the Hewlett-Packard Company nor the name of the
- * Massachusetts Institute of Technology nor the names of their
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
 package org.dspace.app.webui.jsptag;
 
@@ -55,6 +23,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.jstl.fmt.LocaleSupport;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.MetadataExposure;
 import org.dspace.app.webui.util.StyleSelection;
@@ -71,7 +40,6 @@ import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.I18nUtil;
-import org.dspace.core.LogManager;
 import org.dspace.core.PluginManager;
 import org.dspace.core.Utils;
 
@@ -204,7 +172,7 @@ import org.dspace.core.Utils;
  * </PRE>
  * 
  * @author Robert Tansley
- * @version $Revision$
+ * @version $Revision: 5845 $
  */
 public class ItemTag extends TagSupport
 {
@@ -213,10 +181,10 @@ public class ItemTag extends TagSupport
     private static final String DOI_DEFAULT_BASEURL = "http://dx.doi.org/";
 
     /** Item to display */
-    private Item item;
+    private transient Item item;
 
     /** Collections this item appears in */
-    private Collection[] collections;
+    private transient Collection[] collections;
 
     /** The style to use - "default" or "full" */
     private String style;
@@ -233,50 +201,67 @@ public class ItemTag extends TagSupport
     private StyleSelection styleSelection = (StyleSelection) PluginManager.getSinglePlugin(StyleSelection.class);
     
     /** Hashmap of linked metadata to browse, from dspace.cfg */
-    private Map<String,String> linkedMetadata;
+    private static Map<String,String> linkedMetadata;
     
     /** Hashmap of urn base url resolver, from dspace.cfg */
-    private Map<String,String> urn2baseurl;
+    private static Map<String,String> urn2baseurl;
     
     /** regex pattern to capture the style of a field, ie <code>schema.element.qualifier(style)</code> */
     private Pattern fieldStylePatter = Pattern.compile(".*\\((.*)\\)");
+
+    private static final long serialVersionUID = -3841266490729417240L;
+
+    static {
+        int i;
+
+        linkedMetadata = new HashMap<String, String>();
+        String linkMetadata;
+
+        i = 1;
+        do {
+            linkMetadata = ConfigurationManager.getProperty("webui.browse.link."+i);
+            if (linkMetadata != null) {
+                String[] linkedMetadataSplit = linkMetadata.split(":");
+                String indexName = linkedMetadataSplit[0].trim();
+                String metadataName = linkedMetadataSplit[1].trim();
+                linkedMetadata.put(indexName, metadataName);
+            }
+
+            i++;
+        } while (linkMetadata != null);
+
+        urn2baseurl = new HashMap<String, String>();
+
+        String urn;
+        i = 1;
+        do {
+            urn = ConfigurationManager.getProperty("webui.resolver."+i+".urn");
+            if (urn != null) {
+                String baseurl = ConfigurationManager.getProperty("webui.resolver."+i+".baseurl");
+                if (baseurl != null){
+                    urn2baseurl.put(urn, baseurl);
+                } else {
+                    log.warn("Wrong webui.resolver configuration, you need to specify both webui.resolver.<n>.urn and webui.resolver.<n>.baseurl: missing baseurl for n = "+i);
+                }
+            }
+
+            i++;
+        } while (urn != null);
+
+        // Set sensible default if no config is found for doi & handle
+        if (!urn2baseurl.containsKey("doi")){
+            urn2baseurl.put("doi",DOI_DEFAULT_BASEURL);
+        }
+
+        if (!urn2baseurl.containsKey("hdl")){
+            urn2baseurl.put("hdl",HANDLE_DEFAULT_BASEURL);
+        }
+    }
     
     public ItemTag()
     {
         super();
         getThumbSettings();
-        linkedMetadata = new HashMap<String, String>();
-        String linkMetadata;
-        for (int i = 1; null != (linkMetadata = ConfigurationManager.getProperty("webui.browse.link."+i)); i++)
-        {            
-            String[] linkedMetadataSplit = linkMetadata.split(":");
-            String indexName = linkedMetadataSplit[0].trim();
-            String metadataName = linkedMetadataSplit[1].trim();
-            linkedMetadata.put(indexName, metadataName);
-        }
-        
-        urn2baseurl = new HashMap<String, String>();
-
-        String urn;
-        for (int i = 1; null != (urn = ConfigurationManager.getProperty("webui.resolver."+i+".urn")); i++){
-            String baseurl = ConfigurationManager.getProperty("webui.resolver."+i+".baseurl"); 
-            if (baseurl != null){
-            urn2baseurl.put(ConfigurationManager
-                    .getProperty("webui.resolver."+i+".urn"),
-                    baseurl);
-            } else {
-                log.warn("Wrong webui.resolver configuration, you need to specify both webui.resolver.<n>.urn and webui.resolver.<n>.baseurl: missing baseurl for n = "+i);
-            }
-        }
-        
-        // Set sensible default if no config is found for doi & handle
-        if (!urn2baseurl.containsKey("doi")){
-            urn2baseurl.put("doi",DOI_DEFAULT_BASEURL);
-        }
-        
-        if (!urn2baseurl.containsKey("hdl")){
-            urn2baseurl.put("hdl",HANDLE_DEFAULT_BASEURL);
-        }
     }
 
     public int doStartTag() throws JspException
@@ -337,7 +322,7 @@ public class ItemTag extends TagSupport
      */
     public Collection[] getCollections()
     {
-        return collections;
+        return (Collection[]) ArrayUtils.clone(collections);
     }
 
     /**
@@ -348,7 +333,7 @@ public class ItemTag extends TagSupport
      */
     public void setCollections(Collection[] collectionsIn)
     {
-        collections = collectionsIn;
+        collections = (Collection[]) ArrayUtils.clone(collectionsIn);
     }
 
     /**
@@ -391,7 +376,9 @@ public class ItemTag extends TagSupport
         String configLine = styleSelection.getConfigurationForStyle(style);
 
         if (configLine == null)
+        {
             configLine = defaultFields;
+        }
 
         out.println("<center><table class=\"itemDisplayTable\">");
 
@@ -409,7 +396,6 @@ public class ItemTag extends TagSupport
         	String field = st.nextToken().trim();
             boolean isDate = false;
             boolean isLink = false;
-            boolean isIslink = false; //kaliebe.1@osu.edu 12.23.2008 -- interspaced link
             boolean isResolver = false;
             
             String style = null;
@@ -430,13 +416,6 @@ public class ItemTag extends TagSupport
             }
 
             // Find out if the field should rendered with a particular style
-            
-            // CUSTOM CODE added 12.23.2008 by kaliebe.1@osu.edu to add new configurable mode for metadata output
-            if (field.indexOf("(islink)") > 0)
-            {
-                field = field.replaceAll("\\(islink\\)", "");
-                isIslink = true;
-            }
 
             if (style != null)
             {
@@ -463,7 +442,9 @@ public class ItemTag extends TagSupport
 
             // check for hidden field, even if it's configured..
             if (MetadataExposure.isHidden(context, schema, element, qualifier))
+            {
                 continue;
+            }
 
             // FIXME: Still need to fix for metadata language?
             DCValue[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
@@ -511,46 +492,6 @@ public class ItemTag extends TagSupport
                             // Parse the date
                             out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest)pageContext.getRequest()));
                         }
-						else if (isIslink)
-                        {
-                            String fieldOut = values[j].value.trim(), segment = "", printOut = "";
-                            while(fieldOut.indexOf(" ") != -1)
-                            {
-                                    segment = fieldOut.substring(0, fieldOut.indexOf(" "));
-                                    segment = segment.trim();
-                                    if(segment.startsWith("http://") || segment.startsWith("https://"))
-                                    {
-                                            printOut += ("<a href=\"" + segment + "\">" + Utils.addEntities(segment) + "</a> ");
-                                    }
-                                    else if(((segment.startsWith("(http://") || segment.startsWith("(https://")) && segment.endsWith(")")))
-                                    {
-                                            segment = segment.replace("(", "").replace(")", "");
-                                            printOut += ("(<a href=\"" + segment + "\">" + Utils.addEntities(segment) + "</a>) ");
-                                    }
-                                    else
-                                    {
-                                            printOut += Utils.addEntities(segment + " ");
-                                    }
-                                    fieldOut = fieldOut.substring(fieldOut.indexOf(" ") + 1, fieldOut.length());
-                            }
-                            if(!fieldOut.equals(""))
-                            {
-                                    if(fieldOut.startsWith("http://") || fieldOut.startsWith("https://"))
-                                    {
-                                            printOut += ("<a href=\"" + fieldOut + "\">" + Utils.addEntities(fieldOut) + "</a>");
-                                    }
-                                    else if(((fieldOut.startsWith("(http://") || fieldOut.startsWith("(https://")) && fieldOut.endsWith(")")))
-                                    {
-                                            fieldOut = fieldOut.replace("(", "").replace(")", "");
-                                            printOut += ("(<a href=\"" + fieldOut + "\">" + Utils.addEntities(fieldOut) + "</a>) ");
-                                    }
-                                    else
-                                    {
-                                            printOut += Utils.addEntities(fieldOut);
-                                    }
-                            }
-                            out.print(printOut);
-                    	}
                         else if (isResolver)
                         {
                             String value = values[j].value;
@@ -944,11 +885,7 @@ public class ItemTag extends TagSupport
                                 bsLink = bsLink
                                         + UIUtil.encodeBitstreamName(bitstreams[k]
                                             .getName(),
-                                            Constants.DEFAULT_ENCODING) + "\"";
-                                String itemTitle = item.getMetadata("dc.title")[0].value;
-                                itemTitle = itemTitle.replaceAll("\"", "");
-                                bsLink = bsLink + " alt=\"" + itemTitle + "\" ";
-                                bsLink = bsLink + ">";
+                                            Constants.DEFAULT_ENCODING) + "\">";
 
             					out
                                     .print("<tr><td headers=\"t1\" class=\"standard\">");
@@ -1017,7 +954,7 @@ public class ItemTag extends TagSupport
         }
         catch(SQLException sqle)
         {
-        	throw new IOException(sqle.getMessage());
+        	throw new IOException(sqle.getMessage(), sqle);
         }
 
         out.println("</td></tr></table>");
@@ -1045,7 +982,7 @@ public class ItemTag extends TagSupport
         }
         catch(SQLException sqle)
         {
-        	throw new IOException(sqle.getMessage());
+        	throw new IOException(sqle.getMessage(), sqle);
         }
 
         out.println("<table align=\"center\" class=\"attentionTable\"><tr>");

@@ -1,52 +1,21 @@
-/*
- * SyndicationFeed.java
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision: 1.1 $
- *
- * Date: $Date: 2009/10/19 21:51:54 $
- *
- * Copyright (c) 2002-2009, The DSpace Foundation.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the DSpace Foundation nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
 package org.dspace.app.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.w3c.dom.Document;
 
 import org.dspace.content.Bitstream;
@@ -56,7 +25,6 @@ import org.dspace.content.DCDate;
 import org.dspace.content.DCValue;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
-import org.dspace.content.MetadataSchema;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.handle.HandleManager;
@@ -65,8 +33,6 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndEnclosure;
-import com.sun.syndication.feed.synd.SyndEnclosureImpl;
 import com.sun.syndication.feed.synd.SyndImage;
 import com.sun.syndication.feed.synd.SyndImageImpl;
 import com.sun.syndication.feed.synd.SyndPerson;
@@ -76,13 +42,10 @@ import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.module.DCModuleImpl;
 import com.sun.syndication.feed.module.DCModule;
 import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.itunes.*;
-import com.sun.syndication.feed.module.itunes.types.Duration;
 import com.sun.syndication.io.SyndFeedOutput;
 import com.sun.syndication.io.FeedException;
 
 import org.apache.log4j.Logger;
-import org.dspace.content.Bundle;
 
 /**
  * Invoke ROME library to assemble a generic model of a syndication
@@ -152,8 +115,6 @@ public class SyndicationFeed
     // affects Bitstream retrieval URL and I18N keys
     private String uiType = null;
 
-    private HttpServletRequest request = null;
-
     /**
      * Constructor.
      * @param ui either "xmlui" or "jspui"
@@ -171,7 +132,7 @@ public class SyndicationFeed
      */
     public static String[] getDescriptionSelectors()
     {
-        return descriptionFields;
+        return (String[]) ArrayUtils.clone(descriptionFields);
     }
 
 
@@ -184,8 +145,6 @@ public class SyndicationFeed
         String logoURL = null;
         String objectURL = null;
         String defaultTitle = null;
-        boolean podcastFeed = false;
-        this.request = request;
 
         // dso is null for the whole site, or a search without scope
         if (dso == null)
@@ -204,10 +163,6 @@ public class SyndicationFeed
                 defaultTitle = col.getMetadata("name");
                 feed.setDescription(col.getMetadata("short_description"));
                 logo = col.getLogo();
-                String cols = ConfigurationManager.getProperty("webui.feed.podcast.collections");
-                if(cols != null && cols.length() > 1 && cols.contains(col.getHandle()) ) {
-                    podcastFeed = true;
-                }
             }
             else if (dso.getType() == Constants.COMMUNITY)
             {
@@ -215,16 +170,15 @@ public class SyndicationFeed
                 defaultTitle = comm.getMetadata("name");
                 feed.setDescription(comm.getMetadata("short_description"));
                 logo = comm.getLogo();
-                String comms = ConfigurationManager.getProperty("webui.feed.podcast.communities");
-                if(comms != null && comms.length() > 1 && comms.contains(comm.getHandle()) ){
-                    podcastFeed = true;
-                }
             }
             objectURL = resolveURL(request, dso);
             if (logo != null)
+            {
                 logoURL = urlOfBitstream(request, logo);
+            }
         }
-        feed.setTitle(localize(labels, MSG_FEED_TITLE) + defaultTitle);
+        feed.setTitle(labels.containsKey(MSG_FEED_TITLE) ?
+                            localize(labels, MSG_FEED_TITLE) : defaultTitle);
         feed.setLink(objectURL);
         feed.setPublishedDate(new Date());
         feed.setUri(objectURL);
@@ -248,7 +202,9 @@ public class SyndicationFeed
             for (DSpaceObject itemDSO : items)
             {
                 if (itemDSO.getType() != Constants.ITEM)
+                {
                     continue;
+                }
                 Item item = (Item)itemDSO;
                 boolean hasDate = false;
                 SyndEntry entry = new SyndEntryImpl();
@@ -277,21 +233,29 @@ public class SyndicationFeed
                     // Special Case: "(date)" in field name means render as date
                     boolean isDate = df.indexOf("(date)") > 0;
                     if (isDate)
+                    {
                         df = df.replaceAll("\\(date\\)", "");
+                    }
              
                     DCValue dcv[] = item.getMetadata(df);
                     if (dcv.length > 0)
                     {
                         String fieldLabel = labels.get(MSG_METADATA + df);
                         if (fieldLabel != null && fieldLabel.length()>0)
-                            db.append(fieldLabel + ": ");
+                        {
+                            db.append(fieldLabel).append(": ");
+                        }
                         boolean first = true;
                         for (DCValue v : dcv)
                         {
                             if (first)
+                            {
                                 first = false;
+                            }
                             else
+                            {
                                 db.append("; ");
+                            }
                             db.append(isDate ? new DCDate(v.value).toString() : v.value);
                         }
                         db.append("\n");
@@ -331,7 +295,9 @@ public class SyndicationFeed
                         {
                             List<String> creators = new ArrayList<String>();
                             for (DCValue author : dcAuthors)
+                            {
                                 creators.add(author.value);
+                            }
                             dc.setCreators(creators);
                         }
                     }
@@ -339,7 +305,9 @@ public class SyndicationFeed
                     {
                         DCValue v[] = item.getMetadata(dcDateField);
                         if (v.length > 0)
+                        {
                             dc.setDate((new DCDate(v[0].value)).toDate());
+                        }
                     }
                     if (dcDescriptionField != null)
                     {
@@ -350,72 +318,15 @@ public class SyndicationFeed
                             for (DCValue d : v)
                             {
                                 if (descs.length() > 0)
+                                {
                                     descs.append("\n\n");
+                                }
                                 descs.append(d.value);
                             }
                             dc.setDescription(descs.toString());
                         }
                     }
                     entry.getModules().add(dc);
-                }
-                entry.setUri(title);
-
-                //iTunes Podcast Support - START
-                if (podcastFeed)
-                {
-                    // Add enclosure(s)
-                    List<SyndEnclosure> enclosures = new ArrayList();
-                    try {
-                        Bundle[] bunds = item.getBundles("ORIGINAL");
-                        if (bunds[0] != null) {
-                            Bitstream[] bits = bunds[0].getBitstreams();
-                            for (int i = 0; (i < bits.length); i++) {
-                                String mime = bits[i].getFormat().getMIMEType();
-                                if(mime.contains("audio/x-mpeg")) {
-                                    SyndEnclosure enc = new SyndEnclosureImpl();
-                                    enc.setType(bits[i].getFormat().getMIMEType());
-                                    enc.setLength(bits[i].getSize());
-                                    enc.setUrl(urlOfBitstream(request, bits[i]));
-                                    enclosures.add(enc);
-                                } else {
-                                    continue;
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    entry.setEnclosures(enclosures);
-
-                    // Get iTunes specific fields: author, subtitle, summary, duration, keywords
-                    EntryInformation itunes = new EntryInformationImpl();
-
-                    String author = getOneDC(item, authorField);
-                    if (author != null && author.length() > 0) {
-                        itunes.setAuthor(author);                               // <itunes:author>
-                    }
-
-                    itunes.setSubtitle(title == null ? localize(labels, MSG_UNTITLED) : title); // <itunes:subtitle>
-
-                    if (db.length() > 0) {
-                        itunes.setSummary(db.toString());                       // <itunes:summary>
-                    }
-
-                    String extent = getOneDC(item, "dc.format.extent");         // assumed that user will enter this field with length of song in seconds
-                    if (extent != null && extent.length() > 0) {
-                        extent = extent.split(" ")[0];
-                        Integer duration = Integer.parseInt(extent);
-                        itunes.setDuration(new Duration(duration));             // <itunes:duration>
-                    }
-
-                    String subject = getOneDC(item, "dc.subject");
-                    if (subject != null && subject.length() > 0) {
-                        String[] subjects = new String[1];
-                        subjects[0] = subject;
-                        itunes.setKeywords(subjects);                           // <itunes:keywords>
-                    }
-
-                    entry.getModules().add(itunes);
                 }
             }
             feed.setEntries(entries);
@@ -431,8 +342,10 @@ public class SyndicationFeed
     {
         feed.setFeedType(feedType);
         // XXX FIXME: workaround ROME 1.0 bug, it puts invalid image element in rss1.0
-        if (feedType.equals("rss_1.0"))
+        if ("rss_1.0".equals(feedType))
+        {
             feed.setImage(null);
+        }
     }
 
     /**
@@ -474,7 +387,7 @@ public class SyndicationFeed
     }
 
     /**
-     * @add a ROME plugin module (e.g. for OpenSearch) at the feed level
+     * Add a ROME plugin module (e.g. for OpenSearch) at the feed level.
      */
     public void addModule(Module m)
     {
@@ -516,7 +429,17 @@ public class SyndicationFeed
         {
             if (baseURL == null)
             {
-                baseURL = ConfigurationManager.getProperty("dspace.url");
+                if (request == null)
+                {
+                    baseURL = ConfigurationManager.getProperty("dspace.url");
+                }
+                else
+                {
+                    baseURL = (request.isSecure()) ? "https://" : "http://";
+                    baseURL += ConfigurationManager.getProperty("dspace.hostname");
+                    baseURL += ":" + request.getServerPort();
+                    baseURL += request.getContextPath();
+                }
             }
             return baseURL;
         }
@@ -547,3 +470,4 @@ public class SyndicationFeed
         return (dcv.length > 0) ? dcv[0].value : null;
     }
 }
+

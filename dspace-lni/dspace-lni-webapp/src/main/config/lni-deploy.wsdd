@@ -6,8 +6,8 @@
      Use Apache Axis 2 to derive the WSDL and client and server
      code from this description and class org.dspace.app.dav.LNISoapServlet.
 
-     Version: $Revision$
-     Date: $Date$
+     Version: $Revision: 3705 $
+     Date: $Date: 2009-04-11 13:02:24 -0400 (Sat, 11 Apr 2009) $
  -->
 <deployment
  xmlns="http://xml.apache.org/axis/wsdd/"

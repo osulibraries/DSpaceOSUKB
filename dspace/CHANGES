@@ -1,12 +1,182 @@
+Additional details about the DSpace version history, and the changes between
+releases can be found in the following locations:
+ - Online Documentation: https://wiki.duraspace.org/display/DSDOC/History
+ - In the Source Code Documentation at:
+   [dspace-source]/dspace/docs/html/History.html
+
+In addition, a listing of all known contributors to DSpace software can be
+found online at: https://wiki.duraspace.org/display/DSPACE/DSpaceContributors
+
+
+1.7.1
+=====
+
+(Claudia Juergen)
+- [DS-758] Mirage theme - lists of unifished submission/workflow task wrong link in collection column
+
+(Janne Pietarila)
+- [DS-761] MetadataSchema: cache out of sync after calling delete()
+
+(Ben Bosman)
+- [DS-808] jqueryUI javascript gets imported without corresponding CSS
+- [DS-809] Support for empty dc.abstract dim field in Internet Explorer
+- [DS-823] DatabaseManager Oracle compliance
+- [DS-843] Autocomplete in authority control contains small errors in Mirage
+
+(Stuart Lewis, Kim Shepherd)
+- [DS-806] Item.match() incorrect logic for schema testing
+
+(Robin Taylor)
+- [DS-215] Single-argument Item.getMetadata does not work with mixed-case metadata terms
+
+
+1.7.0
+=====
+(Oleksandr Sytnyk)
+- [DS-561] On login screen, keyboard input focus should be set to the first field (E-mail Address) so you don't have to use the mouse (JSPUI)
+
+(Yin Yin Latt)
+- [DS-588] Patch for SFX (OpenURL resolver)
+
+(Michael B. Klein)
+- [DS-699] ChoiceAuthority plugin for old-style controlled vocabularies
+
+(Andrea Bollini)
+- [DS-585] The Content Disposition configuration is ignored by unpublished items
+- [DS-704] Update pdfbox library to improve performance and out-of-box support for pdf extraction
+- [DS-562] Community admin or user with WRITE, ADD and ADMIN policy on collection cannot delete that collection due to bug in AuthorizeUtil.authorizeManageTemplateItem(context,collection)
+
+(Reinhard Engels)
+- [DS-637] Browse index bug/fix ONLY for authority index: first "too low" confidence value stop current item metadata to be indexed in the autority index
+
+(Hardy Pottinger)
+- [DS-691] File size math in the mets:file template in General-Hander.xsl (XMLUI) is incorrect
+
+(Kim Shepherd)
+- [DS-688] AuthorizeManager.isAdmin(Context, DSpaceObject) throws exception when EPerson is null
+- [DS-689] DisplayStatisticsServlet throws NPE if requested handle is null, should throw 404
+- [DS-718] JSPUI redirect users to requested page after authentication
+- [DS-719] solr.statistics.logBots isn't documented in dspace.cfg
+
+(Flavio Botelho)
+- [DS-563] Multiple spaces in between words in advanced search will make the search return nothing
+
+(Vladislav Zhivkov, Claudia Juergen)
+- [DS-625] Bulgarian translation of the jspui for DSpace 1.6.0
+- [DS-650] Bulgarian translation of the jspui for DSpace 1.6.2
+
+(Pere Villega)
+- [DS-643] New testing framework (GSoC 2010)
+
+(Tim Donohue)
+- [DS-648] Modern Browsers are not identified in XMLUI main sitemap.xmap
+- [DS-466] Add ability to export/import entire Community/Collection/Item structure (for easier backups, migrations, etc.)
+- [DS-387] Add ability for various Packager plugins to report their custom "options" via command line
+
+(Claudia Juergen)
+- [DS-426] Item's submission license accessible without being configured to be public
+- [DS-569] Trailing white spaces lead to wrong order of texts in browse
+- [DS-596] Cannot Delete Community which has two or more levels of SubCommunities
+- [DS-628] Make the timeout for the extended resolver dnslookup configurable
+- [DS-715] Unification of license treatment in xmlui and jspui
+
+(Claudia Juergen, Andreas Schwander)
+- [DS-709] ArrayIndexOutOfBoundsException when editing group roles
+
+(Erick Rocha Fonseca, Claudia Juergen)
+- [DS-563] Brazilian Portuguese (pt_BR) translation for XML-UI 1.6.2
+
+(Peter Dietz)
+- [DS-192] Bitstreams should be returned ordered
+- [DS-549] Added <a name> anchors in XMLUI
+- [DS-615] Added ability to perform Solr optimize on the search/discovery core.
+
+(Stuart Lewis, Christophe Dupriez)
+- [DS-686] Incorrect use of UTF8 in DSpaceCSV
+
+(Stuart Lewis)
+- [DS-467] Consider making the JSPUI styles.css.jsp a static file
+- [DS-525] Move item - inherit default policies of destination collection
+- [DS-550] Upgrade to latest Google Analytics tracking code
+- [DS-632] Batch Metadata Import needs to validate metadata fields specified in CSVs
+- [DS-646] Remove /bin scripts (replaced by 'dspace' command)
+- [DS-713] dspace.log only logs remoteAddr, needs extending to include X-Forwarded-For
+- [DS-735] Allow IPAuthentication to work with proxies (examine X-Forwarded-For header)
+- [DS-753] Fix CSV parsing that got broken by refactoring
+
+(Graham Triggs)
+- [DS-698] Clear primary_bitstream_id references when deleting a bitstream
+- [DS-696] Reduce cost of browse index pruning
+- [DS-694] Add inner class to Item for more efficient metadata handling
+- [DS-695] Convert DatabaseManager to use DataSource, allow for JNDI
+- [DS-697] Allow media filter plugins to register their input formats directly
+- [DS-732] Browse performance improvements
+- [DS-733] Load testing utilities
+- [DS-734] Improve database efficiency
+- [DS-736] ItemImport usage and efficiency improvements
+- [DS-739] Lucene indexing efficiency improvements
+
+(Graham Triggs, Mark Wood)
+- [DS-707] General improvements to performance, bug fixes and style
+
+(Ben Bosman)
+- [DS-703] Making the OAI max amount of records configurable
+- [DS-603] Including a most used item list on the home page
+- [DS-615] Optimize solr performance with solr.optimize and autocommit
+- [DS-706] Alternative to dri2xhtml, with the goal to be more developer-friendly
+- [DS-710] New Base Theme For DSpace 1.7.0
+- [DS-711] Discovery release for XMLUI
+- [DS-769] Mirage theme: Repeatable oneboxes in submission did not show "Add more" buttons
+- [DS-774] Missing dependencies for PDFBox
+- [DSCR-15] Scoped search in simple search form on navigation bar updated to use "discover" URL
+- [DSCR-16] Support for browsing facets after using "Search DSpace" in the navigation bar
+
+(Bill Hays, Stuart Lewis)
+- [DS-738] sword.cfg seems no longer used after 1.5
+
+(Bill Hays, Kim Shepherd)
+- [DS-748] COinS in XMLUI has invalid referrer Id and dc metadata, spans are not property constructed
+
+(Andrea Schweer)
+- [DS-268] XMLUI Item Mapper cannot handle multiple words in search box
+
+(Robin Taylor)
+- [DS-660] Tidy up DCDate.
+- [DS-553] Display date generation not working correctly.
+- [DS-215] Single-argument Item.getMetadata does not work with mixed-case metadata terms
+
+(Robin Taylor, Claudia Juergen)
+- [DS-619] Item exports not deleted on deletion of eperson. 
+- [DS-621] Export cleanup
+
+(Andrew Taylor, Robin Taylor)
+- [DS-594] DCDate thread synchronisation issue. 
+
+(Gareth Waller)
+- [DS-755]  BitstreamReader file descriptor leak.
+
+(Bill Hays)
+- [DS-639] Sword swap ingest crosswalk: attribute test for dc.identifier.uri incorrect.
+
+1.6.2
+=====
+
+(Tim Donohue, Kim Shepherd, Keith Gilbertson, Stuart Lewis)
+- [DS-584] start-handle-server script broken - Error in launcher.xml: Invalid class name
+
+(Stuart Lewis)
+- [DS-607] Invalid identifiers not escaped
+- [DS-608] Batch metadata import missing item headers
+
+(Ivan Masar, Claudia Juergen)
+- [DS-567] Czech localization of 1.6.0
+- [DS-595] Czech localization of 1.6.1
+
 1.6.1
 =====
 
-(Javier Garrido)
-- [DS-582] Basque translation (of jspui for DSpace 1.5.2)
-
 (Mark Diggory)
 - [DS-571] Upgrade DSpace Services to next release 2.0.1
-
 
 (Dale Poulter)
 - [DS-557] LC Authority Names - Lookup Feature - names w/o dates
@@ -49,7 +219,7 @@
  - [DS-580] DIDL format include HTML element if the item has no files
  - [DS-574] DSpaceMETSIngester creates empty original bundle
  - [DS-573] NPE resuming submission for item with an empty bundle original
- 
+
 (Caryn Neiswender)
  - [DS-518] Duplicate listing of dependencies in dspace-sword/pom.xml
 
@@ -67,7 +237,7 @@
 
 (Mark Wood)
  - [DS-469] DCDate.displayDate(false,*) displays only year
-
+ 
  (Ivan Masar)
  - [DS-515] Czech localization of 1.5.2
 
