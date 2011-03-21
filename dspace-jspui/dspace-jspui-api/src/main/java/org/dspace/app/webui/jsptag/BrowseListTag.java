@@ -1,44 +1,13 @@
-/*
- * BrowseListTag.java
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision$
- *
- * Date: $Date$
- *
- * Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
- * Institute of Technology.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the Hewlett-Packard Company nor the name of the
- * Massachusetts Institute of Technology nor the names of their
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
 package org.dspace.app.webui.jsptag;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.webui.util.UIUtil;
@@ -69,15 +38,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
-import javax.security.auth.login.Configuration;
-import org.dspace.content.Bundle;
 import org.dspace.content.authority.MetadataAuthorityManager;
 
 /**
  * Tag for display a list of items
  *
  * @author Robert Tansley
- * @version $Revision$
+ * @version $Revision: 5845 $
  */
 public class BrowseListTag extends TagSupport
 {
@@ -85,7 +52,7 @@ public class BrowseListTag extends TagSupport
     private static Logger log = Logger.getLogger(BrowseListTag.class);
 
     /** Items to display */
-    private BrowseItem[] items;
+    private transient BrowseItem[] items;
 
     /** Row to highlight, -1 for no row */
     private int highlightRow = -1;
@@ -94,17 +61,15 @@ public class BrowseListTag extends TagSupport
     private String emphColumn;
 
     /** Config value of thumbnail view toggle */
-    private boolean showThumbs;
+    private static boolean showThumbs;
 
     /** Config browse/search width and height */
-    private int thumbItemListMaxWidth;
+    private static int thumbItemListMaxWidth;
 
-    private int thumbItemListMaxHeight;
+    private static int thumbItemListMaxHeight;
 
     /** Config browse/search thumbnail link behaviour */
-    private boolean linkToBitstream = false;
-
-    private boolean linkToBitstreamFromNoThumbnail = false;
+    private static boolean linkToBitstream = false;
 
     /** Config to include an edit link */
     private boolean linkToEdit = false;
@@ -113,10 +78,10 @@ public class BrowseListTag extends TagSupport
     private boolean disableCrossLinks = false;
 
     /** The default fields to be displayed when listing items */
-    private static String listFields;
+    private static final String DEFAULT_LIST_FIELDS;
 
     /** The default widths for the columns */
-    private static String listWidths;
+    private static final String DEFAULT_LIST_WIDTHS;
 
     /** The default field which is bound to the browse by date */
     private static String dateField = "dc.date.issued";
@@ -126,25 +91,51 @@ public class BrowseListTag extends TagSupport
 
     private static String authorField = "dc.contributor.*";
 
-    private static int authorLimit = -1;
+    private int authorLimit = -1;
 
-    private BrowseInfo browseInfo;
+    private transient BrowseInfo browseInfo;
 
-    public BrowseListTag()
+    private static final long serialVersionUID = 8091584920304256107L;
+
+    static
     {
-        super();
         getThumbSettings();
 
         if (showThumbs)
         {
-            listFields = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
-            listWidths = "*, 130, 60%, 40%";
+            DEFAULT_LIST_FIELDS = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
+            DEFAULT_LIST_WIDTHS = "*, 130, 60%, 40%";
         }
         else
         {
-            listFields = "dc.date.issued(date), dc.title, dc.contributor.*";
-            listWidths = "130, 60%, 40%";
+            DEFAULT_LIST_FIELDS = "dc.date.issued(date), dc.title, dc.contributor.*";
+            DEFAULT_LIST_WIDTHS = "130, 60%, 40%";
         }
+
+        // get the date and title fields
+        String dateLine = ConfigurationManager.getProperty("webui.browse.index.date");
+        if (dateLine != null)
+        {
+            dateField = dateLine;
+        }
+
+        String titleLine = ConfigurationManager.getProperty("webui.browse.index.title");
+        if (titleLine != null)
+        {
+            titleField = titleLine;
+        }
+
+        // get the author truncation config
+        String authorLine = ConfigurationManager.getProperty("webui.browse.author-field");
+        if (authorLine != null)
+        {
+        	authorField = authorLine;
+        }
+    }
+
+    public BrowseListTag()
+    {
+        super();
     }
 
     public int doStartTag() throws JspException
@@ -187,7 +178,9 @@ public class BrowseListTag extends TagSupport
                 // We haven't got a sort option defined, so get one for the index
                 // - it may be required later
                 if (so == null)
+                {
                     so = bix.getSortOption();
+                }
             }
 
             // If no config found, attempt to get one for this sort option
@@ -252,7 +245,9 @@ public class BrowseListTag extends TagSupport
                         if (browseListTok != null)
                         {
                             if (newBLLine.length() > 0)
+                            {
                                 newBLLine.append(",");
+                            }
 
                             newBLLine.append(browseListTok);
                         }
@@ -260,7 +255,9 @@ public class BrowseListTag extends TagSupport
                         if (browseWidthTok != null)
                         {
                             if (newBWLine.length() > 0)
+                            {
                                 newBWLine.append(",");
+                            }
 
                             newBWLine.append(browseWidthTok);
                         }
@@ -271,34 +268,16 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = newBLLine.toString();
                 browseWidthLine = newBWLine.toString();
             }
-
-            listFields = browseListLine;
-            listWidths = browseWidthLine;
         }
-
-        // get the date and title fields
-        String dateLine = ConfigurationManager.getProperty("webui.browse.index.date");
-        if (dateLine != null)
+        else
         {
-            dateField = dateLine;
-        }
-
-        String titleLine = ConfigurationManager.getProperty("webui.browse.index.title");
-        if (titleLine != null)
-        {
-            titleField = titleLine;
-        }
-
-        // get the author truncation config
-        String authorLine = ConfigurationManager.getProperty("webui.browse.author-field");
-        if (authorLine != null)
-        {
-        	authorField = authorLine;
+            browseListLine  = DEFAULT_LIST_FIELDS;
+            browseWidthLine = DEFAULT_LIST_WIDTHS;
         }
 
         // Arrays used to hold the information we will require when outputting each row
-        String[] fieldArr  = listFields == null ? new String[0] : listFields.split("\\s*,\\s*");
-        String[] widthArr  = listWidths == null ? new String[0] : listWidths.split("\\s*,\\s*");
+        String[] fieldArr  = browseListLine == null  ? new String[0] : browseListLine.split("\\s*,\\s*");
+        String[] widthArr  = browseWidthLine == null ? new String[0] : browseWidthLine.split("\\s*,\\s*");
         boolean isDate[]   = new boolean[fieldArr.length];
         boolean emph[]     = new boolean[fieldArr.length];
         boolean isAuthor[] = new boolean[fieldArr.length];
@@ -442,7 +421,7 @@ public class BrowseListTag extends TagSupport
                 }
                 else
                 {
-                    rOddOrEven = ((i % 2) == 1 ? "odd" : "even");
+                    rOddOrEven = ((i & 1) == 1 ? "odd" : "even");
                 }
 
                 for (int colIdx = 0; colIdx < fieldArr.length; colIdx++)
@@ -586,7 +565,7 @@ public class BrowseListTag extends TagSupport
                             if (truncated)
                             {
                             	String etal = LocaleSupport.getLocalizedMessage(pageContext, "itemlist.et-al");
-                            	sb.append(", " + etal);
+                                sb.append(", ").append(etal);
                             }
                             metadata = "<em>" + sb.toString() + "</em>";
                         }
@@ -680,7 +659,7 @@ public class BrowseListTag extends TagSupport
      */
     public BrowseItem[] getItems()
     {
-        return items;
+        return (BrowseItem[]) ArrayUtils.clone(items);
     }
 
     /**
@@ -691,7 +670,7 @@ public class BrowseListTag extends TagSupport
      */
     public void setItems(BrowseItem[] itemsIn)
     {
-        items = itemsIn;
+        items = (BrowseItem[]) ArrayUtils.clone(itemsIn);
     }
 
     /**
@@ -758,7 +737,7 @@ public class BrowseListTag extends TagSupport
     }
 
     /* get the required thumbnail config items */
-    private void getThumbSettings()
+    private static void getThumbSettings()
     {
         showThumbs = ConfigurationManager
                 .getBooleanProperty("webui.browse.thumbnail.show");
@@ -787,24 +766,10 @@ public class BrowseListTag extends TagSupport
         String linkBehaviour = ConfigurationManager
                 .getProperty("webui.browse.thumbnail.linkbehaviour");
 
-        if (linkBehaviour != null)
+        if (linkBehaviour != null && linkBehaviour.equals("bitstream"))
         {
-            if (linkBehaviour.equals("bitstream"))
-            {
-                linkToBitstream = true;
-            }
+            linkToBitstream = true;
         }
-
-        String linkNoThumbnailBehaviour = ConfigurationManager
-            .getProperty("webui.browse.nothumbnail.linkbehaviour");
-        if(linkNoThumbnailBehaviour != null)
-        {
-            if (linkNoThumbnailBehaviour.equals("bitstream"))
-            {
-                linkToBitstreamFromNoThumbnail = true;
-            }
-        }
-
     }
 
     /*
@@ -833,11 +798,11 @@ public class BrowseListTag extends TagSupport
         }
         catch (SQLException sqle)
         {
-            throw new JspException(sqle.getMessage());
+            throw new JspException(sqle.getMessage(), sqle);
         }
         catch (IOException ioe)
         {
-            throw new JspException(ioe.getMessage());
+            throw new JspException(ioe.getMessage(), ioe);
         }
 
         // now get the image dimensions
@@ -848,22 +813,22 @@ public class BrowseListTag extends TagSupport
         if (xsize > (float) thumbItemListMaxWidth)
         {
             // calculate scaling factor so that xsize * scale = new size (max)
-            float scale_factor = (float) thumbItemListMaxWidth / xsize;
+            float scaleFactor = (float) thumbItemListMaxWidth / xsize;
 
             // now reduce x size and y size
-            xsize = xsize * scale_factor;
-            ysize = ysize * scale_factor;
+            xsize = xsize * scaleFactor;
+            ysize = ysize * scaleFactor;
         }
 
         // scale by y if needed
         if (ysize > (float) thumbItemListMaxHeight)
         {
-            float scale_factor = (float) thumbItemListMaxHeight / ysize;
+            float scaleFactor = (float) thumbItemListMaxHeight / ysize;
 
             // now reduce x size
             // and y size
-            xsize = xsize * scale_factor;
-            ysize = ysize * scale_factor;
+            xsize = xsize * scaleFactor;
+            ysize = ysize * scaleFactor;
         }
 
         StringBuffer sb = new StringBuffer("width=\"").append(xsize).append(
@@ -883,36 +848,7 @@ public class BrowseListTag extends TagSupport
 
             if (thumbnail == null)
     		{
-                    String link = "";
-                    if(linkToBitstream && linkToBitstreamFromNoThumbnail) {
-                        // Try to get a link to the bitstream
-                        Item fullItem = Item.find(c, item.getID());
-                        Bundle[] origBundle = fullItem.getBundles("ORIGINAL");
-                        if(origBundle.length > 0) {
-                            Bitstream[] bitstreams = origBundle[0].getBitstreams();
-                            if(bitstreams.length > 0) {
-                                Bitstream bs = bitstreams[0];
-                                link = hrq.getContextPath() + "/bitstream/"
-                                                            + item.getHandle() + "/"
-                                                            + bs.getSequenceID() + "/"
-                                                            + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
-                            }
-                        }
-                    }
-
-                    if(link.contentEquals("")) {
-                        link = hrq.getContextPath() + "/handle/" + item.getHandle();
-                    }
-                    StringBuffer thumbFrag = new StringBuffer();
-
-                    thumbFrag.append("<a href=\"" + link + "\" ");
-                    thumbFrag.append("title=\"" + item.getName() + "\" />");
-                    String img = "image/mime/NONE.png";
-                    thumbFrag.append("<img src=\"")
-                             .append(img)
-                             .append("\" alt=\"No thumbnail available\"")
-                             .append(" border=\"0\"></a>");
-                    return thumbFrag.toString();
+    			return "";
     		}
         	StringBuffer thumbFrag = new StringBuffer();
 
@@ -921,12 +857,12 @@ public class BrowseListTag extends TagSupport
         		Bitstream original = thumbnail.getOriginal();
         		String link = hrq.getContextPath() + "/bitstream/" + item.getHandle() + "/" + original.getSequenceID() + "/" +
         						UIUtil.encodeBitstreamName(original.getName(), Constants.DEFAULT_ENCODING);
-        		thumbFrag.append("<a target=\"_blank\" href=\"" + link + "\" title=\"" + item.getName() + "\" />");
+        		thumbFrag.append("<a target=\"_blank\" href=\"" + link + "\" />");
         	}
         	else
         	{
         		String link = hrq.getContextPath() + "/handle/" + item.getHandle();
-        		thumbFrag.append("<a href=\"" + link + "\"  title=\"" + item.getName() + "\" />");
+        		thumbFrag.append("<a href=\"" + link + "\" />");
         	}
 
         	Bitstream thumb = thumbnail.getThumb();
@@ -935,9 +871,8 @@ public class BrowseListTag extends TagSupport
         	String alt = thumb.getName();
             String scAttr = getScalingAttr(hrq, thumb);
             thumbFrag.append("<img src=\"")
-                     .append(img)
-                     .append("\" title=\"")
-                     .append(alt + "\" ")
+                    .append(img)
+                    .append("\" alt=\"").append(alt).append("\" ")
                      .append(scAttr)
                      .append("/ border=\"0\"></a>");
 
@@ -945,7 +880,7 @@ public class BrowseListTag extends TagSupport
         }
         catch (SQLException sqle)
         {
-        	throw new JspException(sqle.getMessage());
+        	throw new JspException(sqle.getMessage(), sqle);
         }
         catch (UnsupportedEncodingException e)
         {

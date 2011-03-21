@@ -1,43 +1,12 @@
 <%--
-  - advanced.jsp
-  -
-  - Version: $Revision$
-  -
-  - Date: $Date$
-  -
-  - Copyright (c) 2002, Hewlett-Packard Company and Massachusetts
-  - Institute of Technology.  All rights reserved.
-  -
-  - Redistribution and use in source and binary forms, with or without
-  - modification, are permitted provided that the following conditions are
-  - met:
-  -
-  - - Redistributions of source code must retain the above copyright
-  - notice, this list of conditions and the following disclaimer.
-  -
-  - - Redistributions in binary form must reproduce the above copyright
-  - notice, this list of conditions and the following disclaimer in the
-  - documentation and/or other materials provided with the distribution.
-  -
-  - - Neither the name of the Hewlett-Packard Company nor the name of the
-  - Massachusetts Institute of Technology nor the names of their
-  - contributors may be used to endorse or promote products derived from
-  - this software without specific prior written permission.
-  -
-  - THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  - ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  - LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  - A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  - HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  - INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  - BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-  - OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  - ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-  - TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-  - USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-  - DAMAGE.
-  --%>
 
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+--%>
 <%--
   - Advanced Search JSP
   -
@@ -108,10 +77,8 @@
                     <option value="abstract" <%= field1.equals("abstract") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.abstract"/></option>
                     <option value="series" <%= field1.equals("series") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.series"/></option>
                     <option value="sponsor" <%= field1.equals("sponsor") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.sponsor"/></option>
-                    <option value="id" <%= field1.equals("id") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
+                    <option value="identifier" <%= field1.equals("identifier") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
                     <option value="language" <%= field1.equals("language") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.language"/></option>
-			  		<option value="type" <%= field1.equals("type") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.type"/></option>
-			  		<option value="place" <%= field1.equals("place") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.place"/></option>
                   </select>
             </td>
 
@@ -140,10 +107,8 @@
                     <option value="abstract" <%= field2.equals("abstract") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.abstract"/></option>
                     <option value="series" <%= field2.equals("series") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.series"/></option>
                     <option value="sponsor" <%= field2.equals("sponsor") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.sponsor"/></option>
-                    <option value="id" <%= field2.equals("id") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
+                    <option value="identifier" <%= field2.equals("identifier") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
                     <option value="language" <%= field2.equals("language") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.language"/></option>
-			  		<option value="type" <%= field2.equals("type") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.type"/></option>
-					<option value="place" <%= field2.equals("place") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.place"/></option>
                   </select>
            </td>
             <td align="left" valign="top" nowrap="nowrap" width="68%">
@@ -168,10 +133,8 @@
                     <option value="abstract" <%= field3.equals("abstract") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.abstract"/></option>
                     <option value="series" <%= field3.equals("series") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.series"/></option>
                     <option value="sponsor" <%= field3.equals("sponsor") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.sponsor"/></option>
-                    <option value="id" <%= field3.equals("id") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
+                    <option value="identifier" <%= field3.equals("identifier") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.id"/></option>
                     <option value="language" <%= field3.equals("language") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.language"/></option>
-			  		<option value="type" <%= field3.equals("type") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.type"/></option>
-					<option value="place" <%= field3.equals("place") ? "selected=\"selected\"" : "" %>><fmt:message key="jsp.search.advanced.type.place"/></option>
                   </select>
                   <br/>
             </td>

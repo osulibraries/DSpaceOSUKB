@@ -1,55 +1,16 @@
 /*
- * utils.js
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision$
- *
- * Date: $Date$
- *
- * Copyright (c) 2004, Hewlett-Packard Company and Massachusetts
- * Institute of Technology.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the Hewlett-Packard Company nor the name of the
- * Massachusetts Institute of Technology nor the names of their
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
-
 /*
  * Utility Javascript methods for DSpace
  */
 
 // Popup window - here so it can be referred to by several methods
 var popupWindow;
-
-var imageData = 'image/01.jpg,Photo taken in front of library facing oval,200,345;image/02.jpg,Mirror Lake,200,306;image/03.jpg,Student studying outside,200,305;image/04.jpg,Mirror Lake and Library,200,315;image/05.jpg,Student Studying,200,313;image/06.jpg,Students walking on the Oval,200,323;image/07.jpg,View of the Library through the trees,200,307;image/08.jpg,The Library at night,200,303';
-
-var imageList = imageData.split(";"); <!-- splits the imageData into an array -->
-
-var imageCount = imageList.length; <!-- count of the number of images -->
 
 // =========================================================
 //  Methods for e-person popup window
@@ -305,29 +266,4 @@ function isBrowser(b,v) {
 }
 
 
-//      ***********************************************
-//      "generate" returns a random integer within
-//      the x,y range passed
-//      ***********************************************
-function generate(x, y) {
-        var range = y - x + 1;
-        return Math.floor(Math.random() * range) + x;
-}
-
-//      ***********************************************
-//      "showImage" calls the randomizer and then
-//      populates the <IMG> tag values with data
-//      based on the chosen image.
-//      ***********************************************
-function showImage() {
-        var i = generate(0, imageCount-1);
-        var imageSpecs = imageList[i].split(",");
-
-        document.write('<img src="' + imageSpecs[0] + '" ' +
-            'alt="' + imageSpecs[1] + '" ' +
-            'width="' + imageSpecs[2]  + '" ' +
-            'height="' + imageSpecs[3] + '" >');
-
-        return;
-}
 

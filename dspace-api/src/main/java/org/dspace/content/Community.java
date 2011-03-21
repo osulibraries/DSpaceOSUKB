@@ -1,39 +1,9 @@
-/*
- * Community.java
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision$
- *
- * Date: $Date$
- *
- * Copyright (c) 2002-2009, The DSpace Foundation.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the DSpace Foundation nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
 package org.dspace.content;
 
@@ -44,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.AuthorizeUtil;
 import org.dspace.authorize.AuthorizeConfiguration;
@@ -71,7 +42,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * <code>update</code> is called.
  * 
  * @author Robert Tansley
- * @version $Revision$
+ * @version $Revision: 5844 $
  */
 public class Community extends DSpaceObject
 {
@@ -129,7 +100,8 @@ public class Community extends DSpaceObject
         // Cache ourselves
         context.cache(this, row.getIntColumn("community_id"));
 
-        modified = modifiedMetadata = false;
+        modified = false;
+        modifiedMetadata = false;
 
         admins = groupFromColumn("admin");
 
@@ -182,7 +154,7 @@ public class Community extends DSpaceObject
     }
 
     /**
-     * Create a new community, with a new ID.
+     * Create a new top-level community, with a new ID.
      * 
      * @param context
      *            DSpace context object
@@ -192,9 +164,23 @@ public class Community extends DSpaceObject
     public static Community create(Community parent, Context context)
             throws SQLException, AuthorizeException
     {
-        // Only administrators and adders can create communities
-        if (!(AuthorizeManager.isAdmin(context) || AuthorizeManager
-                .authorizeActionBoolean(context, parent, Constants.ADD)))
+        return create(parent, context, null);
+    }
+
+    /**
+     * Create a new top-level community, with a new ID.
+     *
+     * @param context
+     *            DSpace context object
+     * @param handle the pre-determined Handle to assign to the new community
+     *
+     * @return the newly created community
+     */
+    public static Community create(Community parent, Context context, String handle)
+            throws SQLException, AuthorizeException
+    {
+        if (!(AuthorizeManager.isAdmin(context) ||
+              (parent != null && AuthorizeManager.authorizeActionBoolean(context, parent, Constants.ADD))))
         {
             throw new AuthorizeException(
                     "Only administrators can create communities");
@@ -202,7 +188,33 @@ public class Community extends DSpaceObject
 
         TableRow row = DatabaseManager.create(context, "community");
         Community c = new Community(context, row);
-        c.handle = HandleManager.createHandle(context, c);
+        
+        try
+        {
+            c.handle = (handle == null) ?
+                       HandleManager.createHandle(context, c) :
+                       HandleManager.createHandle(context, c, handle);
+        }
+        catch(IllegalStateException ie)
+        {
+            //If an IllegalStateException is thrown, then an existing object is already using this handle
+            //Remove the community we just created -- as it is incomplete
+            try
+            {
+                if(c!=null)
+                {
+                    c.delete();
+                }
+            } catch(Exception e) { }
+
+            //pass exception on up the chain
+            throw ie;
+        }
+
+        if(parent != null)
+        {
+            parent.addSubcommunity(c);
+        }
 
         // create the default authorization policy for communities
         // of 'anonymous' READ
@@ -218,7 +230,9 @@ public class Community extends DSpaceObject
 
         // if creating a top-level Community, simulate an ADD event at the Site.
         if (parent == null)
+        {
             context.addEvent(new Event(Event.ADD, Constants.SITE, Site.SITE_ID, Constants.COMMUNITY, c.getID(), c.handle));
+        }
 
         log.info(LogManager.getHeader(context, "create_community",
                 "community_id=" + row.getIntColumn("community_id"))
@@ -238,10 +252,8 @@ public class Community extends DSpaceObject
      */
     public static Community[] findAll(Context context) throws SQLException
     {
-	    //kaliebe.1@osu.edu 2009.08.17 added upper() to ORDER BY
-	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(context, "community",
-                "SELECT * FROM community ORDER BY upper(name)");
+                "SELECT * FROM community ORDER BY name");
 
         List<Community> communities = new ArrayList<Community>();
 
@@ -269,7 +281,9 @@ public class Community extends DSpaceObject
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
 
         Community[] communityArray = new Community[communities.size()];
@@ -291,12 +305,10 @@ public class Community extends DSpaceObject
     public static Community[] findAllTop(Context context) throws SQLException
     {
         // get all communities that are not children
-	    //kaliebe.1@osu.edu 2009.03.13 added upper() to ORDER BY
-	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(context, "community",
                 "SELECT * FROM community WHERE NOT community_id IN "
                         + "(SELECT child_comm_id FROM community2community) "
-                        + "ORDER BY upper(name)");
+                        + "ORDER BY name");
 
         List<Community> topCommunities = new ArrayList<Community>();
 
@@ -324,7 +336,9 @@ public class Community extends DSpaceObject
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
 
         Community[] communityArray = new Community[topCommunities.size()];
@@ -480,8 +494,7 @@ public class Community extends DSpaceObject
 
             // now create policy for logo bitstream
             // to match our READ policy
-            List policies = AuthorizeManager.getPoliciesActionFilter(
-                    ourContext, this, Constants.READ);
+            List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(ourContext, this, Constants.READ);
             AuthorizeManager.addPolicies(ourContext, policies, newLogo);
 
             log.info(LogManager.getHeader(ourContext, "set_logo",
@@ -566,7 +579,9 @@ public class Community extends DSpaceObject
 
         // just return if there is no administrative group.
         if (admins == null)
-            return; 
+        {
+            return;
+        }
 
         // Remove the link to the community table.
         communityRow.setColumnNull("admin");
@@ -602,13 +617,11 @@ public class Community extends DSpaceObject
         List<Collection> collections = new ArrayList<Collection>();
 
         // Get the table rows
-	    //kaliebe.1@osu.edu 2009.03.13 added upper() to ORDER BY
-	    //this will make postgresql ignore case when it sorts
         TableRowIterator tri = DatabaseManager.queryTable(
         	ourContext,"collection",
             "SELECT collection.* FROM collection, community2collection WHERE " +
             "community2collection.collection_id=collection.collection_id " +
-            "AND community2collection.community_id= ? ORDER BY upper(collection.name)",
+            "AND community2collection.community_id= ? ORDER BY collection.name",
             getID());
 
         // Make Collection objects
@@ -636,7 +649,9 @@ public class Community extends DSpaceObject
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
 
         // Put them in an array
@@ -691,7 +706,9 @@ public class Community extends DSpaceObject
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
 
         // Put them in an array
@@ -744,7 +761,9 @@ public class Community extends DSpaceObject
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
 
         return parentCommunity;
@@ -783,10 +802,23 @@ public class Community extends DSpaceObject
     public Collection createCollection() throws SQLException,
             AuthorizeException
     {
+        return createCollection(null);
+    }
+
+    /**
+     * Create a new collection within this community. The collection is created
+     * without any workflow groups or default submitter group.
+     *
+     * @param handle the pre-determined Handle to assign to the new community
+     * @return the new collection
+     */
+    public Collection createCollection(String handle) throws SQLException,
+            AuthorizeException
+    {
         // Check authorisation
         AuthorizeManager.authorizeAction(ourContext, this, Constants.ADD);
 
-        Collection c = Collection.create(ourContext);
+        Collection c = Collection.create(ourContext, handle);
         addCollection(c);
 
         return c;
@@ -818,22 +850,23 @@ public class Community extends DSpaceObject
             if (!tri.hasNext())
             {
                 // No existing mapping, so add one
-                TableRow mappingRow = DatabaseManager.create(ourContext,
-                        "community2collection");
+                TableRow mappingRow = DatabaseManager.row("community2collection");
 
                 mappingRow.setColumn("community_id", getID());
                 mappingRow.setColumn("collection_id", c.getID());
 
                 ourContext.addEvent(new Event(Event.ADD, Constants.COMMUNITY, getID(), Constants.COLLECTION, c.getID(), c.getHandle()));
 
-                DatabaseManager.update(ourContext, mappingRow);
+                DatabaseManager.insert(ourContext, mappingRow);
             }
         }
         finally
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
     }
 
@@ -845,10 +878,22 @@ public class Community extends DSpaceObject
     public Community createSubcommunity() throws SQLException,
             AuthorizeException
     {
+        return createSubcommunity(null);
+    }
+
+    /**
+     * Create a new sub-community within this community.
+     *
+     * @param handle the pre-determined Handle to assign to the new community
+     * @return the new community
+     */
+    public Community createSubcommunity(String handle) throws SQLException,
+            AuthorizeException
+    {
         // Check authorisation
         AuthorizeManager.authorizeAction(ourContext, this, Constants.ADD);
 
-        Community c = create(this, ourContext);
+        Community c = create(this, ourContext, handle);
         addSubcommunity(c);
 
         return c;
@@ -880,22 +925,23 @@ public class Community extends DSpaceObject
             if (!tri.hasNext())
             {
                 // No existing mapping, so add one
-                TableRow mappingRow = DatabaseManager.create(ourContext,
-                        "community2community");
+                TableRow mappingRow = DatabaseManager.row("community2community");
 
                 mappingRow.setColumn("parent_comm_id", getID());
                 mappingRow.setColumn("child_comm_id", c.getID());
 
                 ourContext.addEvent(new Event(Event.ADD, Constants.COMMUNITY, getID(), Constants.COMMUNITY, c.getID(), c.getHandle()));
 
-                DatabaseManager.update(ourContext, mappingRow);
+                DatabaseManager.insert(ourContext, mappingRow);
             }
         }
         finally
         {
             // close the TableRowIterator to free up resources
             if (tri != null)
+            {
                 tri.close();
+            }
         }
     }
 
@@ -999,6 +1045,13 @@ public class Community extends DSpaceObject
 
         if (parent != null)
         {
+            // remove the subcommunities first
+            Community[] subcommunities = getSubcommunities();
+            for (int i = 0; i < subcommunities.length; i++)
+            {
+                subcommunities[i].delete();
+            }
+            // now let the parent remove the community
             parent.removeSubcommunity(this);
 
             return;
@@ -1028,12 +1081,12 @@ public class Community extends DSpaceObject
             removeCollection(cols[i]);
         }
 
-        // Remove subcommunities
+        // delete subcommunities
         Community[] comms = getSubcommunities();
 
         for (int j = 0; j < comms.length; j++)
         {
-            removeSubcommunity(comms[j]);
+            comms[j].delete();
         }
 
         // Remove the logo
@@ -1052,9 +1105,12 @@ public class Community extends DSpaceObject
         {
             // FIXME: upside down exception handling due to lack of good
             // exception framework
-            throw new RuntimeException(e.getMessage(),e);
+            throw new IllegalStateException(e.getMessage(),e);
         }
-        
+
+        // Remove any Handle
+        HandleManager.unbindHandle(ourContext, this);
+
         // Delete community row
         DatabaseManager.delete(ourContext, communityRow);
 
@@ -1085,6 +1141,11 @@ public class Community extends DSpaceObject
         }
 
         return (getID() == ((Community) other).getID());
+    }
+
+    public int hashCode()
+    {
+        return new HashCodeBuilder().append(getID()).toHashCode();
     }
 
     /**

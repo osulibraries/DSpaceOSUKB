@@ -1,39 +1,9 @@
-/*
- * Email.java
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
  *
- * Version: $Revision$
- *
- * Date: $Date$
- *
- * Copyright (c) 2002-2009, The DSpace Foundation.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * - Neither the name of the DSpace Foundation nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE.
+ * http://www.dspace.org/license/
  */
 package org.dspace.core;
 
@@ -46,7 +16,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.security.Security;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -122,7 +91,7 @@ import javax.mail.internet.MimeMultipart;
  * 
  * @author Robert Tansley
  * @author Jim Downing - added attachment handling code
- * @version $Revision$
+ * @version $Revision: 5844 $
  */
 public class Email
 {
@@ -143,15 +112,15 @@ public class Email
     private String subject;
 
     /** The arguments to fill out */
-    private List arguments;
+    private List<Object> arguments;
 
     /** The recipients */
-    private List recipients;
+    private List<String> recipients;
 
     /** Reply to field, if any */
     private String replyTo;
 
-    private List attachments;
+    private List<FileAttachment> attachments;
 
     /** The character set this message will be sent in */
     private String charset;
@@ -163,9 +132,9 @@ public class Email
      */
     Email()
     {
-        arguments = new ArrayList(50);
-        recipients = new ArrayList(50);
-        attachments = new ArrayList(10);
+        arguments = new ArrayList<Object>(50);
+        recipients = new ArrayList<String>(50);
+        attachments = new ArrayList<FileAttachment>(10);
         subject = "";
         content = "";
         replyTo = null;
@@ -194,7 +163,7 @@ public class Email
     void setContent(String cnt)
     {
         content = cnt;
-        arguments = new ArrayList();
+        arguments = new ArrayList<Object>();
     }
 
     /**
@@ -246,9 +215,9 @@ public class Email
      */
     public void reset()
     {
-        arguments = new ArrayList(50);
-        recipients = new ArrayList(50);
-        attachments = new ArrayList(10);
+        arguments = new ArrayList<Object>(50);
+        recipients = new ArrayList<String>(50);
+        attachments = new ArrayList<FileAttachment>(10);
         replyTo = null;
         charset = null;
     }
@@ -326,12 +295,12 @@ public class Email
         MimeMessage message = new MimeMessage(session);
 
         // Set the recipients of the message
-        Iterator i = recipients.iterator();
+        Iterator<String> i = recipients.iterator();
 
         while (i.hasNext())
         {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-                    (String) i.next()));
+                    i.next()));
         }
 
         // Format the mail message
@@ -374,9 +343,9 @@ public class Email
             messageBodyPart.setText(fullMessage);
             multipart.addBodyPart(messageBodyPart);
 
-            for (Iterator iter = attachments.iterator(); iter.hasNext();)
+            for (Iterator<FileAttachment> iter = attachments.iterator(); iter.hasNext();)
             {
-                FileAttachment f = (FileAttachment) iter.next();
+                FileAttachment f = iter.next();
                 // add the file
                 messageBodyPart = new MimeBodyPart();
                 messageBodyPart.setDataHandler(new DataHandler(
@@ -437,7 +406,7 @@ public class Email
      * @author ojd20
      * 
      */
-    private class FileAttachment
+    private static class FileAttachment
     {
         public FileAttachment(File f, String n)
         {
@@ -453,7 +422,7 @@ public class Email
     /**
      * Inner Class for SMTP authentication information
      */
-    private class SMTPAuthenticator extends Authenticator
+    private static class SMTPAuthenticator extends Authenticator
     {
         // User name
         private String name;

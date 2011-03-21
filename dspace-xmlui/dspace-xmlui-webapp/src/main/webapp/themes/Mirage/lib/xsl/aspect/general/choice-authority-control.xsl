@@ -110,7 +110,7 @@
           </xsl:attribute>
         </xsl:if>
         <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
+           <xsl:value-of select="concat($theme-path,'/images/authority_control/invisible.gif')"/>
         </xsl:attribute>
         <xsl:attribute name="class">
           <xsl:text>ds-authority-confidence </xsl:text>
@@ -158,7 +158,7 @@
         </xsl:attribute>
         <img alt="Loading...">
           <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/suggest-indicator.gif')"/>
+           <xsl:value-of select="concat($theme-path,'/images/authority_control/suggest-indicator.gif')"/>
           </xsl:attribute>
         </img>
       </span>
@@ -214,31 +214,33 @@
       <xsl:param name="confidenceName" select="''"/>
       <xsl:param name="isClosed" select="'false'"/>
       <script type="text/javascript">
-        <xsl:text>window.onload = function() {</xsl:text>
-        <xsl:text>var gigo = DSpaceSetupAutocomplete('</xsl:text>
-        <xsl:value-of select="$formID"/>
-        <xsl:text>', { metadataField: '</xsl:text>
-        <xsl:value-of select="$metadataField"/>
-        <xsl:text>', isClosed: '</xsl:text>
-        <xsl:value-of select="$isClosed"/>
-        <xsl:text>', inputName: '</xsl:text>
-        <xsl:value-of select="$inputName"/>
-        <xsl:text>', authorityName: '</xsl:text>
-        <xsl:value-of select="$authorityName"/>
-        <xsl:text>', containerID: '</xsl:text>
-        <xsl:value-of select="$containerID"/>
-        <xsl:text>', indicatorID: '</xsl:text>
-        <xsl:value-of select="$indicatorID"/>
-        <xsl:text>', confidenceIndicatorID: '</xsl:text>
-        <xsl:value-of select="$confidenceIndicatorID"/>
-        <xsl:text>', confidenceName: '</xsl:text>
-        <xsl:value-of select="$confidenceName"/>
-        <xsl:text>', collection: </xsl:text>
-        <xsl:value-of select="$collectionID"/>
-        <xsl:text>, contextPath: '</xsl:text>
-        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-        <xsl:text>'});</xsl:text>
-        <xsl:text>};</xsl:text>
+        <xsl:text>runAfterJSImports.add(function() {</xsl:text>
+            <xsl:text>$(document).ready(function() {</xsl:text>
+                <xsl:text>var gigo = DSpaceSetupAutocomplete('</xsl:text>
+                    <xsl:value-of select="$formID"/>
+                    <xsl:text>', { metadataField: '</xsl:text>
+                    <xsl:value-of select="$metadataField"/>
+                    <xsl:text>', isClosed: '</xsl:text>
+                    <xsl:value-of select="$isClosed"/>
+                    <xsl:text>', inputName: '</xsl:text>
+                    <xsl:value-of select="$inputName"/>
+                    <xsl:text>', authorityName: '</xsl:text>
+                    <xsl:value-of select="$authorityName"/>
+                    <xsl:text>', containerID: '</xsl:text>
+                    <xsl:value-of select="$containerID"/>
+                    <xsl:text>', indicatorID: '</xsl:text>
+                    <xsl:value-of select="$indicatorID"/>
+                    <xsl:text>', confidenceIndicatorID: '</xsl:text>
+                    <xsl:value-of select="$confidenceIndicatorID"/>
+                    <xsl:text>', confidenceName: '</xsl:text>
+                    <xsl:value-of select="$confidenceName"/>
+                    <xsl:text>', collection: </xsl:text>
+                    <xsl:value-of select="$collectionID"/>
+                    <xsl:text>, contextPath: '</xsl:text>
+                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>'});</xsl:text>
+            <xsl:text>});</xsl:text>
+        <xsl:text>});</xsl:text>
       </script>
     </xsl:template>
 
@@ -289,14 +291,14 @@
       </input>
       <!-- optional "unlock" button on (visible) authority value field -->
       <xsl:if test="$unlockButton">
-        <input type="image" class="ds-authority-lock is-locked ">
+        <input type="image" class="ds-authority-lock is-locked " value="">
           <xsl:attribute name="onClick">
             <xsl:text>javascript: return DSpaceToggleAuthorityLock(this, '</xsl:text>
             <xsl:value-of select="$authFieldID"/>
             <xsl:text>');</xsl:text>
           </xsl:attribute>
           <xsl:attribute name="src">
-             <xsl:value-of select="concat($theme-path,'/images/invisible.gif')"/>
+             <xsl:value-of select="concat($theme-path,'/images/authority_control/invisible.gif')"/>
           </xsl:attribute>
           <xsl:attribute name="i18n:attr">title</xsl:attribute>
           <xsl:attribute name="title">
@@ -329,7 +331,7 @@
     <xsl:template match="dri:item[@id='aspect.general.ChoiceLookupTransformer.item.select']/dri:figure">
       <img id="lookup_indicator_id" alt="Loading..." style="display:none;">
         <xsl:attribute name="src">
-         <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
+         <xsl:value-of select="concat($theme-path,'/images/authority_control/lookup-indicator.gif')"/>
         </xsl:attribute>
       </img>
     </xsl:template>
@@ -352,7 +354,7 @@
         </select>
         <img class="choices-lookup" id="lookup_indicator_id" alt="Loading..." style="display:none;">
           <xsl:attribute name="src">
-           <xsl:value-of select="concat($theme-path,'/images/lookup-indicator.gif')"/>
+           <xsl:value-of select="concat($theme-path,'/images/authority_control/lookup-indicator.gif')"/>
           </xsl:attribute>
         </img>
       </div>

@@ -1,45 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-  DS-METS-1.0-DIM.xsl
 
-  Version: $Revision: 4901 $
- 
-  Date: $Date: 2010-05-10 00:27:40 -0400 (Mon, 10 May 2010) $
- 
-  Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
-  Institute of Technology.  All rights reserved.
- 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
- 
-  - Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
- 
-  - Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution.
- 
-  - Neither the name of the Hewlett-Packard Company nor the name of the
-  Massachusetts Institute of Technology nor the names of their
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
- 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-  DAMAGE.
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
 -->
-
 <!--
     TODO: Describe this XSL file    
     Author: Alexey Maslov
@@ -128,6 +96,7 @@
     <!-- Generate the info about the item from the metadata section -->
     <xsl:template match="dim:dim" mode="itemSummaryList-DIM"> 
         <xsl:variable name="itemWithdrawn" select="@withdrawn" />
+
         <div class="artifact-description">
             <div class="artifact-title">
                 <xsl:element name="a">
@@ -141,20 +110,15 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
-<!-- bds: no COinS, for now; causes big mouse-over gobbledy-gook
-                    <span class="Z3988">
-                        <xsl:attribute name="title">
-                            <xsl:call-template name="renderCOinS"/>
-                        </xsl:attribute>-->
-                        <xsl:choose>
-                            <xsl:when test="dim:field[@element='title']">
-                                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
-                            </xsl:otherwise>
-                        </xsl:choose>
-<!--                    </span>-->
+
+                    <xsl:choose>
+                        <xsl:when test="dim:field[@element='title']">
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:element>    
             </div>
             <div class="artifact-info">
@@ -540,27 +504,22 @@
             <tr class="ds-table-row {$phase}">
                 <td><span class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-title</i18n:text>: </span></td>
                 <td>
-                    <span class="Z3988">
-                        <xsl:attribute name="title">
-                            <xsl:call-template name="renderCOinS"/>
-                        </xsl:attribute>
-                        <xsl:choose>
-                            <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) &gt; 1">
-                                <xsl:for-each select="dim:field[@element='title'][not(@qualifier)]">
-                            	   <xsl:value-of select="./node()"/>
-                            	   <xsl:if test="count(following-sibling::dim:field[@element='title'][not(@qualifier)]) != 0">
-	                                    <xsl:text>; </xsl:text><br/>
-	                                </xsl:if>
-                                </xsl:for-each>
-                            </xsl:when>
-                            <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) = 1">
-                                <xsl:value-of select="dim:field[@element='title'][not(@qualifier)][1]/node()"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </span>
+                    <xsl:choose>
+                        <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) &gt; 1">
+                            <xsl:for-each select="dim:field[@element='title'][not(@qualifier)]">
+                        	   <xsl:value-of select="./node()"/>
+                        	   <xsl:if test="count(following-sibling::dim:field[@element='title'][not(@qualifier)]) != 0">
+                                    <xsl:text>; </xsl:text><br/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:when test="count(dim:field[@element='title'][not(@qualifier)]) = 1">
+                            <xsl:value-of select="dim:field[@element='title'][not(@qualifier)][1]/node()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </td>
             </tr>
             <xsl:call-template name="itemSummaryView-DIM-fields">
@@ -1070,7 +1029,9 @@
 
     This Code does not parse authors names, instead relying on dc.contributor to populate the
     coins
-     
+
+
+
 
     <xsl:template name="renderCOinS">
        <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
@@ -1081,7 +1042,9 @@
         </xsl:for-each>
         <xsl:text>rfr_id=info%3Asid%2Fdatadryad.org%3Arepo&amp;</xsl:text>
         <xsl:for-each select=".//dim:field[@element != 'description' and @mdschema !='dc' and @qualifier != 'provenance']">
-            <xsl:value-of select="concat('rft.', @element,'=',encoder:encode(string(.))) "/>
+                <xsl:value-of select="concat('rft.', @element,'=',encoder:encode(string(.))) "/>
+
+
             <xsl:if test="position()!=last()">
                 <xsl:text>&amp;</xsl:text>
             </xsl:if>
