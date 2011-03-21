@@ -1,0 +1,388 @@
+/*
+  style.css
+
+Brian's awesome style
+'
+*/
+
+body {
+    font-size: .8em;
+    text-align: center;
+    background-color: #fefff4;
+}
+
+a {
+    color: #400 !important;
+}
+table {
+    clear: both;
+    border-spacing: 0px;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    width: 100%;
+}
+
+
+
+
+th {
+    padding: 4px 10px;
+}
+.subheader th {
+    padding-left: 5px;
+    font-weight: 100;
+}
+
+td.span.bold {
+    text-align: right;
+    vertical-align: text-top;
+}
+
+tr.ds-table-header-row {
+    color: inherit;
+    background-color: #cCc8aD;
+    text-align: center;
+}
+
+tr.ds-table-header-row.subheader {
+    background-color: #9ab;
+}
+
+tr.ds-table-row.odd {
+    color: inherit;
+    background-color: #DFDCC0;
+}
+
+tr.ds-table-row.even {
+    color: inherit;
+    background-color: #D4D0B5;
+
+}
+div#ds-main {
+    position: relative;
+    margin-top: 5px;
+    width: 90%;
+    color: inherit;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding: 0;
+}
+
+div#ds-header {
+    width: 100%;
+    border: 2px solid #000;
+    padding: 0px;
+    background-color: #E3D8BD;
+}
+
+
+div#ds-header  a span#ds-header-logo {
+    width: 950px;
+    height: 26px;
+    float: right;
+    background-image: none;
+    background-repeat: no-repeat;
+    color: inherit;
+}
+
+div#ds-header h1,div#ds-header h2 {
+    font-size: 3em;
+    display: inherit;
+    padding: 10px 0 0 10px;
+    margin: 0 0 0 0;
+}
+
+div#ds-user-box {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    text-align: right;
+}
+
+div#ds-user-box p {
+    font-size: 90%;
+    color: inherit;
+    background-color: inherit;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+div#ds-user-box a {
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+ul#ds-trail {
+    position: relative;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+}
+
+li.ds-trail-link {
+    overflow: hidden;
+    display: inline;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: 0% 60%;
+
+    padding: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    font-weight: bold;
+    max-width: 400px;
+    line-height: 20px;
+}
+
+
+
+li.first-link {
+    background-image: url("../images/crumb-home.png");
+    margin-left: 2px;
+    /*        list-style: none;
+            background-image: none;
+            padding-left: 0;*/
+}
+
+
+div#ds-body {
+    position: relative;
+    float: right;
+
+    color: inherit;
+    background-color: #fffff0;
+    border: 2px solid #000;
+    margin: 15px 0px 0px 0px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+div#ds-body h1 {
+    font-size: 1.5em;
+    padding: 10px 0 0 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #000;
+    background-color: inherit;
+    font-weight: bolder;
+    clear: both;
+}
+
+div#ds-body h2 {
+    font-size: 1.3em;
+    padding: 6px 0;
+    margin-bottom: 0px;
+    color: #000;
+    background-color: inherit;
+    font-weight: bolder;
+    clear: both;
+}
+
+div#ds-body h3 {
+    margin-bottom: 15px;
+    clear: both;
+}
+
+div#ds-options {
+    position: relative;
+    float: left;
+    clear:  left;
+    width: 20%;
+    color: inherit;
+    background-color: #600;
+    margin: 0px;
+    padding: 0px;
+    font-size: 95%;
+}
+
+div.ds-option-set {
+    padding: 30px 2px 3px 2px;
+    margin: -3px 0px 0px 0px;
+    color: inherit;
+    background-color: #fffff0;
+    border: 2px solid #000;
+}
+
+div#ds-options h3 {
+    background-color:#E3D8BD;
+    border:2px solid #000;
+    color:#000;
+    left:-8px;
+    margin:0 2px 0 0;
+    padding:5px;
+    position:relative;
+    top:22px;
+    width: 93%;
+}
+
+div#ds-options h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #000;
+    background-color: inherit;
+}
+
+div#ds-footer {
+    position: relative;
+    background-color: #600;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    height: 20px;
+    float: left;
+    width: 100%;
+    border: none;
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid #fffff0;
+    color: #fffff0;
+}
+
+div#ds-footer-links {
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    padding-right: 5px;
+    text-align: right;
+    font-size: inherit;
+
+}
+
+div#ds-footer-links a {
+    color: #fffff0 !important;
+}
+
+
+div.notice {
+    background-color: #E3D8BD;
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: center;
+    margin: 10px 30px 10px 30px;
+}
+
+div.license-info {
+    text-align: center;
+    padding: 10px 0 10px 0;
+}
+div.ds-static-div {
+    border: none;
+    clear: both;
+}
+
+ul.collection-browse, ul.community-browse {
+    background-color: inherit;
+}
+
+ul.ds-artifact-list {
+    border: 2px solid #000;
+    padding: 0px;
+    list-style-type: none;
+    margin: 0;
+    width: 96%;
+}
+
+ul.ds-artifact-list li.odd {
+    color: inherit;
+    background-color: #DFDCC0;
+}
+
+ul.ds-artifact-list li.even {
+    color: inherit;
+    background-color: #D4D0B5;
+}
+
+ul.ds-artifact-list li {
+    float: left;
+    clear: both;
+
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+ul.ds-artifact-list li img {
+    border: 0px;
+}
+
+ul.ds-artifact-list li  div {
+    float: left;
+}
+
+ul.ds-artifact-list li div.artifact-description {
+    float: left;
+    margin-top: 0px;
+    width: 83%;
+    padding: 0 5px;
+}
+
+ul.ds-artifact-list li div.artifact-title {
+    float: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+ul.ds-artifact-list li div.artifact-title a:link {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-title a:visited {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-info {
+    float: none;
+    margin-left: 15px;
+}
+
+ul.ds-artifact-list li span.publisher {
+    font-style: italic;
+}
+
+ul.ds-artifact-list li div.artifact-preview {
+    float: right;
+}
+
+div.ds-static-div {
+    border: none;
+    clear: both;
+}
+#file_news_div_news {
+    font-size: 1em;
+    background-color: #DFDCC0;
+    border: 2px solid #000;
+    padding: 3px;
+}
+
+element.style {
+    font-size: 100%;
+}
+
+td.field-label {
+    text-align: right;
+    vertical-align: top;
+    width: 10em;
+}
+
+.aspect_artifactbrowser_SimpleSearch_field_scope {
+    font-size: .5em;
+}
+
+div.ds-form-content {
+    float: left;
+    clear: both;
+    display: block;
+    padding: 7px;
+    width: 400px;
+}
+

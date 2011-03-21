@@ -536,20 +536,22 @@ function startMetadataImport()
 }
 
 /**
- * Start creating a new collection.
+ * Start creating a new collection. When finished, it will return to the newly created collection.
  */
 function startCreateCollection()
 {
 	var communityID = cocoon.request.get("communityID");
 
 	assertAuthorized(Constants.COMMUNITY,communityID,Constants.ADD);
-
-	doCreateCollection(communityID);
-
-	// Root level community, cancel out to the global community list.
-	cocoon.redirectTo(cocoon.request.getContextPath()+"/community-list",true);
+	var newCollectionID = doCreateCollection(communityID);
+	
+        var collection = Collection.find(getDSContext(), newCollectionID);
+	cocoon.redirectTo(cocoon.request.getContextPath()+"/handle/"+collection.getHandle(),true);
 	getDSContext().complete();
-	cocoon.exit();
+
+        //Clear the cache so that the community/collection page refreshes to include this collection
+        new org.apache.cocoon.acting.ClearCacheAction();
+	cocoon.exit();  
 }
 
 
@@ -573,18 +575,22 @@ function startEditCollection()
 }
 
 /**
- * Start creating a new community
+ * Start creating a new community. When finished, it will return to the newly created community.
  */
 function startCreateCommunity()
 {
 	var communityID = cocoon.request.get("communityID");
-
-	doCreateCommunity(communityID);
-
-	// Root level community, cancel out to the global community list.
-	cocoon.redirectTo(cocoon.request.getContextPath()+"/community-list",true);
+	
+	var newCommunityID = doCreateCommunity(communityID);
+	
+	// Go back to the new community
+        var community = Community.find(getDSContext(), newCommunityID);
+	cocoon.redirectTo(cocoon.request.getContextPath()+"/handle/"+community.getHandle(),true);
 	getDSContext().complete();
-	cocoon.exit();
+
+        //Clear the cache so that the community/collection page refreshes to include this community
+        new org.apache.cocoon.acting.ClearCacheAction();
+	cocoon.exit(); 
 }
 
 /**
@@ -1513,12 +1519,12 @@ function doEditItemBitstreams(itemID)
 			assertAuthorized(Constants.BITSTREAM,bitstreamID,Constants.WRITE)
 		    result = doEditBitstream(itemID, bitstreamID);
 		}
-		else if (cocoon.request.get("submit_delete") && cocoon.request.get("remove"))
+		else if (cocoon.request.get("submit_delete") && cocoon.request.get("bitstreamID"))
 		{
 			// Delete the bitstream
 			assertAuthorized(Constants.ITEM,itemID,Constants.REMOVE);
-			var bitstreamIDs = cocoon.request.getParameterValues("remove");
-
+			var bitstreamIDs = cocoon.request.getParameterValues("bitstreamID");
+			
 			result = doDeleteBitstreams(itemID,bitstreamIDs)
 		}
 	} while (true)
@@ -2691,7 +2697,11 @@ function doDeleteCollection(collectionID)
 }
 
 
-// Creating a new collection, given the ID of its parent community
+/**
+ * Creating a new collection, given the ID of its parent community
+ * @param communityID Parent community that will contain this collection
+ * @return collectionID of the newly created collection
+ */
 function doCreateCollection(communityID)
 {
 	assertAuthorized(Constants.COMMUNITY,communityID,Constants.ADD);
@@ -2712,8 +2722,7 @@ function doCreateCollection(communityID)
 			if (result.getContinue() && result.getParameter("collectionID")) {
 				collectionID = result.getParameter("collectionID");
 				result = doEditCollection(collectionID,true);
-				// If they return then pass them back to where they came from.
-				return result;
+				return collectionID;
 			}
 		}
 		else if (cocoon.request.get("submit_cancel")) {
@@ -2728,7 +2737,12 @@ function doCreateCollection(communityID)
 
 
 
-// Creating a new community, given the ID of its parent community or an ID of -1 to designate top-level
+/**
+ * Creates a new community
+ * @param parentCommunityID the parent community's ID, or -1 to designate top-level
+ * @return communityID of the newly created child
+ *
+ */
 function doCreateCommunity(parentCommunityID)
 {
 	var result;
@@ -2759,7 +2773,7 @@ function doCreateCommunity(parentCommunityID)
 			if (result.getContinue() && result.getParameter("communityID")) {
 				newCommunityID = result.getParameter("communityID");
 				result = doEditCommunity(newCommunityID);
-				return result;
+				return newCommunityID;
 			}
 		}
 		else if (cocoon.request.get("submit_cancel")) {

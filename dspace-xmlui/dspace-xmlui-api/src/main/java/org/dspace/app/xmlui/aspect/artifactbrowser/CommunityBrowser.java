@@ -275,7 +275,7 @@ public class CommunityBrowser extends AbstractDSpaceTransformer implements Cache
         }
         
         String url = contextPath + "/handle/"+dso.getHandle();
-        list.addItem().addHighlight("bold").addXref(url, name);
+        list.addItem()./*addHighlight("bold").*/addXref(url, name, "community");
         
         List subList = null;
         
@@ -289,7 +289,7 @@ public class CommunityBrowser extends AbstractDSpaceTransformer implements Cache
             {
                 String collectionName = ((Collection) collectionNode.getDSO()).getMetadata("name");
                 String collectionUrl = contextPath + "/handle/"+collectionNode.getDSO().getHandle();
-                subList.addItemXref(collectionUrl, collectionName);
+                subList.addItemXref(collectionUrl, collectionName, "collection");
             }
         }
         

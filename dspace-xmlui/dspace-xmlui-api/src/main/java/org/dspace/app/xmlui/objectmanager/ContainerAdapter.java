@@ -10,6 +10,7 @@ package org.dspace.app.xmlui.objectmanager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.wing.AttributeMap;
@@ -264,12 +265,12 @@ public class ContainerAdapter extends AbstractAdapter
                 String rights_license = collection.getMetadata("license");
                 String title = collection.getMetadata("name");
                 
-                createField("dc","description",null,null,description);
+                createFieldHTML("dc","description",null,null,description);
                 createField("dc","description","abstract",null,description_abstract);
-                createField("dc","description","tableofcontents",null,description_table);
+                createFieldHTML("dc","description","tableofcontents",null,description_table);
                 createField("dc","identifier","uri",null,identifier_uri);
                 createField("dc","provenance",null,null,provenance);
-                createField("dc","rights",null,null,rights);
+                createFieldHTML("dc","rights",null,null,rights);
                 createField("dc","rights","license",null,rights_license);
                 createField("dc","title",null,null,title);
                 
@@ -300,11 +301,11 @@ public class ContainerAdapter extends AbstractAdapter
                 String rights = community.getMetadata("copyright_text");
                 String title = community.getMetadata("name");
                 
-                createField("dc","description",null,null,description);
+                createFieldHTML("dc","description",null,null,description);
                 createField("dc","description","abstract",null,description_abstract);
-                createField("dc","description","tableofcontents",null,description_table);
+                createFieldHTML("dc","description","tableofcontents",null,description_table);
                 createField("dc","identifier","uri",null,identifier_uri);
-                createField("dc","rights",null,null,rights);
+                createFieldHTML("dc","rights",null,null,rights);
                 createField("dc","title",null,null,title);
                 
                 boolean useCache = ConfigurationManager.getBooleanProperty("webui.strengths.cache");
@@ -776,5 +777,73 @@ public class ContainerAdapter extends AbstractAdapter
         // //////////////////////////////
         // Close out field
         endElement(DIM,"field");
-    }  
+    }
+
+    /**
+     * Create a new DIM field element with the given attributes.
+     *
+     * @param schema The schema the DIM field belongs too.
+     * @param element The element the DIM field belongs too.
+     * @param qualifier The qualifier the DIM field belongs too.
+     * @param language The language the DIM field belongs too.
+     * @param value The value of the DIM field.
+     * @return A new DIM field element
+     * @throws SAXException
+     */
+    private void createFieldHTML(String schema, String element, String qualifier, String language, String value) throws SAXException
+    {
+        // ///////////////////////////////
+        // Field element for each metadata field.
+        AttributeMap attributes = new AttributeMap();
+        attributes.put("mdschema", schema);
+        attributes.put("element", element);
+        Element xmlDocument = null;
+        if (qualifier != null) {
+            attributes.put("qualifier", qualifier);
+        }
+        if (language != null) {
+            attributes.put("language", language);
+        }
+        startElement(DIM, "field", attributes);
+
+        // Only try and add the metadata's value, but only if it is non null.
+        if (value != null) {
+
+            try {
+                String xml = "<?xml version='1.0' encoding='UTF-8'?><fragment xmlns=\"http://www.w3.org/1999/xhtml\"><![CDATA[ " + value + " ]]></fragment>";
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+                SAXBuilder builder = new SAXBuilder();
+                Document document = builder.build(inputStream);
+                xmlDocument = document.getRootElement();
+            } catch (Exception e) {
+                // ignore any errors we get, and just add the string literaly.
+                log.debug("char-FAIL-xmlfrag");
+            }
+
+            // Third, If we have xml, attempt to serialize the dom.
+            if (xmlDocument != null) {
+                SAXFilter filter = new SAXFilter(contentHandler, lexicalHandler, namespaces);
+                filter.allowElements().allowIgnorableWhitespace().allowCharacters().allowCDATA().allowPrefixMappings();
+                filter.allowElements(1);
+                SAXOutputter outputter = new SAXOutputter();
+                outputter.setContentHandler(filter);
+                outputter.setLexicalHandler(filter);
+                try {
+                    outputter.output(xmlDocument);
+                } catch (JDOMException jdome) {
+                    // serialization failed so let's just fallback sending the plain characters.
+                    log.debug("char-FAIL-serialization");
+                    sendCharacters("<![CDATA[" + value + "]]>");
+                }
+            } else {
+                sendCharacters("<![CDATA[" + value + "]]>");
+            }
+
+
+        }
+
+        // //////////////////////////////
+        // Close out field
+        endElement(DIM, "field");
+    }
 }

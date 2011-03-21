@@ -1,0 +1,11 @@
+<fieldset name="ukrainianimmigration">
+	<field>dc.title</field>
+	<field>dc.creator</field>
+	<field>dc.subject</field>
+	<field>dc.coverage.spatial</field>
+	<field>dc.description</field>
+	<field>dc.date.issued</field>
+	<field>dc.publisher</field>
+	<field>dc.identifier.uri</field>
+	<field>dc.rights</field>
+</fieldset>

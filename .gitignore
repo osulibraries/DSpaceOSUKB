@@ -1,1 +1,9 @@
 target/
+overlays/
+*.iml
+*.ipr
+*.iws
+context.xml
+nbactions.xml
+profiles.xml
+*.orig

@@ -322,8 +322,26 @@ public class List extends AbstractWingElement implements WingMergeableElement,
     public void addItemXref(String target, String characters)
             throws WingException
     {
+        addItemXref(target, characters, null);
+    }
+
+    /**
+     * Add an item to the list that contains a link. The link will consist of
+     * the given content and linked to the given target.
+     *
+     * @param target
+     *            (Required) The link target.
+     * @param characters
+     *            (Required) Untranslated character data to be included as the
+     *            link's body.
+     * @param rend
+     *            (Optional) CSS rule to be added
+     */
+    public void addItemXref(String target, String characters, String rend)
+            throws WingException
+    {
         Item item = this.addItem(null, null);
-        item.addXref(target, characters);
+        item.addXref(target, characters, rend);
     }
 
     /**

@@ -1,0 +1,202 @@
+/* ** OVERRIDES FOR STANDARD MANAKIN STYLES ** */
+/*
+   These set the display properties for the gallery itself, controllng size, font, etc to allow for
+  a grid display
+ */
+.ds-artifact-list li {
+	display: inline;
+	list-style-type: none;
+        float: left;
+	margin:5px;
+	padding:5px;
+	height:155px;
+        width: 120px !important;
+        border: 1px solid #000000;
+}
+.ds-artifact-list li img {
+    margin: 0 auto !important;
+    display: block;
+    clear: both;
+}
+.ds-artifact-list li h4 {
+	padding:0px;
+	margin-top:8px;
+}
+span.publisher-date {
+	font-size: 0.7em;
+        text-align: center;
+        display: block;
+        margin: 0 auto;
+}
+.fancy-box-link {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-size: 0.8em;
+}
+
+.ds-artifact-item p {
+        clear: both;
+        text-align: center;
+	padding:0px;
+	margin-top:4px;
+	margin-bottom:8px;
+}
+div.artifact-preview {
+    float: none !important;
+}
+
+/* bds: The following settings forces the browse to be 5 thumbnails wide, useful to prevent
+a hanging remainder of thembnails when browsing by 5,10,20,30, etc items per screen.
+Also centering the gallery in the ds-body. */
+ul.ds-artifact-list {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+    width: 740px;
+}
+
+/* ** NEW CLASSES ** */
+/* classes for the detail popup window */
+img.detail {
+	border:1px solid #ccc;
+	margin: 12px;
+        float: right;
+}
+img.thumbnail {
+	padding:5px;
+	border:1px solid #999;
+}
+a.detail-link {
+	font-weight: bold;
+	color: #333;
+	text-decoration: none;
+	background-color: #ccc;
+	padding-top: 2px;
+	padding-right: 6px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #fff;
+	border-right-color: #666;
+	border-bottom-color: #666;
+	border-left-color: #fff;
+	background-image: none;
+}
+a.detail-link:hover {
+	background-color: #ddd;
+	border-top-width: 1px;
+	border-right-width: 2px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666;
+	border-right-color: #fff;
+	border-bottom-color: #fff;
+	border-left-color: #666;
+	background-image: none;
+}
+
+.detail-title {
+	font-size:140%;
+	color:#69c;
+	padding-left:5px;
+	padding-top:5px;
+}
+.detail-author {
+	padding-left:5px;
+}
+.detail-date {
+	padding-left:5px;
+}
+.detail-desc {
+	padding-left:5px;
+}
+.detail-link {
+	padding-left:5px;
+	text-align:center;
+}
+.detail-link a {
+	color:#69c;
+	font-size:120%;
+	text-decoration:none;
+}
+.detail-link a:hover {
+	text-decoration:underline;
+}
+
+/* bds: some tweaks to the fancy-box */
+
+div#fancy_div a {
+	color: #69c;
+	text-decoration:none;
+}
+
+div#fancy_div a:hover {
+	color: #69c;
+	text-decoration:underline;
+}
+
+
+div#fancy_div table {
+    border: none;
+    clear: none;
+    width: auto;
+}
+
+div#photos {
+    background: #F2F2F2;
+    margin: 8px 0px 17px;
+    position: relative;
+    text-align: center;
+    overflow:auto;
+}
+
+div.left {
+    float:left;
+    width:70%;
+    padding: 8px;
+}
+div.right {
+    float:right;
+    background: #b2b2b2;
+    width:25%;
+    min-width:200px;
+
+    padding-top: 8px;
+    padding-right: 8px;
+}
+
+span.caption {
+    font-style: italic;
+}
+
+#image_wrap {
+    /* dimensions */
+    width:95%;
+    margin:15px;
+
+    /* centered */
+    text-align:center;
+
+    /* some "skinning" */
+    background-color:#efefef;
+    border:2px solid #fff;
+    -moz-outline-radius:4px;
+}
+
+#image-wrap:focus {
+        outline:1px solid #ddd;
+}

@@ -151,7 +151,7 @@
 				</map:match>
 				
 				<!-- Step 3: Transform to XHTML -->
-				<map:transform src="template.xsl"/>
+				<map:transform src="{global:theme-path}.xsl"/>
 			    <!-- <map:transform src="template.xsl"/> -->
 				
 				<!-- Step 4: Localize the page -->

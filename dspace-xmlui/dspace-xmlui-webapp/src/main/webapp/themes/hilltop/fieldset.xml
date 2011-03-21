@@ -1,0 +1,17 @@
+<fieldset name="hilltop">
+	<field>dc.title</field>
+	<field>dc.title.alternative</field>
+	<field>dc.creator</field>
+	<field>dc.contributor.ALL</field>
+	<field>dc.date.issued</field>
+	<field>dc.description.abstract</field>
+	<field>dc.publisher</field>
+	<field>dc.identifier.citation</field>
+	<field>dc.relation.ispartofseries</field>
+	<field>dc.subject</field>
+	<field>dc.description.sponsorship</field>
+	<field>dc.identifier.uri</field>
+	<field>dc.identifier</field>
+	<field>dc.identifier.other</field>
+	<field>dc.rights</field>
+</fieldset>

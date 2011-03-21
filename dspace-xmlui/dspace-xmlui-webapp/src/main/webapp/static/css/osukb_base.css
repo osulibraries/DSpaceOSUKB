@@ -1,0 +1,1403 @@
+
+body {
+        font-family: sans-serif;
+        background-color: #C2CEC2;
+        font-size: 0.93em;
+	margin: 0;
+        padding: 0;
+}
+/*
+background: url('../images/bkgd.png') repeat-x transparent;
+*/
+p {
+    margin: 10px 0;
+    padding: 0;
+}
+a {
+    color: #003;
+}
+
+fieldset {
+    border: 0px;
+    padding: 0;
+}
+
+ul {
+    list-style-type: none;
+    margin: 5px;
+    padding: 5px;
+}
+table {
+    clear: both;
+    border-spacing: 0px;
+    border: none;
+    width: 100%;
+}
+
+th {
+    text-align: left;
+    padding: 4px;
+}
+
+td {
+    text-align: left;
+    padding: 4px;
+}
+
+tr.ds-table-header-row {
+    color: inherit;
+    background-color: #dee1de;
+}
+
+tr.ds-table-header-row.subheader {
+    background-color: #9ab;
+}
+
+tr.ds-table-row.odd {
+    color: inherit;
+    background-color: #f6f4f4;
+}
+
+tr.ds-table-row.even {
+    color: inherit;
+    background-color: #eef1ee;
+}
+
+/* ds-main is the outer container for the other four sections:
+
+
+bds: FIXME, the following is outdated
+
+
+    ds-header
+        <a>ds-header-logo</a>
+        <ul id="ds-trail">
+        <div id="ds-user-box">
+    ds-body
+        [lots of stuff]
+    ds-options
+        [lots of stuff]
+    ds-footer
+        <div id="ds-footer-links">
+*/
+
+div#ds-main {
+    position: relative;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+div#ds-header {
+    width: 100%;
+    height: 109px;
+    padding: 0px;
+
+}
+
+
+div#ds-header a span#ds-header-logo {
+        width: 1000px;
+        height: 109px;
+        float: left;
+        background-image: url("../images/header.png");
+    background-repeat: no-repeat;
+        margin: 0px;
+    color: inherit;
+}
+
+div#ds-header h1,div#ds-header h2 {
+    font-size: 3em;
+    display: inherit;
+    padding: 10px 0 0 10px;
+    margin: 0 0 0 0;
+}
+
+
+div#ds-user-box {
+    text-align: right;
+    padding: 0 4px;
+}
+
+div#ds-user-box p {
+    font-size: .85em;
+    color: inherit;
+    background-color: inherit;
+    height: 12px;
+    margin: 0;
+}
+
+div#ds-user-box a {
+    text-decoration: none;
+    color: #eee;
+    background-color: inherit;
+    height: 12px;
+}
+div#ds-user-box a:hover {
+    text-decoration: underline;
+}
+
+
+ul#ds-trail {
+    position: relative;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0;
+    padding: 3px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+
+}
+
+
+/* Breadcrumb Styles
+bds: from the jQuery add-on for magic shrinking breadcrumbs
+---------------------------------------------------------------------*/
+
+.breadCrumb
+{
+	margin: 0;
+	padding: 0;
+	float: left;
+	display: block;
+	height: 25px;
+	overflow: hidden;
+	width: 780px;
+	padding:5px;
+}
+.breadCrumb ul
+{
+	margin: 0;
+	padding: 0;
+	height: 21px;
+	display: block;
+}
+.breadCrumb ul li
+{
+        white-space: nowrap;
+    	display: block;
+	float: left;
+	position: relative;
+	height: 21px;
+	overflow: hidden;
+	line-height: 21px;
+	margin: 0px 6px 0px 0;
+	padding: 0px 10px 0px 0;
+	font-size: .8em;
+	background: url(../images/Chevron.gif) no-repeat 100% 0;
+}
+.breadCrumb ul li div.chevronOverlay
+{
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 2;
+}
+.breadCrumb ul li span
+{
+	display: block;
+	overflow: hidden;
+}
+.breadCrumb ul li a
+{
+	display: block;
+	position: relative;
+	height: 21px;
+	line-height: 21px;
+	overflow: hidden;
+	float: left;
+}
+/*.breadCrumb ul li.first a
+{
+	height: 16px !important;
+	text-indent:-1000em;
+	width:16px;
+	padding: 0;
+	margin-top: 2px;
+	overflow: hidden;
+	background:url(../images/IconHome.gif) no-repeat 0 0;
+}
+.breadCrumb ul li.first a:hover
+{
+	background-position: 0 -16px;
+}*/
+.breadCrumb ul li.last
+{
+	background: none;
+	margin-right: 0;
+	padding-right: 0;
+}
+.chevronOverlay
+{
+	display: none;
+	background: url(../images/ChevronOverlay.png) no-repeat 100% 0;
+	width: 13px;
+	height: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/* bds: "body-and-options" is a div container that wraps the entire set of templates
+        for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
+        This was added to allow for more flexibility in styling colors and positioning.
+*/
+div#body-and-options {
+    background: url("../images/bkgd_body-and-options.png") repeat-y;
+}
+div#clearBody{
+    clear: both;
+}
+
+
+div#ds-body {
+    float:right;
+    width:790px;
+/*    background: #ffffff;*/
+    position:relative;
+    color: inherit;
+    margin: 0;
+        
+}
+
+div#ds-options {
+    float:left;
+    width:210px;
+/*    background:#f6f4f4;*/
+    position:relative;
+    color: inherit;
+    font-size: 0.8em;
+}
+
+ul.ds-options-list {
+    
+}
+
+div#homepage-body {
+    padding: 5px 20px;
+    font-size: 0.9em;
+}
+div#homepage-body h1 {
+    padding: 0 !important;
+    margin: 4px 0 12px 0 !important;
+}
+div#homepage-featured {
+    font-size: 0.8em;
+    border-left: 1px solid #CCCCCC;
+    float: right;
+    margin: 20px 0 0 10px;
+    padding: 10px 12px 40px 10px;
+    width: 200px;
+    background: url("../images/bkgd_featured.png") repeat-x;
+}
+
+div#homepage-featured img {
+    border: none;
+}
+
+div#homepage-featured h2 {
+
+}
+div#homepage-featured h3 {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+
+
+
+div.feature-item {
+    margin-bottom: 15px;
+}
+
+div.feature-item-logo {
+    margin: 0 auto;
+    display: table;
+}
+
+
+
+div.top-downloads {
+    width: 186px;
+}
+
+div.top-downloads li {
+    padding: 2px 4px;
+    width: 100%;
+    font-size: 0.8em;
+    
+}
+
+div.top-downloads li.odd {
+    background-color: #e6d2a1 !important;
+    border: 1px solid #333;
+}
+
+div.top-downloads li.even {
+    background-color: #f2ebda !important;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
+
+
+
+
+
+
+/* scarlet-bar and grey-bar lie between header and trail */
+
+div#scarlet-bar {
+    background-color: #900;
+    text-align: right;
+    height: 14px;
+    border: none;
+    padding: 4px;
+}
+
+div#grey-bar {
+    background-color: #edeaea;
+    text-align: right;
+    height: 45px;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 0;
+}
+
+
+div#ds-global-search {
+    color: #000;
+    padding: 5px;
+    font-size: 0.8em;
+}
+
+div#ds-global-search-scope {
+    vertical-align: middle;
+}
+
+div#ds-global-search a {
+    color: #003333;
+    position: absolute;
+    right: 58px;
+    top: 160px;
+    font-size: 0.85em;
+}
+
+input#ds-global-search-box {
+    width: 300px;
+    float: right;
+    margin: 0 8px;
+}
+
+input#ds-global-search-button {
+    float: right;
+    height: 35px;
+}
+
+div#ds-global-search-scope label {
+    margin: 2px 10px 0 0;
+    vertical-align: middle;
+}
+
+div#ds-global-search-scope input {
+  vertical-align: middle;
+  margin: 0 3px 0 0;
+}
+
+.input-prompt {
+  position: absolute;
+  right: 62px;
+  top: 140px;
+  font-style: italic;
+  color: #555;
+}
+
+
+
+
+
+div#ds-body h1 {
+    font-size: 1.5em;
+    padding: 8px 2px;
+    margin: 40px 0 10px 14px;
+    color: #900;
+    font-weight: normal;
+}
+
+div#ds-body h2 {
+    font-size: 1.4em;
+    margin: 10px 0 5px;
+    color: #900;
+    font-weight: bolder;
+    clear: both;
+}
+
+div#ds-body h3 {
+    margin: 10px 0 5px;
+    clear: both;
+}
+
+div#ds-body h4 {
+    margin: 0px;
+    color: #000;
+}
+
+div.detail-view {
+
+}
+
+
+
+
+
+
+/*div#ds-options {
+    position: relative;
+    float: left;
+    left: 205px;
+    width: 205px;
+    color: inherit;
+    background-color: #edeaea;
+}*/
+
+div.ds-option-set {
+
+    padding: 12px 2px 3px 2px;
+    margin: 0px 0px 8px 0px;
+    color: inherit;
+}
+
+
+div.ds-option-set a:link {
+text-decoration: none;
+}
+div.ds-option-set a:visited {
+text-decoration: none;
+}
+div.ds-option-set a:hover {
+text-decoration: underline;
+}
+
+div#ds-options h3 {
+    background-color: #e6e2e2;
+    font-size: 1em;
+    color:#330000;
+    margin:0 0 0 0;
+    padding:5px 0 5px 10px;
+    position:relative;
+}
+
+/*         Fallback for web browsers that doesn't support RGBa
+        background: rgb(255, 255, 255);
+         RGBa with 0.6 opacity
+        background: rgba(255, 255, 255, 0.8);
+	background: transparent\9;  clear solid background for ie
+    zoom:1;  required for the filters
+	 For IE 5.5 - 7
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	 For IE 8
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+
+
+*/
+
+div#ds-options h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #000;
+    background-color: inherit;
+}
+
+/* This width setting seems necessary to keep IE happy.. */
+div#ds-options ul {
+        width: 200px;
+        margin: 0px 0px 5px 0px;
+        padding: 0px;
+}
+
+div#ds-options li {
+        
+        margin-left: 18px;
+        padding: 0px;
+        list-style: none;
+        line-height: 1.3;
+}
+
+
+
+div#ds-footer {
+    position: relative;
+    margin-bottom: 40px;
+    height: 100px;
+    float: left;
+    width: 100%;
+    border: none;
+    padding: 0 0 5px 0;
+    border-top: 1px solid #999;
+    color: inherit;
+    background-color: #edeaea;
+}
+
+div#osu-footer-logo {
+    background: url("../images/OSU_fulllogo.png") no-repeat;
+    border: none;
+    height: 58px;
+    margin: 5px;
+    width: 58px;
+    float: left;
+    display: block;
+}
+
+div#osu-logo-text p {
+    font-size: 0.75em;
+    margin: 5px 0 0 0;
+    width: 350px;
+    float: left;
+    display: block;
+}
+
+div#ds-footer-links {
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    padding-right: 5px;
+    text-align: right;
+    font-size: 0.9em;
+}
+
+
+div#more-link {
+    float: right;
+    padding: 5px;
+}
+
+/* div.notice is used for things like please use this identifier... */
+div.notice {
+    margin: 10px 0;
+    width: 100%;
+    color: #bd5908;
+    font-weight: bold;
+}
+div.notice p {
+    margin: 0;
+}
+div.notice a {
+    color: #cc6600;
+}
+/* ds-notice-div is used when notices are placed in places other than static divs,
+    for example after adding a bitstream to an item it says 'The new bitstream was successfully uploaded.' */
+div.ds-notice-div p {
+    margin: 0 0 0 15px;
+}
+
+p.ds-paragraph {
+    margin: 5px 10px;
+}
+
+div.license-info {
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+
+/* Items in the knowledge bank are protected by copyright.... */
+p.copyright-text {
+        font-style: italic;
+        font-size: .8em;
+        text-align: center;
+        color: #222;
+}
+
+/* Community and collection page metadata */
+div.ds-logo-wrapper {
+    float: right;
+    padding: 10px 5px 10px 5px;
+    clear: both;
+    margin-top: -115px;
+}
+div.intro-text {
+}
+div.detail-view-news {  /* 'Related links' */
+    clear: both; /* sit below the logo, if any */
+    float: right;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    background: #f2f4f6;
+    width: 200px;
+    font-size: 0.8em;
+    padding: 4px;
+    margin: 4px;
+}
+div.detail-view-rights-and-license {
+    font-size: 0.75em;
+    font-style: italic;
+    clear: both;
+    padding: 6px 0;
+}
+
+
+
+
+div.search-browse {
+    border: 2px solid #dee1de;
+    background: #f6f4f4;
+    width: 300px;
+    margin: 5px 15px;
+    padding: 5px !important;
+    font-size: 0.9em;
+}
+
+div.search-browse h3 {
+    margin: 0px 6px;
+    padding: 0px;
+    line-height: 1.3;
+}
+div.search-browse li {
+    margin: 0px;
+    display: inline;
+}
+
+ul.collection-browse, ul.community-browse {
+    margin: 0;
+    padding: 0 0 0 0px;
+}
+
+ul.collection-browse li,ul.community-browse li {
+    margin: 0 8px;
+    padding: 2px 0px;
+}
+
+ul.collection-browse a:link,ul.community-browse a:link {
+    text-decoration: underline;
+}
+ul.collection-browse a:visited,ul.community-browse a:visited {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+ul a:link {
+text-decoration: none;
+}
+ul a:visited {
+text-decoration: none;
+}
+ul a:hover {
+text-decoration: underline;
+}
+
+ul.ds-artifact-list {
+    margin: 4px auto;
+    padding: 2px;
+    list-style-type: none;
+    width: 100%;
+}
+
+ul.ds-artifact-list li.odd {
+    color: inherit;
+    background-color: #f6f4f4;
+}
+
+ul.ds-artifact-list li.even {
+    color: inherit;
+    background-color: #eef1ee;
+}
+
+ul.ds-artifact-list li {
+    float: left;
+    width: 100%;
+    padding-bottom: 7px;
+    padding-top: 5px;
+}
+
+ul.ds-artifact-list li img {
+    border: 0px;
+    max-height: 80px;
+    max-width: 100px;
+    margin: 3px 5px;
+
+}
+
+
+ul.ds-artifact-list li div.artifact-description {
+    margin-top: 0px;
+    padding: 0 5px;
+}
+
+ul.ds-artifact-list li div.artifact-title {
+    float: none;
+    font-weight: bold;
+}
+
+ul.ds-artifact-list li div.artifact-title a:link {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-title a:visited {
+    color: inherit;
+}
+
+ul.ds-artifact-list li div.artifact-info {
+    float: none;
+    margin-left: 15px;
+}
+
+ul.ds-artifact-list li span.publisher {
+    font-style: italic;
+}
+
+ul.ds-artifact-list li div.artifact-preview {
+    float: right;
+}
+
+div.ds-static-div {
+    padding: 0 2px;
+    margin: 0 0 12px;
+}
+div.ds-static-div.primary {
+    padding: 0 20px;
+}
+
+#file_news_div_news {
+    font-size: 1em;
+    padding: 3px;
+}
+
+element.style {
+    font-size: 100%;
+}
+
+p.item-view-toggle {
+    font-size: 0.8em;
+    margin: 0 0 8px;
+}
+
+table.file-list {
+    width: auto;
+    margin: 0;
+    border: 2px solid #c2cec2;
+    font-size: 0.8em;
+}
+table.file-list th {
+    padding: 4px;
+}
+table.file-list td {
+    padding: 4px 12px;
+}
+table.file-list a:link {
+text-decoration: none;
+}
+table.file-list a:visited {
+text-decoration: none;
+}
+table.file-list a:hover {
+text-decoration: underline;
+}
+
+td.field-label {
+    text-align: right;
+    font-weight: bold;
+    vertical-align: top;
+    width: 11em;
+    padding: 3px;
+}
+td.field-data {
+    padding: 3px;
+}
+td.detail-field-label {
+    text-align: right;
+    font-weight: bold;
+    vertical-align: top;
+    width: 11em;
+    padding: 3px;
+}
+td.detail-field-data {
+    padding: 3px;
+}
+td.detail-field-language {
+    padding: 3px;
+    vertical-align: top;
+}
+.aspect_artifactbrowser_SimpleSearch_field_scope {
+    font-size: .5em;
+}
+
+
+ul.alphabet {
+        padding-left: 10px;
+        padding-top: 0px;
+        margin: 5px 0px 0px 0px;
+        text-align: center;
+}
+
+ul.alphabet li {
+        list-style: none;
+        display: inline;
+        margin-right: 5px;
+        font-weight: 200;
+}
+
+
+/*
+    bds: configurable browse controls
+*/
+
+form.navigation {
+    border-top: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
+    display: table;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    width: 580px;
+}
+
+form.controls {
+    border-bottom: 2px solid #DEE1DE;
+    border-left: 2px solid #DEE1DE;
+    border-right: 2px solid #DEE1DE;
+    background: #f6f4f4;
+    display: table;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    width: 580px;
+}
+
+
+
+
+/*
+    bds: ds-includeSet-table is the table class used for item metadata in both summary and detail view
+*/
+
+table.ds-includeSet-table {
+    width: 752px;
+    margin: 5px 0 20px;
+    display: table;
+    border: 2px solid #dee1de;
+}
+
+table.ds-includeSet-table tr {
+    background-color: #f6f4f4 !important;
+}
+
+
+
+
+
+
+/*
+    bds: submission form stylings
+*/
+
+input#aspect_submission_submit_ResumeStep_field_showfull {
+    display: block;
+    margin: 0 291px;
+}
+input#aspect_submission_submit_ResumeStep_field_showsimple {
+    display: block;
+    margin: 0 279px;
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showfull {
+    display: block;
+    margin: 0 291px;
+}
+input#aspect_submission_workflow_PerformTaskStep_field_showsimple {
+    display: block;
+    margin: 0 279px;
+}
+
+ul.ds-progress-list {
+        margin: 0 0 10px 0;
+        padding: 2px 0px;
+        text-align: center;
+}
+
+
+ul.ds-progress-list li {
+        font-weight: bold;
+        background: #F6F4F4;
+        border: 2px solid #DEE1DE;
+        overflow: hidden;
+        display: inline;
+        padding: 4px 3px;
+        margin-top: 2px;
+        margin-left: 3px;
+        max-width: 400px;
+        line-height: 20px;
+}
+
+ul.ds-progress-list li.button {
+        background-color: inherit;
+        border: none;
+        padding: 0px !important;
+        margin-top: 2px;
+        margin-left: 0px !important;
+}
+
+
+ul.ds-progress-list li.disabled.button {
+        background-color: #fff;
+}
+input.ds-button-field {
+        margin: 0;
+        padding: 1px 8px;
+}
+
+input.ds-delete-button {
+    margin: 3px 3px 0 0;
+}
+
+input.ds-text-field {
+    padding: 1px;
+}
+
+ul.ds-progress-list li.button input.ds-button-field {
+        font-size: smaller;
+        border: 2px outset #aaa;
+        margin: 0;
+        background-color: #EDEAEA;
+}
+
+ul.ds-progress-list li.current.button input.ds-button-field {
+        color: #300;
+        font-weight: bold;
+        border: 4px solid #900;
+
+}
+
+ul.ds-progress-list li.disabled.button input.ds-button-field {
+        color: #aaa;
+        background-color: #D4D0C8;
+}
+
+
+
+ul.ds-progress-list li.arrow {
+        display: none;
+}
+
+
+
+div.ds-previous-values {
+    clear: both;
+    margin: 0 20px;
+}
+
+
+input#aspect_submission_StepTransformer_field_submit_prev {
+    position: absolute;
+    left: 35px;
+    bottom: 16px;
+}
+input#aspect_submission_StepTransformer_field_submit_cancel {
+    display: block;
+    margin: 0 313px; /* IE forces us to be specific */
+
+}
+input#aspect_submission_StepTransformer_field_submit_next {
+    position: absolute;
+    right: 33px;
+    bottom: 16px;
+}
+
+
+
+span.ds-composite-field {
+        display: table-row;
+        padding: 2px;
+}
+
+*.ds-composite-field.ds-composite-component {
+        display: table-cell;
+        text-align: left;
+        width: auto;
+        padding-right: 10px;
+}
+
+*.ds-composite-field input,*.ds-composite-field textarea,*.ds-composite-field select {
+        margin-right: 5px;
+        margin-bottom: -2px;
+}
+
+span.composite-help {
+        display: block;
+        font-size: 80%;
+        color: #200;
+        background-color: inherit;
+        margin: 0 0 5px;
+}
+
+span.error {
+        display: block;
+        font-size: 85%;
+        color: red;
+        background-color: inherit;
+        margin: 0;
+}
+
+span.field-help {
+        display: block;
+        font-size: 80%;
+        color: #200;
+        background-color: inherit;
+        margin: 0 0 5px;
+}
+
+fieldset.ds-checkbox-field,fieldset.ds-radio-field {
+        border: none;
+        margin: 0;
+        padding: 0;
+}
+
+fieldset.ds-checkbox-field legend,fieldset.ds-radio-field legend {
+        display: none;
+}
+
+fieldset.ds-checkbox-field label,fieldset.ds-radio-field label {
+        display: block;
+}
+
+fieldset.ds-form-list {
+        border: 1px solid #777;
+        padding: 0;
+        margin: 8px 10px;
+        width: 730px
+}
+
+fieldset.ds-form-list.thick {
+
+}
+
+fieldset.ds-form-list ol {
+        padding: 0;
+        margin: 0;
+        width: 730px;
+}
+
+fieldset.ds-form-list legend {
+        color: #990000;
+        background-color: inherit;
+        font-size: 115%;
+        font-weight: bolder;
+        margin-left: 10px;
+        border: 1px solid #777;
+}
+
+fieldset.thick legend {
+        color: #990000;
+        padding-left: 10px;
+        padding-right: 30px;
+}
+
+fieldset.ds-form-sublist {
+        border: 1px solid #777;
+        padding: 0;
+        margin: 5px;
+}
+
+fieldset.ds-form-list ol {
+        list-style-type: none;
+}
+
+
+
+
+
+
+
+form.ds-interactive-div {
+    margin: 0 auto;
+}
+
+form.ds-interactive-div fieldset.ds-form-sublist ol {
+        display: table;
+        padding: 0;
+        width: 100%;
+}
+
+form.ds-interactive-div fieldset.ds-form-sublist legend {
+        color: #910000;
+        font-size: 100%;
+        font-weight: bolder;
+        margin-left: 10px;
+        padding: 0;
+        background-color: inherit;
+        border: 0;
+}
+
+form.ds-interactive-div li.ds-form-item {
+        display: block;
+        padding: 5px 0;
+        width: 100%;
+}
+
+form.ds-interactive-div li.odd {
+        color: inherit;
+        background-color: #f5faff;
+}
+
+form.ds-interactive-div li.even {
+        color: inherit;
+        background-color: #ffffff;
+}
+
+form.ds-interactive-div li.ds-form-item.last {
+        color: inherit;
+        background-color: #dee1de;
+}
+
+form.ds-interactive-div.primary {
+
+        clear: both;
+        padding: 0px 20px;
+        margin-bottom: 10px;
+}
+
+
+fieldset ol {
+        float: left;
+        clear: both;
+}
+
+li.ds-form-item {
+        float: left;
+        clear: both;
+}
+
+div.ds-form-content {
+        clear: both;
+        display: block;
+        padding: 0px 7px;
+
+}
+
+span.ds-form-label,label.ds-form-label {
+        display: block;
+        float: left;
+        clear: left;
+        padding: 5px 20px 3px 6px;
+        font-weight: bold;
+        vertical-align: middle;
+        overflow: hidden;
+}
+
+label.ds-composite-component {
+        display: block;
+        float: left;
+        padding: 0px 5px 0 0px;
+        font-size: 80%;
+        color: #444;
+        background-color: inherit;
+        text-align: left;
+}
+
+
+
+input.error,textarea.error,select.error {
+        color: inherit;
+        background-color: inherit;
+        border-color: red;
+}
+
+
+div.spacer {
+        margin: 0;
+        padding: 0;
+        line-height: 0px;
+        clear: both;
+}
+
+div.license-text {
+    background: #eee;
+    border: 1px solid #999;
+    padding: 4px;
+}
+
+
+p.creative-commons-button input {
+    display: block;
+    margin: 20px 173px;
+    text-align: center;
+    padding: 6px 10px;
+}
+
+
+
+
+
+/* administrative tables, like Edit Item, Collection, etc. */
+form.administrative{
+  border-bottom: 1px solid #777;
+  
+}
+
+form.administrative fieldset{
+  margin: 7px;
+
+}
+form.administrative h3{
+  margin: 7px;
+}
+form.administrative table{
+  margin: 7px;
+
+}
+
+
+form#administrative_item_FindItemForm_div_find-item{
+  border: 0px;
+  margin-left: 0px;
+}
+
+ul.horizontal
+{
+font-weight: bold;
+list-style-type: none;
+padding: 0px;
+padding-left: 0px;
+padding-bottom: 24px;
+border-bottom: 1px solid #777;
+margin: 0px;
+margin-left: -1px;
+margin-right: -1px;
+width: inherit;
+}
+
+ul.horizontal li
+{
+float: left;
+height: 21px;
+background-color: #F5FAFF;
+margin: 2px 2px 0px 2px;
+border: 1px solid #777;
+}
+
+
+ul.horizontal a
+{
+float: left;
+display: block;
+text-decoration: none;
+padding: 4px;
+}
+
+
+ul.horizontal li span.bold a
+{
+border-bottom: 1px solid white;
+background-color: white;
+}
+
+ul.horizontal li span.bold a { color: black; }
+
+
+
+
+
+
+
+
+
+
+
+div.pagination {
+    clear: both;
+    margin: 0 auto 16px;
+    padding: 8px 0;
+    width: 540px;
+    text-align: center;
+    display: block;
+}
+
+
+div.pagination-masked {
+    clear: both;
+    margin: 0 auto 36px;
+    padding: 8px 0;
+    width: 540px;
+    text-align: center;
+    display: block;
+}
+
+div.previous-page-link {
+        position: relative;
+        margin: 0;
+        float: left;
+        width: 110px;
+}
+
+div.pagination-info {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 320px;
+}
+
+div.pagination-info p {
+    margin: 0;
+    padding: 0;
+}
+
+div.next-page-link {
+        position: relative;
+        margin: 0;
+        float: left;
+        width: 110px;
+}
+
+
+
+ul.pagination-links {
+        position: relative;
+        text-align: center;
+        padding: 0;
+        margin: 0 auto;
+        padding: 0;
+}
+
+*.pagination-links li {
+        list-style: none;
+        display: inline;
+        margin-right: 5px;
+        font-weight: bolder;
+        font-size: 90%;
+}
+
+li.page-link a,li.first-page-link a,li.last-page-link a {
+
+}
+
+li.current-page-link a {
+
+}
+
+div#ds-feed-option img
+{
+    padding-right: 5px;
+    border: none;
+}
+
+div#ds-feed-option li
+{
+    padding-top: 4px;
+}
+
+
+
+
+
+
+
+

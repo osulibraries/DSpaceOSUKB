@@ -1,0 +1,13 @@
+<fieldset name="forum">
+	<field>dc.title</field>
+	<field>dc.creator</field>
+	<field>dc.contributor.advisor</field>
+	<field>dc.date.issued</field>
+	<field>dc.description.abstract</field>
+	<field>dc.description.embargo</field>
+	<field>dc.relation.ispartofseries</field>
+	<field>dc.subject</field>
+	<field>dc.description</field>
+	<field>dc.identifier.uri</field>
+	<field>dc.rights</field>
+</fieldset>

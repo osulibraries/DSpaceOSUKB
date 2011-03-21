@@ -15,21 +15,72 @@
     Version: Manakin-1.1 and up (basically, those version making use of the Virtual Object Store)
 -->    
 
+<!-- bds: added rdf and cc namespaces for CC-License linking section -->
 <xsl:stylesheet 
     xmlns:dri="http://di.tamu.edu/DRI/1.0/"
     xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
     xmlns:mets="http://www.loc.gov/METS/"
     xmlns:xlink="http://www.w3.org/TR/xlink/"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:cc="http://creativecommons.org/ns#"
     xmlns="http://www.w3.org/1999/xhtml"
-    exclude-result-prefixes="i18n dri mets xlink xsl">
-    
+    exclude-result-prefixes="i18n dri mets xlink xsl rdf cc">
+
     <xsl:output indent="yes"/>
     
 
     
     
     <!-- Generate the thunbnail, if present, from the file section -->
+      <!-- bds: make thumbnails point to bitstreams instead of item records
+      this template completely replaces the original, found below-->
+    <xsl:template match="mets:fileSec" mode="artifact-preview">
+        <!-- first, see if any thumbnails exist -->
+        <xsl:if test="mets:fileGrp[@USE='THUMBNAIL']">
+
+            <!-- bds:
+        Getting GROUPID by prefixing 'group_' to the primary FILEID. This works because
+        if no primary exists, variable would just contain 'group_', which wont match any
+        thumbnail, so would default to the 'otherwise' condition below.
+
+        This is based on the assumption that this is indeed how the GROUPID variable is formed.
+        The other possibility would be to:
+            - get the primary FILEID from the structMap section
+            - match that FILEID in the fileGrp/CONTENT bundle to a GROUPID
+            - then see if that GROUPID has a thumbnail in fileGrp/THUMBNAIL bundle
+        But so far it looks like just prefixing 'group_' works.
+
+        If primary bitstream has no thumbnail, or if there is no primary bitstream set,
+        then the first available thumbnail would be chosen.
+            -->
+            <xsl:variable name="primary_FILEID">group_<xsl:value-of select="/mets:METS/mets:structMap/mets:div[@TYPE='DSpace Item']/mets:fptr/@FILEID" /></xsl:variable>
+            <xsl:variable name="GROUPID">
+                <xsl:choose>
+                    <xsl:when test="mets:fileGrp[@USE='THUMBNAIL']/mets:file[@GROUPID=$primary_FILEID]">
+                        <xsl:value-of select="$primary_FILEID" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/@GROUPID" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <div class="artifact-preview">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="mets:fileGrp[@USE='CONTENT']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
+                    </xsl:attribute>
+                    <img alt="Thumbnail">
+                        <xsl:attribute name="src">
+                            <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
+                        </xsl:attribute>
+                    </img>
+                </a>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <!-- bds: below replaced by above
     <xsl:template match="mets:fileSec" mode="artifact-preview">
         <xsl:if test="mets:fileGrp[@USE='THUMBNAIL']">
             <div class="artifact-preview">
@@ -42,7 +93,7 @@
                 </a>
             </div>
         </xsl:if>
-    </xsl:template>
+    </xsl:template>-->
     
     
     
@@ -50,8 +101,8 @@
     <xsl:template match="mets:fileGrp[@USE='CONTENT']">
         <xsl:param name="context"/>
         <xsl:param name="primaryBitstream" select="-1"/>
-        
-        <h2><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h2>
+        <!-- bds: this is the most common place for file-list items to be built -->
+        <!-- <h2><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h2> -->
         <table class="ds-table file-list">
             <tr class="ds-table-header-row">
                 <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-file</i18n:text></th>
@@ -84,6 +135,8 @@
     <!-- Build a single row in the bitsreams table of the item view page -->
     <xsl:template match="mets:file">
         <xsl:param name="context" select="."/>
+<!-- bds: license suppression hack by suppressing all mimetype=text/plain 
+        <xsl:if test="not(@MIMETYPE='text/plain')">-->
         <tr>
             <xsl:attribute name="class">
                 <xsl:text>ds-table-row </xsl:text>
@@ -179,6 +232,7 @@
 	    </xsl:if>
 
         </tr>
+    <!--</xsl:if>  bds: closing tag for license suppression hack  -->
     </xsl:template>
     
     <!--
@@ -205,6 +259,32 @@
 
 
     <!-- Generate the license information from the file section -->
+    <!-- bds: this template completely replaces original to display
+    CC-license info, logo, with links, and to NOT display other licenses -->
+    <xsl:template match="mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
+        <div class="license-info">
+            <xsl:if test="@USE='CC-LICENSE'">
+                <!-- bds: get pointer to RDF of CC-license info from METS doc -->
+                <xsl:variable name="CC_license_RDF_URL">
+                    <xsl:text>cocoon:/</xsl:text>
+                    <!-- bds: using substring('foo',string-length($context-path) + 1) 
+                    to remove "/dspace" from the URL found in the mets document,
+                    thus making the cocoon link correct, however this method _might_
+                    have unforseen problems in other systems. The other option would be
+                    to use base-url (probably http://localhost:8080) instead of the
+                    cocoon:/ connection, but that could have performance implications -->
+                    <xsl:value-of select="substring(/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href,string-length($context-path) + 1)"/>
+                </xsl:variable>
+                <xsl:comment> CC_license_RDF_URL: <xsl:value-of select="$CC_license_RDF_URL"/> </xsl:comment>
+                <!-- bds: extract the creativecommons.org link from the RDF -->
+                <xsl:variable name="CC_license_URL" select="document($CC_license_RDF_URL)/rdf:RDF/cc:License[1]/@*['rdf:about']" />
+                <p>This item is licensed under a <a href="{$CC_license_URL}">Creative Commons License</a></p>
+                <p><a href="{$CC_license_URL}"><img src="{$context-path}/static/images/cc-somerights.gif" border="0" alt="Creative Commons" /></a></p>
+            </xsl:if>
+        </div>
+    </xsl:template>
+
+<!-- bds: above replaces below
     <xsl:template match="mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
         <div class="license-info">
             <p><i18n:text>xmlui.dri2xhtml.METS-1.0.license-text</i18n:text></p>
@@ -217,7 +297,7 @@
                 </xsl:if>
             </ul>
         </div>
-    </xsl:template>
+    </xsl:template> -->
     
     
     

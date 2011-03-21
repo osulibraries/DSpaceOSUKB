@@ -30,6 +30,9 @@
         <xsl:import href="dri2xhtml/MODS-Handler.xsl"/>-->
     
     <xsl:import href="dri2xhtml/General-Handler.xsl"/>
+<!-- bds: local customization imports -->
+    <xsl:import href="dri2xhtml/OSU-Local.xsl"/>
+    <xsl:import href="dri2xhtml/simple_item_fields.xsl"/>
     <xsl:output indent="yes"/>       
     
 </xsl:stylesheet>
