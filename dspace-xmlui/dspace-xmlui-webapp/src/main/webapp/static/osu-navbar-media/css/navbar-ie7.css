@@ -1,0 +1,6 @@
+/* fixes for IE 7 */
+div#osu-NavbarLinks button
+{
+  margin: 0;
+  height: 1.9em;
+}
