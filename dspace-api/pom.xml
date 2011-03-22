@@ -277,6 +277,22 @@
             <artifactId>contiperf</artifactId>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>-->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>modules</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+         <!-- JTidy jar needs to be locally installed. See: http://jira.dspace.org/jira/browse/DS-692 -->
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>938</version>
+        </dependency>
     </dependencies>
 
 </project>
