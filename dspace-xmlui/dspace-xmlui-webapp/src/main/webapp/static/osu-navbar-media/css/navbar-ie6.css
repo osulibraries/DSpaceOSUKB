@@ -1,0 +1,44 @@
+/* fixes for IE 6 */
+a#skip:active, a#skip:focus 
+{
+  background: transparent url(../img/mast_skip_bg.gif) repeat-x bottom left;
+  padding: 1em 0 1.05em 0;
+}
+
+div#osu-NavbarBreadcrumb p#site-name
+{
+  background: transparent url(../img/arrow_twisty.gif) no-repeat scroll left center;
+}
+
+div#osu-NavbarBreadcrumb
+{
+  margin-right: -3px;
+}
+
+div#osu-NavbarLinks
+{
+  height: 2.7em;
+  background: transparent url(../img/background_graybar_gradient.gif) no-repeat scroll left bottom;
+}
+div#osu-Navbar
+{
+  height: 2.7em;
+}
+div#osu-NavbarLinks button
+{
+  width:auto;
+  overflow:visible;
+  padding: 0 10px 0 7px; 
+  line-height: 1.4;
+  margin-top: 3px;
+}
+div#osu-NavbarLinks ul 
+{
+  width: 47em;
+  margin-top: 2px;
+  margin-right: -0.75em;
+}
+div#osu-NavbarLinks form input.textfield
+{
+  margin-top: 3px;
+}
