@@ -133,7 +133,7 @@ public class CreativeCommons
         BitstreamFormat bs_text_format = BitstreamFormat.findByShortDescription(
                 context, "CC License");
         BitstreamFormat bs_rdf_format = BitstreamFormat.findByShortDescription(
-                context, "RDF XML");
+                context, "CC RDF XML");
 
         // set the URL bitstream
         setBitstreamFromBytes(item, bundle, BSN_LICENSE_URL, bs_url_format,

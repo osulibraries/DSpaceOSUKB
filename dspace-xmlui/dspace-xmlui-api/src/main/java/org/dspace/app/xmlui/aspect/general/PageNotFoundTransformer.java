@@ -160,6 +160,7 @@ public class PageNotFoundTransformer extends AbstractDSpaceTransformer implement
 
             if(httpRequest.getPathInfo().contains("submit"))
             {
+				//@TODO Make this i18n
                 notFound.setHead("You've been logged out");
                 notFound.addPara("Unfortunately, the system has logged you out; to continue your submissions please log back in. Your submission-in-progress is in your Unfinished Submissions, and will resume from the last step you have completed. Information entered since then could not be saved.");
                 notFound.addPara().addXref(contextPath + "/submissions", "Submissions");

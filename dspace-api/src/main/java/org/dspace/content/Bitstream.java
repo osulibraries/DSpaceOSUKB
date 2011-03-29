@@ -686,8 +686,8 @@ public class Bitstream extends DSpaceObject
     }
     
     /**
-     * ParentObject of a bitstream will either be an item, if its attached to an 
-     * item, or a collection/community if it is a logo.
+     * Get the parent object of a bitstream. It can either be an item if this is a normal 
+     * bitstream, otherwise it could be a collection or a community if it is a logo.   
      * @return
      * @throws SQLException
      */
