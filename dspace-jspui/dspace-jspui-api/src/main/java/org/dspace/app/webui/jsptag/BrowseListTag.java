@@ -73,7 +73,7 @@ public class BrowseListTag extends TagSupport
     /** Config browse/search thumbnail link behaviour */
     private static boolean linkToBitstream = false;
 
-	private boolean linkToBitstreamFromNoThumbnail = false;
+    private static boolean linkToBitstreamFromNoThumbnail = false;
 
     /** Config to include an edit link */
     private boolean linkToEdit = false;
