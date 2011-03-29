@@ -52,7 +52,7 @@
 
 <dspace:layout locbar="nolink" titlekey="jsp.home.title" feedData="<%= feedData %>">
 
-    <table  width="95%" align="center">
+    <table class="miscTable" width="95%" align="center">
       <tr align="right">
         <td align="right">						
 <% if (supportedLocales != null && supportedLocales.length > 1)
@@ -81,18 +81,7 @@ for (int i = supportedLocales.length-1; i >= 0; i--)
         </tr>
     </table>
     <br/>
-    <form action="<%= request.getContextPath() %>/simple-search" method="get">
-        <table class="miscTable" width="95%" align="center">
-            <tr>
-                <td class="oddRowEvenCol">
-                  <h3><fmt:message key="jsp.home.search1"/></h3>
-                      <p><label for="tquery"><fmt:message key="jsp.home.search2"/></label></p>
-                      <p><input type="text" name="query" size="20" id="tquery" />&nbsp;
-                         <input type="submit" name="submit" value="<fmt:message key="jsp.general.search.button"/>" /></p>
-                </td>
-            </tr>
-        </table>
-    </form>
+
     <table class="miscTable" width="95%" align="center">
         <tr>
             <td class="oddRowEvenCol">
@@ -135,6 +124,11 @@ for (int i = supportedLocales.length-1; i >= 0; i--)
         </tr>
     </table>
     <dspace:sidebar>
+<SCRIPT language="JavaScript">
+<!-- Begin
+showImage();
+//  End -->
+</script>
     <%= sideNews %>
     <%
     if(feedEnabled)
