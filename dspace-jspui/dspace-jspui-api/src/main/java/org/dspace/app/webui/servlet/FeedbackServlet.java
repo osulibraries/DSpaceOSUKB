@@ -46,29 +46,7 @@ public class FeedbackServlet extends DSpaceServlet
     {
         // Obtain information from request
         // The page where the user came from
-        String fromPage = request.getHeader("Referer");
-
-        // Prevent spammers and splogbots from poisoning the feedback page
-        String host = ConfigurationManager.getProperty("dspace.hostname");
-
-        String basicHost = "";
-        if (host.equals("localhost") || host.equals("127.0.0.1")
-        		|| host.equals(InetAddress.getLocalHost().getHostAddress()))
-        {
-            basicHost = host;
-        }
-        else
-        {
-            // cut off all but the hostname, to cover cases where more than one URL
-            // arrives at the installation; e.g. presence or absence of "www"
-            int lastDot = host.lastIndexOf('.');
-            basicHost = host.substring(host.substring(0, lastDot).lastIndexOf("."));
-        }
-
-        if (fromPage == null || fromPage.indexOf(basicHost) == -1)
-        {
-            throw new AuthorizeException();
-        }
+        String fromPage = request.getParameter("fromPage");
 
         // The email address they provided
         String formEmail = request.getParameter("email");
