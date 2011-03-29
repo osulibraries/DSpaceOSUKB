@@ -87,7 +87,7 @@ import com.sun.syndication.io.FeedException;
 public class DSpaceFeedGenerator extends AbstractGenerator
                 implements Configurable, CacheableProcessingComponent, Recyclable, Serializable
 {
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;	//@TODO If serialize neccessary?
     private static final Logger log = Logger.getLogger(DSpaceFeedGenerator.class);
 
     /** The feed's requested format */

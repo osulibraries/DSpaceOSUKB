@@ -98,7 +98,7 @@
           <tr>
             <td class="searchBoxLabelSmall" valign="middle" nowrap="nowrap">
               <%-- <input type="text" name="query" id="tequery" size="10"/><input type=image border="0" src="<%= request.getContextPath() %>/image/search-go.gif" name="submit" alt="Go" value="Go"/> --%>
-              <input type="text" name="query" id="tequery" size="8"/><input type="submit" name="submit" value="<fmt:message key="jsp.layout.navbar-default.go"/>" />
+              <input type="text" name="query" id="tequery" size="27"/><input type="submit" name="submit" value="<fmt:message key="jsp.layout.navbar-default.go"/>" />
               <br/><a href="<%= request.getContextPath() %>/advanced-search"><fmt:message key="jsp.layout.navbar-default.advanced"/></a>
 <%
 			if (ConfigurationManager.getBooleanProperty("webui.controlledvocabulary.enable"))
@@ -126,6 +126,26 @@
     <td nowrap="nowrap" class="navigationBarItem">
       <a href="<%= request.getContextPath() %>/"><fmt:message key="jsp.layout.navbar-default.home"/></a>
     </td>
+  </tr>
+
+  <tr class="navigationBarItem">
+    <td valign=top>
+      <img alt="" src="<%= request.getContextPath() %>/image/<%= (currentPage.endsWith("/139") ? "arrow-highlight" : "arrow") %>.gif" width="16" height="16">
+    </td>
+
+    <td nowrap="nowrap" class="navigationBarItem">
+       <select id="kblinks" class="navigationBarItem">
+           <option selected value="<%= request.getContextPath() %>/handle/1811/139">About the Knowledge Bank</option>
+           <option value="http://library.osu.edu/sites/kbinfo/faqs.html">FAQs</option>
+           <option value="http://library.osu.edu/sites/kbinfo/policies.html">Policies</option>
+           <option value="http://library.osu.edu/sites/kbinfo/videos.html">Video Procedures</option>
+           <option value="http://library.osu.edu/sites/kbinfo/kbsetupform.htm">Community Setup Form</option>
+           <option value="http://library.osu.edu/sites/techservices/KBAppProfile.php">Describing Your Resources</option>
+           <option value="http://library.osu.edu/sites/kbinfo/Knowledge_Bank_License_Agreement_2010.pdf">Knowledge Bank License Agreement</option>
+       </select>
+       <button type="button" onclick="window.location = $('#kblinks').val();">Go</button>
+    </td>
+
   </tr>
 
   <tr>

@@ -7,3 +7,4 @@ context.xml
 nbactions.xml
 profiles.xml
 *.orig
+.idea

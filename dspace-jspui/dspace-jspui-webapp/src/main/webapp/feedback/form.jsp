@@ -77,6 +77,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
+					<input type="hidden" name="fromPage" value='<%= fromPage %>'>
                     <input type="submit" name="submit" value="<fmt:message key="jsp.feedback.form.send"/>" />
                     </td>
                 </tr>

@@ -423,7 +423,7 @@ public class Subscribe
                             emailText.append(labels.getString("org.dspace.eperson.Subscribe.untitled"));
                         }
     
-                        DCValue[] authors = hii.item.getDC("contributor", Item.ANY,
+                        DCValue[] authors = hii.item.getDC("creator", Item.ANY,
                                 Item.ANY);
     
                         if (authors.length > 0)

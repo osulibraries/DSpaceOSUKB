@@ -150,21 +150,22 @@
               <td align="center" class="standard" valign="middle">
                 <small><fmt:message key="jsp.general.orbrowse"/>&nbsp;</small>
 				<%-- Insert the dynamic list of browse options --%>
+	<div class="browse_buttons">
 <%
 	for (int i = 0; i < bis.length; i++)
 	{
 		String key = "browse.menu." + bis[i].getName();
 %>
-	<div class="browse_buttons">
+	
 	<form method="get" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
 		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
 		<%-- <input type="hidden" name="collection" value="<%= collection.getHandle() %>" /> --%>
 		<input type="submit" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
 	</form>
-	</div>
 <%	
 	}
 %>
+	</div>
 	      </td>
             </tr>
           </table>
@@ -210,12 +211,17 @@
       </td>
     </tr>
   </table>
+		  <%
+              boolean restrictedStats = ConfigurationManager.getBooleanProperty("statistics.item.authorization.admin", false);
+              if(!restrictedStats || admin_button) {
+          %>
           <div align="center">
                    <form method="get" action="<%= request.getContextPath() %>/displaystats">
                        <input type="hidden" name="handle" value="<%= collection.getHandle() %>"/>
                        <input type="submit" name="submit_simple" value="<fmt:message key="jsp.collection-home.display-statistics"/>" />
                    </form>
           </div>
+		  <% } %>
 
   <%= intro %>
 

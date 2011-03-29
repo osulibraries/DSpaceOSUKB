@@ -396,6 +396,7 @@ public class ItemTag extends TagSupport
         	String field = st.nextToken().trim();
             boolean isDate = false;
             boolean isLink = false;
+			boolean isIslink = false; //kaliebe.1@osu.edu 12.23.2008 -- interspaced link
             boolean isResolver = false;
             
             String style = null;
@@ -416,6 +417,13 @@ public class ItemTag extends TagSupport
             }
 
             // Find out if the field should rendered with a particular style
+
+            // CUSTOM CODE added 12.23.2008 by kaliebe.1@osu.edu to add new configurable mode for metadata output
+            if (field.indexOf("(islink)") > 0)
+            {
+                field = field.replaceAll("\\(islink\\)", "");
+                isIslink = true;
+            }
 
             if (style != null)
             {
@@ -492,6 +500,46 @@ public class ItemTag extends TagSupport
                             // Parse the date
                             out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest)pageContext.getRequest()));
                         }
+else if (isIslink)
+                        {
+                            String fieldOut = values[j].value.trim(), segment = "", printOut = "";
+                            while(fieldOut.indexOf(" ") != -1)
+                            {
+                                    segment = fieldOut.substring(0, fieldOut.indexOf(" "));
+                                    segment = segment.trim();
+                                    if(segment.startsWith("http://") || segment.startsWith("https://"))
+                                    {
+                                            printOut += ("<a href=\"" + segment + "\">" + Utils.addEntities(segment) + "</a> ");
+                                    }
+                                    else if(((segment.startsWith("(http://") || segment.startsWith("(https://")) && segment.endsWith(")")))
+                                    {
+                                            segment = segment.replace("(", "").replace(")", "");
+                                            printOut += ("(<a href=\"" + segment + "\">" + Utils.addEntities(segment) + "</a>) ");
+                                    }
+                                    else
+                                    {
+                                            printOut += Utils.addEntities(segment + " ");
+                                    }
+                                    fieldOut = fieldOut.substring(fieldOut.indexOf(" ") + 1, fieldOut.length());
+                            }
+                            if(!fieldOut.equals(""))
+                            {
+                                    if(fieldOut.startsWith("http://") || fieldOut.startsWith("https://"))
+                                    {
+                                            printOut += ("<a href=\"" + fieldOut + "\">" + Utils.addEntities(fieldOut) + "</a>");
+                                    }
+                                    else if(((fieldOut.startsWith("(http://") || fieldOut.startsWith("(https://")) && fieldOut.endsWith(")")))
+                                    {
+                                            fieldOut = fieldOut.replace("(", "").replace(")", "");
+                                            printOut += ("(<a href=\"" + fieldOut + "\">" + Utils.addEntities(fieldOut) + "</a>) ");
+                                    }
+                                    else
+                                    {
+                                            printOut += Utils.addEntities(fieldOut);
+                                    }
+                            }
+                            out.print(printOut);
+                    	}
                         else if (isResolver)
                         {
                             String value = values[j].value;
@@ -885,7 +933,11 @@ public class ItemTag extends TagSupport
                                 bsLink = bsLink
                                         + UIUtil.encodeBitstreamName(bitstreams[k]
                                             .getName(),
-                                            Constants.DEFAULT_ENCODING) + "\">";
+                                            Constants.DEFAULT_ENCODING) + "\"";
+                                String itemTitle = item.getMetadata("dc.title")[0].value;
+                                itemTitle = itemTitle.replaceAll("\"", "");
+                                bsLink = bsLink + " alt=\"" + itemTitle + "\" ";
+                                bsLink = bsLink + ">";
 
             					out
                                     .print("<tr><td headers=\"t1\" class=\"standard\">");

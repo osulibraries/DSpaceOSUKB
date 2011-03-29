@@ -12,6 +12,12 @@
 // Popup window - here so it can be referred to by several methods
 var popupWindow;
 
+var imageData = 'image/01.jpg,Photo taken in front of library facing oval,200,345;image/02.jpg,Mirror Lake,200,306;image/03.jpg,Student studying outside,200,305;image/04.jpg,Mirror Lake and Library,200,315;image/05.jpg,Student Studying,200,313;image/06.jpg,Students walking on the Oval,200,323;image/07.jpg,View of the Library through the trees,200,307;image/08.jpg,The Library at night,200,303';
+
+var imageList = imageData.split(";"); <!-- splits the imageData into an array -->
+
+var imageCount = imageList.length; <!-- count of the number of images -->
+
 // =========================================================
 //  Methods for e-person popup window
 // =========================================================
@@ -266,4 +272,28 @@ function isBrowser(b,v) {
 }
 
 
+//      ***********************************************
+//      "generate" returns a random integer within
+//      the x,y range passed
+//      ***********************************************
+function generate(x, y) {
+        var range = y - x + 1;
+        return Math.floor(Math.random() * range) + x;
+}
 
+//      ***********************************************
+//      "showImage" calls the randomizer and then
+//      populates the <IMG> tag values with data
+//      based on the chosen image.
+//      ***********************************************
+function showImage() {
+        var i = generate(0, imageCount-1);
+        var imageSpecs = imageList[i].split(",");
+
+        document.write('<img src="' + imageSpecs[0] + '" ' +
+            'alt="' + imageSpecs[1] + '" ' +
+            'width="' + imageSpecs[2]  + '" ' +
+            'height="' + imageSpecs[3] + '" >');
+
+        return;
+}

@@ -129,7 +129,7 @@
          // do nothing the date is allready set to "without date"
         }
         String contributor = LocaleSupport.getLocalizedMessage(pageContext, "jsp.general.without-contributor");
-        DCValue[] contributors = item.getMetadata("dc", "contributor", Item.ANY, Item.ANY);
+        DCValue[] contributors = item.getMetadata("dc", "creator", Item.ANY, Item.ANY);
         if (contributors.length >= 1)
         {
             contributor = contributors[0].value;
