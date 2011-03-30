@@ -107,7 +107,7 @@ and searching the repository.
                                         along with a list of top level communities in DSpace.
                                         -->
                         <map:match pattern="">
-                            <map:transform type="FrontPageSearch"/>
+                            <map:serialize type="xml"/>
                         </map:match>
 
 
