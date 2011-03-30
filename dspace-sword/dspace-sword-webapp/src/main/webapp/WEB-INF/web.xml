@@ -12,9 +12,9 @@
 <!--
  - lni-web.xml
  -
- - Version: $Revision: 5845 $
+ - Version: $Revision: 6176 $
  -
- - Date: $Date: 2010-11-12 00:34:07 -0500 (Fri, 12 Nov 2010) $
+ - Date: $Date: 2011-03-23 03:11:41 -0400 (Wed, 23 Mar 2011) $
  -
  - Copyright (c) 2002, Hewlett-Packard Company and Massachusetts
  - Institute of Technology.  All rights reserved.
@@ -81,6 +81,11 @@
    <!-- 
    Listener to initialise DSpace configuration and clean up the application 
    -->
+    <listener>
+      <listener-class>
+         org.dspace.servicemanager.servlet.DSpaceKernelServletContextListener
+      </listener-class>
+   </listener>
    <listener>
       <listener-class>
          org.dspace.app.util.DSpaceContextListener
