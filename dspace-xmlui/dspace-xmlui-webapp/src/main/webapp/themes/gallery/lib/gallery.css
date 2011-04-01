@@ -200,3 +200,8 @@ span.caption {
 #image-wrap:focus {
         outline:1px solid #ddd;
 }
+
+img.central_image {
+    max-width: 720px;
+    max-height: 600px;
+}
