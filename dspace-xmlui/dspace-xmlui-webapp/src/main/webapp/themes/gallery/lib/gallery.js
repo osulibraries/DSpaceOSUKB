@@ -45,7 +45,7 @@ function initZoomableImage()
 {
     if (imageJpegArray.length >0)
     {
-        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img src=\"" + THEME_PATH + "images/blank.gif\" /></a></div>";
+        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img class=\"central_image\" src=\"" + THEME_PATH + "images/blank.gif\" /></a></div>";
         var totalHtml = viewPort;
 
         var containHtml = "<div class=\"scrollable\"><div class=\"items\"><div>";
@@ -100,7 +100,7 @@ $(".items img").click(function() {
 		// change the image
 		wrap.find("img").attr("src", url);
 
-                wrap.find('img').jScale({ls:'670px'});
+                //wrap.find('img').jScale({ls:'670px'});
 		$('#anchor').attr("href", url);
                 $('#anchor').attr("title", clickedImage.attr("title") + "<br/>Download: <a href=\""+url+"\">" + clickedImage.attr("alt") + "</a>" );
 
