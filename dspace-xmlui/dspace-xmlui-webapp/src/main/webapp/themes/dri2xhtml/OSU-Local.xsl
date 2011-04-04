@@ -234,7 +234,7 @@
 
 
 <!-- bds: remove search box from community/collection pages -->
-<xsl:template match="dri:div[@id='aspect.artifactbrowser.CollectionViewer.div.collection-search'] | dri:div[@id='aspect.artifactbrowser.CommunityViewer.div.community-search']">
+<xsl:template match="dri:div[@id='aspect.artifactbrowser.CollectionSearch.div.collection-search'] | dri:div[@id='aspect.artifactbrowser.CommunitySearch.div.community-search']">
 </xsl:template>
 
 <!-- bds: recent submissions box -->
