@@ -23,7 +23,7 @@ import org.dspace.app.xmlui.wing.element.PageMeta;
 public class HomePage extends AbstractDSpaceTransformer
 {
     /** language strings */
-    private static final Message T_dspace_home = message("xmlui.general.dspace_home");
+    private static final Message T_dspace_home = message("xmlui.ArtifactBrowser.HomePage.title");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException
     {
