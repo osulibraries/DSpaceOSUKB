@@ -23,7 +23,7 @@
 		-->
 
 	<!-- General keys -->
-	<message key="xmlui.general.dspace_home">The Knowledge Bank at The Ohio State University</message>
+	<message key="xmlui.general.dspace_home">KB Home</message>
 	<message key="xmlui.general.search">Search</message>
 	<message key="xmlui.general.go">Go</message>
 	<message key="xmlui.general.go_home">Go to Knowledge Bank home</message>
