@@ -1407,7 +1407,7 @@
 	<message key="xmlui.administrative.mapper.MapperMain.title">Item Mapper</message>
 	<message key="xmlui.administrative.mapper.MapperMain.head1">Item Mapper - Map Items from Other Collections</message>
 	<message key="xmlui.administrative.mapper.MapperMain.para1">Collection: "<strong>{0}</strong>"</message>
-	<message key="xmlui.administrative.mapper.MapperMain.para2">This is the item mapper tool that allows collection administrators to map items from other collections into this collection. You can search for items from other collection and map them, or browse the list of currently mapped items.</message>
+	<message key="xmlui.administrative.mapper.MapperMain.para2">This is the item mapper tool that allows collection administrators to map items from other collections into this collection. You can search for items from other collections and map them, or browse the list of currently mapped items.</message>
 	<message key="xmlui.administrative.mapper.MapperMain.stat_label">Statistics</message>
 	<message key="xmlui.administrative.mapper.MapperMain.stat_info"><strong>{0} of {1}</strong> items in this collection are mapped in from other collections</message>
 	<message key="xmlui.administrative.mapper.MapperMain.search_label">Search</message>
