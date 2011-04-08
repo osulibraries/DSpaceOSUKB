@@ -34,6 +34,8 @@ import org.xml.sax.SAXException;
 public class FrontPageSearch extends AbstractDSpaceTransformer implements CacheableProcessingComponent
 {
     /** Language Strings */
+    private static final Message T_title =
+        message("xmlui.ArtifactBrowser.FrontPageSearch.title");
     
     public static final Message T_dspace_home =
         message("xmlui.general.dspace_home");
@@ -72,7 +74,7 @@ public class FrontPageSearch extends AbstractDSpaceTransformer implements Cachea
             WingException, UIException, SQLException, IOException,
             AuthorizeException
     {
-    	pageMeta.addMetadata("title").addContent(T_dspace_home);
+    	pageMeta.addMetadata("title").addContent(T_title);
     	pageMeta.addTrailLink(contextPath, T_dspace_home);
         
         // Add RSS links if available
