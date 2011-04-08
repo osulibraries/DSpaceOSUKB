@@ -242,6 +242,7 @@
 	<message key="xmlui.ArtifactBrowser.FeedbackSent.para1">Your comments have been received.</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.FrontPageSearch.java -->
+	<message key="xmlui.ArtifactBrowser.FrontPageSearch.title">The Knowledge Bank at The Ohio State University</message>
 	<message key="xmlui.ArtifactBrowser.FrontPageSearch.head">Search Knowledge Bank</message>
 	<message key="xmlui.ArtifactBrowser.FrontPageSearch.para1">Enter some text in the box below to search Knowledge Bank.</message>
 	
