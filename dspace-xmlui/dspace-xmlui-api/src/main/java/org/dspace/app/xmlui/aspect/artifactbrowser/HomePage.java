@@ -32,5 +32,7 @@ public class HomePage extends AbstractDSpaceTransformer
 
     public void addBody(Body body) throws WingException
     {
+        Division home = body.addDivision("the-homepage");
+        home.setHead("Homepage content");
     }
 }
