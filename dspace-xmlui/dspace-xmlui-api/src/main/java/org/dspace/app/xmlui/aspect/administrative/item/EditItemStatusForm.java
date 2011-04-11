@@ -101,7 +101,9 @@ public class EditItemStatusForm extends AbstractDSpaceTransformer {
 		options.addItem().addXref(baseURL+"&submit_bitstreams",T_option_bitstreams);
 		options.addItem().addXref(baseURL+"&submit_metadata",T_option_metadata);
 		options.addItem().addXref(baseURL + "&view_item", T_option_view);
-		options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+		if(AuthorizeManager.isSuperAdmin(context)) {
+                    options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+                }
 		
 		
 		

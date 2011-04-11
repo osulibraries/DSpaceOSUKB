@@ -33,6 +33,7 @@ import org.dspace.app.xmlui.wing.element.Table;
 import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.app.xmlui.wing.element.TextArea;
 import org.dspace.app.xmlui.wing.element.Value;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
@@ -150,7 +151,9 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
           options.addItem().addXref(baseURL+"&submit_bitstreams",T_option_bitstreams);
           options.addItem().addHighlight("bold").addXref(baseURL+"&submit_metadata",T_option_metadata);
           options.addItem().addXref(baseURL + "&view_item", T_option_view);
-          options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+          if(AuthorizeManager.isSuperAdmin(context)) {
+            options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+          }
         }
 
         // LIST: add new metadata
