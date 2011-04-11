@@ -18,6 +18,7 @@ import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.harvest.HarvestedCollection;
 import org.dspace.harvest.OAIHarvester;
@@ -149,8 +150,10 @@ public class SetupCollectionHarvestingForm extends AbstractDSpaceTransformer
 	    options.addItem().addXref(baseURL+"&submit_metadata",T_options_metadata);
 	    options.addItem().addXref(baseURL+"&submit_roles",T_options_roles);
 	    options.addItem().addHighlight("bold").addXref(baseURL+"&submit_harvesting",T_options_harvest);
-		options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
-		options.addItem().addXref(contextPath+"/handle/"+thisCollection.getHandle(), "Go To This Collection");
+            if(AuthorizeManager.isSuperAdmin(context)) {
+                options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
+            }
+            options.addItem().addXref(contextPath+"/handle/"+thisCollection.getHandle(), "Go To This Collection");
 	    
 	    
 	    // The top-level, all-setting, countent source radio button

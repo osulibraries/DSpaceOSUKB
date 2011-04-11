@@ -88,7 +88,9 @@ public class EditCommunityMetadataForm extends AbstractDSpaceTransformer
         List options = main.addList("options",List.TYPE_SIMPLE,"horizontal");
         options.addItem().addHighlight("bold").addXref(baseURL+"&submit_metadata",T_options_metadata);
         options.addItem().addXref(baseURL+"&submit_roles",T_options_roles);
-        options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
+        if(AuthorizeManager.isSuperAdmin(context)) {
+            options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
+        }
 	    
 	    // The grand list of metadata options
 	    List metadataList = main.addList("metadataList", "form");

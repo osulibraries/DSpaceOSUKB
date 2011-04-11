@@ -92,7 +92,9 @@ public class AssignCommunityRoles extends AbstractDSpaceTransformer
 	    List options = main.addList("options", List.TYPE_SIMPLE, "horizontal");
 	    options.addItem().addXref(baseURL+"&submit_metadata",T_options_metadata);
 	    options.addItem().addHighlight("bold").addXref(baseURL+"&submit_roles",T_options_roles);
-            options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
+            if(AuthorizeManager.isSuperAdmin(context)) {
+                options.addItem().addXref(baseURL+"&submit_curate",T_options_curate);
+            }
 
 	    // The table of admin roles
 	    Table rolesTable = main.addTable("roles-table", 6, 5);
