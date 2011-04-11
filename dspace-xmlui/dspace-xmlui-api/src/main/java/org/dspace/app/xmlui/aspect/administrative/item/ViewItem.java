@@ -20,6 +20,7 @@ import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.PageMeta;
 import org.dspace.app.xmlui.wing.element.Para;
 import org.dspace.app.xmlui.wing.element.ReferenceSet;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
 
@@ -101,7 +102,9 @@ public class ViewItem extends AbstractDSpaceTransformer {
 		options.addItem().addXref(baseURL + "&submit_metadata",
 				T_option_metadata);
 		options.addItem().addHighlight("bold").addXref(tabLink, T_option_view);
-                options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+                if(AuthorizeManager.isSuperAdmin(context)) {
+                    options.addItem().addXref(baseURL + "&submit_curate", T_option_curate);
+                }
 
 		// item
 		
