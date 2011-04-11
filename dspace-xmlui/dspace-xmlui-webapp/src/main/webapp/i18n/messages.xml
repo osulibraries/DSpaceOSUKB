@@ -1933,6 +1933,7 @@
   <message key="xmlui.dri2xhtml.mimetype.application/mathematica">Mathematica</message>
   <message key="xmlui.dri2xhtml.mimetype.application/msword">Microsoft Word</message>
   <message key="xmlui.dri2xhtml.mimetype.application/octet-stream">Unknown</message>
+  <message key="xmlui.dri2xhtml.mimetype.application/ogg">OGG Media Type</message>
   <message key="xmlui.dri2xhtml.mimetype.application/pdf">PDF</message>
   <message key="xmlui.dri2xhtml.mimetype.application/postscript">Postscript</message>
   <message key="xmlui.dri2xhtml.mimetype.application/sgml">SGML</message>
