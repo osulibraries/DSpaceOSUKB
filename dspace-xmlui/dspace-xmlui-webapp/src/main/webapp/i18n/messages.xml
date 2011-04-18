@@ -688,9 +688,10 @@
 	<message key="xmlui.Submission.submit.ReviewStep.multiple_titles">Multiple titles</message>
 	<message key="xmlui.Submission.submit.ReviewStep.published_before">Release date or publication date</message>
 	<message key="xmlui.Submission.submit.ReviewStep.no_metadata">-</message>
-	<message key="xmlui.Submission.submit.ReviewStep.unknown">unknown</message>
-	<message key="xmlui.Submission.submit.ReviewStep.known">known</message>
-	<message key="xmlui.Submission.submit.ReviewStep.supported">supported</message>
+	<message key="xmlui.Submission.submit.ReviewStep.unknown_format">(Unknown)</message>
+	<message key="xmlui.Submission.submit.ReviewStep.known">(Known)</message>
+	<message key="xmlui.Submission.submit.ReviewStep.supported">(Supported)</message>
+	<message key="xmlui.Submission.submit.ReviewStep.unsupported">(Unsupported)</message>
 
 	<!-- org.dspace.app.xmlui.Submission.submit.CCLicenseStep -->
 	<message key="xmlui.Submission.submit.CCLicenseStep.head">Creative Commons License</message>
