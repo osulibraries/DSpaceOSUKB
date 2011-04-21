@@ -280,18 +280,17 @@ public class UploadStep extends AbstractSubmissionStep
 	            	Cell cell = row.addCell();
 	            	cell.addContent(format.getShortDescription());
 	            	cell.addContent(" ");
-	            	switch (support)
-	            	{
-	            	case 0:
-	            		cell.addContent(T_unsupported);
-	            		break;
-	            	case 1:
-	            		cell.addContent(T_known);
-	            		break;
-	            	case 2:
-	            		cell.addContent(T_supported);
-	            		break;
-	            	}
+                    switch (support) {
+                        case BitstreamFormat.UNKNOWN:
+                            cell.addContent(T_unsupported);
+                            break;
+                        case BitstreamFormat.KNOWN:
+                            cell.addContent(T_known);
+                            break;
+                        case BitstreamFormat.SUPPORTED:
+                            cell.addContent(T_supported);
+                            break;
+                    }
 	            }
 	            
 	            Button edit = row.addCell().addButton("submit_edit_"+id);
@@ -367,21 +366,19 @@ public class UploadStep extends AbstractSubmissionStep
             String format = bitstreamFormat.getShortDescription();
 
             Message support = ReviewStep.T_unknown_format;
-                if (format != null)
-                {
+            if (format != null) {
                 int supportLevel = bitstreamFormat.getSupportLevel();
-                        
-	        switch (supportLevel)
-        	{
-	                case 0:
-        	                support = ReviewStep.T_unsupported;
-                	        break;
-	                case 1:
-        	                support = ReviewStep.T_known;
-                	        break;
-	                case 2:
-        	                support = ReviewStep.T_supported;
-                	        break;
+
+                switch (supportLevel) {
+                    case BitstreamFormat.UNKNOWN:
+                        support = ReviewStep.T_unsupported;
+                        break;
+                    case BitstreamFormat.KNOWN:
+                        support = ReviewStep.T_known;
+                        break;
+                    case BitstreamFormat.SUPPORTED:
+                        support = ReviewStep.T_supported;
+                        break;
                 }
             }
             
