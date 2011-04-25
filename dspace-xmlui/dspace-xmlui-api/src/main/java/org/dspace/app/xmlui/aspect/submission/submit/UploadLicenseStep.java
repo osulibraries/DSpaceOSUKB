@@ -307,18 +307,18 @@ public class UploadLicenseStep extends AbstractSubmissionStep
 	            else
 	            {
 	            	Cell cell = row.addCell();
-	            	cell.addContent(format.getMIMEType());
+	            	cell.addContent(format.getShortDescription());
 	            	cell.addContent(" ");
 	            	switch (support)
 	            	{
-	            	case 1:
-	            		cell.addContent(T_supported);
+	            	case BitstreamFormat.UNKNOWN:
+	            		cell.addContent(T_unsupported);
 	            		break;
-	            	case 2:
+	            	case BitstreamFormat.KNOWN:
 	            		cell.addContent(T_known);
 	            		break;
-	            	case 3:
-	            		cell.addContent(T_unsupported);
+	            	case BitstreamFormat.SUPPORTED:
+	            		cell.addContent(T_supported);
 	            		break;
 	            	}
 	            }
@@ -395,7 +395,7 @@ public class UploadLicenseStep extends AbstractSubmissionStep
             String name = bitstream.getName();
             String url = makeBitstreamLink(item, bitstream);
             String format = bitstreamFormat.getShortDescription();
-            Message support = ReviewStep.T_unknown;
+            Message support = ReviewStep.T_unknown_format;
             if (bitstreamFormat.getSupportLevel() == BitstreamFormat.KNOWN)
                 support = T_known;
             else if (bitstreamFormat.getSupportLevel() == BitstreamFormat.SUPPORTED)

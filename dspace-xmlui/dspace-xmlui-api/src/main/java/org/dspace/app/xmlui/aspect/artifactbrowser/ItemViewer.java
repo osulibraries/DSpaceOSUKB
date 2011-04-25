@@ -285,12 +285,21 @@ public class ItemViewer extends AbstractDSpaceTransformer implements CacheablePr
 
         // Refrence the actual Item
         ReferenceSet appearsInclude = referenceSet.addReference(item).addReferenceSet(ReferenceSet.TYPE_DETAIL_LIST,null,"hierarchy");
+        /* Disabling the funky include-remote-stuff method to list the collections this item appears in.
         appearsInclude.setHead(T_head_parent_collections);
 
         // Reference all collections the item appears in.
         for (Collection collection : item.getCollections())
         {
             appearsInclude.addReference(collection);
+        }
+        */
+
+        org.dspace.app.xmlui.wing.element.List appearsIn = division.addList("appearsIn");
+        appearsIn.setHead(T_head_parent_collections);
+        for (Collection collection : item.getCollections())
+        {
+            appearsIn.addItemXref(contextPath+"/handle/"+collection.getHandle(), collection.getName());
         }
 
         showfullPara = division.addPara(null,"item-view-toggle item-view-toggle-bottom");

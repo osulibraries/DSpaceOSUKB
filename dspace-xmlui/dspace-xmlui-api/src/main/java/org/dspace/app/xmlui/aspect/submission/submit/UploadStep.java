@@ -278,20 +278,19 @@ public class UploadStep extends AbstractSubmissionStep
 	            {
                     int support = format.getSupportLevel();
 	            	Cell cell = row.addCell();
-	            	cell.addContent(format.getMIMEType());
+	            	cell.addContent(format.getShortDescription());
 	            	cell.addContent(" ");
-	            	switch (support)
-	            	{
-	            	case 1:
-	            		cell.addContent(T_supported);
-	            		break;
-	            	case 2:
-	            		cell.addContent(T_known);
-	            		break;
-	            	case 3:
-	            		cell.addContent(T_unsupported);
-	            		break;
-	            	}
+                    switch (support) {
+                        case BitstreamFormat.UNKNOWN:
+                            cell.addContent(T_unsupported);
+                            break;
+                        case BitstreamFormat.KNOWN:
+                            cell.addContent(T_known);
+                            break;
+                        case BitstreamFormat.SUPPORTED:
+                            cell.addContent(T_supported);
+                            break;
+                    }
 	            }
 	            
 	            Button edit = row.addCell().addButton("submit_edit_"+id);
@@ -361,18 +360,26 @@ public class UploadStep extends AbstractSubmissionStep
         for (Bitstream bitstream : bitstreams)
         {
             BitstreamFormat bitstreamFormat = bitstream.getFormat();
-            
+
             String name = bitstream.getName();
             String url = makeBitstreamLink(item, bitstream);
             String format = bitstreamFormat.getShortDescription();
-            Message support = ReviewStep.T_unknown;
-            if (bitstreamFormat.getSupportLevel() == BitstreamFormat.KNOWN)
-            {
-                support = T_known;
-            }
-            else if (bitstreamFormat.getSupportLevel() == BitstreamFormat.SUPPORTED)
-            {
-                support = T_supported;
+
+            Message support = ReviewStep.T_unknown_format;
+            if (format != null) {
+                int supportLevel = bitstreamFormat.getSupportLevel();
+
+                switch (supportLevel) {
+                    case BitstreamFormat.UNKNOWN:
+                        support = ReviewStep.T_unsupported;
+                        break;
+                    case BitstreamFormat.KNOWN:
+                        support = ReviewStep.T_known;
+                        break;
+                    case BitstreamFormat.SUPPORTED:
+                        support = ReviewStep.T_supported;
+                        break;
+                }
             }
             
             org.dspace.app.xmlui.wing.element.Item file = uploadSection.addItem();
