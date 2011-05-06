@@ -266,14 +266,29 @@
             <xsl:if test="@USE='CC-LICENSE'">
                 <!-- bds: get pointer to RDF of CC-license info from METS doc -->
                 <xsl:variable name="CC_license_RDF_URL">
-                    <xsl:text>cocoon:/</xsl:text>
+                    <xsl:text>http://localhost:8080</xsl:text>
                     <!-- bds: using substring('foo',string-length($context-path) + 1) 
                     to remove "/dspace" from the URL found in the mets document,
                     thus making the cocoon link correct, however this method _might_
                     have unforseen problems in other systems. The other option would be
                     to use base-url (probably http://localhost:8080) instead of the
-                    cocoon:/ connection, but that could have performance implications -->
-                    <xsl:value-of select="substring(/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href,string-length($context-path) + 1)"/>
+                    cocoon:/ connection, but that could have performance implications.
+
+		UPDATE: Post 1.7.1 upgrade, this somehow conflicts with the "Appears in Collections" list
+		as rendered in structural.xsl as a DetailList. The problem lies in having two document()
+		calls both to cocoon:// URLs. Now instead using the localhost:8080 connection here.
+
+		A better solution might be to replace these document() calls with a pipeline stage
+		that transforms the documents into what exactly is needed and then to use xi:include at
+		this level to include the results here. That would also mean the XInclude namespace would
+		need added [somewhere?] (see xmlns:xi="http://www.w3.org/2001/XInclude") and the XInclude
+		transform added to [some xmap file?]
+
+		See http://cocoon.apache.org/2.1/faq/faq-xslt.html
+
+ -->
+                    <xsl:value-of select="/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href"/>
+                    <!--<xsl:value-of select="substring(/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href,string-length($context-path) + 1)"/>-->
                 </xsl:variable>
                 <xsl:comment> CC_license_RDF_URL: <xsl:value-of select="$CC_license_RDF_URL"/> </xsl:comment>
                 <!-- bds: extract the creativecommons.org link from the RDF -->
