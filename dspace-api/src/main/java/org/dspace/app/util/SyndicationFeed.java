@@ -201,7 +201,8 @@ public class SyndicationFeed
                 logoURL = urlOfBitstream(request, logo);
             }
         }
-        feed.setTitle(localize(labels, MSG_FEED_TITLE) + defaultTitle);
+        feed.setTitle(labels.containsKey(MSG_FEED_TITLE) ?
+                            localize(labels, MSG_FEED_TITLE) : defaultTitle);
         feed.setLink(objectURL);
         feed.setPublishedDate(new Date());
         feed.setUri(objectURL);
