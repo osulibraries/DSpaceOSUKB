@@ -70,7 +70,8 @@ public class NotAuthorized extends AbstractDSpaceTransformer
 		para1.addXref(feedbackURL,T_para1b);
 		para1.addContent(T_para1c);
 
-		main.addPara().addXref(loginURL,T_para2);
+		//PMBMD Disabled login-as-another-user link
+                //main.addPara().addXref(loginURL,T_para2);
 		
 	}
 	

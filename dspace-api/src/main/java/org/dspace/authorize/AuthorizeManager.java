@@ -438,6 +438,17 @@ public class AuthorizeManager
         }
     }
 
+    /**
+     * Find out if the current user is a super admin.
+     * @param c
+     * @return
+     * @throws SQLException
+     */
+    public static boolean isSuperAdmin(Context c) throws SQLException
+    {
+        return Group.isMember(c, 1);
+    }
+
     ///////////////////////////////////////////////
     // policy manipulation methods
     ///////////////////////////////////////////////

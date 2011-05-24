@@ -60,12 +60,14 @@ public class ReviewStep extends AbstractSubmissionStep
         message("xmlui.Submission.submit.ReviewStep.submit_jump");
     protected static final Message T_no_metadata = 
         message("xmlui.Submission.submit.ReviewStep.no_metadata");
-    protected static final Message T_unknown = 
-        message("xmlui.Submission.submit.ReviewStep.unknown");
+    protected static final Message T_unknown_format = 
+        message("xmlui.Submission.submit.ReviewStep.unknown_format");
     protected static final Message T_known = 
         message("xmlui.Submission.submit.ReviewStep.known");
     protected static final Message T_supported = 
         message("xmlui.Submission.submit.ReviewStep.supported");
+    protected static final Message T_unsupported =
+	message("xmlui.Submission.submit.ReviewStep.unsupported");
 
     
      /* The SourceResolver used to setup this class */
