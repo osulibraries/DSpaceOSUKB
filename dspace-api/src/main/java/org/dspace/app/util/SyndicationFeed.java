@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 
 import org.dspace.content.Bitstream;
@@ -214,7 +215,11 @@ public class SyndicationFeed
             // be contained in the rdf. Not all RSS-viewers show this logo.
             SyndImage image = new SyndImageImpl();
             image.setLink(objectURL);
-            image.setTitle(localize(labels, MSG_LOGO_TITLE));
+            if (StringUtils.isNotBlank(feed.getTitle())) {
+                image.setTitle(feed.getTitle());
+            } else {
+                image.setTitle(localize(labels, MSG_LOGO_TITLE));
+            }
             image.setUrl(logoURL);
             feed.setImage(image);
         }
@@ -352,7 +357,6 @@ public class SyndicationFeed
                     }
                     entry.getModules().add(dc);
                 }
-                entry.setUri(title);
 
                 //iTunes Podcast Support - START
                 if (podcastFeed)
