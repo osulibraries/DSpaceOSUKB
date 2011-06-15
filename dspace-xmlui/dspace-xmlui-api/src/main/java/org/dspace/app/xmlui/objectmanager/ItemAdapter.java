@@ -285,21 +285,21 @@ public class ItemAdapter extends AbstractAdapter
                 }
                 }
 
-                // Make the CC-license URL available as item metadata
-		if (CreativeCommons.hasLicense(context, item)) {
-			try
-			{
-			attributes = new AttributeMap();
-			String ccLink = new String(CreativeCommons.getLicenseURL(item));
-			attributes.put("mdschema", "ccLink");
-			startElement(DIM, "field", attributes);
-			sendCharacters(ccLink);
-			endElement(DIM, "field");
-			}
-			catch (AuthorizeException ae) 
-			{
-			}
-		}
+            // Make the CC-license URL available as item metadata
+            if (CreativeCommons.hasLicense(context, item)) {
+                context.turnOffAuthorisationSystem();
+                try {
+                    attributes = new AttributeMap();
+                    String ccLink = CreativeCommons.getLicenseURL(item);
+                    attributes.put("mdschema", "ccLink");
+                    startElement(DIM, "field", attributes);
+                    sendCharacters(ccLink);
+                    endElement(DIM, "field");
+                } catch (AuthorizeException ae) {
+                    //TODO log this
+                }
+                context.restoreAuthSystemState();
+            }
 
                         
                 // ///////////////////////////////
