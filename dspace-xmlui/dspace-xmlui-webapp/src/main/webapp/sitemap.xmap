@@ -194,7 +194,7 @@
                         <map:action name="PropertyFileReader" src="org.dspace.app.xmlui.cocoon.PropertyFileReader" />
                         <map:action name="ClearCache" src="org.apache.cocoon.acting.ClearCacheAction" />
                 </map:actions>
-                <map:pipes default="noncaching">
+                <map:pipes default="caching">
                         <map:pipe name="noncaching" src="org.apache.cocoon.components.pipeline.impl.NonCachingProcessingPipeline">
                         </map:pipe>
                         <map:pipe name="caching" src="org.apache.cocoon.components.pipeline.impl.CachingProcessingPipeline">
