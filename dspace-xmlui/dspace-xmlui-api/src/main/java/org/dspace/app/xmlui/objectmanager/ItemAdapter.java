@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.dspace.content.DSpaceObject;
+import org.dspace.license.CreativeCommons;
 
 
 /**
@@ -283,6 +284,23 @@ public class ItemAdapter extends AbstractAdapter
                         endElement(DIM,"field");
                 }
                 }
+
+            // Make the CC-license URL available as item metadata
+            if (CreativeCommons.hasLicense(context, item)) {
+                context.turnOffAuthorisationSystem();
+                try {
+                    attributes = new AttributeMap();
+                    String ccLink = CreativeCommons.getLicenseURL(item);
+                    attributes.put("mdschema", "ccLink");
+                    startElement(DIM, "field", attributes);
+                    sendCharacters(ccLink);
+                    endElement(DIM, "field");
+                } catch (AuthorizeException ae) {
+                    //TODO log this
+                }
+                context.restoreAuthSystemState();
+            }
+
                         
                 // ///////////////////////////////
                         // End the DIM element
