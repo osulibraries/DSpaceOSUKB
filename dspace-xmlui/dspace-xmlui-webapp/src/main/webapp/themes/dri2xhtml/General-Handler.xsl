@@ -22,11 +22,11 @@
     xmlns:mets="http://www.loc.gov/METS/"
     xmlns:xlink="http://www.w3.org/TR/xlink/"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+    xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:cc="http://creativecommons.org/ns#"
-    xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
     xmlns="http://www.w3.org/1999/xhtml"
-    exclude-result-prefixes="i18n dri mets xlink xsl rdf cc dim">
+    exclude-result-prefixes="i18n dri mets xlink xsl dim rdf cc">
 
     <xsl:output indent="yes"/>
     
@@ -71,7 +71,10 @@
                     <xsl:attribute name="href">
                         <xsl:value-of select="mets:fileGrp[@USE='CONTENT']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
                     </xsl:attribute>
-                    <img alt="Thumbnail">
+                    <img>
+                        <xsl:attribute name="alt">Thumbnail of 
+                            <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
+                        </xsl:attribute>
                         <xsl:attribute name="src">
                             <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
                         </xsl:attribute>
@@ -207,7 +210,10 @@
                             <xsl:attribute name="href">
                                 <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             </xsl:attribute>
-                            <img alt="Thumbnail">
+                            <img>
+                                <xsl:attribute name="alt">Thumbnail of 
+                                    <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
+                                </xsl:attribute>
                                 <xsl:attribute name="src">
                                     <xsl:value-of select="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
                                         mets:file[@GROUPID=current()/@GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
@@ -265,14 +271,40 @@
     <xsl:template match="mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
         <div class="license-info">
             <xsl:if test="@USE='CC-LICENSE'">
-                <!-- bds: get ccLink from METS dmdSec -->
-                <xsl:variable name="CC_license_URL" select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@mdschema='ccLink']" />
+                <!-- bds: get pointer to RDF of CC-license info from METS doc -->
+                <xsl:variable name="CC_license_RDF_URL">
+                    <xsl:text>http://localhost:8080</xsl:text>
+                    <!-- bds: using substring('foo',string-length($context-path) + 1) 
+                    to remove "/dspace" from the URL found in the mets document,
+                    thus making the cocoon link correct, however this method _might_
+                    have unforseen problems in other systems. The other option would be
+                    to use base-url (probably http://localhost:8080) instead of the
+                    cocoon:/ connection, but that could have performance implications.
+
+		UPDATE: Post 1.7.1 upgrade, this somehow conflicts with the "Appears in Collections" list
+		as rendered in structural.xsl as a DetailList. The problem lies in having two document()
+		calls both to cocoon:// URLs. Now instead using the localhost:8080 connection here.
+
+		A better solution might be to replace these document() calls with a pipeline stage
+		that transforms the documents into what exactly is needed and then to use xi:include at
+		this level to include the results here. That would also mean the XInclude namespace would
+		need added [somewhere?] (see xmlns:xi="http://www.w3.org/2001/XInclude") and the XInclude
+		transform added to [some xmap file?]
+
+		See http://cocoon.apache.org/2.1/faq/faq-xslt.html
+
+ -->
+                    <xsl:value-of select="/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href"/>
+                    <!--<xsl:value-of select="substring(/mets:METS/mets:fileSec/mets:fileGrp/mets:file/mets:FLocat[@xlink:title='license_rdf']/@xlink:href,string-length($context-path) + 1)"/>-->
+                </xsl:variable>
+                <xsl:comment> CC_license_RDF_URL: <xsl:value-of select="$CC_license_RDF_URL"/> </xsl:comment>
+                <!-- bds: extract the creativecommons.org link from the RDF -->
+                <xsl:variable name="CC_license_URL" select="document($CC_license_RDF_URL)/rdf:RDF/cc:License[1]/@*['rdf:about']" />
                 <p>This item is licensed under a <a href="{$CC_license_URL}">Creative Commons License</a></p>
                 <p><a href="{$CC_license_URL}"><img src="{$context-path}/static/images/cc-somerights.gif" border="0" alt="Creative Commons" /></a></p>
             </xsl:if>
         </div>
     </xsl:template>
-
 
 <!-- bds: above replaces below
     <xsl:template match="mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
@@ -295,8 +327,9 @@
     <xsl:template match="mets:fileGrp[@USE='LOGO']">
         <div class="ds-logo-wrapper">
             <img src="{mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href}" class="logo">
-                <xsl:attribute name="alt">xmlui.dri2xhtml.METS-1.0.collection-logo-alt</xsl:attribute>
-                <xsl:attribute name="attr" namespace="http://apache.org/cocoon/i18n/2.1">alt</xsl:attribute>
+                <xsl:attribute name="alt">
+                    <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/> logo
+                </xsl:attribute>
             </img>
         </div>
     </xsl:template>
