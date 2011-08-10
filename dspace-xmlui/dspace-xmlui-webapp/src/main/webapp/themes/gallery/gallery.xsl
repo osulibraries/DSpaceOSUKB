@@ -60,7 +60,12 @@
 			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI']"
 		/>
 	</xsl:variable>
-
+    
+    <!-- imageTitle: provide a title for the alt tag on the large image for accessability -->
+    <xsl:variable name="imageTitle">
+        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']"/>
+    </xsl:variable>
+    
 	<xsl:variable name="counter">
 		<xsl:value-of select="1"/>
 	</xsl:variable>
@@ -76,6 +81,7 @@
                     var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;
                     var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
                     var THEME_PATH = "<xsl:value-of select='$themePath' />";
+                    var IMAGE_TITLE = "<xsl:value-of select='$imageTitle' />";
             </script>
 
         </xsl:template>
@@ -152,6 +158,9 @@
                                     <xsl:attribute name="title">
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
+                                    <xsl:attribute name="alt">Thumbnail of 
+                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                                    </xsl:attribute>
                                     <xsl:attribute name="src">
                                         <xsl:value-of
                                             select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"
@@ -164,6 +173,9 @@
                             <div class="artifact-preview">
                                 <img class="thumbnail">
                                     <xsl:attribute name="title">
+                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="alt">Thumbnail of 
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
                                     <xsl:attribute name="src">
