@@ -72,7 +72,8 @@
                         <xsl:value-of select="mets:fileGrp[@USE='CONTENT']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
                     </xsl:attribute>
                     <img>
-                        <xsl:attribute name="alt">Thumbnail of 
+                        <xsl:attribute name="alt">
+                            <xsl:text>Thumbnail of </xsl:text>
                             <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
                         </xsl:attribute>
                         <xsl:attribute name="src">
@@ -211,7 +212,8 @@
                                 <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             </xsl:attribute>
                             <img>
-                                <xsl:attribute name="alt">Thumbnail of 
+                                <xsl:attribute name="alt">
+                                    <xsl:text>Thumbnail of </xsl:text>
                                     <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
                                 </xsl:attribute>
                                 <xsl:attribute name="src">
