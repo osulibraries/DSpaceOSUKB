@@ -42,7 +42,7 @@ $(document).ready(function() {
 */
 function initZoomableImage() {
     if (imageJpegArray.length > 0) {
-        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img class=\"central_image\" alt=\"" + IMAGE_TITLE + "\" src=\"" + THEME_PATH + "images/blank.gif\" /></a></div>";
+        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img class=\"central_image\" alt=\"" + IMAGE_TITLE + "\" title=\"" + IMAGE_TITLE + "\" src=\"" + THEME_PATH + "images/blank.gif\" /></a></div>";
         var totalHtml = viewPort;
 
         var containHtml = "<div class=\"scrollable\"><div class=\"items\"><div>";
