@@ -158,7 +158,8 @@
                                     <xsl:attribute name="title">
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
-                                    <xsl:attribute name="alt">Thumbnail of 
+                                    <xsl:attribute name="alt">
+                                        <xsl:text>Thumbnail of </xsl:text>
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
                                     <xsl:attribute name="src">
@@ -175,7 +176,8 @@
                                     <xsl:attribute name="title">
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
-                                    <xsl:attribute name="alt">Thumbnail of 
+                                    <xsl:attribute name="alt">
+                                        <xsl:text>Thumbnail of </xsl:text>
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
                                     <xsl:attribute name="src">
