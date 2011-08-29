@@ -974,12 +974,12 @@ public class SolrLogger
             SolrInputDocument newInput = ClientUtils.toSolrInputDocument(doc);
             Integer type = (Integer) doc.getFieldValue("type");
             Integer id = (Integer) doc.getFieldValue("id");
+            String ip = (String) doc.getFieldValue("ip");
 
             String time = DateFormatUtils.formatUTC((Date)doc.getFieldValue("time"), SolrLogger.DATE_FORMAT_8601);
 
-            String deleteMeQuery = "type:" + type + " AND id:" + id + " AND time:[" + time + " TO " + time +"]";
-            log.info("deleteMeQuery = " + deleteMeQuery);
-            solr.deleteByQuery(deleteMeQuery);
+            //Uniquely remove previous entry. Should be safe to assume only one request to a specified resource by a single user per millisecond.
+            solr.deleteByQuery("type:" + type + " AND id:" + id + " AND ip:" + ip + " AND time:[" + time + " TO " + time +"]");
 
             solr.add(newInput);
             log.info("Marked " + doc.getFieldValue("ip") + " as bot");
