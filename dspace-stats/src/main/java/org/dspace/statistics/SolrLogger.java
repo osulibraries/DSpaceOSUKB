@@ -461,15 +461,8 @@ public class SolrLogger
             try {
 
                 /* Result Process to alter record to be identified as a bot */
-                ResultProcessor processor = new ResultProcessor(){
-                    public void process(SolrDocument doc) throws IOException, SolrServerException {
-                        doc.removeFields("isBot");
-                        doc.addField("isBot", true);
-                        SolrInputDocument newInput = ClientUtils.toSolrInputDocument(doc);
-                        solr.add(newInput);
-                        log.info("Marked " + doc.getFieldValue("ip") + " as bot");
-                    }
-                };
+                // Changed to using Impl block below
+                ResultProcessor processor = new ResultProcessorDeleteAddImpl();
 
                 /* query for ip, exclude results previously set as bots. */
                 processor.execute("ip:"+ip+ "* AND -isBot:true");
@@ -956,6 +949,29 @@ public class SolrLogger
         } catch (IOException ex)
         {
             log.error(ex.getMessage());
+        }
+    }
+
+    private static class ResultProcessorDeleteAddImpl extends ResultProcessor {
+
+        public ResultProcessorDeleteAddImpl() {
+        }
+
+        public void process(SolrDocument doc) throws IOException, SolrServerException {
+            doc.removeFields("isBot");
+            doc.addField("isBot", true);
+            SolrInputDocument newInput = ClientUtils.toSolrInputDocument(doc);
+            Integer type = (Integer) doc.getFieldValue("type");
+            Integer id = (Integer) doc.getFieldValue("id");
+
+            String time = DateFormatUtils.formatUTC((Date)doc.getFieldValue("time"), SolrLogger.DATE_FORMAT_8601);
+
+            String deleteMeQuery = "type:" + type + " AND id:" + id + " AND time:[" + time + " TO " + time +"]";
+            log.info("deleteMeQuery = " + deleteMeQuery);
+            solr.deleteByQuery(deleteMeQuery);
+
+            solr.add(newInput);
+            log.info("Marked " + doc.getFieldValue("ip") + " as bot");
         }
     }
     
