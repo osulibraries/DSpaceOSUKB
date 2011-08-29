@@ -946,6 +946,18 @@ public class SolrLogger
             System.err.println(ioe.getMessage());
         }
     }
+
+    public static void forceCommit() {
+        try {
+            solr.commit();
+        } catch (SolrServerException sse)
+        {
+            log.error(sse.getMessage());
+        } catch (IOException ex)
+        {
+            log.error(ex.getMessage());
+        }
+    }
     
 }
 
