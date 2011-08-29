@@ -465,7 +465,18 @@ public class SolrLogger
                 ResultProcessor processor = new ResultProcessorDeleteAddImpl();
 
                 /* query for ip, exclude results previously set as bots. */
-                processor.execute("ip:"+ip+ "* AND -isBot:true");
+                if (ip.matches("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"))  {
+                    // Full 4 octet string, run as-is.
+                    processor.execute("ip:" + ip + " AND -isBot:true");
+                } else if (ip.matches(".*\\.$"))  {
+                    // didn't match full-octet, but ends in period, we assume it was something like #.#.#. or #.#.
+                    processor.execute("ip:" + ip + "* AND -isBot:true");
+                } else if (ip.matches(".*[0-9]$"))  {
+                    // ends with a number, and is not a full 4-octet as first entry, so we append .*
+                    processor.execute("ip:" + ip + ".* AND -isBot:true");
+                } else {
+                    log.error("Unexpected IP value: " + ip);
+                }
 
                 solr.commit();
 
