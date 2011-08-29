@@ -456,10 +456,8 @@ public class SolrLogger
 
     public static void markRobotsByIP()
     {
-        for(String ip : SpiderDetector.getSpiderIpAddresses()){
-
-            try {
-
+        try {
+            for(String ip : SpiderDetector.getSpiderIpAddresses()){
                 /* Result Process to alter record to be identified as a bot */
                 // Changed to using Impl block below
                 ResultProcessor processor = new ResultProcessorDeleteAddImpl();
@@ -477,16 +475,11 @@ public class SolrLogger
                 } else {
                     log.error("Unexpected IP value: " + ip);
                 }
-
-                solr.commit();
-
-            } catch (Exception e) {
-                log.error(e.getMessage(),e);
             }
-
-
+            solr.commit();
+        } catch (Exception e) {
+                log.error(e.getMessage(),e);
         }
-
     }
 
     public static void markRobotByUserAgent(String agent){
