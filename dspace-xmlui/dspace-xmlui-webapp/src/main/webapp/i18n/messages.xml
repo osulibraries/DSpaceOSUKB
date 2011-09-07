@@ -1863,6 +1863,7 @@
 	<message key="metadata.dc.source.uri">OSU Library Catalog</message>
 	<message key="metadata.dc.subject">Keywords</message>
 	<message key="metadata.dc.subject.lcsh">Subjects (LCSH)</message>
+	<message key="metadata.dc.subject.nalt">Subjects (NALT)</message>
 	<message key="metadata.dc.title">Title</message>
 	<message key="metadata.dc.title.alternative">Other Titles</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-preview">Preview</message>
