@@ -12,7 +12,11 @@
                 exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
 
 <xsl:import href="../dri2xhtml.xsl"/>
+
+<xsl:import href="../gallery/gallery.xsl"/>
+
 <xsl:output indent="yes"/>            
+
 <xsl:template name="itemSummaryView-DIM-fields">
 <xsl:param name="clause" select="'1'"/>
 <xsl:param name="phase" select="'even'"/>
