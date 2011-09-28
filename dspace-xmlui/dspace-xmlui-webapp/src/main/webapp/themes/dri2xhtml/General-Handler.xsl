@@ -224,12 +224,12 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <a>
-                            <xsl:attribute name="href">
+                        <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="220">
+                            <xsl:attribute name="src">
+                                <xsl:text>http://www.google.com/reader/ui/3523697345-audio-player.swf?audioUrl=</xsl:text>
                                 <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             </xsl:attribute>
-                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
-                        </a>
+                        </embed>
                     </xsl:otherwise>
                 </xsl:choose>                        
             </td>
