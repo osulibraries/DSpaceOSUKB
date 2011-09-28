@@ -205,8 +205,7 @@
             </td>
             <td>
                 <xsl:choose>
-                    <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
-                        mets:file[@GROUPID=current()/@GROUPID]">
+                    <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/ mets:file[@GROUPID=current()/@GROUPID]">
                         <a class="image-link">
                             <xsl:attribute name="href">
                                 <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
@@ -224,12 +223,27 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="220">
-                            <xsl:attribute name="src">
-                                <xsl:text>http://www.google.com/reader/ui/3523697345-audio-player.swf?audioUrl=</xsl:text>
-                                <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
-                            </xsl:attribute>
-                        </embed>
+                        <xsl:choose>
+                            <xsl:when test="@MIMETYPE='audio/mpeg'">
+                                <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="220">
+                                    <xsl:attribute name="src">
+                                        <xsl:text>http://www.google.com/reader/ui/3523697345-audio-player.swf?audioUrl=</xsl:text>
+                                        <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="mime">
+                                        <xsl:value-of select="@MIMETYPE" />
+                                    </xsl:attribute>
+                                </embed>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                    </xsl:attribute>
+                                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
+                                </a>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>                        
             </td>
