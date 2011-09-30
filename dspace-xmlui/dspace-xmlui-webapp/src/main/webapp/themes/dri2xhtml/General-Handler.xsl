@@ -223,9 +223,12 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
+                        <xsl:variable name="googleplayer" select="'audio/mpeg,audio/basic,audio/x-wav'" />
+                        <xsl:variable name="html5video" select="'video/webm'" />
+                        <xsl:variable name="flashvideo" select="'video/mp4'" />
                         <xsl:choose>
-                            <xsl:when test="@MIMETYPE='audio/mpeg'">
-                                <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="220">
+                            <xsl:when test="contains($googleplayer, @MIMETYPE)">
+                                <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="320">
                                     <xsl:attribute name="src">
                                         <xsl:text>http://www.google.com/reader/ui/3523697345-audio-player.swf?audioUrl=</xsl:text>
                                         <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
@@ -234,6 +237,35 @@
                                         <xsl:value-of select="@MIMETYPE" />
                                     </xsl:attribute>
                                 </embed>
+                            </xsl:when>
+                            <xsl:when test="contains($html5video, @MIMETYPE)">
+                                <video controls="controls" width="200">
+                                    <xsl:attribute name="src">
+                                        <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
+                                    </xsl:attribute>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                        </xsl:attribute>
+                                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
+                                    </a>
+                                </video>
+                            </xsl:when>
+                            <xsl:when test="contains($flashvideo, @MIMETYPE)">
+                                <object width="200" height="166" type="application/x-shockwave-flash" data="https://library.osu.edu/assets/inc/player.swf">
+                                    <param value="player" name="name" />
+                                    <param value="true" name="allowfullscreen" />
+                                    <param value="always" name="allowscriptaccess" />
+                                    <param name="flashvars">
+                                        
+                                        <xsl:attribute name="value">
+                                            <xsl:text>file=</xsl:text>
+                                            <xsl:value-of select="$baseurl"/>
+                                            <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                        </xsl:attribute>
+                                    </param>
+                                    <param value="https://library.osu.edu/assets/inc/player.swf" name="src" />
+                                </object>
                             </xsl:when>
                             <xsl:otherwise>
                                 <a>
