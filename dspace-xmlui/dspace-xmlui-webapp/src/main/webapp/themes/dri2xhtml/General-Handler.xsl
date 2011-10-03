@@ -226,6 +226,7 @@
                         <xsl:variable name="googleplayer" select="'audio/mpeg,audio/basic,audio/x-wav'" />
                         <xsl:variable name="html5video" select="'video/webm'" />
                         <xsl:variable name="flashvideo" select="'video/mp4'" />
+                        <xsl:variable name="googledocsviewer" select="'application/pdf'" />
                         <xsl:choose>
                             <xsl:when test="contains($googleplayer, @MIMETYPE)">
                                 <embed type="application/x-shockwave-flash" wmode="transparent" height="27" width="320">
@@ -266,6 +267,17 @@
                                     </param>
                                     <param value="https://library.osu.edu/assets/inc/player.swf" name="src" />
                                 </object>
+                            </xsl:when>
+                            <xsl:when test="contains($googledocsviewer, @MIMETYPE)">
+                                <iframe width="600" height="780" style="border: none;">
+                                    <xsl:attribute name="src">
+                                        <xsl:text>http://docs.google.com/viewer?url=</xsl:text>
+                                        <!--<xsl:text>http://labs.google.com/papers/bigtable-osdi06.pdf</xsl:text>-->
+                                        <xsl:value-of select="$baseurl"/>
+                                        <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                        <xsl:text>&amp;embedded=true</xsl:text>
+                                    </xsl:attribute>
+                                </iframe>
                             </xsl:when>
                             <xsl:otherwise>
                                 <a>
