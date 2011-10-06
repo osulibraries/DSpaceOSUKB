@@ -9,9 +9,9 @@
 
 -->
 <!--
-    TODO: Describe this XSL file
-    Author: Alexey Maslov
+    This XSL theme extends template and adds specific view options based on MIMETYPE
 
+    Author: Ryan McGowan
 -->
 
 <xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
