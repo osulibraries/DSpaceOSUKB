@@ -1,18 +1,24 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   $(document).ready(function() {
-    return $('ul#file_list .file-entry .slide-arrow').click(__bind(function() {
-      var fentry;
+    $('ul#file_list').addClass('js').removeClass('no-js');
+    return $('ul#file_list .file-entry .slide-arrow').click(function() {
+      var fentry, fv, fvc;
       fentry = $(this).parent(".file-entry");
       if ($(this).hasClass("show")) {
         $(this).removeClass("show");
-        fentry.find(".file-view").show();
-        return $(this).addClass("hide");
+        $(this).addClass("hide");
+        $(this).find("span.showhide").html("Hide file");
+        fv = fentry.find(".file-view");
+        fvc = fv.find(".file-view-container");
+        return fv.slideDown();
       } else {
+        $(this).removeClass("hide");
         $(this).addClass("show");
-        fentry.find(".file-view").hide();
-        return $(this).removeClass("hide");
+        $(this).find("span.showhide").html("Show file");
+        fv = fentry.find(".file-view");
+        fvc = fv.find(".file-view-container");
+        return fv.slideUp();
       }
-    }, this));
+    });
   });
 }).call(this);

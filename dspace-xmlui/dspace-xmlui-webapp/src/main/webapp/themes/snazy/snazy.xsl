@@ -87,7 +87,7 @@
     <xsl:template name="mimeviews">
         <xsl:param name="context" />
         <xsl:param name="primaryBitstream" />
-        <ul id="file_list" class="snazy ds-file-lsit">
+        <ul id="file_list" class="snazy ds-file-list no-js">
             <xsl:apply-templates select="mets:file">
                 <xsl:with-param name="context" select="$context"/>
             </xsl:apply-templates>
@@ -172,9 +172,11 @@
                 </span>
             </div>
             <div class="slide-arrow show">
-              <xsl:comment>CLOSE DIV</xsl:comment>
+              <div class="showhide">
+                Show File
+              </div>
             </div>
-            <div class="file-item file-mimetype">
+            <div class="file-item file-mimetype last">
                 <span class="label">MIME type:</span>
                 <span class="value">
                     <xsl:value-of select="@MIMETYPE" />
@@ -182,6 +184,7 @@
             </div>
             <!-- Display file based on MIME type -->
             <div class="file-view">
+              <div class="file-view-container">
                 <xsl:choose>
                     <xsl:when test="$mview='googleplayer'">
                         <embed class="googleplayer" type="application/x-shockwave-flash" wmode="transparent" height="27" width="320">
@@ -258,6 +261,7 @@
                         </a>
                     </xsl:otherwise>
                 </xsl:choose>
+              </div>
             </div>
         </li>
     </xsl:template>

@@ -37,11 +37,12 @@ ul#file_list.snazy
     +clearfix
     +border-radius
     .file-item
-      max-width: $file_entry_width - 32
+      max-width: $file_entry_width
       line-height: 1.2em
       margin: 0 0 .4em
-      float: left
-      clear: left
+      &.last
+        float: left
+        clear: left
       .label
         color: lighten($font_color, 55%)
         width: 120px
@@ -51,21 +52,36 @@ ul#file_list.snazy
       color: darken($my_red, 5%)
     .slide-arrow
       float: right
+      font-size: .8em
       cursor: pointer
-      display: block
-      margin-top: 1em
-      width: 32px
-      height: 32px
+      border: 1px solid #ddd
+      +border-radius(6px)
+      $arrow_width: 16px
+      $arrow_height: 16px
+      height: $arrow_height
+      padding: $arrow_width/4
+      line-height: $arrow_height
+      background-color: lighten($entry_color, 2%) 
+      margin-top: -.4em
+      div.showhide
+        height: $arrow_height
+        line-height: $arrow_height
+        padding-right: ($arrow_width * 5/4)
       &.show
-        background: url(../images/arrow-down.png) no-repeat
+        div.showhide
+          background: url(../images/arrow-down.png) 100% 50% no-repeat
       &.hide
-        background: url(../images/arrow-up.png) no-repeat
+        div.showhide
+          background: url(../images/arrow-up.png) 100% 50% no-repeat
     &.even
       $alt_entry_color: lighten(desaturate($entry_color, 50%), 2%)
       border: $file_entry_border_width solid darken($alt_entry_color, 5%)
       background-color: $alt_entry_color
+      .slide-arrow
+        background-color: lighten($alt_entry_color, 2%)
     .file-view
-      display: none
+      clear: both
+      text-align: center
       object, embed, video, audio
         max-width: $file_entry_width
     /*
@@ -82,3 +98,14 @@ ul#file_list.snazy
         float: left
       .file-view
         float: right
+  //Add some js based styling.
+  &.js li.file-entry
+    .slide-arrow
+      display: block
+    .file-view
+      display: none
+  &.no-js li.file-entry
+    .slide-arrow
+      display: none
+    .file-view
+      display: block
