@@ -15,4 +15,11 @@ task :watch do
   end
 end
 
+task :coffee do
+  cmd = 'coffee --watch --output js --compile coffee/*.coffee'
+  puts "Running command: `#{cmd}` . . ."
+  system(cmd)
+end
+
+
 task :default => :compile
