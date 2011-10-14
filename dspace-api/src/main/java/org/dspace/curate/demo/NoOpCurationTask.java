@@ -32,22 +32,22 @@ public class NoOpCurationTask extends AbstractCurationTask {
     private int status = Curator.CURATE_UNSET;
     private String result = null;
 
-    @Override
-    public int performItem(DSpaceObject dso) throws IOException
-    {
 
-		if (dso instanceof Item)
-        {
-            Item item = (Item)dso;
-            status = Curator.CURATE_SUCCESS;
-            result = "No operation performed on " + item.getHandle();
-            
-            setResult(result);
-            report(result);
-		}
+    @Override
+    public int perform(DSpaceObject dso) throws IOException
+    {
+        result = "";
+        distribute(dso);
+        setResult(result);
+        report(result);
         
         return status;
     }
 
-
+    @Override
+    protected void performItem(Item item)
+    {
+        status = Curator.CURATE_SUCCESS;
+        result += "No operation performed on " + item.getHandle();
+    }
 }
