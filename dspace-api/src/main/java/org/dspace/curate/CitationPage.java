@@ -7,8 +7,15 @@
  */
 package org.dspace.curate;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+
 import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,12 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.log4j.Logger;
+
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+
 import org.dspace.content.Bitstream;
 import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
@@ -50,18 +61,23 @@ public class CitationPage extends AbstractCurationTask {
      */
     private StringBuilder resBuilder;
     /**
-     * A set of MIME types that can have a citation page added to them.
+     * A set of MIME types that can have a citation page added to them. That is,
+     * MIME types in this set can be converted to a PDF which is then prepended
+     * with a citation page.
      */
-    private static Set<String> validTypes;
+    private static final Set<String> validTypes = new HashSet<String>(2);
     /**
      * Sequence of fields wanted to be used
      */
     private static List<String> desiredMeta;
+    /**
+     * Class Logger
+     */
+    private static final Logger log = Logger.getLogger(CitationPage.class);
 
     static {
         // Add valid format MIME types to set. This could be put in the Schema
         // instead.
-        CitationPage.validTypes = new HashSet<String>(2);
         CitationPage.validTypes.add("application/pdf");
         CitationPage.validTypes.add("application/x-pdf");
 
@@ -83,31 +99,27 @@ public class CitationPage extends AbstractCurationTask {
         return this.status;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see AbstractCurationTask#performItem(Item)
+     */
     @Override
     protected void performItem(Item item) throws SQLException {
-        // Should return single element array with a the ORIGINAL bundle
+        // Should return single element array with the ORIGINAL bundle
         Bundle[] bundles = item.getBundles("ORIGINAL");
- item.getMetadata("dc", "date", "accessensioned", "");
-/* DCValue[] dcv =item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
- dcv[0].value;
- Collection col = Collection.find(context, 1);
- col.getMetadata("")
-
-dcv[0].
-item.getMetadata("dc.date.accessioned");*/
-
-
         for (Bundle bundle : bundles) {
             Bitstream[] bitstreams = bundle.getBitstreams();
             // Loop through each file and generate a cover page for documents we
             // can turn into PDFs.
             for (Bitstream bitstream : bitstreams) {
                 BitstreamFormat format = bitstream.getFormat();
+
+                //If bitstream is a document which can be converted to a PDF
                 if (CitationPage.validTypes.contains(format.getMIMEType())) {
                     this.resBuilder.append(item.getHandle() + " - "
                             + bitstream.getName() + " is citable");
                     try {
-                        PDDocument doc = CitationPage.convertToPDF(bitstream);
+                        PDDocument doc = PDDocument.load(bitstream.retrieve());
                         if (doc == null) {
                             // Could not create PDF because of a bad format.
                             this.resBuilder
@@ -117,47 +129,53 @@ item.getMetadata("dc.date.accessioned");*/
                             // Create a Citation page and add it to front of our
                             // document
                             try {
-                                // Construct CitationMeta object if possible
+                                //Created PDPage and add it to our PDDocument
                                 PDPage coverPage = new PDPage();
                                 doc.addPage(coverPage);
-                                
+                                //TODO: Add citation page to the front of the
+                                //document.
+
+                                //Create content stream to add content to the
+                                //page.
                                 PDPageContentStream contentStream = new PDPageContentStream(
                                         doc, coverPage);
-                                //TODO: Find a place to save the new PDF
                                 this.generateCoverPage(contentStream,
                                         new CitationMeta(item), bitstream);
-                                bitstream.
-                                doc.save("somefilepath.pdf");
-                                this.status = Curator.CURATE_SUCCESS;
-                            } catch (SQLException e) {
-                                // Couldn't find parent or something went wrong
-                                // with database connection
-                                e.printStackTrace();
-                                this.resBuilder
-                                        .append(", but there was an error retrieving the METADATA.");
-                                this.status = Curator.CURATE_ERROR;
-                            } catch (IOException e) {
-                                // Error actually generating the PDF
-                                e.printStackTrace();
-                                this.resBuilder
-                                        .append(", but there was an error generating the cover page.");
-                                this.status = Curator.CURATE_ERROR;
 
-                            } catch (COSVisitorException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                                this.resBuilder
-                                        .append(", but there was an error saving the cover page.");
+                                //Save our file to a temporary file/output stream
+                                File temp = File.createTempFile(bitstream.getName(), ".citation.pdf");
+                                OutputStream sto = new FileOutputStream(temp);
+                                doc.save(sto);
+
+                                //Create input stream from our temporary file and
+                                //save it to a new bundle on our item called
+                                //CITATION
+                                Bundle citationBundle = item.createBundle("CITATION");
+                                InputStream inp = new FileInputStream(temp);
+                                citedBitstream = citationBundle.createBitstream(inp);
+                                citedBitstream.setName("cited-" + bitstream.getName());
+
+                                //Run update to propagate changes to the
+                                //database.
+                                item.update();
+                                this.status = Curator.CURATE_SUCCESS;
+                            } catch (Exception e) {
+                                //Could be many things
+                                log.error("Something went wrong while generating a PDF: " +e.getMessage());
+                                this.resBuilder.append(", but there was an error generating the PDF.\n");
                                 this.status = Curator.CURATE_ERROR;
                             }
                         }
-                    } catch (IOException ioe) {
-                        // Could not convert doc to a PDF because of an IOError
+                    } catch (Exception e) {
+                        // Could not convert doc to a PDF because of an
+                        // IOException
+                        log.error("Could not convert document to PDF: " + e.getMessage());
                         this.resBuilder
                                 .append(", but it could not be converted to a PDF.\n");
                         this.status = Curator.CURATE_ERROR;
                     }
                 } else {
+                    //bitstream is not a document
                     this.resBuilder.append(item.getHandle() + " - "
                             + bitstream.getName() + " is not citable.\n");
                     this.status = Curator.CURATE_SUCCESS;
@@ -192,66 +210,75 @@ item.getMetadata("dc.date.accessioned");*/
     }
 
     /**
-     * Takes a DSpace {@link Bitstream} that is a PDF or can be converted to a
-     * PDF and returns the PDDocument of it.
      *
-     * @param doc
-     *            The DSpace Bitstream to be converted to a PDDocument.
-     * @return The converted PDDocument or null on failure.
-     * @throws IOException
      */
-    private static PDDocument convertToPDF(Bitstream doc) throws IOException {
-        PDDocument ret;
-        String mimeType = doc.getFormat().getMIMEType();
-        if (mimeType.equals("application/pdf")
-                || mimeType.equals("application/x-pdf")) {
-            // We have a PDF so all we have to do is load it up.
-            ret = PDDocument.load(doc.getSource());
-        } else {
-            ret = null;
-        }
-        return ret;
-    }
-
     private class CitationMeta {
-        private Bitstream logo;
-        private String name;
-        private Collection parentCollection;
+        private Bitstream pLogo;
+        private String pName;
+        private Collection parent;
         private Map<String, String> metaData;
+        private Map<String, String> parentMetaData;
+        private Item myItem;
 
         /**
-         * Constructs CitationMeta object from DSpaceObject as long as the given
-         * DSpaceObject is a collection or an item. Requires dso is not a
-         * Community.
+         * Constructs CitationMeta object from an Item. It uses item specific
+         * METADATA as well as METADATA from the owning collection.
          *
-         * @param dso
-         *            A Collection or Item to get METADATA from.
+         * @param item An Item to get METADATA from.
          * @throws SQLException
          */
-        public CitationMeta(DSpaceObject dso) throws SQLException {
-            DSpaceObject papa = dso;
-            while (!(papa instanceof Collection)) {
-                papa = papa.getParentObject();
-            }
-            this.parentCollection = (Collection) papa;
-
-            this.logo = this.parentCollection.getLogo();
-            this.name = this.parentCollection.getName();
+        public CitationMeta(Item item) throws SQLException {
+            this.myItem = item;
             this.metaData = new HashMap<String, String>();
+            //Get all METADATA from our this.myItem
+            DCValue[] dcvs = this.myItem.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
+            //Put METADATA in a Map for easy access.
+            for (DCValue dsv : dcvs) {
+                //TODO: Make the key correct
+                String key = dsv.schema + "." + dsv.element + "." + dsv.qualifier + "." + dsv.language;
+                this.metaData.put(key, dsv.value);
+            }
 
-            for (String metaKey : CitationPage.desiredMeta) {
-                this.addMeta(metaKey);
+            //Get METADATA from the owning Collection
+            this.parent = this.myItem.getOwningCollection();
+            this.pLogo = this.parent.getLogo();
+            this.pName = this.parent.getName();
+
+            //Loop through desiredMeta gathering what we can from the
+            //Collection specific METADATA.
+            for (String desired : CitationPage.desiredMeta) {
+                this.addCollectionMeta(desired);
             }
         }
 
+        /**
+         * Returns the name of the collection the item is in.
+         *
+         * @return The name of the collection.
+         */
         public String getName() {
-            return this.name;
+            return this.pName;
         }
 
+        public Item getItem() {
+            return this.myItem;
+        }
+
+        /**
+         * Returns the logo of the parent collection.
+         *
+         * @return The logo set on the parent collection.
+         */
         public Bitstream getLogo() {
-            return this.logo;
+            return this.pLogo;
         }
 
+        /**
+         * Returns a map of the METADATA for the item associated with this
+         * instance of CitationMeta.
+         *
+         * @return a Map of the METADATA for the associated item.
+         */
         public Map<String, String> getMetaData() {
             return this.metaData;
         }
@@ -264,7 +291,7 @@ item.getMetadata("dc.date.accessioned");*/
          *            The referencing string.
          * @return The meta field string be referred to.
          */
-        public String getMeta(String metaKey) {
+        public String getMetaValue(String metaKey) {
             return this.metaData.get(metaKey);
         }
 
@@ -287,14 +314,36 @@ item.getMetadata("dc.date.accessioned");*/
          * @return Found related meta field and added it. Returns false if it
          *         was not found in collection META.
          */
-        private boolean addMeta(String metaKey) {
+        private boolean addCollectionMeta(String metaKey) {
             try {
-                String metaValue = this.parentCollection.getMetadata(metaKey);
-                metaData.put(metaKey, metaValue);
+                String metaValue = this.parent.getMetadata(metaKey);
+                parentMetaData.put(metaKey, metaValue);
                 return true;
             } catch (IllegalArgumentException ie) {
                 return false;
             }
+        }
+
+        /**
+         * Nicely print out what CitationMeta is.
+         *
+         * @return A string in with the format:
+         *  CitationMeta {
+         *      CONTENT
+         *  }
+         *  Where CONTENT is the METADATA derived by this class.
+         */
+        @Override
+        public String toString() {
+            StringBuilder ret = new StringBuilder(CitationMeta.class.getName());
+            ret.append(" {\n\t");
+            ret.append(this.metaData);
+            ret.append("\n\t");
+            ret.append(this.pName);
+            ret.append("\n\t");
+            ret.append(this.parentMetaData);
+            ret.append("\n}\n");
+            return ret.toString();
         }
     }
 }
