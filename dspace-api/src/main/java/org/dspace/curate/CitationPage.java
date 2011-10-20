@@ -25,11 +25,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -74,6 +77,10 @@ public class CitationPage extends AbstractCurationTask {
      * Class Logger
      */
     private static final Logger log = Logger.getLogger(CitationPage.class);
+    /**
+     * The name to give the bundle we add the cited pages to.
+     */
+    private static final String bundleName = "CITATION";
 
     static {
         // Add valid format MIME types to set. This could be put in the Schema
@@ -129,8 +136,16 @@ public class CitationPage extends AbstractCurationTask {
                             // Create a Citation page and add it to front of our
                             // document
                             try {
-                                //Created PDPage and add it to our PDDocument
-                                PDPage coverPage = new PDPage();
+                                //First we need to determine the size of our
+                                //first page so our citation matches it.
+                                PDDocumentCatalog docCat = doc.getDocumentCatalog();
+                                List<PDPage> pages = (List<PDPage>) docCat.getAllPages();
+                                PDRectangle firstPageRectangle = pages.get(0).getTrimBox();
+
+                                //Create the cover page using the size we found
+                                //above.
+                                PDPage coverPage = new PDPage(firstPageRectangle);
+
                                 doc.addPage(coverPage);
                                 //TODO: Add citation page to the front of the
                                 //document.
@@ -148,11 +163,21 @@ public class CitationPage extends AbstractCurationTask {
                                 doc.save(sto);
 
                                 //Create input stream from our temporary file and
-                                //save it to a new bundle on our item called
-                                //CITATION
-                                Bundle citationBundle = item.createBundle("CITATION");
+                                //save it to the CITATION bundle. If that bundle
+                                //does not exist, create it.
+                                Bundle citationBundles[] = item.getBundles(CitationPage.bundleName);
+                                Bundle citationBundle;
+                                if (citationBundles.length == 0) {
+                                    //There is no bundle for cited pages so we
+                                    //have to create it.
+                                    citationBundle = item.createBundle(CitationPage.bundleName);
+                                } else {
+                                    //The citation bundle has already been
+                                    //created so we just have to grab it.
+                                    citationBundle = citationBundles[0];
+                                }
                                 InputStream inp = new FileInputStream(temp);
-                                citedBitstream = citationBundle.createBitstream(inp);
+                                Bitstream citedBitstream = citationBundle.createBitstream(inp);
                                 citedBitstream.setName("cited-" + bitstream.getName());
 
                                 //Run update to propagate changes to the
@@ -205,6 +230,7 @@ public class CitationPage extends AbstractCurationTask {
         cStream.setFont(font, 14);
         cStream.moveTextPositionByAmount(100, 700);
         cStream.drawString(cMeta.getName());
+        cStream.drawString(cMeta.toString());
         cStream.endText();
         cStream.close();
     }
