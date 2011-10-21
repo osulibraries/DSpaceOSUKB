@@ -32,9 +32,10 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+
+import org.apache.pdfbox.util.PDFMergerUtility;
 
 import org.dspace.content.Bitstream;
 import org.dspace.content.BitstreamFormat;
@@ -116,8 +117,8 @@ public class CitationPage extends AbstractCurationTask {
         Bundle[] bundles = item.getBundles("ORIGINAL");
         for (Bundle bundle : bundles) {
             Bitstream[] bitstreams = bundle.getBitstreams();
-            // Loop through each file and generate a cover page for documents we
-            // can turn into PDFs.
+            // Loop through each file and generate a cover page for documents
+            // that can be converted to a PDF.
             for (Bitstream bitstream : bitstreams) {
                 BitstreamFormat format = bitstream.getFormat();
 
@@ -126,59 +127,79 @@ public class CitationPage extends AbstractCurationTask {
                     this.resBuilder.append(item.getHandle() + " - "
                             + bitstream.getName() + " is citable");
                     try {
-                        PDDocument doc = PDDocument.load(bitstream.retrieve());
-                        if (doc == null) {
+                        /*
+                         * Process for adding cover page is as follows:
+                         *  1. Load source file into PDDocument and create
+                         *     another PDDocuemnt to put our cover page into.
+                         *  2. Create cover page and add content to it.
+                         *  3. Concatenate the document with the cover page and
+                         *     the original source document.
+                         */
+                        PDDocument originalDoc = PDDocument.load(bitstream.retrieve());
+                        PDDocument citedDoc = new PDDocument();
+                        if (originalDoc == null) {
                             // Could not create PDF because of a bad format.
                             this.resBuilder
                                     .append(", but it is an invalid format.\n");
                             this.status = Curator.CURATE_FAIL;
                         } else {
                             // Create a Citation page and add it to front of our
-                            // document
+                            // original document
                             try {
-                                //First we need to determine the size of our
-                                //first page so our citation matches it.
-                                PDDocumentCatalog docCat = doc.getDocumentCatalog();
-                                List<PDPage> pages = (List<PDPage>) docCat.getAllPages();
+                                //Determine the size of the first page so the
+                                //citation page can be the same.
+                                List<PDPage> pages = (List<PDPage>) originalDoc.getDocumentCatalog().getAllPages();
                                 PDRectangle firstPageRectangle = pages.get(0).getTrimBox();
 
                                 //Create the cover page using the size we found
-                                //above.
+                                //above and add it to our cited document.
                                 PDPage coverPage = new PDPage(firstPageRectangle);
-
-                                doc.addPage(coverPage);
-                                //TODO: Add citation page to the front of the
-                                //document.
+                                citedDoc.addPage(coverPage);
 
                                 //Create content stream to add content to the
-                                //page.
+                                //citation page.
                                 PDPageContentStream contentStream = new PDPageContentStream(
-                                        doc, coverPage);
-                                this.generateCoverPage(contentStream,
-                                        new CitationMeta(item), bitstream);
+                                        citedDoc, coverPage);
+                                CitationPage.generateCoverPage(contentStream, new CitationMeta(item));
+
+                                //Use PDFMergerUtility to concatenate cover page
+                                //document and source document.
+                                PDFMergerUtility concatenator = new PDFMergerUtility();
+                                concatenator.appendDocument(citedDoc, originalDoc);
 
                                 //Save our file to a temporary file/output stream
                                 File temp = File.createTempFile(bitstream.getName(), ".citation.pdf");
                                 OutputStream sto = new FileOutputStream(temp);
-                                doc.save(sto);
+                                citedDoc.save(sto);
 
-                                //Create input stream from our temporary file and
-                                //save it to the CITATION bundle. If that bundle
-                                //does not exist, create it.
-                                Bundle citationBundles[] = item.getBundles(CitationPage.bundleName);
-                                Bundle citationBundle;
-                                if (citationBundles.length == 0) {
-                                    //There is no bundle for cited pages so we
-                                    //have to create it.
-                                    citationBundle = item.createBundle(CitationPage.bundleName);
-                                } else {
-                                    //The citation bundle has already been
-                                    //created so we just have to grab it.
-                                    citationBundle = citationBundles[0];
+                                //Close it all up
+                                citedDoc.close();
+                                originalDoc.close();
+                                sto.close();
+
+                                //If the CITATION bundle already exists, remove
+                                //it and start again.
+                                Bundle[] citationBundles = item.getBundles(CitationPage.bundleName);
+                                if (citationBundles.length > 0) {
+                                    //Remove all Bundles with the name CITATION
+                                    for (Bundle b : citationBundles) {
+                                        item.removeBundle(b);
+                                    }
                                 }
+                                Bundle citationBundle = item.createBundle(CitationPage.bundleName);
+
+                                //Create an input stream form the temporary file
+                                //that is the cited document and create a
+                                //bitstream from it.
                                 InputStream inp = new FileInputStream(temp);
                                 Bitstream citedBitstream = citationBundle.createBitstream(inp);
+                                inp.close(); //Close up the temporary InputStream
+
+                                //Setup a good name for our bitstream and make
+                                //it the same format as the source document.
                                 citedBitstream.setName("cited-" + bitstream.getName());
+                                citedBitstream.setFormat(bitstream.getFormat());
+
 
                                 //Run update to propagate changes to the
                                 //database.
@@ -217,22 +238,35 @@ public class CitationPage extends AbstractCurationTask {
      *            The content stream to write the cover page to.
      * @param cMeta
      *            METADATA retrieved from the parent collection.
-     * @param bs
-     *            The DSpace Bitstream to use the METADATA of to create a cover
-     *            page.
      * @throws IOException
      */
-    private void generateCoverPage(PDPageContentStream cStream,
-            CitationMeta cMeta, Bitstream bs) throws IOException {
+    private static void generateCoverPage(PDPageContentStream cStream,
+            CitationMeta cMeta) throws IOException {
         // TODO: Fill in Cover Page creation.
         PDFont font = PDType1Font.TIMES_ROMAN;
-        cStream.beginText();
         cStream.setFont(font, 14);
-        cStream.moveTextPositionByAmount(100, 700);
+        CitationPage.generateCoverPageHeader(cStream);
+        cStream.beginText();
+        cStream.moveTextPositionByAmount(50, 100);
         cStream.drawString(cMeta.getName());
         cStream.drawString(cMeta.toString());
         cStream.endText();
         cStream.close();
+    }
+
+    /**
+     * Helper function for {@link CitationPage.generateCoverPage()}. Generates
+     * content for the header.
+     *
+     * @param cStream
+     *            The content stream to write the cover page to.
+     */
+    private static void generateCoverPageHeader(PDPageContentStream cStream)
+            throws IOException {
+        cStream.beginText();
+        cStream.moveTextPositionByAmount(50, 40);
+        cStream.drawString("CitationPage\nEverybody PARTY!\n\n");
+        cStream.endText();
     }
 
     /**
@@ -362,7 +396,7 @@ public class CitationPage extends AbstractCurationTask {
         @Override
         public String toString() {
             StringBuilder ret = new StringBuilder(CitationMeta.class.getName());
-            ret.append(" {\n\t");
+            ret.append(" {<br />\n\t");
             ret.append(this.metaData);
             ret.append("\n\t");
             ret.append(this.pName);
