@@ -125,7 +125,7 @@ public class CitationPage extends AbstractCurationTask {
                 //If bitstream is a document which can be converted to a PDF
                 if (CitationPage.validTypes.contains(format.getMIMEType())) {
                     this.resBuilder.append(item.getHandle() + " - "
-                            + bitstream.getName() + " is citable");
+                            + bitstream.getName() + " is citable.");
                     try {
                         /*
                          * Process for adding cover page is as follows:
@@ -200,6 +200,9 @@ public class CitationPage extends AbstractCurationTask {
                                 citedBitstream.setName("cited-" + bitstream.getName());
                                 citedBitstream.setFormat(bitstream.getFormat());
 
+                                this.resBuilder.append(" Added "
+                                        + citedBitstream.getName()
+                                        + " to the " + CitationPage.bundleName + " bundle.\n");
 
                                 //Run update to propagate changes to the
                                 //database.
@@ -207,6 +210,7 @@ public class CitationPage extends AbstractCurationTask {
                                 this.status = Curator.CURATE_SUCCESS;
                             } catch (Exception e) {
                                 //Could be many things
+                                this.resBuilder.append("\n");
                                 log.error("Something went wrong while generating a PDF: " +e.getMessage());
                                 this.resBuilder.append(", but there was an error generating the PDF.\n");
                                 this.status = Curator.CURATE_ERROR;
@@ -247,9 +251,16 @@ public class CitationPage extends AbstractCurationTask {
         cStream.setFont(font, 14);
         CitationPage.generateCoverPageHeader(cStream);
         cStream.beginText();
-        cStream.moveTextPositionByAmount(50, 100);
+        cStream.moveTextPositionByAmount(50, 600);
         cStream.drawString(cMeta.getName());
-        cStream.drawString(cMeta.toString());
+        cStream.moveTextPositionByAmount(25, 0);
+
+        //Iterate through METADATA and display each entry
+        for (Map.Entry<String, String> entry : cMeta.getMetaData().entrySet()) {
+            cStream.moveTextPositionByAmount(0, -20);
+            cStream.drawString(entry.getKey() + ": " + entry.getValue());
+        }
+
         cStream.endText();
         cStream.close();
     }
@@ -264,7 +275,7 @@ public class CitationPage extends AbstractCurationTask {
     private static void generateCoverPageHeader(PDPageContentStream cStream)
             throws IOException {
         cStream.beginText();
-        cStream.moveTextPositionByAmount(50, 40);
+        cStream.moveTextPositionByAmount(50, 700);
         cStream.drawString("CitationPage\nEverybody PARTY!\n\n");
         cStream.endText();
     }
