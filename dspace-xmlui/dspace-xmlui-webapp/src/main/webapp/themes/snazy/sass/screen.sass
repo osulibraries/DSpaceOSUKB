@@ -1,0 +1,111 @@
+/*
+  Snazy Stylesheet built with compass
+
+/*
+  Import compass libraries.
+@import compass/reset
+@import compass
+
+/*
+  Constansts read from computed CSS. These should not be modified.
+$font_color: #000
+$osu_red: #990000
+$ds_body_width: 790px
+$container_padding: 20px
+$container_width: $ds_body_width - 2 * $container_padding
+
+/*
+  Some custom variables
+$entry_color: #f6f4f4
+$my_red: darken($osu_red, 10%)
+$default-border-radius: 4px
+
+ul#file_list.snazy
+  font-size: 1em
+  line-height: 1em
+  li.file-entry
+    /* Generic file-entry styling
+    position: relative
+    display: block
+    background-color: $entry_color
+    $file_entry_border_width: 1px
+    $file_entry_padding: 8px
+    $file_entry_width: $container_width - 2 * ($file_entry_padding + $file_entry_border_width)
+    padding: $file_entry_padding
+    border: $file_entry_border_width solid darken($entry_color, 5%)
+    margin: 0 0 $file_entry_padding
+    +clearfix
+    +border-radius
+    .file-item
+      max-width: $file_entry_width
+      line-height: 1.2em
+      margin: 0 0 .4em
+      &.last
+        float: left
+        clear: left
+      .label
+        color: lighten($font_color, 55%)
+        width: 120px
+        display: block
+        float: left
+    .file-size
+      color: darken($my_red, 5%)
+    .slide-arrow
+      float: right
+      font-size: .8em
+      cursor: pointer
+      border: 1px solid #ddd
+      +border-radius(6px)
+      $arrow_width: 16px
+      $arrow_height: 16px
+      height: $arrow_height
+      padding: $arrow_width/4
+      line-height: $arrow_height
+      background-color: lighten($entry_color, 2%) 
+      margin-top: -.4em
+      div.showhide
+        height: $arrow_height
+        line-height: $arrow_height
+        padding-right: ($arrow_width * 5/4)
+      &.show
+        div.showhide
+          background: url(../images/arrow-down.png) 100% 50% no-repeat
+      &.hide
+        div.showhide
+          background: url(../images/arrow-up.png) 100% 50% no-repeat
+    &.even
+      $alt_entry_color: lighten(desaturate($entry_color, 50%), 2%)
+      border: $file_entry_border_width solid darken($alt_entry_color, 5%)
+      background-color: $alt_entry_color
+      .slide-arrow
+        background-color: lighten($alt_entry_color, 2%)
+    .file-view
+      clear: both
+      text-align: center
+      object, embed, video, audio
+        max-width: $file_entry_width
+    /*
+      Styling for views
+    .embedwithfallback //For PDF viewing typically
+      width: $file_entry_width
+      height: 500px
+    .flashvideo
+      width: $file_entry_width
+      height: $file_entry_width * 9/16
+    .googleplayer
+      +clearfix
+      .file-mimetype
+        float: left
+      .file-view
+        float: right
+  //Add some js based styling.
+  &.js li.file-entry
+    .slide-arrow
+      display: block
+    .file-view
+      display: none
+  &.no-js li.file-entry
+    .slide-arrow
+      display: none
+    .file-view
+      display: block
