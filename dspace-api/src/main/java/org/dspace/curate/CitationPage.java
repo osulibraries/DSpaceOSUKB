@@ -102,7 +102,7 @@ public class CitationPage extends AbstractCurationTask {
      * The location of the logo to be used on the citation page.
      */
     private static final String LOGO_RESOURCE = ConfigurationManager.getProperty(
-            "citationpage", "logo_resource", "/default/path");
+            "citationpage", "logo_resource", "");
 
     static {
         // Add valid format MIME types to set. This could be put in the Schema
@@ -236,8 +236,7 @@ public class CitationPage extends AbstractCurationTask {
      * @throws DocumentException 
      */
     private static void generateCoverPage(Document cDoc, PdfWriter writer,
-            CitationMeta cMeta)
-            throws IOException, DocumentException {
+            CitationMeta cMeta) throws DocumentException {
         cDoc.open();
         writer.setCompressionLevel(0);
         cDoc.addHeader(cMeta.getCollection().getName() + ": "
@@ -266,11 +265,18 @@ public class CitationPage extends AbstractCurationTask {
         cDoc.add(fromThe);
 
         //Add OSU logo to citation page.
-        Image logo = Image.getInstance(CitationPage.LOGO_RESOURCE);
-        float x = cDoc.getPageSize().getWidth() - cDoc.rightMargin() - logo.getScaledWidth();
-        float y = cDoc.getPageSize().getHeight() - cDoc.topMargin() - logo.getScaledHeight();
-        logo.setAbsolutePosition(x, y);
-        writer.getDirectContent().addImage(logo);
+        if (CitationPage.LOGO_RESOURCE.length() > 0) {
+            try {
+                Image logo = Image.getInstance(CitationPage.LOGO_RESOURCE);
+                float x = cDoc.getPageSize().getWidth() - cDoc.rightMargin() - logo.getScaledWidth();
+                float y = cDoc.getPageSize().getHeight() - cDoc.topMargin() - logo.getScaledHeight();
+                logo.setAbsolutePosition(x, y);
+                writer.getDirectContent().addImage(logo);
+            } catch (Exception e) {
+                log.error("Could not add logo (" + CitationPage.LOGO_RESOURCE
+                        + ") to cited document: " + e.getMessage());
+            }
+        }
 
 
         //Iterate through METADATA and display each entry
