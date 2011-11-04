@@ -260,7 +260,7 @@ public class CitationPage extends AbstractCurationTask {
 
         title.setLeading(0f, 1f);
         fromThe.setLeading(1f, 1.5f);
-        fromThe.setSpacingAfter(2f);
+        fromThe.setSpacingAfter(4f);
         cDoc.add(title);
         cDoc.add(fromThe);
 
@@ -436,8 +436,8 @@ public class CitationPage extends AbstractCurationTask {
         OutputStream citedOut = new FileOutputStream(citedTemp);
         PdfConcatenate concat = new PdfConcatenate(citedOut);
         concat.open();
-        concat.addPages(cover);
         concat.addPages(source);
+        concat.addPages(cover);
 
         //Put all of our labels in from the orignal document.
         String[] labels = PdfPageLabels.getPageLabels(source);
