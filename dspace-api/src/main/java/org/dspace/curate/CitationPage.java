@@ -15,6 +15,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.net.URLConnection;
+import java.net.URL;
+
 import java.sql.SQLException;
 
 import java.util.HashMap;
@@ -46,7 +49,10 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfConcatenate;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfPageLabels;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -81,6 +87,18 @@ public class CitationPage extends AbstractCurationTask {
      */
     private static final Set<String> VALID_TYPES = new HashSet<String>(2);
     /**
+     * A set of MIME types that refer to a JPEG, PNG, or GIF
+     */
+    private static final Set<String> RASTER_MIMES = new HashSet<String>();
+    /**
+     * A set of MIME types that refer to a SVG
+     */
+    private static final Set<String> SVG_MIMES = new HashSet<String>();
+    /**
+     * A set of MIME types that refer to a PDF
+     */
+    private static final Set<String> PDF_MIMES = new HashSet<String>(2);
+    /**
      * Class Logger
      */
     private static Logger log = Logger.getLogger(CitationPage.class);
@@ -107,8 +125,20 @@ public class CitationPage extends AbstractCurationTask {
     static {
         // Add valid format MIME types to set. This could be put in the Schema
         // instead.
-        CitationPage.VALID_TYPES.add("application/pdf");
-        CitationPage.VALID_TYPES.add("application/x-pdf");
+        //Populate RASTER_MIMES
+        CitationPage.SVG_MIMES.add("image/jpeg");
+        CitationPage.SVG_MIMES.add("image/pjpeg");
+        CitationPage.SVG_MIMES.add("image/png");
+        CitationPage.SVG_MIMES.add("image/gif");
+        //Populate SVG_MIMES
+        CitationPage.SVG_MIMES.add("image/svg");
+        CitationPage.SVG_MIMES.add("image/svg+xml");
+        //Populate PDF_MIMES
+        CitationPage.PDF_MIMES.add("application/pdf");
+        CitationPage.PDF_MIMES.add("application/x-pdf");
+
+        //Populate VALID_TYPES
+        CitationPage.VALID_TYPES.addAll(CitationPage.PDF_MIMES);
     }
 
     /**
@@ -147,7 +177,7 @@ public class CitationPage extends AbstractCurationTask {
         } else {
             dBundle = dBundles[0];
         }
-        
+
         //Create a map of the bitstreams in the displayBundle. This is used to
         //check if the bundle being cited is already in the display bundle.
         Map<String,Bitstream> displayMap = new HashMap<String,Bitstream>();
@@ -233,9 +263,9 @@ public class CitationPage extends AbstractCurationTask {
      * @param cMeta
      *            METADATA retrieved from the parent collection.
      * @throws IOException
-     * @throws DocumentException 
+     * @throws DocumentException
      */
-    private static void generateCoverPage(Document cDoc, PdfWriter writer,
+    private void generateCoverPage(Document cDoc, PdfWriter writer,
             CitationMeta cMeta) throws DocumentException {
         cDoc.open();
         writer.setCompressionLevel(0);
@@ -243,9 +273,9 @@ public class CitationPage extends AbstractCurationTask {
                 + cMeta.getItem().getName(), CitationPage.HEADER_LINE);
 
         //Set up some fonts
-        Font beforeAfterFont = FontFactory.getFont(FontFactory.TIMES_BOLD, 10f, new BaseColor(153, 0, 0));
-        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18f, new BaseColor(0, 0, 0));
-        Font headerFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14f, new BaseColor(9, 9, 9));
+        Font beforeAfterFont = FontFactory.getFont(FontFactory.TIMES_BOLD, 12f, new BaseColor(153, 0, 0));
+        Font titleFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 30f, new BaseColor(0, 0, 0));
+        Font headerFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18f, new BaseColor(9, 9, 9));
 
         //Construct title and header paragraphs
         Paragraph title = new Paragraph(cMeta.getItem().getName(), titleFont);
@@ -260,45 +290,59 @@ public class CitationPage extends AbstractCurationTask {
 
         title.setLeading(0f, 1f);
         fromThe.setLeading(1f, 1.5f);
-        fromThe.setSpacingAfter(4f);
+        fromThe.setSpacingAfter(10f);
         cDoc.add(title);
         cDoc.add(fromThe);
 
         //Add OSU logo to citation page.
         if (CitationPage.LOGO_RESOURCE.length() > 0) {
-            try {
-                Image logo = Image.getInstance(CitationPage.LOGO_RESOURCE);
-                float x = cDoc.getPageSize().getWidth() - cDoc.rightMargin() - logo.getScaledWidth();
-                float y = cDoc.getPageSize().getHeight() - cDoc.topMargin() - logo.getScaledHeight();
-                logo.setAbsolutePosition(x, y);
-                writer.getDirectContent().addImage(logo);
-            } catch (Exception e) {
-                log.error("Could not add logo (" + CitationPage.LOGO_RESOURCE
-                        + ") to cited document: " + e.getMessage());
+            if (!this.addLogoToDocumnet(cDoc, writer, CitationPage.LOGO_RESOURCE)) {
+                log.debug("Unable to add logo from " + CitationPage.LOGO_RESOURCE);
             }
         }
 
-
         //Iterate through METADATA and display each entry
+        Font metaKeyFont = FontFactory.getFont(FontFactory.COURIER_BOLD, 11f, new BaseColor(24, 24, 24));
+        String handleURI = null;
         for (Map.Entry<String, String> entry : cMeta.getMetaData().entrySet()) {
-            String val = entry.getValue();
-
             //Construct a nicely fomatted string.
-            StringBuilder format = new StringBuilder("");
-            format.append(entry.getKey() + ": "); 
-            if (val.length() < 37) {
-                format.append(val);
-                format.append("\n");
-                cDoc.add(new Paragraph(format.toString()));
+            Rectangle pageSize = cDoc.getPageSize();
+            Float remainingWidth = (pageSize.getWidth() - cDoc.rightMargin() - cDoc.leftMargin()) / 10.0f - entry.getKey().length();
+            log.debug("Remaining width: " + remainingWidth);
+            Paragraph metaItem = new Paragraph();
+            metaItem.add(new Phrase(1f, entry.getKey() + ": ", metaKeyFont));
+            if (entry.getValue().length() < remainingWidth) {
+                metaItem.add(new Phrase(entry.getValue()));
+                cDoc.add(metaItem);
             } else {
-                format.append("\n");
-                cDoc.add(new Paragraph(format.toString()));
-                Paragraph valPara = new Paragraph(val);
+                cDoc.add(metaItem);
+                Paragraph valPara = new Paragraph(entry.getValue());
                 valPara.setLeading(0f, 1.1f);
                 valPara.setSpacingAfter(0.5f);
                 valPara.setIndentationLeft(36f);
                 cDoc.add(valPara);
             }
+            if (entry.getKey().toLowerCase().contains("identifier.uri")) {
+                handleURI = entry.getValue();
+                log.debug("Found handle URI: " + entry.getKey() + " -> " + entry.getValue());
+            }
+        }
+
+        //If we have a handle, make a QR code to it
+        if (handleURI != null) {
+            BarcodeQRCode qrCode = new BarcodeQRCode(handleURI, 100, 100, null);
+            Image qrImage = qrCode.getImage();
+            float x = cDoc.getPageSize().getWidth() - qrImage.getScaledWidth();
+            float y = 0;
+            qrImage.setAbsolutePosition(x, y);
+            cDoc.add(qrImage);
+            //Writer a label for the QR Code
+            PdfContentByte cb = writer.getDirectContent();
+            cb.beginText();
+            cb.moveText(x, y + qrImage.getHeight() - 15f);
+            cb.setFontAndSize(FontFactory.getFont(FontFactory.HELVETICA).getBaseFont(), 6f);
+            cb.showText(handleURI);
+            cb.endText();
         }
 
         cDoc.close();
@@ -385,6 +429,75 @@ public class CitationPage extends AbstractCurationTask {
     }
 
     /**
+     * Attempts to add a Logo to the document from the given resource. Returns
+     * true on success and false on failure.
+     *
+     * @param doc The document to add the logo to. (Added to the top right
+     * corner of the first page.
+     * @param cb The DirectContent of the writer associated with the given
+     * Document.
+     * @param res The resource/path to the logo file. This file can be any of
+     * the following formats:
+     *  GIF, PNG, JPEG, PDF
+     *
+     * @return Succesfully added logo to document.
+     */
+    private boolean addLogoToDocumnet(Document doc, PdfWriter writer, String res) {
+        boolean ret = false;
+        try {
+            //First we try to get the logo as if it is a Java Resource
+            URL logoURL = this.getClass().getResource(res);
+            log.debug(res + " -> " + logoURL.toString());
+            if (logoURL == null) {
+                logoURL = new URL(res);
+            }
+
+            if (logoURL != null) {
+                String mtype = URLConnection.guessContentTypeFromStream(logoURL.openStream());
+                if (mtype == null) {
+                    mtype = URLConnection.guessContentTypeFromName(res);
+                }
+                log.debug("Determined MIMETYPE of logo: " + mtype);
+                if (CitationPage.PDF_MIMES.contains(mtype)) {
+                    //Handle pdf logos.
+                    PdfReader reader = new PdfReader(logoURL);
+                    PdfImportedPage logoPage = writer.getImportedPage(reader, 1);
+                    Image logo = Image.getInstance(logoPage);
+                    float x = doc.getPageSize().getWidth() - doc.rightMargin() - logo.getScaledWidth();
+                    float y = doc.getPageSize().getHeight() - doc.topMargin() - logo.getScaledHeight();
+                    logo.setAbsolutePosition(x, y);
+                    doc.add(logo);
+                    ret = true;
+                } else if (CitationPage.RASTER_MIMES.contains(mtype)) {
+                    //Use iText's Image class
+                    Image logo = Image.getInstance(logoURL);
+
+                    //Determine the position of the logo (upper-right corner) and
+                    //place it there.
+                    float x = doc.getPageSize().getWidth() - doc.rightMargin() - logo.getScaledWidth();
+                    float y = doc.getPageSize().getHeight() - doc.topMargin() - logo.getScaledHeight();
+                    logo.setAbsolutePosition(x, y);
+                    writer.getDirectContent().addImage(logo);
+                    ret = true;
+                } else if (CitationPage.SVG_MIMES.contains(mtype)) {
+                    //Handle SVG Logos
+                    log.error("SVG Logos are not supported yet.");
+                } else {
+                    //Cannot use other mimetypes
+                    log.debug("Logo MIMETYPE is not supported.");
+                }
+            } else {
+                log.debug("Could not create URL to Logo resource: " + res);
+            }
+        } catch (Exception e) {
+            log.error("Could not add logo (" + res + ") to cited document: "
+                    + e.getMessage());
+            ret = false;
+        }
+        return ret;
+    }
+
+    /**
      * A helper function for {@link CitationPage#performItem(Item)}. Creates a
      * cited document from the given bitstream of the given item. This
      * requires that bitstream is contained in item.
@@ -397,14 +510,14 @@ public class CitationPage extends AbstractCurationTask {
      *  <li> Concatenate the coverpage and the source
      *     document.</li>
      * </p>
-     * 
+     *
      * @param bitstream The source bitstream being cited. This must be a PDF.
      * @param cMeta The citation information used to generate the coverpage.
      * @return The temporary File that is the finished, cited document.
-     * @throws DocumentException 
-     * @throws FileNotFoundException 
-     * @throws SQLException 
-     * @throws AuthorizeException 
+     * @throws DocumentException
+     * @throws FileNotFoundException
+     * @throws SQLException
+     * @throws AuthorizeException
      */
     private File makeCitedDocument(Bitstream bitstream, CitationMeta cMeta)
         throws FileNotFoundException, DocumentException, IOException,
@@ -423,11 +536,14 @@ public class CitationPage extends AbstractCurationTask {
         PdfWriter writer = PdfWriter.getInstance(citedDoc, new FileOutputStream(coverTemp));
 
         //Call helper function to add content to the coverpage.
-        CitationPage.generateCoverPage(citedDoc, writer, cMeta);
+        this.generateCoverPage(citedDoc, writer, cMeta);
 
         //Create reader from finished cover page.
         PdfReader cover = new PdfReader(
                 new FileInputStream(coverTemp));
+
+        //Get page labels from source document
+        String[] labels = PdfPageLabels.getPageLabels(source);
 
         //Concatente the finished cover page with the source
         //document.
@@ -440,17 +556,15 @@ public class CitationPage extends AbstractCurationTask {
         concat.addPages(cover);
 
         //Put all of our labels in from the orignal document.
-        String[] labels = PdfPageLabels.getPageLabels(source);
         if (labels != null) {
             PdfPageLabels citedPageLabels = new PdfPageLabels();
-            citedPageLabels.addPageLabel(1, PdfPageLabels.EMPTY,
-                    "Citation Page");
             log.debug("Printing arbitrary page labels.");
+
             for (int i = 0; i < labels.length; i++) {
-                log.debug("Label for page: " + (i + 2) + " -> "
-                        + labels[i]);
-                citedPageLabels.addPageLabel(i + 2, PdfPageLabels.EMPTY, labels[i]);
+                citedPageLabels.addPageLabel(i + 1, PdfPageLabels.EMPTY, labels[i]);
+                log.debug("Label for page: " + (i + 1) + " -> " + labels[i]);
             }
+            citedPageLabels.addPageLabel(labels.length + 1, PdfPageLabels.EMPTY, "Citation Page");
             concat.getWriter().setPageLabels(citedPageLabels);
         }
 
@@ -463,7 +577,7 @@ public class CitationPage extends AbstractCurationTask {
     /**
      * A helper function for {@link CitationPage#performItem(Item)}. This function takes in the
      * cited document as a File and adds it to DSpace properly.
-     * 
+     *
      * @param citedTemp The temporary File that is the cited document.
      * @param bundle The bundle the cited file is from.
      * @param pBundle The preservation bundle. The original document should be
