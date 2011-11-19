@@ -81,7 +81,7 @@
                     var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;
                     var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
                     var THEME_PATH = "<xsl:value-of select='$themePath' />";
-                    var IMAGE_TITLE = "<xsl:value-of select='$imageTitle' />";
+                    var IMAGE_TITLE = "<xsl:value-of select="translate($imageTitle,'&#34;','')"/>";
             </script>
 
         </xsl:template>
@@ -276,9 +276,9 @@
 			o = new Object();
 			o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
 			o.size = <xsl:value-of select="./@SIZE"/>;
-			o.title = "<xsl:value-of select="mets:FLocat/@xlink:title"/>";
+			o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
                         o.caption = "<xsl:value-of select="//dim:field[@element='description'][@qualifier='abstract']" />";
-                        o.itemTitle = "<xsl:value-of select="//dim:field[@element='title']" />";
+                        o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
 
 			imageJpegArray.push(o);
 		</xsl:for-each>
