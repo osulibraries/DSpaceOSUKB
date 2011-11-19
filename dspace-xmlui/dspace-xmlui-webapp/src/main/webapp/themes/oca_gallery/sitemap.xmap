@@ -128,22 +128,41 @@
 				<map:select type="browser">
 					<map:when test="explorer">
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="../gallery/lib/gallery.css"/>
-							
-							<map:parameter name="theme.path" value="{global:theme-path}"/>
+                            <map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
+
+                            <map:parameter name="stylesheet.screen#1" value="../gallery/lib/gallery.css"/>
+                            <map:parameter name="stylesheet.screen#2" value="../gallery/lib/thickbox/thickbox.css"/>
+                            <map:parameter name="stylesheet.screen#3" value="../gallery/lib/jquerytools/scrollable-horizontal.css"/>
+                            <map:parameter name="stylesheet.screen#4" value="../gallery/lib/jquerytools/scrollable-buttons.css"/>
+
+                            <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
+                            <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
+                            <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
+                            <map:parameter name="javascript#4" value="../gallery/lib/jquerytools/jquery.tools.min.js"/>
+
 						</map:transform>
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen" value="../gallery/lib/gallery.css"/>
-							
-							<map:parameter name="theme.path" value="{global:theme-path}"/>
+                            <map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
+
+                            <map:parameter name="stylesheet.screen#1" value="../gallery/lib/gallery.css"/>
+                            <map:parameter name="stylesheet.screen#2" value="../gallery/lib/thickbox/thickbox.css"/>
+                            <map:parameter name="stylesheet.screen#3" value="../gallery/lib/jquerytools/scrollable-horizontal.css"/>
+                            <map:parameter name="stylesheet.screen#4" value="../gallery/lib/jquerytools/scrollable-buttons.css"/>
+
+                            <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
+                            <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
+                            <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
+                            <map:parameter name="javascript#4" value="../gallery/lib/jquerytools/jquery.tools.min.js"/>
 						</map:transform>
 					</map:otherwise>
 				</map:select>
-				
+
+
+
 				<!-- Debuging output -->
 				<map:match type="request" pattern="XML">
 					<map:serialize type="xml"/>
