@@ -277,8 +277,8 @@
 			o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
 			o.size = <xsl:value-of select="./@SIZE"/>;
 			o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
-                        o.caption = "<xsl:value-of select="//dim:field[@element='description'][@qualifier='abstract']" />";
-                        o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
+            o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
+            o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
 
 			imageJpegArray.push(o);
 		</xsl:for-each>
