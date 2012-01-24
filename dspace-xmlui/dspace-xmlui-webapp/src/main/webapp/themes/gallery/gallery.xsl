@@ -121,43 +121,32 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
-                    <xsl:choose>
-                        <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
-                            <div class="artifact-preview">
 
-                                <img class="thumbnail">
-                                    <!-- bds: title attribute gives mouse-over -->
-                                    <xsl:attribute name="title">
-                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="alt">
-                                        <xsl:text>Thumbnail of </xsl:text>
-                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                                    </xsl:attribute>
+                    <div class="artifact-preview">
+                        <img class="thumbnail">
+                            <!-- bds: title attribute gives mouse-over -->
+                            <xsl:attribute name="title">
+                                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="alt">
+                                <xsl:text>Thumbnail of </xsl:text>
+                                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                            </xsl:attribute>
+                            <xsl:choose>
+                                <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
                                     <xsl:attribute name="src">
                                         <xsl:value-of select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                                     </xsl:attribute>
-                                </img>
-                            </div>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <div class="artifact-preview">
-                                <img class="thumbnail">
-                                    <xsl:attribute name="title">
-                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="alt">
-                                        <xsl:text>Thumbnail of </xsl:text>
-                                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                                    </xsl:attribute>
+                                </xsl:when>
+                                <xsl:otherwise>
                                     <xsl:attribute name="src">
                                         <xsl:value-of select="$themePath"/>
                                         <xsl:text>lib/nothumbnail.png</xsl:text>
                                     </xsl:attribute>
-                                </img>
-                            </div>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </img>
+                    </div>
                 </a>
 
 
@@ -194,12 +183,11 @@
                         <xsl:when test="dim:field[@element='title']">
                             <xsl:choose>
                                 <xsl:when test="string-length($artifactTitle) >= 40">
-                                <xsl:value-of select="substring($artifactTitle,1,40)"/>... </xsl:when>
+                                    <xsl:value-of select="substring($artifactTitle,1,40)"/>... </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of select="$artifactTitle"/>
                                 </xsl:otherwise>
                             </xsl:choose>
-                            <!--<xsl:value-of select="dim:field[@element='title'][1]/node()"/>-->
                         </xsl:when>
                         <xsl:otherwise>
                             <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
