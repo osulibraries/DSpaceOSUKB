@@ -32,8 +32,9 @@
 		<xsl:value-of
 			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
 		<xsl:text>/themes/</xsl:text>
-		<xsl:value-of
-			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+        <xsl:text>gallery</xsl:text>
+        <!-- Hardcode path to gallery theme, since gallery could be an inherited theme -->
+		<!--<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>-->
 		<xsl:text>/</xsl:text>
 	</xsl:variable>
 
@@ -86,57 +87,30 @@
 
         </xsl:template>
 
-
-
 	<!--
         From: General-Handler.xsl
-
-        Changes:
-         	1. moved thumbnail to another rule
-
-        Generate the thunbnail, if present, from the file section -->
+        Blanking out default action.
+        -->
 	<xsl:template match="mets:fileSec" mode="artifact-preview">
-		<!--
-			Thumbnail moved to another rule
-		<xsl:if test="mets:fileGrp[@USE='THUMBNAIL']">
-			<div class="artifact-preview">
-				<xsl:variable name="thumbnailUrl"
-					select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
-				<a href="{ancestor::mets:METS/@OBJID}">
-					<img alt="Thumbnail" class="thumbnail">
-						<xsl:attribute name="src">
-							<xsl:value-of
-								select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"
-							/>
-						</xsl:attribute>
-					</img>
-				</a>
-			</div>
-		</xsl:if>
-		-->
+
 	</xsl:template>
 
 	<!--
         From DIM-Handler.xsl
         Changes:
                 1. rewrote/reordered to use the Fancybox JQuery library
+                2. Removed FancyBox for browselist.
 
         Generate the info about the item from the metadata section
     -->
 	<xsl:template match="dim:dim" mode="itemSummaryList-DIM">
 		<xsl:variable name="itemWithdrawn" select="@withdrawn"/>
-
-		<!-- generate an id and use it for the JS popups -->
-		<xsl:variable name="itemid" select="generate-id(node())"/>
-
-		<script type="text/javascript"> itemids.push("<xsl:value-of select="$itemid"/>"); </script>
-
-		<!-- FancyBox link on image: opens popup -->
+        <!--
+            A -> ItemPage
+                DIV#artifact-preview
+                    IMG.thumbnail title=TITLE, alt=Thumbnail of TITLE src=THUMBNAIL
+        -->
                 <a>
-                    <xsl:attribute name="id">
-                        <xsl:text>image</xsl:text>
-                        <xsl:value-of select="$itemid"/>
-                    </xsl:attribute>
                     <xsl:attribute name="href">
                         <xsl:choose>
                             <xsl:when test="$itemWithdrawn">
@@ -150,8 +124,6 @@
                     <xsl:choose>
                         <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
                             <div class="artifact-preview">
-                                <xsl:variable name="thumbnailUrl"
-                                              select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
 
                                 <img class="thumbnail">
                                     <!-- bds: title attribute gives mouse-over -->
@@ -163,9 +135,7 @@
                                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                                     </xsl:attribute>
                                     <xsl:attribute name="src">
-                                        <xsl:value-of
-                                            select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"
-                                            />
+                                        <xsl:value-of select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                                     </xsl:attribute>
                                 </img>
                             </div>
@@ -186,13 +156,20 @@
                                     </xsl:attribute>
                                 </img>
                             </div>
-
                         </xsl:otherwise>
                     </xsl:choose>
                 </a>
 
 
 		<!-- item title -->
+        <!--
+            A.fancy-box-link title=TITLE   ->ITEM
+                text(TITLE)
+            SPAN.publisher-date
+                (
+                SPAN.date    text(DATE)
+                )
+        -->
                 <a>
                     <xsl:variable name="artifactTitle">
                         <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
@@ -276,6 +253,7 @@
 			o = new Object();
 			o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
 			o.size = <xsl:value-of select="./@SIZE"/>;
+            <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
 			o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
             o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
             o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
@@ -284,19 +262,8 @@
 		</xsl:for-each>
 		</script>
 
-		<!-- TJPZoom: the zoomable image  viewer -->
-		<div id="photos">
-			<!-- Moved this into Javascript: see gallery.js
-				left this here just in case issues were found and needed to revert -->
-			<!--
-				<img alt="zoomable image" onmouseover="TJPzoom(this);" width="500">
-				<xsl:attribute name="src">
-				<xsl:value-of select="$serviceImageUrl"/>
-				</xsl:attribute>
-				</img>
-			-->
-			&#160;
-		</div>
+		<!-- Photos Div. JavaScript is required to load the images. -->
+		<div id="photos">&#160;</div>
 
 		<!-- Generate the info about the item from the metadata section -->
 		<xsl:apply-templates
