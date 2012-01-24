@@ -3,9 +3,7 @@
 <!--
     Gallery.xsl
 
-    Implements an image gallery view for Manakin. See the public "About this Theme"
-    page for instructions on use and credits.
-
+    Implements an image gallery view for Manakin.
 -->
 
 
@@ -16,39 +14,25 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
 	<xsl:import href="../dri2xhtml.xsl"/>
-	<xsl:import href="config.xsl"/>
 	<xsl:output indent="yes"/>
 
-	<!-- THEME CONFIGURATION OPTIONS -->
-
-	<!-- using these 2 options, you can restrict navigation to this collection,
-    removing links to outside colelctions, communities, etc -->
 
 	<!--  THEME VARIABLES -->
-<!-- bds: todo: check usage and redundancy of these variables -->
+    <!-- bds: todo: check usage and redundancy of these variables -->
 
 	<!-- the URL of this theme, used to make building paths to referenced files easier -->
 	<xsl:variable name="themePath">
-		<xsl:value-of
-			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-		<xsl:text>/themes/</xsl:text>
-        <xsl:text>gallery</xsl:text>
-        <!-- Hardcode path to gallery theme, since gallery could be an inherited theme -->
-		<!--<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>-->
-		<xsl:text>/</xsl:text>
+		<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+		<xsl:text>/themes/gallery/</xsl:text>
 	</xsl:variable>
 
 	<!-- serverUrl: path to the  server, up through the port -->
 	<xsl:variable name="serverUrl">
-		<xsl:value-of
-			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
+		<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']"/>
 		<xsl:text>://</xsl:text>
-		<xsl:value-of
-			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverName']"/>
+		<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverName']"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of
-			select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverPort']"
-		/>
+		<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverPort']"/>
 	</xsl:variable>
 
 	<!-- apgeUrl: path to the  server, up through the port -->
@@ -71,29 +55,20 @@
 		<xsl:value-of select="1"/>
 	</xsl:variable>
 
+    <xsl:template name="extraHead-top">
+        <!-- pass through some config values to Javascript -->
+        <script type="text/javascript">
+            var THEME_PATH = "<xsl:value-of select='$themePath' />";
+            var IMAGE_TITLE = "<xsl:value-of select="translate($imageTitle,'&#34;','')"/>";
+        </script>
 
-
-
-
-
-        <xsl:template name="extraHead-top">
-            <!-- pass through some config values to Javascript -->
-            <script type="text/javascript">
-                    var ZOOMABLE_IMG_WIDTH = <xsl:value-of select="$config-zoomPanelWidth" />;
-                    var MAX_SERVICE_IMG_SIZE = <xsl:value-of select="$config-maxServiceImageSize" />;
-                    var THEME_PATH = "<xsl:value-of select='$themePath' />";
-                    var IMAGE_TITLE = "<xsl:value-of select="translate($imageTitle,'&#34;','')"/>";
-            </script>
-
-        </xsl:template>
+    </xsl:template>
 
 	<!--
         From: General-Handler.xsl
         Blanking out default action.
         -->
-	<xsl:template match="mets:fileSec" mode="artifact-preview">
-
-	</xsl:template>
+	<xsl:template match="mets:fileSec" mode="artifact-preview"></xsl:template>
 
 	<!--
         From DIM-Handler.xsl
@@ -110,47 +85,47 @@
                 DIV#artifact-preview
                     IMG.thumbnail title=TITLE, alt=Thumbnail of TITLE src=THUMBNAIL
         -->
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:choose>
-                            <xsl:when test="$itemWithdrawn">
-                                <xsl:value-of select="ancestor::mets:METS/@OBJEDIT" />
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="ancestor::mets:METS/@OBJID" />
-                            </xsl:otherwise>
-                        </xsl:choose>
+        <a>
+            <xsl:attribute name="href">
+                <xsl:choose>
+                    <xsl:when test="$itemWithdrawn">
+                        <xsl:value-of select="ancestor::mets:METS/@OBJEDIT" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="ancestor::mets:METS/@OBJID" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+
+            <div class="artifact-preview">
+                <img class="thumbnail">
+                    <!-- bds: title attribute gives mouse-over -->
+                    <xsl:attribute name="title">
+                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                     </xsl:attribute>
-
-                    <div class="artifact-preview">
-                        <img class="thumbnail">
-                            <!-- bds: title attribute gives mouse-over -->
-                            <xsl:attribute name="title">
-                                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                    <xsl:attribute name="alt">
+                        <xsl:text>Thumbnail of </xsl:text>
+                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
+                            <xsl:attribute name="src">
+                                <xsl:value-of select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             </xsl:attribute>
-                            <xsl:attribute name="alt">
-                                <xsl:text>Thumbnail of </xsl:text>
-                                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="src">
+                                <xsl:value-of select="$themePath"/>
+                                <xsl:text>lib/nothumbnail.png</xsl:text>
                             </xsl:attribute>
-                            <xsl:choose>
-                                <xsl:when test="//mets:fileGrp[@USE='THUMBNAIL']">
-                                    <xsl:attribute name="src">
-                                        <xsl:value-of select="//mets:fileGrp[@USE='THUMBNAIL']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
-                                    </xsl:attribute>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:attribute name="src">
-                                        <xsl:value-of select="$themePath"/>
-                                        <xsl:text>lib/nothumbnail.png</xsl:text>
-                                    </xsl:attribute>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </img>
-                    </div>
-                </a>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </img>
+            </div>
+        </a>
 
 
-		<!-- item title -->
+        <!-- item title -->
         <!--
             A.fancy-box-link title=TITLE   ->ITEM
                 text(TITLE)
@@ -159,65 +134,63 @@
                 SPAN.date    text(DATE)
                 )
         -->
-                <a>
-                    <xsl:variable name="artifactTitle">
-                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                    </xsl:variable>
-                    <xsl:attribute name="href">
-                        <xsl:choose>
-                            <xsl:when test="$itemWithdrawn">
-                                <xsl:value-of select="ancestor::mets:METS/@OBJEDIT" />
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="ancestor::mets:METS/@OBJID" />
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:attribute>
-                    <xsl:attribute name="class">
-                        <xsl:text>fancy-box-link</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="title">
-                        <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
-                    </xsl:attribute>
-                    <xsl:choose>
-                        <xsl:when test="dim:field[@element='title']">
-                            <xsl:choose>
-                                <xsl:when test="string-length($artifactTitle) >= 40">
-                                    <xsl:value-of select="substring($artifactTitle,1,40)"/>... </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:value-of select="$artifactTitle"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </a>
-
-                <!-- bds: add issue date or submit date depending on the type of browse that is happening -->
+        <a>
+            <xsl:variable name="artifactTitle">
+                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+            </xsl:variable>
+            <xsl:attribute name="href">
                 <xsl:choose>
-                    <xsl:when test="$browseMode = '3'">
-                            <span class="metadata-date">
-                                <xsl:text>(accessioned </xsl:text>
-                                <span class="dateAccepted">
-                                    <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
-                                </span>
-                                <xsl:text>)</xsl:text>
-                            </span>
+                    <xsl:when test="$itemWithdrawn">
+                        <xsl:value-of select="ancestor::mets:METS/@OBJEDIT" />
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-                                <span class="metadata-date">
-                                    <xsl:text>(</xsl:text>
-                                    <span class="issued">
-                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-                                    </span>
-                                    <xsl:text>)</xsl:text>
-                                </span>
-                        </xsl:if>
+                        <xsl:value-of select="ancestor::mets:METS/@OBJID" />
                     </xsl:otherwise>
                 </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="class">
+                <xsl:text>fancy-box-link</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+                <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+            </xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="dim:field[@element='title']">
+                    <xsl:choose>
+                        <xsl:when test="string-length($artifactTitle) >= 40">
+                            <xsl:value-of select="substring($artifactTitle,1,40)"/>... </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$artifactTitle"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </a>
+
+        <!-- bds: add issue date or submit date depending on the type of browse that is happening -->
+        <span class="metadata-date">
+            <xsl:choose>
+                <xsl:when test="$browseMode = '3'">
+                    <xsl:text>(accessioned </xsl:text>
+                    <span class="dateAccepted">
+                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
+                    </span>
+                    <xsl:text>)</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+                        <xsl:text>(</xsl:text>
+                        <span class="issued">
+                            <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                        </span>
+                        <xsl:text>)</xsl:text>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
 	</xsl:template>
 
 
@@ -234,21 +207,19 @@
         An item rendered in the summaryView pattern. This is the default way to view a DSpace item in Manakin. -->
 
 	<xsl:template name="itemSummaryView-DIM">
+        <script type="text/javascript">
+            <xsl:for-each select="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
+                var o = new Object();
+                o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
+                o.size = <xsl:value-of select="./@SIZE"/>;
+                <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
+                o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
+                o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
+                o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
 
-		<script type="text/javascript">
-			var o;
-		<xsl:for-each select="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
-			o = new Object();
-			o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
-			o.size = <xsl:value-of select="./@SIZE"/>;
-            <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
-			o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
-            o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
-            o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
-
-			imageJpegArray.push(o);
-		</xsl:for-each>
-		</script>
+                imageJpegArray.push(o);
+            </xsl:for-each>
+        </script>
 
 		<!-- Photos Div. JavaScript is required to load the images. -->
 		<div id="photos">&#160;</div>
@@ -270,18 +241,4 @@
 		<xsl:apply-templates
 			select="./mets:fileSec/mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']"/>
 	</xsl:template>
-
-
-
-
-
-<!-- bds: creating new template akin to those in structural.xsl, removing Recent Submissions box
-    <xsl:template match="dri:div[@n='community-recent-submission']|dri:div[@n='collection-recent-submission']" priority="3">
-        <div>
-            <h1>Success! No recent submissions box! (But now what to put here?)</h1>
-        </div>
-    </xsl:template>-->
-
-
-
 </xsl:stylesheet>
