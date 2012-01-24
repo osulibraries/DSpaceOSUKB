@@ -198,9 +198,9 @@
                 <!-- bds: add issue date or submit date depending on the type of browse that is happening -->
                 <xsl:choose>
                     <xsl:when test="$browseMode = '3'">
-                            <span class="publisher-date">
+                            <span class="metadata-date">
                                 <xsl:text>(accessioned </xsl:text>
-                                <span class="date">
+                                <span class="dateAccepted">
                                     <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
                                 </span>
                                 <xsl:text>)</xsl:text>
@@ -208,9 +208,9 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-                                <span class="publisher-date">
+                                <span class="metadata-date">
                                     <xsl:text>(</xsl:text>
-                                    <span class="date">
+                                    <span class="issued">
                                         <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
                                     </span>
                                     <xsl:text>)</xsl:text>
