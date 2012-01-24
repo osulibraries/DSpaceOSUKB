@@ -2,15 +2,6 @@
 /* VARIABLES
 
 /*
-Used on the gallery page.
-Records all ids assigned to items in order to initialize popups in the gallery display
-*/
-var itemids = Array();
-
-/*
-Used on the individual item display page.
-Not currently used, but is populated and intended for later development.
-
 An array of Javascript object of JPEGs in the file, each with the
 properties size and url, as in
 	o.size
@@ -19,11 +10,6 @@ The app can then make user of these as necessary. For example,
 could be used to display a service image if it was under 1 MB, etc
 */
 var imageJpegArray = Array();
-
-/*
-Convenience access to the service image's url
-*/
-var serviceImgUrl = '';
 
 /**
 * JQuery initialization routine
@@ -36,13 +22,17 @@ $(document).ready(function() {
 });
 
 /**
-* If there is a JPEG image less than MAX_SERVICE_IMG_SIZE,
-* set the largest image found as the service image
-* and display it as a zoomable image
+ * initZoomable create a div that holds the large image (image_wrap).
+ * The large image when clicked will use a modal that takes up the full screen.
+ * To help with viewing multiple images, there is a carousel that contains thumbnails of all images
+ * so that you can change the image you have in the viewer.
 */
 function initZoomableImage() {
     if (imageJpegArray.length > 0) {
-        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\"><img class=\"central_image\" alt=\"" + IMAGE_TITLE + "\" title=\"" + IMAGE_TITLE + "\" src=\"" + THEME_PATH + "images/blank.gif\" /></a></div>";
+        var viewPort = "<div id=\"image_wrap\"><a id=\"anchor\" href=\"#\" class=\"thickbox\">" +
+            "<img class=\"central_image\" alt=\"" + IMAGE_TITLE + "\" title=\"" + IMAGE_TITLE + "\" src=\"" + THEME_PATH + "images/blank.gif\" />" +
+            "</a></div>";
+
         var totalHtml = viewPort;
 
         var containHtml = "<div class=\"scrollable\"><div class=\"items\"><div>";
