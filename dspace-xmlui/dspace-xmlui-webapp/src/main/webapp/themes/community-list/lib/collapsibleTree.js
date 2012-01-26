@@ -14,9 +14,6 @@
 	$.fn.collapsibleCheckboxTree = function(options) {
 
 		var defaults = {
-			checkParents : true, // When checking a box, all parents are checked
-			checkChildren : false, // When checking a box, all children are checked
-			uncheckChildren : true, // When unchecking a box, all children are unchecked
 			initialState : 'default' // Options - 'expand' (fully expanded), 'collapse' (fully collapsed) or default
 		};
 
@@ -104,3 +101,8 @@
 	};
 
 })(jQuery);
+
+jQuery(document).ready(function()
+{
+    $('ul#aspect_artifactbrowser_CommunityBrowser_list_comunity-browser').collapsibleCheckboxTree();
+});
