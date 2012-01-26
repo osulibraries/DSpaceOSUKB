@@ -1,0 +1,208 @@
+﻿/*
+  style.css
+
+  Version: $Revision: 1.15 $
+ 
+  Date: $Date: 2006/07/27 22:54:53 $
+ 
+  Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
+  Institute of Technology.  All rights reserved.
+ 
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are
+  met:
+ 
+  - Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+ 
+  - Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+ 
+  - Neither the name of the Hewlett-Packard Company nor the name of the
+  Massachusetts Institute of Technology nor the names of their
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+ 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  DAMAGE.
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: white;
+    margin: 0;
+    padding: 0;
+    font-family: "verdana", Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    font-style: normal;
+}
+
+/*******************************
+ *****  General elements  ******
+ *******************************/
+
+/*******************************
+ *****  Major components  ******
+ *******************************/
+
+/*******************************
+ **********  Header  ***********
+ *******************************/
+
+/*******************************
+ *******  Options list  ********
+ *******************************/
+
+/*******************************
+ **********  Footer  ***********
+ *******************************/
+ 
+/*******************************
+ ********  pagination  *********
+ *******************************/
+
+div.pagination {
+	position: relative;
+	margin: 10px 20px 2px 20px;
+}
+
+div.pagination-masked {
+	position: relative;
+	margin: 10px 20px 10px 20px;
+}
+
+a.previous-page-link {
+	position: absolute;
+	left: 50px;
+	bottom: 5px;
+}
+
+a.next-page-link {
+	position: absolute;
+	right: 50px;
+	bottom: 5px;
+}
+
+p.pagination-info {
+	position: relative;
+	text-align: center;
+	width: 50%;
+	margin: 0 auto 5px auto;
+}
+
+ul.pagination-links {
+	position: relative;
+	text-align: center;
+	width: 50%;
+	margin: 0 auto 5px auto;
+	padding: 0 0 0 0;
+}
+
+*.pagination-links li {
+	list-style: none;
+	display: inline;
+	margin-right: 5px;
+	font-weight: bolder;
+	font-size: 90%;
+}
+
+
+/*******************************
+ ******  Alphabet Lists  *******
+ *******************************/
+
+ul.alphabet {
+	text-align: center;
+}
+
+ul.alphabet li {
+	list-style: none;
+	display: inline;
+	padding: 0;
+	margin: 0 5px 0 5px;
+	font-weight: bolder;
+}
+
+ul.alphabet a:hover {
+	color: black;
+}
+
+/*******************************
+ ******  Progress Lists  *******
+ *******************************/
+
+ul.ds-progress-list {
+	margin: 0px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: center;
+}
+
+ul.ds-progress-list li {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: gray;
+	overflow: hidden;
+	display: inline;
+	line-height: 20px;
+}
+
+ul.ds-progress-list li.current {
+	color: black;
+}
+
+ul.ds-progress-list li.arrow {
+	font-size: 200%;
+	font-weight: bold;
+	position: relative;
+	top: 6px;
+}
+
+
+/*******************************
+ *******  Artifact List  *******
+ *******************************/
+/* override all the ul.ds-artifact-list rules */
+
+ul.ds-artifact-list {
+	width: 100%;
+}
+
+ul.ds-artifact-list li {
+    clear: none;
+    width: 201px;
+    height: 248px;
+}
+
+
+
+.ds-artifact-title {
+    text-align: left;
+}
+
+span.date {
+	font-style: italic;
+}
+
+/*******************************
+ *********  Tables  ************
+ *******************************/
+
+/*******************************
+ ***********  forms  ***********
+ *******************************/
