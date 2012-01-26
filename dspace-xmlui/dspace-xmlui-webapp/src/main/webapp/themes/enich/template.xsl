@@ -15,29 +15,29 @@
 
 <xsl:import href="../gallery/gallery.xsl"/>
 
-<xsl:output indent="yes"/>            
+<xsl:output indent="yes"/>
 
 <xsl:template name="itemSummaryView-DIM-fields">
-<xsl:param name="clause" select="'1'"/>
-<xsl:param name="phase" select="'even'"/>
-<xsl:variable name="otherPhase">
-    <xsl:choose>
-        <xsl:when test="$phase = 'even'">
-            <xsl:text>odd</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:text>even</xsl:text>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:variable>
+    <xsl:param name="clause" select="'1'"/>
+    <xsl:param name="phase" select="'even'"/>
+    <xsl:variable name="otherPhase">
+        <xsl:choose>
+            <xsl:when test="$phase = 'even'">
+                <xsl:text>odd</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>even</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
 
-<xsl:choose>
-            
-        
-    <xsl:when test="$clause = 1">
-        <xsl:call-template name="itemFieldDisplay.dc.title">
-            <xsl:with-param name="clause" select="$clause" />
-            <xsl:with-param name="phase" select="$phase" />
+    <xsl:choose>
+
+
+        <xsl:when test="$clause = 1">
+            <xsl:call-template name="itemFieldDisplay.dc.title">
+                <xsl:with-param name="clause" select="$clause" />
+                <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
