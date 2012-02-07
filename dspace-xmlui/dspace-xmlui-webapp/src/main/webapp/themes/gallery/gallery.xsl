@@ -207,22 +207,25 @@
         An item rendered in the summaryView pattern. This is the default way to view a DSpace item in Manakin. -->
 
 	<xsl:template name="itemSummaryView-DIM">
-        <script type="text/javascript">
-            <xsl:for-each select="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
-                var o = new Object();
-                o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
-                o.size = <xsl:value-of select="./@SIZE"/>;
-                <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
-                o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
-                o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
-                o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
+        <xsl:if test="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
+            <script type="text/javascript">
+                <xsl:for-each select="//mets:fileGrp[@USE='CONTENT']/mets:file[@MIMETYPE='image/jpeg']">
+                    var o = new Object();
+                    o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
+                    o.size = <xsl:value-of select="./@SIZE"/>;
+                    <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
+                    o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
+                    o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
+                    o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
 
-                imageJpegArray.push(o);
-            </xsl:for-each>
-        </script>
+                    imageJpegArray.push(o);
+                </xsl:for-each>
+            </script>
 
-		<!-- Photos Div. JavaScript is required to load the images. -->
-		<div id="photos">&#160;</div>
+            <!-- Photos Div. JavaScript is required to load the images. -->
+            <div id="photos">&#160;</div>
+        </xsl:if>
+
 
 		<!-- Generate the info about the item from the metadata section -->
 		<xsl:apply-templates
