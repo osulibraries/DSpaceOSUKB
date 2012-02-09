@@ -109,6 +109,7 @@ public class DSQuery
         //querystring = workAroundLuceneBug(querystring); // logicals changed to && ||, etc.
         querystring = stripHandles(querystring); // remove handles from query string
         querystring = stripAsterisk(querystring); // remove asterisk from beginning of string
+        querystring = stripInterspersedDash(querystring);   // remove all dashes from between terms. Leaves negators.
 
         try
         {
@@ -275,6 +276,16 @@ public class DSQuery
                       .replaceAll("\\s\\*", " ")
                       .replaceAll("\\(\\*", "(")
                       .replaceAll(":\\*", ":");
+    }
+
+    /**
+     * Remove a dash that is inbetween terms. Don't want it to be interpreted as a negator. Negator should touch a term.
+     * @param myQuery
+     * @return
+     */
+    static String stripInterspersedDash(String myQuery)
+    {
+        return myQuery.replaceAll(" - ", " ");
     }
 
     /**
