@@ -559,6 +559,10 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-stats-elasticsearch</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

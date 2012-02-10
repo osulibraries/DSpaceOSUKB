@@ -54,6 +54,12 @@
             <groupId>org.dspace</groupId>
             <artifactId>dspace-stats</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-stats-elasticsearch</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>

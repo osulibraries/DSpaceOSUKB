@@ -283,6 +283,16 @@
           </dependency>
          <!-- DSpace third Party Dependencies -->
          <dependency>
+             <groupId>org.dspace</groupId>
+             <artifactId>dspace-stats-elasticsearch</artifactId>
+             <version>1.0</version>
+         </dependency>
+         <!--<dependency>
+             <groupId>org.dspace</groupId>
+             <artifactId>dspace-mongostats</artifactId>
+             <version>1.0</version>
+         </dependency>-->
+         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.7.0</version>

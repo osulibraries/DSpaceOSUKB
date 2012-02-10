@@ -50,7 +50,20 @@
             <ref bean="dspace.eventService"/>
         </property>
     </bean>
-          
+
+    <bean class="edu.osu.library.dspace.statistics.ElasticSearchLoggerEventListener">
+        <property name="eventService">
+            <ref bean="dspace.eventService" />
+        </property>
+    </bean>
+
+    <!--
+    <bean class="com.jamespaulmuir.dspace.statistics.MongoDBLoggerUsageEventListener">
+        <property name="eventService">
+            <ref bean="dspace.eventService"/>
+        </property>
+    </bean>
+        -->
     <!-- 
     Uncomment to enable TabFileUsageEventListener 
     <bean class="org.dspace.app.statistics.TabFileUsageEventListener">
