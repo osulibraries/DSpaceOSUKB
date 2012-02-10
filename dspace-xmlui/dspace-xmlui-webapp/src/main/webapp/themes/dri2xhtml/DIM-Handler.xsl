@@ -131,57 +131,51 @@
            </div>
             <div class="artifact-info">
                 <span class="author">
-<!-- bds: replacing authors in item browse with our own version, including linkify to author browse -->
-                    <xsl:for-each select="dim:field[@element='creator' and not(@qualifier)]">
-                        <!-- bds: link to author browse magic -->
-                        <a>
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="$context-path"/>
-                                <xsl:text>/browse?value=</xsl:text>
-                                <xsl:value-of select="encoder:encode(string(.))"/>
-                                <xsl:text>&amp;type=author</xsl:text>
-                            </xsl:attribute>
-                            <xsl:copy-of select="node()"/>
-                        </a>
-                        <xsl:if test="count(following-sibling::dim:field[@element='creator' and not(@qualifier)]) != 0">
-                            <xsl:text>; </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each>
-<!-- bds: end of our customized author display for item browse, here is the original:
+                    <!-- bds: replacing authors in item browse with our own version, including linkify to author browse -->
+                    <!-- PMBMD: Disable dc.contributor.* and dc.contributor.author from being in browse list, as per metadata people (don't want to list photographer...) -->
                     <xsl:choose>
-                        <xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
-                            <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
-                                <span>
-                                  <xsl:if test="@authority">
-                                    <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
-                                  </xsl:if>
-                                  <xsl:copy-of select="node()"/>
-                                </span>
-                                <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='author']) != 0">
-                                    <xsl:text>; </xsl:text>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:when>
+                        <!--<xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
+                          -  <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
+                          -      <span>
+                          -        <xsl:if test="@authority">
+                          -          <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
+                          -        </xsl:if>
+                          -        <xsl:copy-of select="node()"/>
+                          -      </span>
+                          -      <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='author']) != 0">
+                          -          <xsl:text>; </xsl:text>
+                          -      </xsl:if>
+                          -  </xsl:for-each>
+                          -</xsl:when>-->
                         <xsl:when test="dim:field[@element='creator']">
                             <xsl:for-each select="dim:field[@element='creator']">
-                                <xsl:copy-of select="node()"/>
+                                <!-- bds: link to author browse magic -->
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="$context-path"/>
+                                        <xsl:text>/browse?value=</xsl:text>
+                                        <xsl:value-of select="encoder:encode(string(.))"/>
+                                        <xsl:text>&amp;type=author</xsl:text>
+                                    </xsl:attribute>
+                                    <xsl:copy-of select="node()"/>
+                                </a>
                                 <xsl:if test="count(following-sibling::dim:field[@element='creator']) != 0">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
                         </xsl:when>
-                        <xsl:when test="dim:field[@element='contributor']">
-                            <xsl:for-each select="dim:field[@element='contributor']">
-                                <xsl:copy-of select="node()"/>
-                                <xsl:if test="count(following-sibling::dim:field[@element='contributor']) != 0">
-                                    <xsl:text>; </xsl:text>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:when>
+                        <!--<xsl:when test="dim:field[@element='contributor']">
+                          -  <xsl:for-each select="dim:field[@element='contributor']">
+                          -      <xsl:copy-of select="node()"/>
+                          -      <xsl:if test="count(following-sibling::dim:field[@element='contributor']) != 0">
+                          -          <xsl:text>; </xsl:text>
+                          -      </xsl:if>
+                          -  </xsl:for-each>
+                          -</xsl:when>-->
                         <xsl:otherwise>
                             <i18n:text>xmlui.dri2xhtml.METS-1.0.no-author</i18n:text>
                         </xsl:otherwise>
-                    </xsl:choose>-->
+                    </xsl:choose>
                 </span>
                 <xsl:text> </xsl:text>
 <!-- bds: also removing this combined publisher and date field, making a separate date display
