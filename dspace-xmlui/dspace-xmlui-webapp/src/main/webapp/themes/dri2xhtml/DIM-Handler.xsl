@@ -119,8 +119,16 @@
                             <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
                         </xsl:otherwise>
                     </xsl:choose>
-                </xsl:element>    
-            </div>
+                </xsl:element>
+                <!-- TODO: PMBMD remove coins with config if we don't like it -->
+               <!-- Generate COinS with empty content per spec but force Cocoon to not create a minified tag  -->
+               <!--<span class="Z3988">
+                 -  <xsl:attribute name="title">
+                 -      <xsl:call-template name="renderCOinS"/>
+                 -  </xsl:attribute>
+                 -  &#xFEFF; <!.- non-breaking space to force separating the end tag .->
+                 -</span>-->
+           </div>
             <div class="artifact-info">
                 <span class="author">
 <!-- bds: replacing authors in item browse with our own version, including linkify to author browse -->
