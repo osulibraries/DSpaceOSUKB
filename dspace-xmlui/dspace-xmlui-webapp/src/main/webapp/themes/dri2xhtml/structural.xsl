@@ -452,15 +452,15 @@
                 <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
                 <xsl:text> | </xsl:text>
                 <a target="_blank" href="http://www.dspace.org/">DSpace</a>
-                <!-- bds: this is broken! 
                 <xsl:text> | </xsl:text>
+                <!-- PMD: Enable the feedback link, it does work-->
                 <a>
                     <xsl:attribute name="href">
                         <xsl:value-of select="$context-path"/>
                         <xsl:text>/feedback</xsl:text>
                     </xsl:attribute>
                     <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
-                </a>-->
+                </a>
             </div>
             <a>
                 <xsl:attribute name="href">
