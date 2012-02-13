@@ -254,5 +254,22 @@
     </div>
 </xsl:template>
 
+    <!-- Overrides GeneralHandler
+        bds: this template completely replaces original to display CC-license info, logo, with links, and to NOT display other licenses -->
+    <xsl:template match="mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
+        <div class="license-info">
+            <xsl:if test="@USE='CC-LICENSE'">
+                <!-- bds: get ccLink from METS dmdSec -->
+                <!-- note that this depends on a mod to dspace-xmlui/dspace-xmlui-api/src/main/java/org/dspace/app/xmlui/objectmanager/ItemAdapter.java
+                see https://libdws1.it.ohio-state.edu/git/kb/kb-source/commit/f2450cf33a4180b9852bdc48e04d14de39ec9148
+                -->
+                <xsl:variable name="CC_license_URL" select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@mdschema='ccLink']" />
+
+                <p>This item is licensed under a <a href="{$CC_license_URL}">Creative Commons License</a></p>
+                <p><a href="{$CC_license_URL}"><img src="{$context-path}/static/images/cc-somerights.gif" border="0" alt="Creative Commons" /></a></p>
+            </xsl:if>
+        </div>
+    </xsl:template>
+
 
 </xsl:stylesheet>
