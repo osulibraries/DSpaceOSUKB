@@ -178,41 +178,33 @@
                     </xsl:choose>
                 </span>
                 <xsl:text> </xsl:text>
-<!-- bds: also removing this combined publisher and date field, making a separate date display
-                <xsl:if test="dim:field[@element='date' and @qualifier='issued'] or dim:field[@element='publisher']">
-	                <span class="publisher-date">
-	                    <xsl:text>(</xsl:text>
-	                    <xsl:if test="dim:field[@element='publisher']">
-	                        <span class="publisher">
-	                            <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
-	                        </span>
-	                        <xsl:text>, </xsl:text>
-	                    </xsl:if>
-	                    <span class="date">
-	                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-	                    </span>
-	                    <xsl:text>)</xsl:text>
-	                </span>
-                </xsl:if>-->
                 <xsl:choose>
+                    <!-- PMBMD: When it is browse by date accessioned, use the date-accessioned date in browselist, otherwise use date.issued.-->
                     <xsl:when test="$browseMode = '3'"> <!-- 3 = date.accessioned -->
-                            <span class="publisher-date">
-                                <xsl:text>(accessioned </xsl:text>
-                                <span class="date">
-                                    <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
-                                </span>
-                                <xsl:text>)</xsl:text>
+                        <span class="publisher-date">
+                            <xsl:text>(accessioned </xsl:text>
+                            <span class="date">
+                                <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='accessioned']/node(),1,10)"/>
                             </span>
+                            <xsl:text>)</xsl:text>
+                        </span>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
-                                <span class="publisher-date">
-                                    <xsl:text>(</xsl:text>
-                                    <span class="date">
-                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
-                                    </span>
-                                    <xsl:text>)</xsl:text>
+                            <span class="publisher-date">
+                                <xsl:text>(</xsl:text>
+                                <!--PMBMD: Don't want to show publisher.
+                                  -<xsl:if test="dim:field[@element='publisher']">
+                                  -  <span class="publisher">
+                                  -      <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                                  -  </span>
+                                  -  <xsl:text>, </xsl:text>
+                                  -</xsl:if>-->
+                                <span class="date">
+                                    <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
                                 </span>
+                                <xsl:text>)</xsl:text>
+                            </span>
                         </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
