@@ -1653,7 +1653,14 @@ Disable authority
             <xsl:call-template name="standardAttributes">
                 <xsl:with-param name="class">ds-div-head</xsl:with-param>
             </xsl:call-template>
-            <xsl:apply-templates />
+            <xsl:choose>
+                <xsl:when test="string-length(./node()) &lt; 1">
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                </xsl:when>
+                <xsl:otherwise>
+	            <xsl:apply-templates />
+		</xsl:otherwise>
+            </xsl:choose>
         </xsl:element>
     </xsl:template>
 
