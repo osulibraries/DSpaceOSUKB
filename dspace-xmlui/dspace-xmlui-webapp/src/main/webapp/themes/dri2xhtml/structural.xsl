@@ -307,9 +307,9 @@
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']" />
             <title>
                 <xsl:choose>
-                    <xsl:when test="not($page_title)">
-                        <xsl:text>  </xsl:text>
-                    </xsl:when>
+                    <xsl:when test="not($page_title) or (string-length($page_title) &lt; 1)">
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                        </xsl:when>
                     <xsl:otherwise>
                         <xsl:copy-of select="$page_title/node()" />
                     </xsl:otherwise>
