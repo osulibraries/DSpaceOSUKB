@@ -89,8 +89,6 @@
     <!-- Build a single row in the bitsreams table of the item view page -->
     <xsl:template match="mets:file">
         <xsl:param name="context" select="."/>
-<!-- bds: license suppression hack by suppressing all mimetype=text/plain 
-        <xsl:if test="not(@MIMETYPE='text/plain')">-->
         <tr>
             <xsl:attribute name="class">
                 <xsl:text>ds-table-row </xsl:text>
@@ -191,7 +189,6 @@
 	    </xsl:if>
 
         </tr>
-    <!--</xsl:if>  bds: closing tag for license suppression hack  -->
     </xsl:template>
     
     <!--
