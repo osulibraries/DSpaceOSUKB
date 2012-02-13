@@ -161,6 +161,7 @@
                                 <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             </xsl:attribute>
                             <img>
+				<!-- Accessibility fix for alt tags for images -->
                                 <xsl:attribute name="alt">
                                     <xsl:text>Thumbnail of </xsl:text>
                                     <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
@@ -238,6 +239,7 @@
         <div class="ds-logo-wrapper">
             <img src="{mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href}" class="logo">
                 <xsl:attribute name="alt">
+		    <!-- Add Accessibility alt tag to image-->
                     <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
                     <xsl:text> logo</xsl:text>
                 </xsl:attribute>
