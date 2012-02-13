@@ -141,7 +141,7 @@
                         instead referenced from the different points in the document. -->
 
                  <!-- bds: adding body-and-options div to allow more styling options -->
-<!-- bds: container1 and contatiner2 are nested inside body-and-options and are used
+<!-- bds: container1 and container2 are nested inside body-and-options and are used
         to help create equal-height columns. See:
         http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
 -->
@@ -731,7 +731,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </div>
-        <xsl:apply-templates select="@pagination">
+    <xsl:apply-templates select="@pagination">
             <xsl:with-param name="position">bottom</xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>
@@ -1252,6 +1252,7 @@
                     <div class="ds-form-content">
                         <xsl:apply-templates />
 <!--                         special name used in submission UI review page
+Disable Authority
                         <xsl:if test="@n = 'submit-review-field-with-authority'">
                             <xsl:call-template name="authorityConfidenceIcon">
                                 <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
@@ -1302,6 +1303,7 @@
                     <div class="ds-form-content">
                         <xsl:apply-templates />
 <!--                         special name used in submission UI review page 
+Disable authority
                         <xsl:if test="@n = 'submit-review-field-with-authority'">
                             <xsl:call-template name="authorityConfidenceIcon">
                                 <xsl:with-param name="confidence" select="substring-after(./@rend, 'cf-')"/>
@@ -1419,7 +1421,7 @@
                         <xsl:text>ERROR: Input field with "suggest" (autocomplete) choice behavior is not implemented for Composite (e.g. "name") fields.</xsl:text>
                     </xsl:message>
                 </xsl:when>
-                 lookup popup includes its own Add button if necessary. 
+              <.. lookup popup includes its own Add button if necessary. ..>
                 <xsl:when test="dri:params/@choicesPresentation = 'lookup'">
                     <xsl:call-template name="addLookupButton">
                         <xsl:with-param name="isName" select="'true'"/>
@@ -1710,11 +1712,13 @@
                 <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
                 <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
                     <!-- Make invisible if we have choice-lookup operation that provides its own Add. -->
-<!--                    <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+<!--  Disable Choise Authority
+                  <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
                         <xsl:attribute name="style">
                             <xsl:text>display:none;</xsl:text>
                         </xsl:attribute>
-                    </xsl:if>-->
+                    </xsl:if>
+-->
                 </input>
             </xsl:if>
             <!-- insert choice mechansim and/or Add button here -->
@@ -1732,7 +1736,7 @@
                     </xsl:call-template>
                 </xsl:when>
             </xsl:choose>
-             place to store authority value 
+            <.. place to store authority value ..>
             <xsl:if test="dri:params/@authorityControlled">
                 <xsl:call-template name="authorityConfidenceIcon">
                     <xsl:with-param name="confidence" select="dri:value[@type='authority']/@confidence"/>
@@ -1832,7 +1836,8 @@
             <xsl:apply-templates select="dri:instance[position()=$position]" mode="interpreted"/>
 
             <!-- look for authority value in instance. -->
-<!--            <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
+<!-- Disable Choice
+           <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
                 <xsl:call-template name="authorityConfidenceIcon">
                     <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
                 </xsl:call-template>
@@ -1854,6 +1859,7 @@
             </xsl:attribute>
         </input>
 <!--         XXX do we want confidence icon here??
+Disable Choice
         <xsl:if test="dri:value[@type='authority']">
             <xsl:call-template name="authorityInputFields">
                 <xsl:with-param name="name" select="../@n"/>
@@ -1904,7 +1910,8 @@
             <!-- Add buttons should be named "submit_[field]_add" so that we can ignore errors from required fields when simply adding new values-->
             <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
                 <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
-<!--                <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+<!-- Disable Choice
+		<xsl:if test="dri:params/@choicesPresentation = 'lookup'">
                     <xsl:attribute name="style">
                         <xsl:text>display:none;</xsl:text>
                     </xsl:attribute>
@@ -1912,6 +1919,7 @@
             </input>
         </xsl:if>
 <!--
+Disable Choice
         <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
         <xsl:if test="dri:params/@authorityControlled">
              XXX note that this is wrong and won't get any authority values, but
@@ -1974,7 +1982,8 @@
     <xsl:template name="fieldIterator">
         <xsl:param name="position"/>
         <!-- add authority value for this instance -->
-<!--        <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
+<!-- Disable Choice
+	<xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
             <xsl:call-template name="authorityInputFields">
                 <xsl:with-param name="name" select="@n"/>
                 <xsl:with-param name="position" select="$position"/>
@@ -1988,7 +1997,8 @@
             <xsl:when test="count(dri:instance[position()=$position]/dri:value[@type != 'authority'])">
                 <input type="checkbox" value="{concat(@n,'_',$position)}" name="{concat(@n,'_selected')}"/>
                 <xsl:apply-templates select="dri:instance[position()=$position]" mode="interpreted"/>
-<!--                <xsl:call-template name="authorityConfidenceIcon">
+<!-- Disable Choice
+               <xsl:call-template name="authorityConfidenceIcon">
                     <xsl:with-param name="confidence" select="dri:instance[position()=$position]/dri:value[@type='authority']/@confidence"/>
                 </xsl:call-template>-->
                 <br/>
@@ -2212,7 +2222,9 @@
     </xsl:template>
 
     <xsl:template match="dri:field" mode="normalField">
-        <!--<xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>-->
+        <!-- Disable Choice
+	<xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
+	-->
         <xsl:choose>
             <!-- TODO: this has changed drammatically (see form3.xml) -->
             <xsl:when test="@type= 'select'">
@@ -2256,7 +2268,8 @@
 
 
                 <!-- add place to store authority value -->
-<!--                <xsl:if test="dri:params/@authorityControlled">
+<!-- Disable Choice
+               <xsl:if test="dri:params/@authorityControlled">
                     <xsl:variable name="confidence">
                         <xsl:if test="./dri:value[@type='authority']">
                             <xsl:value-of select="./dri:value[@type='authority']/@confidence"/>
@@ -2363,7 +2376,7 @@
                     </xsl:if>
                     <xsl:apply-templates />
                 </input>
-<!--
+<!-- Disable Choice
                 <xsl:variable name="confIndicatorID" select="concat(@id,'_confidence_indicator')"/>
                 <xsl:if test="dri:params/@authorityControlled">
                     <xsl:variable name="confidence">
@@ -2868,7 +2881,7 @@
             </xsl:if>-->
         </xsl:variable>
         <!-- bds: removing this External Metadata URL comment from the HTML output
-        <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -<xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
         -->
         <li>
             <xsl:attribute name="class">
@@ -2890,7 +2903,7 @@
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
         <!-- bds: removing this External Metadata URL comment from the HTML output
-        <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -<xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
         -->
         <li>
             <xsl:apply-templates select="document($externalMetadataURL)" mode="detailList"/>
@@ -2905,7 +2918,7 @@
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
         <!-- bds: removing this External Metadata URL comment from the HTML output
-        <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -<xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
         -->
         <xsl:apply-templates select="document($externalMetadataURL)" mode="summaryView"/>
         <xsl:apply-templates />
@@ -2918,7 +2931,7 @@
             <!-- No options selected, render the full METS document -->
         </xsl:variable>
         <!-- bds: removing this External Metadata URL comment from the HTML output
-        <xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
+        -<xsl:comment> External Metadata URL: <xsl:value-of select="$externalMetadataURL"/> </xsl:comment>
         -->
         <xsl:apply-templates select="document($externalMetadataURL)" mode="detailView"/>
         <xsl:apply-templates />
