@@ -472,8 +472,6 @@
         </div>
     </xsl:template>
 
-
-
     <!--
         The template to handle the dri:body element. It simply creates the ds-body div and applies
         templates of the body's child elements (which consists entirely of dri:div tags).
@@ -500,6 +498,15 @@
                     <xsl:apply-templates />
                 </xsl:otherwise>
             </xsl:choose>
+            <!-- TODO Check that SFX doesn't affect the page. -->
+            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='sfx'][@qualifier='server']">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='sfx'][@qualifier='server']"/>
+                    </xsl:attribute>
+                    <xsl:text>Find Full text</xsl:text>
+                </a>
+            </xsl:if>
         </div>
     </xsl:template>
 
