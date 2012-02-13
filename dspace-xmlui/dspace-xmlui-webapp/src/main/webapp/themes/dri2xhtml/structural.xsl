@@ -348,13 +348,82 @@
                     <xsl:text> </xsl:text>
                 </span>
             </a>
+            <!-- Commenting out default action of the header. It has broken into individual smaller blocks.
+            -<h1 class="pagetitle">
+            -    <xsl:choose>
+            -        <!.. protection against an empty page title ..>
+            -        <xsl:when test="not(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']) or (string-length(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']) &lt; 1)">
+            -            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+            -        </xsl:when>
+            -        <xsl:otherwise>
+            -            <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/node()"/>
+            -        </xsl:otherwise>
+            -    </xsl:choose>
+            -
+            -</h1>
+            -<h2 class="static-pagetitle"><i18n:text>xmlui.dri2xhtml.structural.head-subtitle</i18n:text></h2>
+            -
+            -
+            -<ul id="ds-trail">
+            -    <xsl:choose>
+            -        <xsl:when test="starts-with($request-uri, 'page/about')">
+            -            <xsl:text>About This Repository</xsl:text>
+            -        </xsl:when>
+            -        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
+            -            <li class="ds-trail-link first-link"> - </li>
+            -        </xsl:when>
+            -        <xsl:otherwise>
+            -            <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
+            -        </xsl:otherwise>
+            -    </xsl:choose>
+            -</ul>
+            -
+            -
+            -<xsl:choose>
+            -    <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
+            -        <div id="ds-user-box">
+            -            <p>
+            -                <a>
+            -                    <xsl:attribute name="href">
+            -                        <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+            -                            dri:metadata[@element='identifier' and @qualifier='url']"/>
+            -                    </xsl:attribute>
+            -                    <i18n:text>xmlui.dri2xhtml.structural.profile</i18n:text>
+            -                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+            -                        dri:metadata[@element='identifier' and @qualifier='firstName']"/>
+            -                    <xsl:text> </xsl:text>
+            -                    <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+            -                        dri:metadata[@element='identifier' and @qualifier='lastName']"/>
+            -                </a>
+            -                <xsl:text> | </xsl:text>
+            -                <a>
+            -                    <xsl:attribute name="href">
+            -                        <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+            -                            dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
+            -                    </xsl:attribute>
+            -                    <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
+            -                </a>
+            -            </p>
+            -        </div>
+            -    </xsl:when>
+            -    <xsl:otherwise>
+            -        <div id="ds-user-box">
+            -            <p>
+            -                <a>
+            -                    <xsl:attribute name="href">
+            -                        <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+            -                            dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
+            -                    </xsl:attribute>
+            -                    <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
+            -                </a>
+            -            </p>
+            -        </div>
+            -    </xsl:otherwise>
+            -</xsl:choose>
+            -->
+
         </div>
     </xsl:template>
-
-
-
-
-
 
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
