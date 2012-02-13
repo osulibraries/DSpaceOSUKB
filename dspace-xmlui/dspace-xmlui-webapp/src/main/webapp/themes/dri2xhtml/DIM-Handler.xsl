@@ -11,7 +11,8 @@
 <!--
     TODO: Describe this XSL file    
     Author: Alexey Maslov
-    
+
+    PMD: There are some minor OSU customizations within this stylesheet, but anything major would be in OSU-Local.
 -->    
 
 <xsl:stylesheet 
@@ -120,14 +121,17 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:element>
-                <!-- TODO: PMBMD remove coins with config if we don't like it -->
-               <!-- Generate COinS with empty content per spec but force Cocoon to not create a minified tag  -->
-               <!--<span class="Z3988">
-                 -  <xsl:attribute name="title">
-                 -      <xsl:call-template name="renderCOinS"/>
-                 -  </xsl:attribute>
-                 -  &#xFEFF; <!.- non-breaking space to force separating the end tag .->
-                 -</span>-->
+                <!-- Make use of COinS configurable-->
+                <xsl:if test="$config-use-COinS = 1">
+                    <!-- Generate COinS with empty content per spec but force Cocoon to not create a minified tag  -->
+                    <span class="Z3988">
+                      <xsl:attribute name="title">
+                          <xsl:call-template name="renderCOinS"/>
+                      </xsl:attribute>
+                      &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+                    </span>
+                </xsl:if>
+
            </div>
             <div class="artifact-info">
                 <span class="author">
@@ -446,6 +450,16 @@
          <xsl:call-template name="itemSummaryView-DIM-fields">
          </xsl:call-template>
         </table>
+        <xsl:if test="$config-use-COinS = 1">
+            <!--  Generate COinS  -->
+            <span class="Z3988">
+                <xsl:attribute name="title">
+                    <xsl:call-template name="renderCOinS"/>
+                </xsl:attribute>
+                &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+            </span>
+        </xsl:if>
+
         <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
         <!--        see also match="dim:dim" mode="itemDetailView-DIM"  -->
         <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
@@ -762,15 +776,20 @@
     
     <!-- The block of templates used to render the complete DIM contents of a DRI object -->
     <xsl:template match="dim:dim" mode="itemDetailView-DIM">
-<!-- bds: no COinS for now, causes mouse-over gobbledy-gook
-        <span class="Z3988">
-            <xsl:attribute name="title">
-                 <xsl:call-template name="renderCOinS"/>
-            </xsl:attribute>
-        </span>-->
 		<table class="ds-includeSet-table">
 		    <xsl:apply-templates mode="itemDetailView-DIM"/><xsl:text> </xsl:text>
 		</table>
+
+        <!-- PMD: Make COinS configurable, since it causes mouse-over gobbledy-gook -->
+        <xsl:if test="$config-use-COinS = 1">
+            <span class="Z3988">
+                <xsl:attribute name="title">
+                    <xsl:call-template name="renderCOinS"/>
+                </xsl:attribute>
+                &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+            </span>
+        </xsl:if>
+
         <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
         <!--        see also match="dim:dim" mode="itemSummaryView-DIM"  -->
         <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
@@ -1021,27 +1040,48 @@
 
     This Code does not parse authors names, instead relying on dc.contributor to populate the
     coins
+     -->
 
+    <!-- If you are using SFX, uncomment the template below
+         and comment out the default renderCOinS template -->
 
+    <!-- SFX renderCOinS
 
+        <xsl:template name="renderCOinS">
+        <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
+        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='sfx'][@qualifier='server']"/>
+        <xsl:text>&amp;</xsl:text>
+        <xsl:text>rfr_id=info%3Asid%2Fdatadryad.org%3Arepo&amp;</xsl:text>
+        </xsl:template>
+    -->
 
     <xsl:template name="renderCOinS">
-       <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
-       <xsl:for-each select=".//dim:field[@element = 'identifier']">
+        <xsl:text>ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;</xsl:text>
+        <xsl:for-each select=".//dim:field[@element = 'identifier']">
             <xsl:text>rft_id=</xsl:text>
             <xsl:value-of select="encoder:encode(string(.))"/>
             <xsl:text>&amp;</xsl:text>
         </xsl:for-each>
-        <xsl:text>rfr_id=info%3Asid%2Fdatadryad.org%3Arepo&amp;</xsl:text>
-        <xsl:for-each select=".//dim:field[@element != 'description' and @mdschema !='dc' and @qualifier != 'provenance']">
-                <xsl:value-of select="concat('rft.', @element,'=',encoder:encode(string(.))) "/>
+        <xsl:text>rfr_id=info%3Asid%2Fdspace.org%3Arepository&amp;</xsl:text>
+        <xsl:for-each select=".//dim:field[@mdschema='dc' and @element != 'description' and @element != 'embargo' and @qualifier != 'provenance']">
 
+            <!-- We do need a simple DC crosswalk in place for this, but for now at least fix author
+                 - most other fields will be ok -->
+
+            <xsl:choose>
+                <xsl:when test="@element = 'contributor' and @qualifier='author'">
+                    <xsl:value-of select="concat('rft.', 'creator','=',encoder:encode(string(.))) "/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="concat('rft.', @element,'=',encoder:encode(string(.))) "/>
+                </xsl:otherwise>
+            </xsl:choose>
 
             <xsl:if test="position()!=last()">
                 <xsl:text>&amp;</xsl:text>
             </xsl:if>
         </xsl:for-each>
-    </xsl:template>-->
+    </xsl:template>
     
     
 </xsl:stylesheet>

@@ -16,6 +16,7 @@
 -->    
 
 <!-- bds: added rdf and cc namespaces for CC-License linking section -->
+<!-- PMD: There are some minor OSU customizations within this stylesheet, but anything major would be in OSU-Local.-->
 <xsl:stylesheet 
     xmlns:dri="http://di.tamu.edu/DRI/1.0/"
     xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
