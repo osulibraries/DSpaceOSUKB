@@ -213,10 +213,19 @@
                     var o = new Object();
                     o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
                     o.size = <xsl:value-of select="./@SIZE"/>;
-                    <!-- Remove the double-quote symbol from title fields. The quote will break javascript. -->
-                    o.title = "<xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','')"/>";
+                    <!-- Remove the double-quote symbol from title fields. The quote will otherwise break javascript. -->
+                    <!-- Strip/replace/translate double quote to quot symbol.-->
+                    <xsl:variable name="strippedTitlePartial">
+                        <xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','&quot;')" />
+                    </xsl:variable>
+                    <!-- Strip apostraphe-->
+                    <xsl:variable name="strippedTitle">
+                        <xsl:value-of select='translate($strippedTitlePartial, "&apos;", " ")'/>
+                    </xsl:variable>
+
+                    o.title = "<xsl:value-of select="$strippedTitle"/>";
                     o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
-                    o.itemTitle = "<xsl:value-of select="translate(//dim:field[@element='title'],'&#34;','')" />";
+                    o.itemTitle = "<xsl:value-of select="$strippedTitle" />";
 
                     imageJpegArray.push(o);
                 </xsl:for-each>
