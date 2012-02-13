@@ -271,5 +271,57 @@
         </div>
     </xsl:template>
 
+    <!-- Overrides General-Handler
+    bds: make thumbnails point to bitstreams instead of item records
+this template completely replaces the original, found below-->
+    <xsl:template match="mets:fileSec" mode="artifact-preview">
+        <!-- first, see if any thumbnails exist -->
+        <xsl:if test="mets:fileGrp[@USE='THUMBNAIL']">
+
+            <!-- bds:
+        Getting GROUPID by prefixing 'group_' to the primary FILEID. This works because
+        if no primary exists, variable would just contain 'group_', which wont match any
+        thumbnail, so would default to the 'otherwise' condition below.
+
+        This is based on the assumption that this is indeed how the GROUPID variable is formed.
+        The other possibility would be to:
+            - get the primary FILEID from the structMap section
+            - match that FILEID in the fileGrp/CONTENT bundle to a GROUPID
+            - then see if that GROUPID has a thumbnail in fileGrp/THUMBNAIL bundle
+        But so far it looks like just prefixing 'group_' works.
+
+        If primary bitstream has no thumbnail, or if there is no primary bitstream set,
+        then the first available thumbnail would be chosen.
+            -->
+            <xsl:variable name="primary_FILEID">group_<xsl:value-of select="/mets:METS/mets:structMap/mets:div[@TYPE='DSpace Item']/mets:fptr/@FILEID" /></xsl:variable>
+            <xsl:variable name="GROUPID">
+                <xsl:choose>
+                    <xsl:when test="mets:fileGrp[@USE='THUMBNAIL']/mets:file[@GROUPID=$primary_FILEID]">
+                        <xsl:value-of select="$primary_FILEID" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file/@GROUPID" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <div class="artifact-preview">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="mets:fileGrp[@USE='CONTENT']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
+                    </xsl:attribute>
+                    <img>
+                        <xsl:attribute name="alt">
+                            <xsl:text>Thumbnail of </xsl:text>
+                            <xsl:value-of select="/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='title']"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="src">
+                            <xsl:value-of select="mets:fileGrp[@USE='THUMBNAIL']/mets:file[@GROUPID=$GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
+                        </xsl:attribute>
+                    </img>
+                </a>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
 
 </xsl:stylesheet>
