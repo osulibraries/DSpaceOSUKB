@@ -24,6 +24,7 @@
     xmlns:xlink="http://www.w3.org/TR/xlink/"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     
+    <xsl:import href="dri2xhtml/config.xsl"/>
     <xsl:import href="dri2xhtml/structural.xsl"/>
     <xsl:import href="dri2xhtml/DIM-Handler.xsl"/>
     <!--<xsl:import href="dri2xhtml/QDC-Handler.xsl"/>
