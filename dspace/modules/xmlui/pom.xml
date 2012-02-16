@@ -167,6 +167,7 @@
          <scope>provided</scope>
       </dependency>
 
+
        <dependency>
            <groupId>org.dspace</groupId>
            <artifactId>dspace-stats-elasticsearch</artifactId>

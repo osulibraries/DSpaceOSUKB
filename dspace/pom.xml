@@ -95,6 +95,18 @@
             </modules>
         </profile>
 
+        <profile>
+          <id>dspace-stats-elasticsearch</id>
+          <activation>
+            <file>
+              <exists>../../dspace-stats-elasticsearch/pom.xml</exists>
+            </file>
+          </activation>
+          <modules>
+            <module>../../dspace-stats-elasticsearch</module>
+          </modules>
+        </profile>
+
         <!--
             Builds DSpace discovery for DSpace
         -->
@@ -497,7 +509,6 @@
                 </dependency>
             </dependencies>
         </profile>
-
     </profiles>
 
     <!--
@@ -505,7 +516,8 @@
     -->
     <modules>
         <module>modules</module>
-    </modules>
+        <!--<module>../../dspace-stats-elasticsearch</module>-->
+      </modules>
 
     <build>
         <plugins>
