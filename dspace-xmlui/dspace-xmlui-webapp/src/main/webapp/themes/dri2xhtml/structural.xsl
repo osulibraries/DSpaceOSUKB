@@ -284,6 +284,18 @@
                 </xsl:attribute>&#160;</script>
             </xsl:for-each>
 
+            <!-- Add MathJAX CDN, can do a local install, or possibly get SSL enabled-->
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+                });
+            </script>
+
+
+            <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+                <xsl:text> </xsl:text>
+            </script>
+
 
             <!-- Add a google analytics script if the key is present -->
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
