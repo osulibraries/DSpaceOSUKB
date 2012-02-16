@@ -6,4 +6,8 @@
         <xsl:text>0</xsl:text>
     </xsl:variable>
 
+    <xsl:variable name="config-use-feedback">
+        <xsl:text>0</xsl:text>
+    </xsl:variable>
+
 </xsl:stylesheet>
