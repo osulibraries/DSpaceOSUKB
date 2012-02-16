@@ -213,19 +213,26 @@
                     var o = new Object();
                     o.url = "<xsl:value-of select="mets:FLocat/@xlink:href"/>";
                     o.size = <xsl:value-of select="./@SIZE"/>;
-                    <!-- Remove the double-quote symbol from title fields. The quote will otherwise break javascript. -->
-                    <!-- Strip/replace/translate double quote to quot symbol.-->
-                    <xsl:variable name="strippedTitlePartial">
-                        <xsl:value-of select="translate(mets:FLocat/@xlink:title,'&#34;','&quot;')" />
+                    <!-- Replace double quotes and single quotes with corresponding entities, otherwise Javascript breaks.-->
+                    <xsl:variable name="encodedTitle"><!-- 'title' is what METS calls the bitstream file name -->
+                        <xsl:call-template name="encode-quotes">
+                            <xsl:with-param name="stringToFix" select="mets:FLocat/@xlink:title"/>
+                        </xsl:call-template>
                     </xsl:variable>
-                    <!-- Strip apostraphe-->
-                    <xsl:variable name="strippedTitle">
-                        <xsl:value-of select='translate($strippedTitlePartial, "&apos;", " ")'/>
+                    <xsl:variable name="encodedCaption"><!-- dc.description.abstract -->
+                        <xsl:call-template name="encode-quotes">
+                            <xsl:with-param name="stringToFix" select="//dim:field[@element='description'][@qualifier='abstract']"/>
+                        </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:variable name="encodedItemTitle"><!-- dc.title -->
+                        <xsl:call-template name="encode-quotes">
+                            <xsl:with-param name="stringToFix" select="//dim:field[@element='title']"/>
+                        </xsl:call-template>
                     </xsl:variable>
 
-                    o.title = "<xsl:value-of select="$strippedTitle"/>";
-                    o.caption = "<xsl:value-of select="translate(//dim:field[@element='description'][@qualifier='abstract'],'&#34;','')" />";
-                    o.itemTitle = "<xsl:value-of select="$strippedTitle" />";
+                    o.title = "<xsl:value-of select="$encodedTitle"/>";
+                    o.caption = "<xsl:value-of select="$encodedCaption"/>";
+                    o.itemTitle = "<xsl:value-of select="$encodedItemTitle"/>";
 
                     imageJpegArray.push(o);
                 </xsl:for-each>
@@ -253,4 +260,21 @@
 		<xsl:apply-templates
 			select="./mets:fileSec/mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']"/>
 	</xsl:template>
+  
+      <xsl:template name="encode-quotes">
+        <xsl:param name="stringToFix"/>
+        <xsl:variable name="singleQuotesFixed">
+            <xsl:call-template name="replace-string"><!-- is in OSU-local.xsl -->
+                <xsl:with-param name="text" select="$stringToFix"/>
+                <xsl:with-param name="replace" select="&quot;&apos;&quot;"/>
+                <xsl:with-param name="with" select="'&amp;apos;'"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:call-template name="replace-string">
+            <xsl:with-param name="text" select="$singleQuotesFixed"/>
+            <xsl:with-param name="replace" select="'&quot;'"/>
+            <xsl:with-param name="with" select="'&amp;quot;'"/>
+        </xsl:call-template>
+    </xsl:template>
+    
 </xsl:stylesheet>
