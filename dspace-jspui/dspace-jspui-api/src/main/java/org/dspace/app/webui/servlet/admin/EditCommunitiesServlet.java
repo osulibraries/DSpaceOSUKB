@@ -45,7 +45,7 @@ import org.dspace.eperson.Group;
  * creation, and metadata editing
  * 
  * @author Robert Tansley
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class EditCommunitiesServlet extends DSpaceServlet
 {

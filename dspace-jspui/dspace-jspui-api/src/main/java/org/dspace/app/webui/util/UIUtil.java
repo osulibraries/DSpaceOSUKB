@@ -42,7 +42,7 @@ import org.dspace.eperson.EPerson;
  * Miscellaneous UI utility methods
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class UIUtil extends Util
 {

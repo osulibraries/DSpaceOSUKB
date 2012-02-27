@@ -49,7 +49,7 @@ import org.dspace.utils.DSpace;
  * but we lost the path information on upload.
  * 
  * @author Austin Kim, Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class HTMLServlet extends DSpaceServlet
 {

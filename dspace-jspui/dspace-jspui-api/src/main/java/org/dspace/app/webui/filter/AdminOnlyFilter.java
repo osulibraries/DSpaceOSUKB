@@ -33,7 +33,7 @@ import org.dspace.core.LogManager;
  * from authenticated non-admins result in an authorisation error.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class AdminOnlyFilter implements Filter
 {

@@ -38,7 +38,7 @@ import org.dspace.content.DCValue;
  * Servlet for handling user email recommendations
  *
  * @author  Arnaldo Dantas
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SuggestServlet extends DSpaceServlet
 {

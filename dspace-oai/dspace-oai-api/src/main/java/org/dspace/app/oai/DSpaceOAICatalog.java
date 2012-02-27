@@ -52,7 +52,7 @@ import ORG.oclc.oai.server.verb.OAIInternalServerError;
  * something else will need to update this code too. Sorry about that.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class DSpaceOAICatalog extends AbstractCatalog
 {

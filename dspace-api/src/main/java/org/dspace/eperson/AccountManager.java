@@ -35,7 +35,7 @@ import org.dspace.storage.rdbms.TableRow;
  * *NEW* now ignores expiration dates so that tokens never expire
  * 
  * @author Peter Breton
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class AccountManager
 {

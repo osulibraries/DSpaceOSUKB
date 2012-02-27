@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * Please ensure that nothing is added to this class that isn't also serializable
  *
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class RequestInfo implements Serializable
 {

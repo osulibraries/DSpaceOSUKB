@@ -34,7 +34,7 @@ import org.dspace.eperson.Group;
  * <P><code>onclick="javascript:finishEPerson();"</code></P>
  *
  * @author  Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SelectGroupTag extends TagSupport
 {

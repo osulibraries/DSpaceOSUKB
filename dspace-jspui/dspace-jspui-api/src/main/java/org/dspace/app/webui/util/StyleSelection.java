@@ -14,7 +14,7 @@ import org.dspace.content.Item;
  * Interface for a strategy of style selection
  *  
  * @author Andrea Bollini
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public interface StyleSelection
 {

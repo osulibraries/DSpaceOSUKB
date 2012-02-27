@@ -60,7 +60,7 @@ import org.jdom.output.XMLOutputter;
  * after the Handle, the community or collection home page is shown.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 @SuppressWarnings("deprecation")
 public class HandleServlet extends DSpaceServlet

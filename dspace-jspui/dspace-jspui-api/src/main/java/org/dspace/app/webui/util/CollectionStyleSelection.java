@@ -21,7 +21,7 @@ import org.dspace.core.ConfigurationManager;
  * Style name is case insensitive.
  * 
  * @author Andrea Bollini
- * @version $Revision: 5845 $
+ * @version $Revision$
  * 
  */
 public class CollectionStyleSelection extends AKeyBasedStyleSelection

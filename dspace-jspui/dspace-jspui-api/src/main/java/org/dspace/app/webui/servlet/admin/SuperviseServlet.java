@@ -29,7 +29,7 @@ import org.dspace.eperson.Supervisor;
  * Servlet to handle administration of the supervisory system
  *
  * @author Richard Jones
- * @version  $Revision: 5845 $
+ * @version  $Revision$
  */
 public class SuperviseServlet extends org.dspace.app.webui.servlet.DSpaceServlet
 {

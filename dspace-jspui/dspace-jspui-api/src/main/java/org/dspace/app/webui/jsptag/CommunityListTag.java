@@ -22,7 +22,7 @@ import org.dspace.content.Community;
  * Tag for display a list of communities
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class CommunityListTag extends TagSupport
 {

@@ -66,7 +66,7 @@ import org.dspace.submit.step.SampleStep;
  * @see org.dspace.submit.step.SampleStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPSampleStep extends JSPStep
 {

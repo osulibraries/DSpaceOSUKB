@@ -31,7 +31,7 @@ import org.dspace.core.Context;
  * 
  * @author Robert Tansley
  * @author Martin Hald
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class MetadataFieldRegistryServlet extends DSpaceServlet
 {

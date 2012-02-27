@@ -22,7 +22,7 @@ import org.dspace.content.Collection;
  * Tag for display a list of collections
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class CollectionListTag extends TagSupport
 {

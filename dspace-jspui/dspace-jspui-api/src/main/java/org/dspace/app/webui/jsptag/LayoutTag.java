@@ -72,7 +72,7 @@ import org.dspace.app.webui.servlet.FeedServlet;
  * </p>
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LayoutTag extends TagSupport
 {

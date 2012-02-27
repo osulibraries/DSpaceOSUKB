@@ -35,7 +35,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * </p>
  * 
  * @author Peter Breton
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class HandleManager
 {

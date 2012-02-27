@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * Servlet for editing and deleting (expunging) items
  * 
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ItemMapServlet extends DSpaceServlet
 {

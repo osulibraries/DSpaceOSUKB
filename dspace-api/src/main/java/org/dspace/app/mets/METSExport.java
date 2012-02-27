@@ -71,7 +71,7 @@ import edu.harvard.hul.ois.mets.helper.PreformedXML;
  * Tool for exporting DSpace AIPs with the metadata serialised in METS format
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @deprecated Please use METS Packager to import/export METS files
  * @see org.dspace.content.packager.DSpaceMETSDisseminator
  * @see org.dspace.content.packager.DSpaceMETSIngester

@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
  *  names in the configuration entry.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see SelfNamedPlugin
  */
 public class PluginManager

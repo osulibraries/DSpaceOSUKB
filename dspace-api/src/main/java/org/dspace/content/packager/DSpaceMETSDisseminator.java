@@ -48,7 +48,7 @@ import edu.harvard.hul.ois.mets.helper.PCData;
  * plugin, and a way to create packages acceptable to the METS SIP importer.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class DSpaceMETSDisseminator
     extends AbstractMETSDisseminator

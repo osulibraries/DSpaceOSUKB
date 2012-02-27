@@ -55,7 +55,7 @@ import org.dspace.license.CreativeCommons;
  * Servlet for editing and deleting (expunging) items
  *
  * @author Robert Tansley
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class EditItemServlet extends DSpaceServlet
 {

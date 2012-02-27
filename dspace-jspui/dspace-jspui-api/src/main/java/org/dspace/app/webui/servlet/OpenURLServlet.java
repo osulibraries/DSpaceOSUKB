@@ -24,7 +24,7 @@ import org.dspace.core.LogManager;
  * open URL and redirects to search.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class OpenURLServlet extends DSpaceServlet
 {

@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  * - etal: integer number to limit multiple value items specified in config to
  * 
  * @author Richard Jones
- * @version $Revision: 6164 $
+ * @version $Revision$
  */
 public class BrowserServlet extends AbstractBrowserServlet
 {

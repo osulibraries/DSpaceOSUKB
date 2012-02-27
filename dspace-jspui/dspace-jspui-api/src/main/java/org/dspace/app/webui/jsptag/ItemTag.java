@@ -172,7 +172,7 @@ import org.dspace.core.Utils;
  * </PRE>
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ItemTag extends TagSupport
 {

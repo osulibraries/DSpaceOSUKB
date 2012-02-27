@@ -15,7 +15,7 @@ import org.dspace.content.authority.Choices;
  *
  * @author Robert Tansley
  * @author Martin Hald
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 @Deprecated
 public class DCValue

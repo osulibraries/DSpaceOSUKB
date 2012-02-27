@@ -45,7 +45,7 @@ import org.dspace.core.LogManager;
  * @see org.dspace.core.Context
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class DSpaceServlet extends HttpServlet
 {

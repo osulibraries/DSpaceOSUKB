@@ -41,7 +41,7 @@ import org.dspace.handle.HandleManager;
  * Servlet for editing permissions
  * 
  * @author dstuve
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class AuthorizeAdminServlet extends DSpaceServlet
 {

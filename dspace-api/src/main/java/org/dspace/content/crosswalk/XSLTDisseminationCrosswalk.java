@@ -57,7 +57,7 @@ import org.jdom.transform.XSLTransformer;
  *
  * @author Larry Stone
  * @author Scott Phillips
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see XSLTCrosswalk
  */
 public class XSLTDisseminationCrosswalk

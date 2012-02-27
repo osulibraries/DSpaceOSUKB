@@ -21,7 +21,7 @@ import org.dspace.handle.HandleManager;
  * Support to install an Item in the archive.
  * 
  * @author dstuve
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class InstallItem
 {

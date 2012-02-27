@@ -55,7 +55,7 @@ import org.dspace.submit.step.InitialQuestionsStep;
  * @see org.dspace.submit.step.InitialQuestionsStep
  *
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPInitialQuestionsStep extends JSPStep
 {

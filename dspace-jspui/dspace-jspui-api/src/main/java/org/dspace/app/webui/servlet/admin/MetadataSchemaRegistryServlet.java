@@ -29,7 +29,7 @@ import org.dspace.core.Context;
  * Servlet for editing the Dublin Core schema registry.
  *
  * @author Martin Hald
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class MetadataSchemaRegistryServlet extends DSpaceServlet
 {

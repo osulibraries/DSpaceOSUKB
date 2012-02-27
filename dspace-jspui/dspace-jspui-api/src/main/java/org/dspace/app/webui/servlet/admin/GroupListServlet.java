@@ -23,7 +23,7 @@ import org.dspace.eperson.Group;
 /**
  * Servlet browsing through groups and selecting them
  *
- *  * @version $Revision: 5845 $
+ *  * @version $Revision$
  */
 public class GroupListServlet extends DSpaceServlet
 {

@@ -18,7 +18,7 @@ import org.dspace.eperson.EPerson;
  * which stage of submission they are (in workspace or workflow system)
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public interface InProgressSubmission
 {

@@ -21,7 +21,7 @@ import org.dspace.event.Event;
 /**
  * Class for updating search indices from content events.
  * 
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class SearchConsumer implements Consumer
 {

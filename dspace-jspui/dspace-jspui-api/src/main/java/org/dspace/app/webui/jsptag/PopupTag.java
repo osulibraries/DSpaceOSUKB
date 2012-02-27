@@ -27,7 +27,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * attributes could be added at a later date (e.g. name, width, height)
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class PopupTag extends BodyTagSupport
 {

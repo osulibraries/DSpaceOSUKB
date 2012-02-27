@@ -25,7 +25,7 @@ import org.dspace.eperson.EPerson;
  * Servlet browsing through e-people and selecting them
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class EPersonListServlet extends DSpaceServlet
 {

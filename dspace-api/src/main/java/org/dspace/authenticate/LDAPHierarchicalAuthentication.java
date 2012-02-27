@@ -33,7 +33,7 @@ import org.dspace.eperson.Group;
  * check the credentials of the user by binding directly to their DN.
  *
  * @author Stuart Lewis, Chris Yates, Alex Barbieri, Flavio Botelho, Reuben Pasquini
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class LDAPHierarchicalAuthentication
     implements AuthenticationMethod {

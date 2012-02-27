@@ -26,7 +26,7 @@ import org.dspace.core.Constants;
  *
  * @author Robert Tansley
  * @author Mark Diggory
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Util {
         // cache for source version result

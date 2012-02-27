@@ -35,7 +35,7 @@ import org.dspace.core.LogManager;
  * authentication methods that can make use of them, not just DSpace-internal.
  *
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class PasswordServlet extends DSpaceServlet
 {

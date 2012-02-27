@@ -18,7 +18,7 @@ package org.dspace.core;
  * be passed all the way up to a generalized fatal exception handler.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see PluginManager
  */
 

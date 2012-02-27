@@ -33,7 +33,7 @@ import org.dspace.eperson.EPerson;
  * the <code>org.dspace.eperson.AuthenticationMethod</code> interface.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class Authenticate
 {

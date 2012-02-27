@@ -37,7 +37,7 @@ import org.dspace.eperson.Group;
  * repository
  *
  * @author   Richard Jones
- * @version  $Revision: 5845 $
+ * @version  $Revision$
  */
 public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServlet
 {

@@ -88,7 +88,7 @@ import org.jdom.Element;
  * 
  * @author Larry Stone
  * @author Tim Donohue
- * @version $Revision: 6137 $
+ * @version $Revision$
  * @see org.dspace.content.packager.METSManifest
  * @see AbstractPackageIngester
  * @see PackageIngester

@@ -52,7 +52,7 @@ import org.dspace.core.Utils;
  * send that, otherwise it fails. Do not attempt to insert metadata.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see PackageIngester
  * @see PackageDisseminator
  */

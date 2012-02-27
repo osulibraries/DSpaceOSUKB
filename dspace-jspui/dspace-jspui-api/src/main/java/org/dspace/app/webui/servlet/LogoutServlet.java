@@ -25,7 +25,7 @@ import org.dspace.core.LogManager;
  * Servlet that logs out any current user if invoked.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LogoutServlet extends DSpaceServlet
 {

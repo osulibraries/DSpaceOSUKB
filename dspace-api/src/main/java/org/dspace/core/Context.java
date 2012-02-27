@@ -40,7 +40,7 @@ import org.dspace.storage.rdbms.DatabaseManager;
  * The context object is also used as a cache for CM API objects.
  * 
  * 
- * @version $Revision: 5915 $
+ * @version $Revision$
  */
 public class Context
 {

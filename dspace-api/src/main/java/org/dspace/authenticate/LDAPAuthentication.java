@@ -35,7 +35,7 @@ import org.dspace.eperson.Group;
  * all users are in the same unit.
  *
  * @author Larry Stone, Stuart Lewis
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class LDAPAuthentication
     implements AuthenticationMethod {

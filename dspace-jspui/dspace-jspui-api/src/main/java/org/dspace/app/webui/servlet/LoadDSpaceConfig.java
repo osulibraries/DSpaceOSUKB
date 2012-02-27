@@ -29,7 +29,7 @@ import java.net.URLConnection;
  * @deprecated Use Servlet Context Listener provided in dspace-api (remove in >
  *             1.5.x)
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LoadDSpaceConfig extends HttpServlet
 {

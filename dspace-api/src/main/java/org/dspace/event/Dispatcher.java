@@ -19,7 +19,7 @@ import org.dspace.core.Context;
  * transform, consolidate, and otherwise optimize the event stream prior to
  * delivering events to its consumers.
  * 
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public abstract class Dispatcher
 {

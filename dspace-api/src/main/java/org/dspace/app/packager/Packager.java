@@ -108,7 +108,7 @@ import org.dspace.handle.HandleManager;
  *
  * @author Larry Stone
  * @author Tim Donohue
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Packager
 {

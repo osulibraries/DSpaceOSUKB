@@ -91,7 +91,7 @@ import javax.mail.internet.MimeMultipart;
  * 
  * @author Robert Tansley
  * @author Jim Downing - added attachment handling code
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Email
 {

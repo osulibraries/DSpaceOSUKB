@@ -36,7 +36,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * Class representing a group of e-people.
  * 
  * @author David Stuve
- * @version $Revision: 5926 $
+ * @version $Revision$
  */
 public class Group extends DSpaceObject
 {

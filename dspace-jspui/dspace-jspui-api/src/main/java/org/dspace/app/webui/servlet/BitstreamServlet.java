@@ -41,7 +41,7 @@ import org.dspace.utils.DSpace;
  * <code>/bitstream/handle/sequence_id/filename</code>
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class BitstreamServlet extends DSpaceServlet
 {

@@ -47,7 +47,7 @@ import org.apache.log4j.helpers.OptionConverter;
  * @author Robert Tansley
  * @author Larry Stone - Interpolated values.
  * @author Mark Diggory - General Improvements to detection, logging and loading.
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class ConfigurationManager
 {

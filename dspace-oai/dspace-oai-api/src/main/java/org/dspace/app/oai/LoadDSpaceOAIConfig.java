@@ -27,7 +27,7 @@ import org.dspace.core.ConfigurationManager;
  *             1.5.x)
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LoadDSpaceOAIConfig extends HttpServlet
 {	

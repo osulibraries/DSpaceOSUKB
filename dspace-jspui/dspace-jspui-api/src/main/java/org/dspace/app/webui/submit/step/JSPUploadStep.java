@@ -62,7 +62,7 @@ import org.dspace.submit.step.UploadStep;
  * @see org.dspace.submit.step.UploadStep
  *
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPUploadStep extends JSPStep
 {

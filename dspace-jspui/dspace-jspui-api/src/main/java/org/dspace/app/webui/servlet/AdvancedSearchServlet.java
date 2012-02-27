@@ -23,7 +23,7 @@ import org.dspace.core.Context;
  * Servlet for constructing the advanced search form
  * 
  * @author gam
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class AdvancedSearchServlet extends DSpaceServlet
 {

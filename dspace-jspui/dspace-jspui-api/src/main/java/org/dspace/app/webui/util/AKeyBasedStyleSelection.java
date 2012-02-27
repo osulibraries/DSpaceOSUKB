@@ -11,7 +11,7 @@ import org.dspace.core.ConfigurationManager;
 /**
  * Simple abstract class that provide utility method for get/check style configuration from dspace.cfg file 
  * @author Andrea Bollini
- * @version $Revision: 5845 $
+ * @version $Revision$
  *
  */
 public abstract class AKeyBasedStyleSelection implements StyleSelection

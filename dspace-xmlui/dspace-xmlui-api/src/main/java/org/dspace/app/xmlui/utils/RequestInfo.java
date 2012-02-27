@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * 
  * @author Robert Tansley
  * @author Scott Phillips
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class RequestInfo
 {

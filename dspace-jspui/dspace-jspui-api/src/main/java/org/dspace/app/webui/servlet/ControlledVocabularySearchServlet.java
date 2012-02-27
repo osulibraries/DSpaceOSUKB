@@ -37,7 +37,7 @@ import org.dspace.search.QueryResults;
  * controlled vocabulary as a basis for selecting the search keywords.
  * 
  * @author Miguel Ferreira
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ControlledVocabularySearchServlet extends DSpaceServlet
 {

@@ -20,7 +20,7 @@ import java.util.Date;
  *
  * Recommended filter:  EPerson+Create
  *
- * @version $Revision: 5844 $
+ * @version $Revision$
  *
  * @author Stuart Lewis
  */

@@ -38,7 +38,7 @@ import org.dspace.eperson.Group;
  * Basic Auth username and password to the <code>AuthenticationManager</code>.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class PasswordAuthentication
     implements AuthenticationMethod {

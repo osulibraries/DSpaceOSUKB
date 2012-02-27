@@ -23,7 +23,7 @@ import org.dspace.storage.rdbms.TableRow;
  * Class representing a ResourcePolicy
  * 
  * @author David Stuve
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class ResourcePolicy
 {

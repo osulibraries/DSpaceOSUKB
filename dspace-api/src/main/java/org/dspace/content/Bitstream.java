@@ -34,7 +34,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * the contents of a bitstream; you need to create a new bitstream.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Bitstream extends DSpaceObject
 {
@@ -685,12 +685,6 @@ public class Bitstream extends DSpaceObject
         return bRow.getIntColumn("store_number");
     }
     
-    /**
-     * ParentObject of a bitstream will either be an item, if its attached to an 
-     * item, or a collection/community if it is a logo.
-     * @return
-     * @throws SQLException
-     */
     public DSpaceObject getParentObject() throws SQLException
     {
         Bundle[] bundles = getBundles();

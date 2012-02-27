@@ -42,7 +42,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * <code>update</code> is called.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Community extends DSpaceObject
 {

@@ -60,7 +60,7 @@ import org.dspace.core.LogManager;
  * @see org.dspace.submit.step.VerifyStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPVerifyStep extends JSPStep
 {
