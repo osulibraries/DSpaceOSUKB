@@ -287,7 +287,12 @@
             <!-- Add MathJAX CDN, can do a local install, or possibly get SSL enabled-->
             <script type="text/x-mathjax-config">
                 MathJax.Hub.Config({
-                    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+                    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+                    TeX: {
+                      Macros: {
+                        AA: '{\\mathring A}'
+                      }
+                    }
                 });
             </script>
 
