@@ -28,7 +28,7 @@ import org.dspace.app.webui.util.JSPManager;
  * Servlet for browsing through withdrawn items:
  * 
  * @author Graham Triggs
- * @version $Revision: 6164 $
+ * @version $Revision$
  */
 public class WithdrawnBrowserServlet extends AbstractBrowserServlet
 {

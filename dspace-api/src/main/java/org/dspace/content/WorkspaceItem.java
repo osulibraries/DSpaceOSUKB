@@ -29,7 +29,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * Class representing an item in the process of being submitted by a user
  * 
  * @author Robert Tansley
- * @version $Revision: 6137 $
+ * @version $Revision$
  */
 public class WorkspaceItem implements InProgressSubmission
 {

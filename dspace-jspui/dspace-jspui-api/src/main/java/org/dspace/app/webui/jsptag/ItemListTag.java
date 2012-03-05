@@ -54,7 +54,7 @@ import org.dspace.content.authority.MetadataAuthorityManager;
  * Tag for display a list of items
  *
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ItemListTag extends TagSupport
 {

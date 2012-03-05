@@ -21,7 +21,7 @@ import org.dspace.content.DCDate;
  * "notime", which, if present, means the date is rendered without the time
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class DateTag extends TagSupport
 {

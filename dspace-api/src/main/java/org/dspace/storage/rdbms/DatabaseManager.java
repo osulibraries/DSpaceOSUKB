@@ -48,7 +48,7 @@ import org.dspace.core.Context;
  * 
  * @author Peter Breton
  * @author Jim Downing
- * @version $Revision: 6092 $
+ * @version $Revision$
  */
 public class DatabaseManager
 {

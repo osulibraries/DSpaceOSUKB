@@ -28,7 +28,7 @@ import org.dspace.workflow.WorkflowItem;
  * Information about an item being editing with the submission UI
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class SubmissionInfo
 {

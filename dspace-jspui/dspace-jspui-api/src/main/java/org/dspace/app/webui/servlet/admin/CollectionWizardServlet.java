@@ -48,7 +48,7 @@ import org.dspace.eperson.Group;
  * Collection creation wizard UI
  * 
  * @author Robert Tansley
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class CollectionWizardServlet extends DSpaceServlet
 {

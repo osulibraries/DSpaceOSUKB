@@ -32,7 +32,7 @@ import org.dspace.eperson.EPerson;
  * 
  * @author Robert Tansley
  * @author Mark Diggory
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class X509CertificateServlet extends DSpaceServlet
 {

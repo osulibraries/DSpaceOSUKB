@@ -52,7 +52,7 @@ import org.dspace.workflow.WorkflowItem;
  * effect.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Collection extends DSpaceObject
 {

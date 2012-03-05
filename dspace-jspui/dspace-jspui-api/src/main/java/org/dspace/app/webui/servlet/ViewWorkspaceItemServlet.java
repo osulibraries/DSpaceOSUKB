@@ -31,7 +31,7 @@ import org.dspace.content.WorkspaceItem;
  * Based heavily on the HandleServlet.
  *
  * @author Richard Jones
- * @version  $Revision: 5845 $
+ * @version  $Revision$
  */
 public class ViewWorkspaceItemServlet 
     extends DSpaceServlet 

@@ -36,7 +36,7 @@ import org.dspace.eperson.EPerson;
  * <P>
  * 
  * @author Larry Stone
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class DAVServlet extends HttpServlet
 

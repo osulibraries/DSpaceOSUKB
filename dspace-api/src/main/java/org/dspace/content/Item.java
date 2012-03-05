@@ -53,7 +53,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  *
  * @author Robert Tansley
  * @author Martin Hald
- * @version $Revision: 6107 $
+ * @version $Revision$
  */
 public class Item extends DSpaceObject
 {

@@ -20,7 +20,7 @@ import org.dspace.core.Utils;
  * filtered list of events, synchronously, to a configured list of consumers. It
  * may be extended for more elaborate behavior.
  * 
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class BasicDispatcher extends Dispatcher
 {

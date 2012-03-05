@@ -38,7 +38,7 @@ import org.dspace.event.Event;
  *
  * Recommended filter:  Item+Create|Modify|Modify_Metadata:Collection+Add|Remove
  *
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class BrowseConsumer implements Consumer
 {

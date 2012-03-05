@@ -39,7 +39,7 @@ import org.dspace.eperson.EPerson;
  * </p>
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SelectEPersonTag extends TagSupport
 {

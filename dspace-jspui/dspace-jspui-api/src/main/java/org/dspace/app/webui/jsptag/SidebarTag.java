@@ -16,7 +16,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Must be used within a dspace:layout tag.
  * 
  * @author Peter Breton
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SidebarTag extends BodyTagSupport
 {

@@ -21,7 +21,7 @@ import org.dspace.core.Context;
  * Servlet that handles the controlled vocabulary
  * 
  * @author Miguel Ferreira
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ControlledVocabularyServlet extends DSpaceServlet
 {

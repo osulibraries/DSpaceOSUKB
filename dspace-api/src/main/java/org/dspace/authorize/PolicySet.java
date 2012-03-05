@@ -26,7 +26,7 @@ import org.dspace.eperson.Group;
  * helpful method, setPolicies();
  * 
  * @author dstuve
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class PolicySet
 {

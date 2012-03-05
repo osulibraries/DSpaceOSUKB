@@ -32,7 +32,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * </p>
  * 
  * @author Scott Yeadon
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class ItemPreviewTag extends TagSupport
 {

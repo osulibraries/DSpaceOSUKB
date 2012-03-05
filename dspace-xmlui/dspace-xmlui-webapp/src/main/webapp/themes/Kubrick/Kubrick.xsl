@@ -12,9 +12,9 @@
 <!--
   template.xsl
 
-  Version: $Revision: 5845 $
+  Version: $Revision$
  
-  Date: $Date: 2010-11-12 00:34:07 -0500 (Fri, 12 Nov 2010) $
+  Date: $Date$
 
 -->
 

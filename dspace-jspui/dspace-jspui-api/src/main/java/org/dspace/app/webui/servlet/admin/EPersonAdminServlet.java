@@ -27,7 +27,7 @@ import org.dspace.eperson.EPersonDeletionException;
  * Servlet for editing and creating e-people
  * 
  * @author David Stuve
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class EPersonAdminServlet extends DSpaceServlet
 {

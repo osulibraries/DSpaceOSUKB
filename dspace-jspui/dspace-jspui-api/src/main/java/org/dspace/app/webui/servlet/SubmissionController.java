@@ -84,7 +84,7 @@ import org.dspace.submit.AbstractProcessingStep;
  * @see org.dspace.app.webui.submit.JSPStepManager
  * 
  * @author Tim Donohue
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class SubmissionController extends DSpaceServlet
 {

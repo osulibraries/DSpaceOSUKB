@@ -39,7 +39,7 @@ import org.dspace.workflow.WorkflowManager;
  * @see org.dspace.submit.AbstractProcessingStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class CompleteStep extends AbstractProcessingStep
 {

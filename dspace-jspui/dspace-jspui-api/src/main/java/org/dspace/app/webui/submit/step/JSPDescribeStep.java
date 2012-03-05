@@ -61,7 +61,7 @@ import org.dspace.submit.step.DescribeStep;
  * @see org.dspace.submit.step.DescribeStep
  *
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPDescribeStep extends JSPStep
 {

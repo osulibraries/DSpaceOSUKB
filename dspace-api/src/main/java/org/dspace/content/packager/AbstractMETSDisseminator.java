@@ -108,7 +108,7 @@ import org.jdom.output.XMLOutputter;
  * @author Larry Stone
  * @author Robert Tansley
  * @author Tim Donohue
- * @version $Revision: 5932 $
+ * @version $Revision$
  */
 public abstract class AbstractMETSDisseminator
     extends AbstractPackageDisseminator

@@ -34,7 +34,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * the contents of a bitstream; you need to create a new bitstream.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Bitstream extends DSpaceObject
 {

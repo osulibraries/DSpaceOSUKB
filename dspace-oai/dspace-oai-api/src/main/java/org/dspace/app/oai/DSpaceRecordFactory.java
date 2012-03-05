@@ -23,7 +23,7 @@ import ORG.oclc.oai.server.verb.CannotDisseminateFormatException;
  * Implementation of the OAICat RecordFactory base class for DSpace items.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class DSpaceRecordFactory extends RecordFactory
 {

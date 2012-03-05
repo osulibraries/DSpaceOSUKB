@@ -40,7 +40,7 @@ import org.jdom.output.XMLOutputter;
  * use the same URL as a SOAP endpoint and WebDAV resource root.
  * 
  * @author Larry Stone
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LNISoapServlet extends AxisServlet
 

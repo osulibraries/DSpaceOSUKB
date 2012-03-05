@@ -29,7 +29,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * Class representing an e-person.
  * 
  * @author David Stuve
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class EPerson extends DSpaceObject
 {

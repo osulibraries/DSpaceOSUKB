@@ -26,7 +26,7 @@ import org.w3c.dom.Document;
  * A Tag to load and display controlled vocabularies
  * 
  * @author Miguel Ferreira
- * @version $Revision: 5845 $
+ * @version $Revision$
  * 
  */
 public class ControlledVocabularyTag extends TagSupport

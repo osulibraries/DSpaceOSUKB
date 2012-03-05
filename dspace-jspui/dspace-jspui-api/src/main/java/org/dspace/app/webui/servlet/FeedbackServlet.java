@@ -33,7 +33,7 @@ import org.dspace.eperson.EPerson;
  *
  * @author Peter Breton
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class FeedbackServlet extends DSpaceServlet
 {

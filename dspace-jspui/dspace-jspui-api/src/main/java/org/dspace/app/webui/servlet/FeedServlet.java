@@ -57,7 +57,7 @@ import com.sun.syndication.io.FeedException;
  * Currently supports only RSS feed formats.
  * 
  * @author Ben Bosman, Richard Rodgers
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class FeedServlet extends DSpaceServlet
 {

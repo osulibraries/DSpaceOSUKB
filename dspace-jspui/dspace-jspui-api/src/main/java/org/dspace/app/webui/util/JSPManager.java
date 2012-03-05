@@ -23,7 +23,7 @@ import org.dspace.core.LogManager;
  * Methods for displaying UI pages to the user.
  * 
  * @author Robert Tansley
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class JSPManager
 {

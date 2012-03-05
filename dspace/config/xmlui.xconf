@@ -40,8 +40,8 @@
     - The XMLUI (Manakin Release) configuration file
     -
     - Authors: Scott Phillips
-    - Version: $Revision: 5689 $
-    - Date:    $Date: 2010-10-29 12:16:34 -0400 (Fri, 29 Oct 2010) $
+    - Version: $Revision$
+    - Date:    $Date$
 -->
 
 <xmlui>

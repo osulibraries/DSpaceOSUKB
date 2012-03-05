@@ -35,7 +35,7 @@ import org.dspace.core.Utils;
  * 
  * @author Stuart Lewis
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SitemapServlet extends DSpaceServlet
 {

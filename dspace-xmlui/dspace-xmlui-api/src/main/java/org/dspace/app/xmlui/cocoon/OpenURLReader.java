@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
  * 
  * @author Robert Tansley
  * @author Mark Diggory (mdiggory at mire.be)
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class OpenURLReader extends AbstractReader implements Recyclable {
 

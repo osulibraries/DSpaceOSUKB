@@ -38,7 +38,7 @@ import org.dspace.eperson.Group;
  * withdrawn within a particular range of dates.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class Harvest
 {

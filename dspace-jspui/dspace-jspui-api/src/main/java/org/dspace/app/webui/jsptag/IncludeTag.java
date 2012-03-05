@@ -17,7 +17,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Simple include tag that can include locally-modified JSPs
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class IncludeTag extends TagSupport
 {

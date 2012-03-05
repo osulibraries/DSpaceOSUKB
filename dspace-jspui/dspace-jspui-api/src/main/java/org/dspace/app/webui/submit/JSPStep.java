@@ -53,7 +53,7 @@ import org.dspace.core.Context;
  * @see org.dspace.app.util.SubmissionStepConfig
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public abstract class JSPStep 
 {

@@ -41,7 +41,7 @@ import org.jdom.transform.XSLTransformer;
  * See the XSLTCrosswalk superclass for details on configuration.
  *
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see XSLTCrosswalk
  */
 public class XSLTIngestionCrosswalk

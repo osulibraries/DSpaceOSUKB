@@ -29,7 +29,7 @@ import org.dspace.core.LogManager;
  * Servlet for handling the workspace item
  *
  * @author Richard Jones
- * @version  $Revision: 5845 $
+ * @version  $Revision$
  */
 public class WorkspaceServlet extends DSpaceServlet
 {

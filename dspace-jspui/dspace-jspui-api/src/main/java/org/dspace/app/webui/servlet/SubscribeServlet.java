@@ -26,7 +26,7 @@ import org.dspace.eperson.Subscribe;
  * Servlet for constructing the components of the "My DSpace" page
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class SubscribeServlet extends DSpaceServlet
 {

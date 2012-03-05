@@ -26,7 +26,7 @@ import org.dspace.workflow.WorkflowManager;
  * Servlet for aborting workflows
  * 
  * @author dstuve
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class WorkflowAbortServlet extends DSpaceServlet
 {

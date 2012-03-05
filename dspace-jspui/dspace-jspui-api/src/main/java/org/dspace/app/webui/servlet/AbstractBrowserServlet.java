@@ -49,7 +49,7 @@ import org.dspace.core.LogManager;
  * - etal: integer number to limit multiple value items specified in config to
  *
  * @author Richard Jones
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public abstract class AbstractBrowserServlet extends DSpaceServlet
 {

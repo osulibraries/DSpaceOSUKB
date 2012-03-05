@@ -60,7 +60,7 @@ import org.dspace.submit.step.LicenseStep;
  * @see org.dspace.submit.step.LicenseStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPLicenseStep extends JSPStep
 {

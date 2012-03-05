@@ -32,7 +32,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * metadata element belongs in a field.
  *
  * @author Martin Hald
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @see org.dspace.content.MetadataValue
  * @see org.dspace.content.MetadataSchema
  */

@@ -32,7 +32,7 @@ import org.dspace.eperson.Group;
  * 
  * @author <a href="mailto:bliong@melcoe.mq.edu.au">Bruc Liong, MELCOE</a>
  * @author <a href="mailto:kli@melcoe.mq.edu.au">Xiang Kevin Li, MELCOE</a>
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class ShibAuthentication implements AuthenticationMethod
 {

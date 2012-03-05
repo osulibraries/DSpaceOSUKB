@@ -27,7 +27,7 @@ import org.dspace.core.Context;
  * Servlet for editing the bitstream format registry
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class BitstreamFormatRegistry extends DSpaceServlet
 {

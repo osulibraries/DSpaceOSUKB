@@ -31,7 +31,7 @@ import org.dspace.core.LogManager;
  * to proceed. Other requests prompt the authentication procedure.
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class RegisteredOnlyFilter implements Filter
 {

@@ -60,7 +60,7 @@ import edu.sdsc.grid.io.srb.SRBFileSystem;
  * be notified of BitstreamStorageManager actions.</p> 
  *
  * @author Peter Breton, Robert Tansley, David Little, Nathan Sarr
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class BitstreamStorageManager
 {

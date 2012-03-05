@@ -40,7 +40,7 @@ import org.dspace.eperson.Group;
  * @author Robert Tansley
  * @author Richard Jones
  * 
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public final class CreateAdministrator
 {

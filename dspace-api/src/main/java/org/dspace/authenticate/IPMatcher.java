@@ -23,7 +23,7 @@ package org.dspace.authenticate;
  * <li>CIDR slash notation, e.g. {@code 18.25.0.0/16}</li>
  * </ul>
  * 
- * @version $Revision: 5844 $
+ * @version $Revision$
  * @author Robert Tansley
  */
 public class IPMatcher

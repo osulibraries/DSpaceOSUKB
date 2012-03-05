@@ -57,7 +57,7 @@ import org.dspace.submit.step.SelectCollectionStep;
  * @see org.dspace.submit.step.SelectCollectionStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPSelectCollectionStep extends JSPStep
 {

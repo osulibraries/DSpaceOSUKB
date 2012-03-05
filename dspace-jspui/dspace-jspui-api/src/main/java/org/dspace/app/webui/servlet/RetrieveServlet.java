@@ -37,7 +37,7 @@ import org.dspace.utils.DSpace;
  * <code>/retrieve/bitstream-id</code>
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class RetrieveServlet extends DSpaceServlet
 {

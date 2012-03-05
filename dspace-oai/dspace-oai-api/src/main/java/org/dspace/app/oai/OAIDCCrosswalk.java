@@ -37,7 +37,7 @@ import ORG.oclc.oai.server.verb.CannotDisseminateFormatException;
  * 
  * @author Robert Tansley
  * @author Andrea Bollini
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class OAIDCCrosswalk extends Crosswalk
 {

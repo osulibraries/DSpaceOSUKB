@@ -45,7 +45,7 @@ import org.dspace.workflow.WorkflowManager;
  * Container class for code that is useful to many packagers.
  *
  * @author Larry Stone
- * @version $Revision: 6137 $
+ * @version $Revision$
  */
 
 public class PackageUtils

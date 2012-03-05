@@ -45,7 +45,7 @@ import org.dspace.workflow.WorkflowManager;
  * 
  * @author Robert Tansley
  * @author Jay Paz
- * @version $Id: MyDSpaceServlet.java 5845 2010-11-12 05:34:07Z mdiggory $
+ * @version $Id$
  */
 public class MyDSpaceServlet extends DSpaceServlet
 {

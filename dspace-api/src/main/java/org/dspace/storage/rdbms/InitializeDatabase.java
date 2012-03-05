@@ -22,7 +22,7 @@ import org.dspace.core.ConfigurationManager;
  * be invoked with a single argument, the filename of the database schema file.
  * 
  * @author Robert Tansley
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class InitializeDatabase
 {

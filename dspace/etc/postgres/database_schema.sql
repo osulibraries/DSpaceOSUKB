@@ -1,9 +1,9 @@
 --
 -- database_schema.sql
 --
--- Version: $Revision: 5682 $
+-- Version: $Revision$
 --
--- Date:    $Date: 2010-10-28 11:52:41 -0400 (Thu, 28 Oct 2010) $
+-- Date:    $Date$
 --
 -- Copyright (c) 2002-2009, The DSpace Foundation.  All rights reserved.
 --

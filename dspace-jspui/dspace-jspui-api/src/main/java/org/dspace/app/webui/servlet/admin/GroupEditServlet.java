@@ -32,7 +32,7 @@ import org.dspace.eperson.Group;
  * Servlet for editing groups
  * 
  * @author dstuve
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class GroupEditServlet extends DSpaceServlet
 {

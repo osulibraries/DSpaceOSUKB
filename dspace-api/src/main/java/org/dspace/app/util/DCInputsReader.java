@@ -36,7 +36,7 @@ import org.dspace.core.ConfigurationManager;
  * selected from a choice list.
  *
  * @author  Brian S. Hughes
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 
 public class DCInputsReader

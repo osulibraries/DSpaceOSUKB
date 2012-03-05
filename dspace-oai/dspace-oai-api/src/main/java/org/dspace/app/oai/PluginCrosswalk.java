@@ -56,7 +56,7 @@ import ORG.oclc.oai.server.verb.CannotDisseminateFormatException;
  *    It does NOT work with some older versions.
  *
  * @author Larry Stone
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class PluginCrosswalk extends Crosswalk
 {

@@ -38,7 +38,7 @@ import org.dspace.submit.AbstractProcessingStep;
  * @see org.dspace.app.webui.submit.JSPStep
  * 
  * @author Tim Donohue
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class JSPStepManager
 {

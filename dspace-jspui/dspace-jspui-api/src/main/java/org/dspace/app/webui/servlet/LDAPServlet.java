@@ -33,7 +33,7 @@ import java.util.Locale;
  * otherwise process the parameters as an ldap username and password.
  *
  * @author  John Finlay (Brigham Young University)
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class LDAPServlet extends DSpaceServlet
 {

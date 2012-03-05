@@ -16,7 +16,7 @@ import java.util.Map;
  * Represents a database row.
  * 
  * @author Peter Breton
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class TableRow
 {

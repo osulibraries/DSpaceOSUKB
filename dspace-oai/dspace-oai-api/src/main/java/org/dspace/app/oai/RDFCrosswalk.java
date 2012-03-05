@@ -29,7 +29,7 @@ import ORG.oclc.oai.server.verb.CannotDisseminateFormatException;
  * DSpace items into typed RDF format.
  * 
  * @author Richard Rodgers
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class RDFCrosswalk extends Crosswalk
 {

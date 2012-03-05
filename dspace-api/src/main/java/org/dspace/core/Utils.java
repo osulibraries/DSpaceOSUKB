@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * Utility functions for DSpace.
  * 
  * @author Peter Breton
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public final class Utils
 {

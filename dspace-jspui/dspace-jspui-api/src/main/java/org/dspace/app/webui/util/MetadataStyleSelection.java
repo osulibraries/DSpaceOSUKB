@@ -19,7 +19,7 @@ import org.dspace.core.ConfigurationManager;
  * as name for the display style of the item. Style name is case insensitive.
  * 
  * @author Andrea Bollini
- * @version $Revision: 5845 $
+ * @version $Revision$
  * 
  */
 public class MetadataStyleSelection extends AKeyBasedStyleSelection

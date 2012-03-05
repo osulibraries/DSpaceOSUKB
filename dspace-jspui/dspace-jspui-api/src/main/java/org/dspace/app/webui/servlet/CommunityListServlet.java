@@ -29,7 +29,7 @@ import org.dspace.core.LogManager;
  * Servlet for listing communities (and collections within them)
  * 
  * @author Robert Tansley
- * @version $Revision: 5845 $
+ * @version $Revision$
  */
 public class CommunityListServlet extends DSpaceServlet
 {

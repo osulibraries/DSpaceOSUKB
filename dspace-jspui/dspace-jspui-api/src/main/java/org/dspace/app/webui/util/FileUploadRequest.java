@@ -27,7 +27,7 @@ import org.dspace.core.ConfigurationManager;
  * allowable upload size.
  * 
  * @author Robert Tansley
- * @version $Revision: 6158 $
+ * @version $Revision$
  */
 public class FileUploadRequest extends HttpServletRequestWrapper
 {

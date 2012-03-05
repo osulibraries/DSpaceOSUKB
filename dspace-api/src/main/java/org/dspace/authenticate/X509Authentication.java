@@ -93,7 +93,7 @@ import org.dspace.eperson.Group;
  * acceptable but there is no corresponding EPerson.
  * 
  * @author Larry Stone
- * @version $Revision: 5844 $
+ * @version $Revision$
  */
 public class X509Authentication implements AuthenticationMethod
 {
