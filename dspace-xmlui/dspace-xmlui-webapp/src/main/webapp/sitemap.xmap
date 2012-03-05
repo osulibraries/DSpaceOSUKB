@@ -118,6 +118,7 @@
                                 <map:parameter name="ignore-missing-tables" value="true"/>
                         </map:matcher>
                         <map:matcher name="request" src="org.apache.cocoon.matching.RequestParameterMatcher"/>
+                        <map:matcher name="StatisticsAuthorizedMatcher" src="org.dspace.app.xmlui.aspect.statistics.StatisticsAuthorizedMatcher"/>
                 </map:matchers>
                 <map:selectors>
                         <map:selector name="browser" src="org.apache.cocoon.selection.BrowserSelector"
@@ -182,6 +183,15 @@
                     <map:reader name="BitstreamReader" src="org.dspace.app.xmlui.cocoon.BitstreamReader"/>
                     <map:reader name="ExportReader" src="org.dspace.app.xmlui.cocoon.ItemExportDownloadReader"/>
                     <map:reader name="MetadataExportReader" src="org.dspace.app.xmlui.cocoon.MetadataExportReader"/>
+
+                    <!-- OSUKB Dashboard / Statistics Pages -->
+                    <map:reader name="CollectionInfo" src="org.dspace.app.xmlui.aspect.dashboard.CollectionInfo"/>
+                    <map:reader name="CommunityInfo" src="org.dspace.app.xmlui.aspect.dashboard.CommunityInfo"/>
+                    <map:reader name="ContentStatistics" src="org.dspace.app.xmlui.aspect.dashboard.ContentStatistics"/>
+                    <map:reader name="GrowthStatistics" src="org.dspace.app.xmlui.aspect.dashboard.GrowthStatistics"/>
+                    <map:reader name="HierarchyInfo" src="org.dspace.app.xmlui.aspect.dashboard.HierarchyInfo"/>
+
+
                     <map:reader name="OpenURLReader" src="org.dspace.app.xmlui.cocoon.OpenURLReader"/>
                     <map:reader name="SitemapReader" src="org.dspace.app.xmlui.cocoon.SitemapReader"/>
                     <map:reader name="ConcatenationReader" src="org.dspace.app.xmlui.cocoon.ConcatenationReader"/>
@@ -382,6 +392,39 @@
                                     <map:parameter name="handle" value="{1}/{2}" />
                                 </map:read>
                         </map:match>
+
+
+                        <!-- OSU KB Statistics Pages -->
+                        <map:match pattern="collection-info">
+                            <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                                <map:read type="CollectionInfo"/>
+                            </map:match>
+                        </map:match>
+
+                        <map:match pattern="community-info">
+                            <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                                <map:read type="CommunityInfo"/>
+                            </map:match>
+                        </map:match>
+
+                        <map:match pattern="content-statistics">
+                            <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                                <map:read type="ContentStatistics"/>
+                            </map:match>
+                        </map:match>
+
+                        <map:match pattern="growth-statistics">
+                            <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                                <map:read type="GrowthStatistics"/>
+                            </map:match>
+                        </map:match>
+
+                        <map:match pattern="hierarchy-info">
+                            <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                                <map:read type="HierarchyInfo"/>
+                            </map:match>
+                        </map:match>
+
 
                         <map:match pattern="JSON/discovery/**">
                             <map:mount check-reload="no" src="aspects/json-solr.xmap" uri-prefix="JSON/discovery/"/>

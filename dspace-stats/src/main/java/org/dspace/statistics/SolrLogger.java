@@ -7,29 +7,43 @@
  */
 package org.dspace.statistics;
 
+import com.Ostermiller.util.CSVParser;
+import com.Ostermiller.util.CSVPrinter;
 import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;
+
+import java.io.*;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest;
+import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.common.params.FacetParams;
 import org.apache.solr.common.params.MapSolrParams;
 import org.dspace.content.*;
 import org.dspace.content.Collection;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.statistics.util.DnsLookup;
 import org.dspace.statistics.util.LocationUtils;
 import org.dspace.statistics.util.SpiderDetector;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,8 +60,7 @@ import java.util.*;
  */
 public class SolrLogger
 {
-	
-	private static Logger log = Logger.getLogger(SolrLogger.class);
+    private static final Logger log = Logger.getLogger(SolrLogger.class);
 	
     private static final CommonsHttpSolrServer solr;
 
@@ -63,17 +76,17 @@ public class SolrLogger
 
     static
     {
-    	log.info("solr.spidersfile:" + ConfigurationManager.getProperty("solr.spidersfile"));
-		log.info("solr.log.server:" + ConfigurationManager.getProperty("solr.log.server"));
-		log.info("solr.dbfile:" + ConfigurationManager.getProperty("solr.dbfile"));
+        log.info("solr-statistics.spidersfile:" + ConfigurationManager.getProperty("solr-statistics", "spidersfile"));
+        log.info("solr-statistics.server:" + ConfigurationManager.getProperty("solr-statistics", "server"));
+        log.info("solr-statistics.dbfile:" + ConfigurationManager.getProperty("solr-statistics", "dbfile"));
     	
         CommonsHttpSolrServer server = null;
         
-        if (ConfigurationManager.getProperty("solr.log.server") != null)
+        if (ConfigurationManager.getProperty("solr-statistics", "server") != null)
         {
             try
             {
-                server = new CommonsHttpSolrServer(ConfigurationManager.getProperty("solr.log.server"));
+                server = new CommonsHttpSolrServer(ConfigurationManager.getProperty("solr-statistics", "server"));
                 SolrQuery solrQuery = new SolrQuery()
                         .setQuery("type:2 AND id:1");
                 server.query(solrQuery);
@@ -88,7 +101,7 @@ public class SolrLogger
 
         LookupService service = null;
         // Get the db file for the location
-        String dbfile = ConfigurationManager.getProperty("solr.dbfile");
+        String dbfile = ConfigurationManager.getProperty("solr-statistics", "dbfile");
         if (dbfile != null)
         {
             try
@@ -96,14 +109,18 @@ public class SolrLogger
                 service = new LookupService(dbfile,
                         LookupService.GEOIP_STANDARD);
             }
+            catch (FileNotFoundException fe)
+            {
+                log.error("The GeoLite Database file is missing (" + dbfile + ")! Solr Statistics cannot generate location based reports! Please see the DSpace installation instructions for instructions to install this file.", fe);
+            }
             catch (IOException e)
             {
-                e.printStackTrace();
+                log.error("Unable to load GeoLite Database file (" + dbfile + ")! You may need to reinstall it. See the DSpace installation instructions for more details.", e);
             }
         }
         else
         {
-            // System.out.println("NO SOLR DB FILE !");
+            log.error("The required 'dbfile' configuration is missing in solr-statistics.cfg!");
         }
         locationService = service;
 
@@ -121,13 +138,13 @@ public class SolrLogger
         metadataStorageInfo = new HashMap<String, String>();
         int count = 1;
         String metadataVal;
-        while ((metadataVal = ConfigurationManager.getProperty("solr.metadata.item." + count)) != null)
+        while ((metadataVal = ConfigurationManager.getProperty("solr-statistics","metadata.item." + count)) != null)
         {
             String storeVal = metadataVal.split(":")[0];
             String metadataField = metadataVal.split(":")[1];
 
             metadataStorageInfo.put(storeVal, metadataField);
-            log.info("solr.metadata.item." + count + "=" + metadataVal);
+            log.info("solr-statistics.metadata.item." + count + "=" + metadataVal);
             count++;
         }
     }
@@ -152,7 +169,7 @@ public class SolrLogger
         try
         {
             if(isSpiderBot &&
-                    !ConfigurationManager.getBooleanProperty("solr.statistics.logBots",true))
+                    !ConfigurationManager.getBooleanProperty("solr-statistics", "logBots",true))
             {
                 return;
             }
@@ -253,6 +270,14 @@ public class SolrLogger
                 }
             }
 
+            if(dspaceObject instanceof Bitstream)
+            {
+                Bitstream bit = (Bitstream) dspaceObject;
+                Bundle[] bundles = bit.getBundles();
+                for (Bundle bundle : bundles) {
+                    doc1.addField("bundleName", bundle.getName());
+                }
+            }
 
             storeParents(doc1, dspaceObject);
 
@@ -334,6 +359,7 @@ public class SolrLogger
                 {
                     Item item = bundle.getItems()[j];
                     doc1.addField("owningItem", item.getID());
+                    //doc1.addField("bundleName", bundle.getName());
                     storeParents(doc1, item);
                 }
             }
@@ -456,8 +482,10 @@ public class SolrLogger
 
     public static void markRobotsByIP()
     {
-        try {
-            for(String ip : SpiderDetector.getSpiderIpAddresses()){
+        for(String ip : SpiderDetector.getSpiderIpAddresses()){
+
+            try {
+
                 /* Result Process to alter record to be identified as a bot */
                 // Changed to using Impl block below
                 ResultProcessor processor = new ResultProcessorDeleteAddImpl();
@@ -475,11 +503,14 @@ public class SolrLogger
                 } else {
                     log.error("Unexpected IP value: " + ip);
                 }
-            }
-            solr.commit();
-        } catch (Exception e) {
+                solr.commit();
+            } catch (Exception e) {
                 log.error(e.getMessage(),e);
+            }
+
+
         }
+
     }
 
     public static void markRobotByUserAgent(String agent){
@@ -681,6 +712,7 @@ public class SolrLogger
      *            will be given)
      * @param dateType
      *            the type to be used (example: DAY, MONTH, YEAR)
+     *            Should be valid for: facet.date.gap
      * @param dateStart
      *            the start date Format:(-3, -2, ..) the date is calculated
      *            relatively on today
@@ -698,8 +730,7 @@ public class SolrLogger
             String filterQuery, int max, String dateType, String dateStart,
             String dateEnd, boolean showTotal) throws SolrServerException
     {
-        QueryResponse queryResponse = query(query, filterQuery, null, max,
-                dateType, dateStart, dateEnd, null);
+        QueryResponse queryResponse = query(query, filterQuery, null, max, dateType, dateStart, dateEnd, null);
         if (queryResponse == null)
         {
             return new ObjectCount[0];
@@ -708,8 +739,8 @@ public class SolrLogger
         FacetField dateFacet = queryResponse.getFacetDate("time");
         // TODO: check if this cannot crash I checked it, it crashed!!!
         // Create an array for our result
-        ObjectCount[] result = new ObjectCount[dateFacet.getValueCount()
-                + (showTotal ? 1 : 0)];
+
+        ObjectCount[] result = new ObjectCount[dateFacet.getValueCount() + (showTotal ? 1 : 0)];
         // Run over our datefacet & store all the values
         for (int i = 0; i < dateFacet.getValues().size(); i++)
         {
@@ -807,7 +838,34 @@ public class SolrLogger
         }
         return name;
     }
+    
+    // Still need to Filter out bots
+    public static QueryResponse queryWithDateFacet(String query, String dateType, String dateStart, String dateEnd) throws SolrServerException
+    {
+        //dateType = one of { DAY / MONTH }
+        String filterQuery = null;
+        String facetField = null; //defaults to time
+        int max = -1;
+        dateType = "DAY";
+        List<String> facetQueries = null;
+        QueryResponse response = query(query, filterQuery, facetField, max, dateType, dateStart, dateEnd, facetQueries);
 
+        return response;
+    }
+
+    /**
+     *
+     * @param query
+     * @param filterQuery
+     * @param facetField
+     * @param max
+     * @param dateType
+     * @param dateStart Relative number such as -6, or absolute date such as 2011-08-01T00:00:00.000Z
+     * @param dateEnd
+     * @param facetQueries
+     * @return
+     * @throws SolrServerException
+     */
     private static QueryResponse query(String query, String filterQuery,
             String facetField, int max, String dateType, String dateStart,
             String dateEnd, List<String> facetQueries)
@@ -820,22 +878,29 @@ public class SolrLogger
 
         // System.out.println("QUERY");
         SolrQuery solrQuery = new SolrQuery().setRows(0).setQuery(query)
-                .setFacetMinCount(1);
+                .setFacetMinCount(1).setFacetSort(FacetParams.FACET_SORT_COUNT);
 
         // Set the date facet if present
         if (dateType != null)
         {
-            solrQuery.setParam("facet.date", "time")
-                    .
-                    // EXAMPLE: NOW/MONTH+1MONTH
-                    setParam("facet.date.end",
-                            "NOW/" + dateType + dateEnd + dateType).setParam(
-                            "facet.date.gap", "+1" + dateType)
-                    .
-                    // EXAMPLE: NOW/MONTH-" + nbMonths + "MONTHS
-                    setParam("facet.date.start",
-                            "NOW/" + dateType + dateStart + dateType + "S")
-                    .setFacet(true);
+            solrQuery.setParam("facet.date", "time");
+            solrQuery.setParam("facet.date.gap", "+1" + dateType);
+            solrQuery.setFacet(true);
+
+            if(dateStart.startsWith("+") || dateStart.startsWith("-")) {
+                // Use relative dates (i.e. -6 TO +1)
+
+                // EXAMPLE: NOW/MONTH-" + nbMonths + "MONTHS
+                solrQuery.setParam("facet.date.start", "NOW/" + dateType + dateStart + dateType + "S");
+                //@TODO Check to see if having
+
+                // EXAMPLE: NOW/MONTH+1MONTH
+                solrQuery.setParam("facet.date.end", "NOW/" + dateType + dateEnd + dateType);
+            } else {
+                // Use real (hard) dates such as: 2011-08-01T00:00:00.000Z
+                solrQuery.setParam("facet.date.start", dateStart);
+                solrQuery.setParam("facet.date.end", dateEnd);
+            }
         }
         if (facetQueries != null)
         {
@@ -856,26 +921,50 @@ public class SolrLogger
         }
 
         // Set the top x of if present
-        if (max != -1)
-        {
-            solrQuery.setFacetLimit(max);
-        }
+        //if (max != -1)
+        //{
+        solrQuery.setFacetLimit(max);
+        //}
 
         // A filter is used instead of a regular query to improve
         // performance and ensure the search result ordering will
         // not be influenced
 
         // Choose to filter by the Legacy spider IP list (may get too long to properly filter all IP's
-        if(ConfigurationManager.getBooleanProperty("solr.statistics.query.filter.spiderIp",false))
+        if(ConfigurationManager.getBooleanProperty("solr-statistics", "query.filter.spiderIp",false))
         {
             solrQuery.addFilterQuery(getIgnoreSpiderIPs());
         }
 
         // Choose to filter by isBot field, may be overriden in future
         // to allow views on stats based on bots.
-        if(ConfigurationManager.getBooleanProperty("solr.statistics.query.filter.isBot",true))
+        if(ConfigurationManager.getBooleanProperty("solr-statistics", "query.filter.isBot",true))
         {
             solrQuery.addFilterQuery("-isBot:true");
+        }
+
+        String bundles;
+        if((bundles = ConfigurationManager.getProperty("solr-statistics", "query.filter.bundles")) != null && 0 < bundles.length()){
+
+            /**
+             * The code below creates a query that will allow only records which do not have a bundlename
+             * (items, collections, ...) or bitstreams that have a configured bundle name
+             */
+            StringBuffer bundleQuery = new StringBuffer();
+            //Also add the possibility that if no bundle name is there these results will also be returned !
+            bundleQuery.append("-(bundleName:[* TO *]");
+            String[] split = bundles.split(",");
+            for (int i = 0; i < split.length; i++) {
+                String bundle = split[i].trim();
+                bundleQuery.append("-bundleName:").append(bundle);
+                if(i != split.length - 1){
+                    bundleQuery.append(" AND ");
+                }
+            }
+            bundleQuery.append(")");
+
+
+            solrQuery.addFilterQuery(bundleQuery.toString());
         }
 
         if (filterQuery != null)
@@ -883,7 +972,7 @@ public class SolrLogger
             solrQuery.addFilterQuery(filterQuery);
         }
 
-        QueryResponse response = null;
+        QueryResponse response;
         try
         {
             // solr.set
@@ -924,6 +1013,58 @@ public class SolrLogger
         return filterQuery;
 
     }
+
+    public static void forceCommit() {
+        try {
+            solr.commit();
+        } catch (SolrServerException sse)
+        {
+            log.error(sse.getMessage());
+        } catch (IOException ex)
+        {
+            log.error(ex.getMessage());
+        }
+    }
+
+
+
+
+    /**
+     * Method to delete this solr document.
+     * Note: This will queue the doc for deletion, you need to wait for a commit, or autocommit to occur.
+     * Note: This has an accuracy of single doc existing per IP, per resource, per millisecond.
+     *
+     * @param doc A single SOLR document to be deleted
+     */
+    public static void deleteSolrDocument(SolrDocument doc) throws IOException, SolrServerException {
+        Integer type = (Integer) doc.getFieldValue("type");
+        Integer id = (Integer) doc.getFieldValue("id");
+        String ip = (String) doc.getFieldValue("ip");
+        String time = DateFormatUtils.formatUTC((Date)doc.getFieldValue("time"), SolrLogger.DATE_FORMAT_8601);
+
+        //Uniquely remove previous entry. Should be safe to assume only one request to a specified resource by a single user per millisecond.
+        solr.deleteByQuery("type:" + type + " AND id:" + id + " AND ip:" + ip + " AND time:[" + time + " TO " + time +"]");
+    }
+
+    /**
+     * Processor for marking docs as bots
+     */
+    private static class ResultProcessorDeleteAddImpl extends ResultProcessor {
+
+        public ResultProcessorDeleteAddImpl() {
+        }
+
+        public void process(SolrDocument doc) throws IOException, SolrServerException {
+            doc.removeFields("isBot");
+            doc.addField("isBot", true);
+            SolrInputDocument newInput = ClientUtils.toSolrInputDocument(doc);
+
+            deleteSolrDocument(doc);
+
+            solr.add(newInput);
+            log.info("Marked " + doc.getFieldValue("ip") + " as bot");
+        }
+    }
     
     /**
      * Maintenance to keep a SOLR index efficient.
@@ -944,40 +1085,154 @@ public class SolrLogger
         }
     }
 
-    public static void forceCommit() {
+    public static void reindexBitstreamHits(boolean removeDeletedBitstreams) throws Exception {
+        Context context = new Context();
+
         try {
-            solr.commit();
-        } catch (SolrServerException sse)
-        {
-            log.error(sse.getMessage());
-        } catch (IOException ex)
-        {
-            log.error(ex.getMessage());
+            //First of all retrieve the total number of records to be updated
+            SolrQuery query = new SolrQuery();
+            query.setQuery("*:*");
+            query.addFilterQuery("type:" + Constants.BITSTREAM);
+            //Only retrieve records which do not have a bundle name
+            query.addFilterQuery("-bundleName:[* TO *]");
+            query.setRows(0);
+            long totalRecords = solr.query(query).getResults().getNumFound();
+
+            File tempDirectory = new File(ConfigurationManager.getProperty("dspace.dir") + File.separator + "temp" + File.separator);
+            tempDirectory.mkdirs();
+            List<File> tempCsvFiles = new ArrayList<File>();
+            for(int i = 0; i < totalRecords; i+=10000){
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(CommonParams.Q, "*:*");
+            params.put(CommonParams.FQ, "-bundleName:[* TO *] AND type:" + Constants.BITSTREAM);
+            params.put(CommonParams.WT, "csv");
+                params.put(CommonParams.ROWS, String.valueOf(10000));
+                params.put(CommonParams.START, String.valueOf(i));
+
+            String solrRequestUrl = solr.getBaseURL() + "/select";
+            solrRequestUrl = generateURL(solrRequestUrl, params);
+
+            GetMethod get = new GetMethod(solrRequestUrl);
+            new HttpClient().executeMethod(get);
+
+                InputStream  csvOutput = get.getResponseBodyAsStream();
+                Reader csvReader = new InputStreamReader(csvOutput);
+                String[][] csvParsed = CSVParser.parse(csvReader);
+            String[] header = csvParsed[0];
+            //Attempt to find the bitstream id index !
+            int idIndex = 0;
+                for (int j = 0; j < header.length; j++) {
+                    if(header[j].equals("id")){
+                        idIndex = j;
+                }
+            }
+
+                File tempCsv = new File(tempDirectory.getPath() + File.separatorChar + "temp." + i + ".csv");
+                tempCsvFiles.add(tempCsv);
+            FileOutputStream outputStream = new FileOutputStream(tempCsv);
+            CSVPrinter csvp = new CSVPrinter(outputStream);
+            csvp.setAlwaysQuote(false);
+
+            //Write the header !
+            csvp.write(header);
+            csvp.write("bundleName");
+            csvp.writeln();
+            Map<Integer, String> bitBundleCache = new HashMap<Integer, String>();
+            //Loop over each line (skip the headers though)!
+                for (int j = 1; j < csvParsed.length; j++){
+                    String[] csvLine = csvParsed[j];
+                //Write the default line !
+                int bitstreamId = Integer.parseInt(csvLine[idIndex]);
+                //Attempt to retrieve our bundle name from the cache !
+                String bundleName = bitBundleCache.get(bitstreamId);
+                if(bundleName == null){
+                    //Nothing found retrieve the bitstream
+                    Bitstream bitstream = Bitstream.find(context, bitstreamId);
+                    //Attempt to retrieve our bitstream !
+                    if (bitstream != null){
+                        Bundle[] bundles = bitstream.getBundles();
+                        if(bundles != null && 0 < bundles.length){
+                            Bundle bundle = bundles[0];
+                            bundleName = bundle.getName();
+                            context.removeCached(bundle, bundle.getID());
+                        }else{
+                            //No bundle found, we are either a collection or a community logo, check for it !
+                            DSpaceObject parentObject = bitstream.getParentObject();
+                            if(parentObject instanceof Collection){
+                                bundleName = "LOGO-COLLECTION";
+                            }else
+                            if(parentObject instanceof Community){
+                                bundleName = "LOGO-COMMUNITY";
+                            }
+                            if(parentObject != null){
+                                context.removeCached(parentObject, parentObject.getID());
+                            }
+
+                        }
+                        //Cache the bundle name
+                        bitBundleCache.put(bitstream.getID(), bundleName);
+                        //Remove the bitstream from cache
+                        context.removeCached(bitstream, bitstreamId);
+                    }
+                    //Check if we don't have a bundlename
+                    //If we don't have one & we do not need to delete the deleted bitstreams ensure that a BITSTREAM_DELETED bundle name is given !
+                    if(bundleName == null && !removeDeletedBitstreams){
+                        bundleName = "BITSTREAM_DELETED";
+                    }
+                }
+                csvp.write(csvLine);
+                csvp.write(bundleName);
+                csvp.writeln();
+            }
+
+            //Loop over our parsed csv
+            csvp.flush();
+            csvp.close();
+            }
+
+            //Add all the separate csv files
+            for (File tempCsv : tempCsvFiles) {
+            ContentStreamUpdateRequest contentStreamUpdateRequest = new ContentStreamUpdateRequest("/update/csv");
+            contentStreamUpdateRequest.setParam("stream.contentType", "text/plain;charset=utf-8");
+            contentStreamUpdateRequest.setAction(AbstractUpdateRequest.ACTION.COMMIT, true, true);
+            contentStreamUpdateRequest.addFile(tempCsv);
+
+            solr.request(contentStreamUpdateRequest);
+            }
+
+            //Now that all our new bitstream stats are in place, delete all the old ones !
+            solr.deleteByQuery("-bundleName:[* TO *] AND type:" + Constants.BITSTREAM);
+            //Commit everything to wrap up
+            solr.commit(true, true);
+            //Clean up our directory !
+            FileUtils.deleteDirectory(tempDirectory);
+        } catch (Exception e) {
+            log.error("Error while updating the bitstream statistics", e);
+            throw e;
+        } finally {
+            context.abort();
         }
     }
 
-    private static class ResultProcessorDeleteAddImpl extends ResultProcessor {
+    private static String generateURL(String baseURL, Map<String, String> parameters) throws UnsupportedEncodingException {
+        boolean first = true;
+        StringBuilder result = new StringBuilder(baseURL);
+        for (String key : parameters.keySet())
+        {
+            if (first)
+            {
+                result.append("?");
+                first = false;
+            }
+            else
+            {
+                result.append("&");
+            }
 
-        public ResultProcessorDeleteAddImpl() {
+            result.append(key).append("=").append(URLEncoder.encode(parameters.get(key), "UTF-8"));
         }
 
-        public void process(SolrDocument doc) throws IOException, SolrServerException {
-            doc.removeFields("isBot");
-            doc.addField("isBot", true);
-            SolrInputDocument newInput = ClientUtils.toSolrInputDocument(doc);
-            Integer type = (Integer) doc.getFieldValue("type");
-            Integer id = (Integer) doc.getFieldValue("id");
-            String ip = (String) doc.getFieldValue("ip");
-
-            String time = DateFormatUtils.formatUTC((Date)doc.getFieldValue("time"), SolrLogger.DATE_FORMAT_8601);
-
-            //Uniquely remove previous entry. Should be safe to assume only one request to a specified resource by a single user per millisecond.
-            solr.deleteByQuery("type:" + type + " AND id:" + id + " AND ip:" + ip + " AND time:[" + time + " TO " + time +"]");
-
-            solr.add(newInput);
-            log.info("Marked " + doc.getFieldValue("ip") + " as bot");
-        }
+        return result.toString();
     }
-    
 }
 

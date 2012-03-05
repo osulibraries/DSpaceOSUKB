@@ -85,6 +85,9 @@ public class DatasetTimeGenerator extends DatasetGenerator {
         if("month".equalsIgnoreCase(dateType)){
             type = Calendar.MONTH;
         }else
+        if("week".equalsIgnoreCase(dateType)){
+            type = Calendar.WEEK_OF_YEAR;
+        }else
         if("day".equalsIgnoreCase(dateType)){
             type = Calendar.DATE;
         }else

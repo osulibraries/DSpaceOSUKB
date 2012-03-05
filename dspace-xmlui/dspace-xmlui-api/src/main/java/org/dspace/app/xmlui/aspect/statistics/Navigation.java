@@ -15,6 +15,7 @@ import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.DSpaceObject;
 import org.apache.cocoon.caching.CacheableProcessingComponent;
 import org.apache.excalibur.source.SourceValidity;
@@ -76,6 +77,11 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
             // If on the home page: add statistics link for the home page
             statistics.setHead(T_statistics_head);
             statistics.addItemXref(contextPath + "/statistics-home", T_statistics_view);
+        }
+
+        // Add a link to the stats Dashboard if the user is a member of the admin group.
+        if(context.getCurrentUser() != null && AuthorizeManager.isAdmin(context)) {
+            statistics.addItemXref(contextPath + "/dashboard", "Dashboard");
         }
 
 

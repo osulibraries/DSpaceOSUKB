@@ -157,6 +157,7 @@
     <!-- This is a named template to be an easy way to override to add something to the buildHead -->
     <xsl:template name="extraHead-top"></xsl:template>
     <xsl:template name="extraHead-bottom"></xsl:template>
+    <xsl:template name="extraBody-end"></xsl:template>
 
 
     <!-- Peter's RSS code for options box -->

@@ -1754,6 +1754,7 @@
     <message key="xmlui.statistics.visits.bitstreams">File Visits</message>
     <message key="xmlui.statistics.Navigation.title">Statistics</message>
     <message key="xmlui.statistics.Navigation.view">View Statistics</message>
+    <message key="xmlui.reportgenerator.Navigation.view">Generate Report</message>
     <message key="xmlui.statistics.trail">Statistics</message>
 
 

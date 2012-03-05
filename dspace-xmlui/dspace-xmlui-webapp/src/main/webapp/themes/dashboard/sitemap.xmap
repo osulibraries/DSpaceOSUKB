@@ -2,9 +2,9 @@
 <!--
 	sitemap.xmap
 	
-	Version: $Revision: 3705 $
+	Version: $Revision$
 	
-	Date: $Date: 2009-04-11 13:02:24 -0400 (Sat, 11 Apr 2009) $
+	Date: $Date$
 	
 	Copyright (c) 2002-2005, Hewlett-Packard Company and Massachusetts
 	Institute of Technology.  All rights reserved.
@@ -51,8 +51,8 @@
 		-->
 		<map:component-configurations>
 			<global-variables>
-				<theme-path>ukrainianimmigration_gallery</theme-path>
-				<theme-name>ukrainianimmigration_gallery</theme-name>
+				<theme-path>dashboard</theme-path>
+				<theme-name>The theme template</theme-name>
 			</global-variables>
 		</map:component-configurations>
 		
@@ -128,34 +128,22 @@
 				<map:select type="browser">
 					<map:when test="explorer">
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
-							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
-							<map:parameter name="stylesheet.screen#3" value="../gallery/lib/gallery.css"/>
-                                                        <map:parameter name="stylesheet.screen#4" value="../gallery/lib/thickbox/thickbox.css"/>
-                                                        <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
-                                                        <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
-                                                        <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
-                                                        <map:parameter name="javascript#4" value="../gallery/lib/jquerytools/jquery.tools.min.js"/>
-                                                        <map:parameter name="stylesheet.screen#5" value="../gallery/lib/jquerytools/scrollable-horizontal.css"/>
-                                                        <map:parameter name="stylesheet.screen#6" value="../gallery/lib/jquerytools/scrollable-buttons.css"/>
+                                                        <!--<map:parameter name="javascript#1" value="visualizeData.js" />-->
+                                                        
+                                                        
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
+                            <map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
 						</map:transform>
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
-                                                        <map:parameter name="stylesheet.screen#2" value="../gallery/lib/gallery.css"/>
-                                                        <map:parameter name="stylesheet.screen#3" value="../gallery/lib/thickbox/thickbox.css"/>
-                                                        <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
-                                                        <map:parameter name="javascript#2" value="../gallery/lib/thickbox/thickbox.js"/>
-                                                        <map:parameter name="javascript#3" value="../gallery/lib/jquery.jScale.js"/>
-                                                        <map:parameter name="javascript#4" value="../gallery/lib/jquerytools/jquery.tools.min.js"/>
-                                                        <map:parameter name="stylesheet.screen#4" value="../gallery/lib/jquerytools/scrollable-horizontal.css"/>
-                                                        <map:parameter name="stylesheet.screen#5" value="../gallery/lib/jquerytools/scrollable-buttons.css"/>
-
+							<!--<map:parameter name="javascript#1" value="visualizeData.js" />-->
+                                                        
+							
 							<map:parameter name="theme.path" value="{global:theme-path}"/>
 							<map:parameter name="theme.name" value="{global:theme-name}"/>
+                            <map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
 						</map:transform>
 					</map:otherwise>
 				</map:select>
@@ -166,7 +154,7 @@
 				</map:match>
 				
 				<!-- Step 3: Transform to XHTML -->
-				<map:transform src="template.xsl"/>
+				<map:transform src="{global:theme-path}.xsl"/>
 			    <!-- <map:transform src="template.xsl"/> -->
 				
 				<!-- Step 4: Localize the page -->
