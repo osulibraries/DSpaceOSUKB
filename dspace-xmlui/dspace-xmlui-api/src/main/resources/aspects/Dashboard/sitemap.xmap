@@ -49,6 +49,7 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
 
         <map:transformers>
             <map:transformer name="Dashboard" src="org.dspace.app.xmlui.aspect.dashboard.DashboardViewer"/>
+            <map:transformer name="ElasticSearchStatsViewer" src="org.dspace.app.xmlui.aspect.dashboard.ElasticSearchStatsViewer"/>
         </map:transformers>
 
         <map:matchers default="wildcard">
@@ -86,6 +87,11 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
                     <map:transform type="Dashboard"/>
                     <map:serialize type="xml"/>
                 </map:match>
+            </map:match>
+
+            <map:match pattern="elastic">
+                <map:transform type="ElasticSearchStatsViewer"/>
+                <map:serialize type="xml"/>
             </map:match>
 
             <!--
