@@ -8,11 +8,14 @@ import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.content.Bitstream;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -65,10 +68,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
         TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
 
+            
         SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(termQuery)
                 .addFacet(FacetBuilders.termsFacet("types").field("type"))
+                .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                 .execute()
                 .actionGet();
 
@@ -89,6 +94,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
 
         Table facetTable = division.addTable("facettable", termsFacetEntries.size(), 10);
+        facetTable.setHead("Facetting of Hits to this owningObject by resource type");
         Row facetTableHeaderRow = facetTable.addRow(Row.ROLE_HEADER);
         facetTableHeaderRow.addCell().addContent("Facet Name");
         facetTableHeaderRow.addCell().addContent("Count");
@@ -98,7 +104,23 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             row.addCell().addContent(facetEntry.getTerm());
             row.addCell().addContent("" + facetEntry.getCount());
         }
-                
+
+        // Top Downloads to Owning Object
+        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams");
+        List<? extends TermsFacet.Entry> bitstreamFacetEntries = bitstreamsFacet.getEntries();    
+            
+        Table topDownloadsTable = division.addTable("facet-bitstreams", bitstreamFacetEntries.size(), 10);
+        topDownloadsTable.setHead("Facet of top downloads");
+        Row topDownloadHeaderRow = topDownloadsTable.addRow(Row.ROLE_HEADER);
+        topDownloadHeaderRow.addCell().addContent("Bitstream");
+        topDownloadHeaderRow.addCell().addContent("Count");
+
+        for(TermsFacet.Entry bitstreamEntry : bitstreamFacetEntries) {
+            Row row = topDownloadsTable.addRow();
+            Bitstream bitstream = Bitstream.find(context, Integer.parseInt(bitstreamEntry.getTerm()));
+            row.addCell().addContent(bitstream.getName());
+            row.addCell().addContent(bitstreamEntry.getCount());
+        }
         
         
         Table table = division.addTable("datatable", numberHits, 18);
@@ -117,10 +139,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 Object key = thisEntry.getKey();
                 Object value = thisEntry.getValue();
                 thisRow.addCell().addContent(value.toString());
-                
             }
-
         }
+
         } finally {
             client.close();
         }
