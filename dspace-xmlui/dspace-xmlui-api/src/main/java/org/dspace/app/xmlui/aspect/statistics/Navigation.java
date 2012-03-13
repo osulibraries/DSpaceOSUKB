@@ -72,6 +72,9 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
             statistics.setHead(T_statistics_head);
             statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
 
+            // Add a link to the Elastic Statistics
+            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics", "Elastic Statistics");
+
         }else{
             // This Navigation is only called either on a DSO related page, or the homepage
             // If on the home page: add statistics link for the home page
