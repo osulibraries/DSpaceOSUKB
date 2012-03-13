@@ -34,6 +34,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     }
     
     public void addBody(Body body) throws WingException {
+        Client client = ElasticSearchLogger.createElasticClient();
+        try {
         Division division = body.addDivision("elastic-stats");
         division.setHead("Elastic Data Display");
         
@@ -41,8 +43,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         reportGenerator.addReportGeneratorForm(division, ObjectModelHelper.getRequest(objectModel));
         Date dateStart = reportGenerator.getDateStart();
         Date dateEnd = reportGenerator.getDateEnd();
-        
-        Client client = ElasticSearchLogger.createElasticClient();
 
         SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -58,6 +58,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         int numberHits = (int) hits.totalHits();
 
         division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + numberHits + " hits.");
+
+        if(numberHits == 0) {
+            return;
+        }
 
         // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
         TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "facet1");
@@ -96,11 +100,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             }
 
         }
+        } finally {
+            client.close();
+        }
         
-
-        client.close();
-        
-
         /*TermQueryBuilder termQueryBuilder = new TermQueryBuilder("type", "BITSTREAM");
 
         ListenableActionFuture<SearchResponse> searchResponseListenableActionFuture = client
