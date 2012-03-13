@@ -5,17 +5,22 @@ import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.aspect.statistics.ReportGenerator;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
+import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.content.DSpaceObject;
+import org.dspace.core.Constants;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
@@ -33,20 +38,36 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
     }
     
-    public void addBody(Body body) throws WingException {
+    public void addBody(Body body) throws WingException, SQLException {
         Client client = ElasticSearchLogger.createElasticClient();
         try {
+        //Try to find our dspace object
+        DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
+
         Division division = body.addDivision("elastic-stats");
         division.setHead("Elastic Data Display");
-        
+        division.addPara(dso.getType() + " " + dso.getName());
+
         ReportGenerator reportGenerator = new ReportGenerator();
         reportGenerator.addReportGeneratorForm(division, ObjectModelHelper.getRequest(objectModel));
         Date dateStart = reportGenerator.getDateStart();
         Date dateEnd = reportGenerator.getDateEnd();
 
+        String owningObjectType = "";
+        switch (dso.getType()) {
+            case Constants.COLLECTION:
+                owningObjectType = "owningColl";
+                break;
+            case Constants.COMMUNITY:
+                owningObjectType = "owningComm";
+                break;
+        }
+
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+
         SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.matchAllQuery())
+                .setQuery(termQuery)
                 .addFacet(FacetBuilders.termsFacet("facet1").field("type"))
                 .execute()
                 .actionGet();
