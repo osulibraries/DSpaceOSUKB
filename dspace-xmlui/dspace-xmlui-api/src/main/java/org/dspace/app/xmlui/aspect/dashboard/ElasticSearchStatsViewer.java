@@ -68,7 +68,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(termQuery)
-                .addFacet(FacetBuilders.termsFacet("facet1").field("type"))
+                .addFacet(FacetBuilders.termsFacet("types").field("type"))
                 .execute()
                 .actionGet();
 
@@ -85,7 +85,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         }
 
         // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
-        TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "facet1");
+        TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "types");
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
 
         Table facetTable = division.addTable("facettable", termsFacetEntries.size(), 10);
