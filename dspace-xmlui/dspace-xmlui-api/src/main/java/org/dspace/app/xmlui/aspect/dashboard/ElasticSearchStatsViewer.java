@@ -4,6 +4,7 @@ import edu.osu.library.dspace.statistics.ElasticSearchLogger;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.aspect.statistics.ReportGenerator;
+import org.dspace.app.xmlui.aspect.statistics.StatisticsTransformer;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
@@ -55,6 +56,23 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             reportGenerator.addReportGeneratorForm(division, ObjectModelHelper.getRequest(objectModel));
             Date dateStart = reportGenerator.getDateStart();
             Date dateEnd = reportGenerator.getDateEnd();
+
+            // Show some non-usage-stats.
+            // @TODO Refactor the non-usage stats out of the StatsTransformer
+            StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
+
+            // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
+            if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+                statisticsTransformerInstance.addItemsInContainer(dso, division);
+            }
+
+            // 2 - Number of Files in The Container (monthly and cumulative)
+            if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+                statisticsTransformerInstance.addFilesInContainer(dso, division);
+            }
+
+
+
 
             String owningObjectType = "";
             switch (dso.getType()) {

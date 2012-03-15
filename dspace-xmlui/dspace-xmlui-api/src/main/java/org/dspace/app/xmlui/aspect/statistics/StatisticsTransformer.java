@@ -30,6 +30,7 @@ import org.dspace.content.*;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.core.Constants;
+import org.dspace.core.Context;
 import org.dspace.statistics.Dataset;
 import org.dspace.statistics.ObjectCount;
 import org.dspace.statistics.SolrLogger;
@@ -58,6 +59,16 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    public StatisticsTransformer(Date dateStart, Date dateEnd) {
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+
+        try {
+            this.context = new Context();
+        } catch (SQLException e) {
+            log.error("Error getting context in StatisticsTransformer:" + e.getMessage());
+        }
+    }
 
     /**
      * Add a page title and trail links
