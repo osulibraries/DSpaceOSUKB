@@ -124,6 +124,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         
         
         Table table = division.addTable("datatable", numberHits, 18);
+        table.setHead("Source Hits to this owning Objects");
 
         for(SearchHit hit : hits) {
             Map<String, Object> hitSource = hit.getSource();
