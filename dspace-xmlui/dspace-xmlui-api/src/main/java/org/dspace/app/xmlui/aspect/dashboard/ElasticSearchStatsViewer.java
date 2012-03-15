@@ -9,22 +9,22 @@ import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
-import org.dspace.content.Bitstream;
-import org.dspace.content.DSpaceObject;
+import org.dspace.content.*;
 import org.dspace.core.Constants;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
+import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -92,6 +92,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .setQuery(termQuery)
                     .addFacet(FacetBuilders.termsFacet("types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
+                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
                     .actionGet();
 
@@ -106,6 +107,23 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             if(numberHits == 0) {
                 return;
             }
+
+            // Number of File Downloads Per Month
+            DateHistogramFacet monthlyDownloadsFacet = resp.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
+            List<? extends DateHistogramFacet.Entry> monthlyDownloadsFacetEntries = monthlyDownloadsFacet.getEntries();
+            Table monthlyDownloadsTable = division.addTable("monthly-downloads", monthlyDownloadsFacetEntries.size(), 10);
+            monthlyDownloadsTable.setHead("Monthly Downloads Facet");
+            Row monthlyDownloadsHeaderRow = monthlyDownloadsTable.addRow(Row.ROLE_DATA);
+            monthlyDownloadsHeaderRow.addCell().addContent("Month/Date");
+            monthlyDownloadsHeaderRow.addCell().addContent("Count");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            for(DateHistogramFacet.Entry histogramEntry : monthlyDownloadsFacetEntries) {
+                Row dataRow = monthlyDownloadsTable.addRow();
+                Date facetDate = new Date(histogramEntry.getTime());
+                dataRow.addCell().addContent(dateFormat.format(facetDate));
+                dataRow.addCell().addContent("" + histogramEntry.getCount());
+            }
+
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
             TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "types");
@@ -160,6 +178,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     thisRow.addCell().addContent(value.toString());
                 }
             }
+
+
 
         } finally {
             client.close();
