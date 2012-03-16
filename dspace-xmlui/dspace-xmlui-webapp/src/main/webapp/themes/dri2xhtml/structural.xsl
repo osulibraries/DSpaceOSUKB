@@ -745,6 +745,7 @@
                     <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/tools/set-up-form">Community Setup Form</a></li>
                     <li><a href="http://library.osu.edu/documents/knowledge-bank/Knowledge_Bank_License_Agreement_2010.pdf">KB License Agreement</a></li>
                     <li><a href="http://library.osu.edu/staff/techservices/KBAppProfile.php">Describing Your Resources</a></li>
+                    <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/tools/submission-instructions-for-knowledge-bank-collections/">Submission Instructions</a></li>
                     <li><a href="http://library.osu.edu/projects-initiatives/knowledge-bank/open-access-archiving/policies">Policies</a></li>
                 </ul>
             </div>
