@@ -43,7 +43,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     }
 
     public void addBody(Body body) throws WingException, SQLException {
-        Client client = ElasticSearchLogger.createElasticClient();
+        Client client = ElasticSearchLogger.createElasticClient(false);
         try {
             //Try to find our dspace object
             DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
