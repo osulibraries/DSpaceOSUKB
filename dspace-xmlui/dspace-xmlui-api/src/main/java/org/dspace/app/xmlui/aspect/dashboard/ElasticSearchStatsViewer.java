@@ -91,6 +91,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
+                    .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
@@ -111,10 +112,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             // Number of File Downloads Per Month
             DateHistogramFacet monthlyDownloadsFacet = resp.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
             addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Monthly Downloads Facet");
-                Date facetDate = new Date(histogramEntry.getTime());
-                dataRow.addCell().addContent(dateFormat.format(facetDate));
-                dataRow.addCell().addContent("" + histogramEntry.getCount());
-            }
+
+            // Number of Unique Visitors per Month
+            TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
+            addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors to:");
 
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
