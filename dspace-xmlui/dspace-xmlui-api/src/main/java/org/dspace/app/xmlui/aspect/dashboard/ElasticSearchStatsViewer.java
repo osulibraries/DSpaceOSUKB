@@ -90,7 +90,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
-                    .addFacet(FacetBuilders.termsFacet("types").field("type"))
+                    .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
@@ -126,37 +126,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
-            TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "types");
-            List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
-
-            Table facetTable = division.addTable("facettable", termsFacetEntries.size(), 10);
-            facetTable.setHead("Facetting of Hits to this owningObject by resource type");
-            Row facetTableHeaderRow = facetTable.addRow(Row.ROLE_HEADER);
-            facetTableHeaderRow.addCell().addContent("Facet Name");
-            facetTableHeaderRow.addCell().addContent("Count");
-
-            for(TermsFacet.Entry facetEntry : termsFacetEntries) {
-                Row row = facetTable.addRow();
-                row.addCell().addContent(facetEntry.getTerm());
-                row.addCell().addContent("" + facetEntry.getCount());
-            }
+            TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
+            addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
 
             // Top Downloads to Owning Object
             TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams");
-            List<? extends TermsFacet.Entry> bitstreamFacetEntries = bitstreamsFacet.getEntries();
-
-            Table topDownloadsTable = division.addTable("facet-bitstreams", bitstreamFacetEntries.size(), 10);
-            topDownloadsTable.setHead("Facet of top downloads");
-            Row topDownloadHeaderRow = topDownloadsTable.addRow(Row.ROLE_HEADER);
-            topDownloadHeaderRow.addCell().addContent("Bitstream");
-            topDownloadHeaderRow.addCell().addContent("Count");
-
-            for(TermsFacet.Entry bitstreamEntry : bitstreamFacetEntries) {
-                Row row = topDownloadsTable.addRow();
-                Bitstream bitstream = Bitstream.find(context, Integer.parseInt(bitstreamEntry.getTerm()));
-                row.addCell().addContent(bitstream.getName());
-                row.addCell().addContent(bitstreamEntry.getCount());
-            }
+            addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for all time");
 
 
             Table table = division.addTable("datatable", numberHits, 18);
@@ -185,4 +160,30 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             client.close();
         }
     }
+
+
+
+    private void addTermFacetToTable(TermsFacet termsFacet, Division division, String termName, String tableHeader) throws WingException, SQLException {
+        List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
+        Table facetTable = division.addTable("facet-"+termName, termsFacetEntries.size(), 10);
+        facetTable.setHead(tableHeader);
+
+        Row facetTableHeaderRow = facetTable.addRow(Row.ROLE_HEADER);
+        facetTableHeaderRow.addCell().addContent(termName);
+        facetTableHeaderRow.addCell().addContent("Count");
+
+        for(TermsFacet.Entry facetEntry : termsFacetEntries) {
+            Row row = facetTable.addRow();
+
+            if(termName.equalsIgnoreCase("bitstream")) {
+                Bitstream bitstream = Bitstream.find(context, Integer.parseInt(facetEntry.getTerm()));
+                row.addCell().addContent(bitstream.getName());
+                row.addCell().addContent(facetEntry.getCount());
+            } else {
+                row.addCell().addContent(facetEntry.getTerm());
+                row.addCell().addContent("" + facetEntry.getCount());
+            }
+        }
+    }
+
 }
