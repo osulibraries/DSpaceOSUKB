@@ -92,6 +92,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .setQuery(termQuery)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
+                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode"))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
@@ -117,6 +118,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
             addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors to:");
 
+            TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
+            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views");
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
             TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
@@ -171,11 +174,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             if(termName.equalsIgnoreCase("bitstream")) {
                 Bitstream bitstream = Bitstream.find(context, Integer.parseInt(facetEntry.getTerm()));
                 row.addCell().addContent(bitstream.getName());
-                row.addCell().addContent(facetEntry.getCount());
+            } else if(termName.equalsIgnoreCase("country")) {
+                row.addCell().addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
             } else {
                 row.addCell().addContent(facetEntry.getTerm());
-                row.addCell().addContent("" + facetEntry.getCount());
             }
+            row.addCell().addContent(facetEntry.getCount());
         }
     }
 
