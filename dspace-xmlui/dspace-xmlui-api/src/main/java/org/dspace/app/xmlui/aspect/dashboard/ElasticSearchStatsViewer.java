@@ -10,6 +10,7 @@ import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.content.*;
+import org.dspace.content.Item;
 import org.dspace.core.Constants;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -172,7 +173,15 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         facetTable.setHead(tableHeader);
 
         Row facetTableHeaderRow = facetTable.addRow(Row.ROLE_HEADER);
-        facetTableHeaderRow.addCell().addContent(termName);
+        if(termName.equalsIgnoreCase("bitstream")) {
+            facetTableHeaderRow.addCellContent("Title");
+            facetTableHeaderRow.addCellContent("Creator");
+            facetTableHeaderRow.addCellContent("Publisher");
+            facetTableHeaderRow.addCellContent("Date");
+        } else {
+            facetTableHeaderRow.addCell().addContent(termName);
+        }
+
         facetTableHeaderRow.addCell().addContent("Count");
 
         for(TermsFacet.Entry facetEntry : termsFacetEntries) {
@@ -180,7 +189,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             if(termName.equalsIgnoreCase("bitstream")) {
                 Bitstream bitstream = Bitstream.find(context, Integer.parseInt(facetEntry.getTerm()));
-                row.addCell().addContent(bitstream.getName());
+                Item item = (Item) bitstream.getParentObject();
+                row.addCell().addXref(contextPath + "/handle/" + item.getHandle(), item.getName());
+                row.addCellContent(getFirstMetadataValue(item, "dc.creator"));
+                row.addCellContent(getFirstMetadataValue(item, "dc.publisher"));
+                row.addCellContent(getFirstMetadataValue(item, "dc.date.issued"));
             } else if(termName.equalsIgnoreCase("country")) {
                 row.addCell().addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
             } else {
@@ -203,6 +216,15 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             Date facetDate = new Date(histogramEntry.getTime());
             dataRow.addCell().addContent(dateFormat.format(facetDate));
             dataRow.addCell().addContent("" + histogramEntry.getCount());
+        }
+    }
+    
+    private String getFirstMetadataValue(Item item, String metadataKey) {
+        DCValue[] dcValue = item.getMetadata(metadataKey);
+        if(dcValue.length > 0) {
+            return dcValue[0].value;
+        } else {
+            return "";
         }
     }
 }
