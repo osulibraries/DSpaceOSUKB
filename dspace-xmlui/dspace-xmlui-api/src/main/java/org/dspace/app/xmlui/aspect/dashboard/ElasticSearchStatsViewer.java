@@ -110,15 +110,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             // Number of File Downloads Per Month
             DateHistogramFacet monthlyDownloadsFacet = resp.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
-            List<? extends DateHistogramFacet.Entry> monthlyDownloadsFacetEntries = monthlyDownloadsFacet.getEntries();
-            Table monthlyDownloadsTable = division.addTable("monthly-downloads", monthlyDownloadsFacetEntries.size(), 10);
-            monthlyDownloadsTable.setHead("Monthly Downloads Facet");
-            Row monthlyDownloadsHeaderRow = monthlyDownloadsTable.addRow(Row.ROLE_DATA);
-            monthlyDownloadsHeaderRow.addCell().addContent("Month/Date");
-            monthlyDownloadsHeaderRow.addCell().addContent("Count");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            for(DateHistogramFacet.Entry histogramEntry : monthlyDownloadsFacetEntries) {
-                Row dataRow = monthlyDownloadsTable.addRow();
+            addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Monthly Downloads Facet");
                 Date facetDate = new Date(histogramEntry.getTime());
                 dataRow.addCell().addContent(dateFormat.format(facetDate));
                 dataRow.addCell().addContent("" + histogramEntry.getCount());
@@ -186,4 +178,19 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         }
     }
 
+    private void addDateHistogramToTable(DateHistogramFacet monthlyDownloadsFacet, Division division, String termName, String termDescription) throws WingException {
+        List<? extends DateHistogramFacet.Entry> monthlyFacetEntries = monthlyDownloadsFacet.getEntries();
+        Table monthlyTable = division.addTable(termName, monthlyFacetEntries.size(), 10);
+        monthlyTable.setHead(termDescription);
+        Row tableHeaderRow = monthlyTable.addRow(Row.ROLE_DATA);
+        tableHeaderRow.addCell().addContent("Month/Date");
+        tableHeaderRow.addCell().addContent("Count");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for(DateHistogramFacet.Entry histogramEntry : monthlyFacetEntries) {
+            Row dataRow = monthlyTable.addRow();
+            Date facetDate = new Date(histogramEntry.getTime());
+            dataRow.addCell().addContent(dateFormat.format(facetDate));
+            dataRow.addCell().addContent("" + histogramEntry.getCount());
+        }
+    }
 }
