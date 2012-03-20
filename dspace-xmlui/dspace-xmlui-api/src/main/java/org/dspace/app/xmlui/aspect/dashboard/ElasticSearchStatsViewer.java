@@ -86,13 +86,20 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
 
+            // Show Previous Whole Month
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+
+            Integer humanMonthNumber = calendar.get(Calendar.MONTH)+1;
+            String lowerBound = calendar.get(Calendar.YEAR) + "-" + humanMonthNumber + "-" + calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
+            String upperBound = calendar.get(Calendar.YEAR) + "-" + humanMonthNumber + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
             SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode"))
+                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode").facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
@@ -119,7 +126,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors to:");
 
             TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
-            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views");
+            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views for ("+lowerBound +" TO " + upperBound + ")");
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
             TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
