@@ -100,6 +100,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
+                    .setSize(0)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
                     .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode"))
@@ -115,22 +116,16 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             //division.addPara(resp.toString());
 
-            SearchHits hits = resp.getHits();
-            int numberHits = (int) hits.totalHits();
 
-            division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + numberHits + " hits.");
-
-            if(numberHits == 0) {
-                return;
-            }
+            division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + resp.getHits().totalHits() + " hits.");
 
             // Number of File Downloads Per Month
             DateHistogramFacet monthlyDownloadsFacet = resp.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
-            addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Monthly Downloads Facet");
+            addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
 
             // Number of Unique Visitors per Month
             TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
-            addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors to:");
+            addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
 
             TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
             addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
@@ -146,27 +141,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
             addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
 
-            Table table = division.addTable("datatable", numberHits, 18);
-            table.setHead("Source Hits to this owning Objects");
-
-            for(SearchHit hit : hits) {
-                Map<String, Object> hitSource = hit.getSource();
-                log.info(hitSource.size());
-                Row thisRow = table.addRow();
-
-                Set<Map.Entry<String, Object>> setHits = hitSource.entrySet();
-                log.info("NumFields = "+setHits.size());
-
-                Iterator fields = setHits.iterator();
-                while(fields.hasNext()) {
-                    Map.Entry thisEntry = (Map.Entry) fields.next();
-                    Object key = thisEntry.getKey();
-                    Object value = thisEntry.getValue();
-                    thisRow.addCell().addContent(value.toString());
-                }
-            }
-
-
 
         } finally {
             client.close();
@@ -177,6 +151,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
     private void addTermFacetToTable(TermsFacet termsFacet, Division division, String termName, String tableHeader) throws WingException, SQLException {
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
+
+        if(termsFacetEntries.size() == 0) {
+            division.addPara("Empty result set for: "+termName);
+            return;
+        }
+
         Table facetTable = division.addTable("facet-"+termName, termsFacetEntries.size(), 10);
         facetTable.setHead(tableHeader);
 
@@ -213,6 +193,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
     private void addDateHistogramToTable(DateHistogramFacet monthlyDownloadsFacet, Division division, String termName, String termDescription) throws WingException {
         List<? extends DateHistogramFacet.Entry> monthlyFacetEntries = monthlyDownloadsFacet.getEntries();
+
+        if(monthlyFacetEntries.size() == 0) {
+            division.addPara("Empty result set for: "+termName);
+            return;
+        }
+
         Table monthlyTable = division.addTable(termName, monthlyFacetEntries.size(), 10);
         monthlyTable.setHead(termDescription);
         Row tableHeaderRow = monthlyTable.addRow(Row.ROLE_DATA);
