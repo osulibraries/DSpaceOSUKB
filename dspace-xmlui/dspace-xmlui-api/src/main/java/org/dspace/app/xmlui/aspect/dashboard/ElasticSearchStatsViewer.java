@@ -39,6 +39,8 @@ import java.util.List;
 public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static Logger log = Logger.getLogger(ElasticSearchStatsViewer.class);
 
+    private static SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMMM yyyy");
+
     public void addPageMeta(PageMeta pageMeta) throws WingException {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
     }
@@ -101,7 +103,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
                     .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode").facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
-                    .addFacet(FacetBuilders.termsFacet("top_bitstreams").field("id").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
+                    .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
+                            .facetFilter(FilterBuilders.termFilter("type", "bitstream"))
+                            .facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
                     .actionGet();
@@ -134,8 +138,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
 
             // Top Downloads to Owning Object
-            TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams");
-            addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for all time");
+            TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+            addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
 
 
             Table table = division.addTable("datatable", numberHits, 18);
