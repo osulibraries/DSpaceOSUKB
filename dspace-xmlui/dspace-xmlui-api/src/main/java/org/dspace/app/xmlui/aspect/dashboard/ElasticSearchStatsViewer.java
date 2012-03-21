@@ -106,6 +106,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                             .facetFilter(FilterBuilders.termFilter("type", "bitstream"))
                             .facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
+                    .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
+                            .facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
                     .execute()
                     .actionGet();
@@ -141,6 +143,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
             addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
 
+            TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+            addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
 
             Table table = division.addTable("datatable", numberHits, 18);
             table.setHead("Source Hits to this owning Objects");
