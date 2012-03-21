@@ -446,10 +446,14 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         /**
          * monthlyDataGrid will hold all the years down, and the year number, as well as monthly values, plus total across.
          */
-        Integer[][] monthlyDataGrid = new Integer[distinctNumberOfYears][14];
+        Integer columns = 1 + 12 + 1 + 1;
+
+        Integer[][] monthlyDataGrid = new Integer[distinctNumberOfYears][columns];
+
+        //Initialize all to zero
         for(int yearIndex = 0; yearIndex < distinctNumberOfYears; yearIndex++) {
             monthlyDataGrid[yearIndex][0] = yearStart+yearIndex;
-            for(int dataColumnIndex = 1; dataColumnIndex < 14; dataColumnIndex++) {
+            for(int dataColumnIndex = 1; dataColumnIndex < columns; dataColumnIndex++) {
                 monthlyDataGrid[yearIndex][dataColumnIndex] = 0;
             }
         }
@@ -476,6 +480,11 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             }
 
             monthlyDataGrid[yearIndex][13] = yearCumulative;
+            if(yearIndex == 0) {
+                monthlyDataGrid[yearIndex][14] = yearCumulative;
+            } else {
+                monthlyDataGrid[yearIndex][14] = yearCumulative + monthlyDataGrid[yearIndex-1][14];
+            }
         }
         return monthlyDataGrid;
 
@@ -514,12 +523,13 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         /**
          * monthlyDataGrid will hold all the years down, and the year number, as well as monthly values, plus total across.
          */
-        Integer[][] monthlyDataGrid = new Integer[distinctNumberOfYears][14];
+        Integer columns = 1 + 12 + 1 + 1;
+        Integer[][] monthlyDataGrid = new Integer[distinctNumberOfYears][columns];
         
         //Initialize the dataGrid with yearName and blanks
         for(int yearIndex = 0; yearIndex < distinctNumberOfYears; yearIndex++) {
             monthlyDataGrid[yearIndex][0] = yearStart+yearIndex;
-            for(int dataColumnIndex = 1; dataColumnIndex < 14; dataColumnIndex++) {
+            for(int dataColumnIndex = 1; dataColumnIndex < columns; dataColumnIndex++) {
                 monthlyDataGrid[yearIndex][dataColumnIndex] = 0;
             }
         }
@@ -541,6 +551,11 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             }
 
             monthlyDataGrid[yearIndex][13] = yearCumulative;
+            if(yearIndex == 0) {
+                monthlyDataGrid[yearIndex][14] = yearCumulative;
+            } else {
+                monthlyDataGrid[yearIndex][14] = yearCumulative + monthlyDataGrid[yearIndex-1][14];
+            }
         }
         return monthlyDataGrid;
     }
@@ -555,7 +570,8 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         Integer yearLast = monthlyDataGrid[monthlyDataGrid.length-1][0];
         int numberOfYears = yearLast-yearStart;
 
-        Table gridTable = division.addTable("itemsInContainer-grid", numberOfYears+1, 14);
+        Integer columns = 1 + 12 + 1 + 1;
+        Table gridTable = division.addTable("itemsInContainer-grid", numberOfYears+1, columns);
         gridTable.setHead(header);
         Row gridHeader = gridTable.addRow(Row.ROLE_HEADER);
         gridHeader.addCell().addContent("Year");
@@ -572,11 +588,12 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         gridHeader.addCell().addContent("NOV");
         gridHeader.addCell().addContent("DEC");
         gridHeader.addCell().addContent("Total YR");
+        gridHeader.addCell().addContent("Total Cumulative");
 
         for(int yearIndex=0; yearIndex < monthlyDataGrid.length; yearIndex++) {
             Row yearRow = gridTable.addRow();
             yearRow.addCell(Cell.ROLE_HEADER).addContent(monthlyDataGrid[yearIndex][0]);
-            for(int yearContentIndex = 1; yearContentIndex<14; yearContentIndex++) {
+            for(int yearContentIndex = 1; yearContentIndex<columns; yearContentIndex++) {
                 yearRow.addCell().addContent(monthlyDataGrid[yearIndex][yearContentIndex]);
             }
         }
