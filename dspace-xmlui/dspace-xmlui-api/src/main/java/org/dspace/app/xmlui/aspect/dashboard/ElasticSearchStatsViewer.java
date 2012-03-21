@@ -102,7 +102,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .setQuery(termQuery)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode").facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
+                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode"))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                             .facetFilter(FilterBuilders.termFilter("type", "bitstream"))
                             .facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
@@ -131,7 +131,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors to:");
 
             TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
-            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views for ("+lowerBound +" TO " + upperBound + ")");
+            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
             TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
