@@ -986,6 +986,11 @@
                     <xsl:value-of select="@cols"/>
                 </xsl:attribute>
             </xsl:if>
+            <xsl:if test="@rend">
+                <xsl:attribute name="class">
+                    <xsl:value-of select="@rend"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates />
         </td>
     </xsl:template>

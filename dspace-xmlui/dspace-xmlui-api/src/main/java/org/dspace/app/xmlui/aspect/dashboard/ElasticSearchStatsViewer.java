@@ -199,17 +199,18 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             return;
         }
 
+        division.addDivision("chart_div");
         Table monthlyTable = division.addTable(termName, monthlyFacetEntries.size(), 10);
         monthlyTable.setHead(termDescription);
-        Row tableHeaderRow = monthlyTable.addRow(Row.ROLE_DATA);
-        tableHeaderRow.addCell().addContent("Month/Date");
-        tableHeaderRow.addCell().addContent("Count");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Row tableHeaderRow = monthlyTable.addRow(Row.ROLE_HEADER);
+        tableHeaderRow.addCell("date", Cell.ROLE_HEADER,null).addContent("Month/Date");
+        tableHeaderRow.addCell("count", Cell.ROLE_HEADER,null).addContent("Count");
+
         for(DateHistogramFacet.Entry histogramEntry : monthlyFacetEntries) {
             Row dataRow = monthlyTable.addRow();
             Date facetDate = new Date(histogramEntry.getTime());
-            dataRow.addCell().addContent(dateFormat.format(facetDate));
-            dataRow.addCell().addContent("" + histogramEntry.getCount());
+            dataRow.addCell("date", Cell.ROLE_DATA,"date").addContent(dateFormat.format(facetDate));
+            dataRow.addCell("count", Cell.ROLE_DATA,"count").addContent("" + histogramEntry.getCount());
         }
     }
     
