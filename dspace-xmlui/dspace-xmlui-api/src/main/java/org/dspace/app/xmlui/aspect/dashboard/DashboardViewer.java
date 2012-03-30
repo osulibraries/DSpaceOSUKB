@@ -180,21 +180,10 @@ public class DashboardViewer extends AbstractDSpaceTransformer
         headerRow.addCell().addContent("Total #Items");
         Integer totalItems = 0;
 
-        String html = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>" +
-            "<script type='text/javascript'>" +
-            " google.load('visualization', '1', {'packages':['annotatedtimeline']});" +
-            " google.setOnLoadCallback(drawChart);" +
-            " function drawChart() {" +
-            "  var data = new google.visualization.DataTable();" +
-            "  data.addColumn('date', 'Date');" +
-            "  data.addColumn('number', 'Items Added');" +
-            "  data.addColumn('number', 'Total Items');" +
-            "  data.addRows([";
-
         for(int i=0; i<itemStatRows.size();i++)
         {
             TableRow row = (TableRow) itemStatRows.get(i);
-            log.debug(row.toString());
+            //log.debug(row.toString());
             String date = row.getStringColumn("yearmo");
             Long numItems = row.getLongColumn("countitem");
             totalItems += numItems.intValue();
@@ -202,19 +191,8 @@ public class DashboardViewer extends AbstractDSpaceTransformer
             dataRow.addCell("date",Cell.ROLE_DATA,null).addContent(date);
             dataRow.addCell("items_added",Cell.ROLE_DATA,null).addContent(numItems.intValue());
             dataRow.addCell("items_total",Cell.ROLE_DATA, null).addContent(totalItems);
-
-            String[] yearMonthSplit = date.split("-");
-            if(i>0)
-            {
-                html = html + ",";
-            }
-            html = html + "[new Date("+yearMonthSplit[0]+", "+yearMonthSplit[1]+" ,1), "+numItems.toString()+", "+totalItems+"]";
         }
-        html = html + "]); var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));" +
-            " chart.draw(data, {displayAnnotations: true}); }</script>";
-        
 
-        //division.addSimpleHTMLFragment(false, "&lt;![CDATA["+ html + " <div id='chart_div' style='width: 700px; height: 240px;'></div> ]]&gt;");
     }
 
     /**
