@@ -15,12 +15,14 @@ import org.dspace.core.Constants;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
+import org.elasticsearch.search.facet.Facets;
 import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 
@@ -40,6 +42,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static Logger log = Logger.getLogger(ElasticSearchStatsViewer.class);
 
     private static SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMMM yyyy");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
@@ -89,38 +92,58 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
 
-            // Show Previous Whole Month
+
+
             Calendar calendar = Calendar.getInstance();
+
+            // Show Previous Whole Month
             calendar.add(Calendar.MONTH, -1);
 
-            Integer humanMonthNumber = calendar.get(Calendar.MONTH)+1;
-            String lowerBound = calendar.get(Calendar.YEAR) + "-" + humanMonthNumber + "-" + calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
-            String upperBound = calendar.get(Calendar.YEAR) + "-" + humanMonthNumber + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            String lowerBound = dateFormat.format(calendar.getTime());
+            
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            String upperBound = dateFormat.format(calendar.getTime());
 
-            SearchResponse resp = client.prepareSearch(ElasticSearchLogger.indexName)
+            log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
+
+            SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
                     .setSize(0)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode"))
+                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode").size(150))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                             .facetFilter(FilterBuilders.termFilter("type", "bitstream"))
                             .facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
                             .facetFilter(FilterBuilders.termFilter("type", "bitstream")))
-                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")))
-                    .execute()
-                    .actionGet();
+                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")));
 
+            division.addHidden("request").setValue(searchRequestBuilder.toString());
+
+            SearchResponse resp = searchRequestBuilder.execute().actionGet();
+
+            if(resp == null) {
+                log.info("Elastic Search is down for searching.");
+                division.addPara("Elastic Search seems to be down :(");
+                return;
+            }
 
             //division.addPara(resp.toString());
+            division.addHidden("response").setValue(resp.toString());
 
 
             division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + resp.getHits().totalHits() + " hits.");
 
             // Number of File Downloads Per Month
-            DateHistogramFacet monthlyDownloadsFacet = resp.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
+            Facets facets = resp.getFacets();
+            if(facets == null) {
+                log.info("Elastic Search gives no facets");
+                return;
+            }
+            DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
             addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
 
             // Number of Unique Visitors per Month
@@ -157,6 +180,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             return;
         }
 
+        log.info("Country or "+termName);
+        if(termName.equalsIgnoreCase("country")) {
+            division.addDivision("chart_div_map");
+        }
+
         Table facetTable = division.addTable("facet-"+termName, termsFacetEntries.size(), 10);
         facetTable.setHead(tableHeader);
 
@@ -183,11 +211,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 row.addCellContent(getFirstMetadataValue(item, "dc.publisher"));
                 row.addCellContent(getFirstMetadataValue(item, "dc.date.issued"));
             } else if(termName.equalsIgnoreCase("country")) {
-                row.addCell().addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
+                row.addCell("country", Cell.ROLE_DATA,"country").addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
             } else {
                 row.addCell().addContent(facetEntry.getTerm());
             }
-            row.addCell().addContent(facetEntry.getCount());
+            row.addCell("count", Cell.ROLE_DATA, "count").addContent(facetEntry.getCount());
         }
     }
 
