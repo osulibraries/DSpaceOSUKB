@@ -195,6 +195,10 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
             pageMeta.addMetadata("opensearch", "context").addContent(
                         ConfigurationManager.getProperty("websvc.opensearch.svccontext"));
         }
+
+        // Be configurable if we'll let the UI try to render scientific formulas to display nicely.
+        Boolean renderFormulas = ConfigurationManager.getBooleanProperty("webui.browse.render-scientific-formulas",false);
+        pageMeta.addMetadata("render", "scientificFormulas").addContent(renderFormulas.toString());
         
         // Add metadata for quick searches:
         pageMeta.addMetadata("search", "simpleURL").addContent(
