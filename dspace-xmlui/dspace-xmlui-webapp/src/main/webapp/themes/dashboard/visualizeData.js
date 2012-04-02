@@ -12,14 +12,25 @@ $('#aspect_dashboard_DashboardViewer_table_items_added_monthly tr.ds-table-row')
 });
 
 var total = 0;
+/*
 $('#aspect_dashboard_ElasticSearchStatsViewer_table_MonthlyDownloads tr.ds-table-row').each(function(){
     var rowDate = $(this).find('.date').html();
     var rowItemsAdded = $(this).find('.count').html();
     total = total + rowItemsAdded*1;
+    //dataValue.push([new Date(rowDate.substring(0,4), rowDate.substring(5,7), 1), rowItemsAdded*1, total]);
     dataValue.push([new Date(rowDate.substring(0,4), rowDate.substring(5,7), 1), rowItemsAdded*1]);
 
     addedTitle = 'Downloads';
     totalTitle = 'Total Downloads';
+});*/
+
+addedTitle = 'Downloads';
+totalTitle = 'Total Downloads';
+
+var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val())
+$(elasticJSON.facets['monthly_downloads'].entries).each(function(){
+    total = total + this.count;
+    dataValue.push([new Date(this.time), this.count, total]);
 });
 
 var countryDataValue = [];
@@ -39,7 +50,7 @@ function drawChart()
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Date');
     data.addColumn('number', addedTitle);
-    //data.addColumn('number', totalTitle);
+    data.addColumn('number', totalTitle);
     data.addRows(dataValue);
     var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
     chart.draw(data, {displayAnnotations: true});
