@@ -24,9 +24,12 @@
       };
 
       // TODO: Document this code!
-      chartMaker.addChart = function (name, chart, data, element) {
-        console.log(element);
-        this.charts[name] = {chart: new chart(document.getElementById(element)), data: data};
+      chartMaker.addChart = function (name, chart, data, parent) {
+          var height = $('#' + parent).height();
+          $('#' + parent).height(height + 280);
+          $('#' + parent).append("<div style='height:280px; width:750px;' id='"+ name + "'> </div>");
+        console.log(parent + " child=" + name);
+        this.charts[name] = {chart: new chart(document.getElementById(name)), data: data};
       };
 
       chartMaker.drawChart = function(name, options) {
