@@ -143,19 +143,22 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 log.info("Elastic Search gives no facets");
                 return;
             }
-            DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
-            addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
+
+            division.addDivision("chart_div");
+
+            //DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
+            //addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
 
             // Number of Unique Visitors per Month
-            TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
-            addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
+            //TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
+            //addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
 
-            TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
-            addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
+            //TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
+            //addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
 
             // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
-            TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
-            addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
+            //TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
+            //addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
 
             // Top Downloads to Owning Object
             TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
@@ -227,7 +230,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             return;
         }
 
-        division.addDivision("chart_div");
         Table monthlyTable = division.addTable(termName, monthlyFacetEntries.size(), 10);
         monthlyTable.setHead(termDescription);
         Row tableHeaderRow = monthlyTable.addRow(Row.ROLE_HEADER);
