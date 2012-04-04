@@ -117,6 +117,8 @@
           //TODO Map looks better at size $("#" + mapDivId).height(500).width(780);
           var chartDataGeo = chartDataHelper('country', 'Country', false, 'Total');
           elasticDataHelper(elasticJSON.facets.top_countries.terms, 'topCountries', false, chartDataGeo, 'term', 'count', 'chart_div', 'GeoChart');
+          var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
+          elasticDataHelper(elasticJSON.facets.top_types.terms, 'topTypes', false, chartDataPie, 'term', 'count', 'chart_div', 'PieChart', options);
 
           // Resize the chart_div parent to fit its contents.
           var totalChildHeight = 0;
