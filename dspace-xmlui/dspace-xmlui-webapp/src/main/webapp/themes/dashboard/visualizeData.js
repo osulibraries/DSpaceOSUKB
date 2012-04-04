@@ -57,23 +57,33 @@
         // Get data from elastic response
         var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
 
-        //Monthly Downloads - include total
-        var total = 0;
-        var dataValue = [];
-        $.each(elasticJSON.facets.monthly_downloads.entries, function (index, entry) {
-          total = total + entry.count;
-          dataValue.push([new Date(entry.time), entry.count, total]);
-        });
+          function elasticDataHelper(entries, name, includeTotal, textAdded, textTotal, textChartDiv) {
+              var total = 0;
+              var dataValue = [];
+              $.each(entries, function(index, entry) {
+                  if(includeTotal) {
+                      total += entry.count;
+                      dataValue.push([new Date(entry.time), entry.count, total]);
+                  } else {
+                      dataValue.push([new Date(entry.time), entry.count]);
+                  }
+              });
 
-        // Put data from Elastic response into a ChartData object
-        var main_chart_data = chartMaker.chartData();
-        main_chart_data.addColumn('date', 'Date');
-        main_chart_data.addColumn('number', 'Items Added');
-        main_chart_data.addColumn('number', 'Total Items');
-        main_chart_data.addRows(dataValue);
+              // Put data from Elastic response into a ChartData object
+              var main_chart_data = chartMaker.chartData();
+              main_chart_data.addColumn('date', 'Date');
+              main_chart_data.addColumn('number', textAdded);
+              if(includeTotal) {
+                  main_chart_data.addColumn('number', textTotal);
+              }
 
-        chartMaker.addChart('main_chart', google.visualization.LineChart, main_chart_data, 'chart_div');
+              main_chart_data.addRows(dataValue);
 
+              chartMaker.addChart(name, google.visualization.LineChart, main_chart_data, textChartDiv);
+          }
+
+          // Use a helper to do all the work to create our downloads charts.
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, 'Items Added', 'Total Items', 'chart_div');
 
         // Create the Country Chart
         // Get country value data
