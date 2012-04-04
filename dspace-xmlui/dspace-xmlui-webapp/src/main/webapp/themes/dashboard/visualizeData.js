@@ -24,24 +24,27 @@
       };
 
       // TODO: Document this code!
-      chartMaker.addChart = function (name, chart, data, parent) {
+      chartMaker.addChart = function (name, chart, data, parent, options) {
           var height = $('#' + parent).height();
           $('#' + parent).height(height + 280);
           $('#' + parent).append("<div style='height:280px; width:750px;' id='"+ name + "'> </div>");
         console.log(parent + " child=" + name);
-        this.charts[name] = {chart: new chart(document.getElementById(name)), data: data};
+        this.charts[name] = {chart: new chart(document.getElementById(name)), data: data, options: options};
       };
 
-      chartMaker.drawChart = function(name, options) {
-        if (typeof options === 'undefined') {
-          options = {};
+      chartMaker.drawChart = function(name, globalOptions) {
+        if (typeof globalOptions === 'undefined') {
+          globalOptions = {};
         }
         var cobj = this.charts[name];
         var data = cobj.data;
-        if ('data' in options) {
-          data = options.data;
+        if ('data' in globalOptions) {
+          data = globalOptions.data;
         }
-        cobj.chart.draw(data, options);
+
+        //Merge the Global Options with the local options for the chart
+        var combinedOptions = $.extend(globalOptions, cobj.options);
+        cobj.chart.draw(data, combinedOptions);
       };
 
       chartMaker.drawAllCharts = function (options) {
@@ -60,7 +63,7 @@
         // Get data from elastic response
         var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
 
-          function elasticDataHelper(entries, name, includeTotal, main_chart_data, keyField, valueField, textChartDiv, chartType) {
+          function elasticDataHelper(entries, name, includeTotal, main_chart_data, keyField, valueField, textChartDiv, chartType, options) {
               var total = 0;
               var dataValue = [];
               $.each(entries, function(index, entry) {
@@ -84,21 +87,21 @@
              //We have our chartData object passed (with defaults set) now.
               main_chart_data.addRows(dataValue);
 
-              chartMaker.addChart(name, google.visualization[chartType], main_chart_data, textChartDiv);
+              chartMaker.addChart(name, google.visualization[chartType], main_chart_data, textChartDiv, options);
           }
 
-          function chartDataHelper(type, textAdded, includeTotal, textTotal) {
+          function chartDataHelper(type, textKey, textValue, includeTotal, textTotal) {
               // Put data from Elastic response into a ChartData object
               var main_chart_data = chartMaker.chartData();
 
               if(type == 'date') {
-                  main_chart_data.addColumn('date', 'Date');
-              } else if(type == 'country') {
-                  main_chart_data.addColumn('string', 'Country');
+                  main_chart_data.addColumn('date', textKey);
+              } else {
+                  main_chart_data.addColumn('string', textKey);
               }
 
 
-              main_chart_data.addColumn('number', textAdded);
+              main_chart_data.addColumn('number', textValue);
               if(includeTotal) {
                   main_chart_data.addColumn('number', textTotal);
               }
@@ -106,17 +109,20 @@
               return main_chart_data;
           }
 
+          var options = { title : 'Views per DSpaceObject Type' };
+
           // Use a helper to do all the work to create our downloads charts.
           // There is one parent div chart_div, and we will append child divs for each chart.
-          var chartDataTotal = chartDataHelper('date', 'Items Added', true, 'Total Items');
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, chartDataTotal, 'time', 'count', 'chart_div', 'LineChart');
+          var chartDataTotal = chartDataHelper('date', 'Date', 'Items Added', true, 'Total Items');
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, chartDataTotal, 'time', 'count', 'chart_div', 'LineChart', options);
 
-          var chartDataNoTotal = chartDataHelper('date', 'Items Added', false, 'Total Items');
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, chartDataNoTotal, 'time', 'count', 'chart_div', 'LineChart');
+          var chartDataNoTotal = chartDataHelper('date', 'Date', 'Items Added', false, 'Total Items');
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, chartDataNoTotal, 'time', 'count', 'chart_div', 'LineChart', options);
 
           //TODO Map looks better at size $("#" + mapDivId).height(500).width(780);
-          var chartDataGeo = chartDataHelper('country', 'Country', false, 'Total');
-          elasticDataHelper(elasticJSON.facets.top_countries.terms, 'topCountries', false, chartDataGeo, 'term', 'count', 'chart_div', 'GeoChart');
+          var chartDataGeo = chartDataHelper('string', 'Country', 'Views', false, 'Total');
+          elasticDataHelper(elasticJSON.facets.top_countries.terms, 'topCountries', false, chartDataGeo, 'term', 'count', 'chart_div', 'GeoChart', options);
+
           var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
           elasticDataHelper(elasticJSON.facets.top_types.terms, 'topTypes', false, chartDataPie, 'term', 'count', 'chart_div', 'PieChart', options);
 
