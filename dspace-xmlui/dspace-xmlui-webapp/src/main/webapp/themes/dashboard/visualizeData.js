@@ -66,9 +66,9 @@
               $.each(entries, function(index, entry) {
                   if(includeTotal) {
                       total += entry.count;
-                      dataValue.push([new Date(entry.time), entry.count, total]);
+                      dataValue.push([new Date(entry[keyField]), entry[valueField], total]);
                   } else {
-                      dataValue.push([new Date(entry.time), entry.count]);
+                      dataValue.push([new Date(entry[keyField]), entry[valueField]]);
                   }
               });
 
