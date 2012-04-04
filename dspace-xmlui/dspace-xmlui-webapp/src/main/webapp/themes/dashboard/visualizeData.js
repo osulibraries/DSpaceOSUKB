@@ -86,7 +86,17 @@
           }
 
           // Use a helper to do all the work to create our downloads charts.
+          // There is one parent div chart_div, and we will append child divs for each chart.
           elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, 'Items Added', 'Total Items', 'chart_div');
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, 'Items Added', 'Total Items', 'chart_div');
+
+          // Resize the chart_div parent to fit its contents.
+          var totalChildHeight = 0;
+          $('#chart_div').children().each(function() {
+              totalChildHeight += $(this).height();
+          });
+          $('#chart_div').height(totalChildHeight);
+
 
         // Create the Country Chart
         // Get country value data
