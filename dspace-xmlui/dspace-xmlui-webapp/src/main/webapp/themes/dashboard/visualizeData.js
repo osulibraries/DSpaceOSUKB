@@ -66,9 +66,18 @@
               $.each(entries, function(index, entry) {
                   if(includeTotal) {
                       total += entry.count;
-                      dataValue.push([new Date(entry[keyField]), entry[valueField], total]);
+                      if(chartType == 'LineChart') {
+                          dataValue.push([new Date(entry[keyField]), entry[valueField], total]);
+                      } else {
+                          dataValue.push([entry[keyField], entry[valueField], total]);
+                      }
+
                   } else {
-                      dataValue.push([new Date(entry[keyField]), entry[valueField]]);
+                      if(chartType == 'LineChart') {
+                        dataValue.push([new Date(entry[keyField]), entry[valueField]]);
+                      } else {
+                          dataValue.push([entry[keyField], entry[valueField]]);
+                      }
                   }
               });
 
@@ -105,6 +114,9 @@
           var chartDataNoTotal = chartDataHelper('date', 'Items Added', false, 'Total Items');
           elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, chartDataNoTotal, 'time', 'count', 'chart_div', 'LineChart');
 
+          //TODO Map looks better at size $("#" + mapDivId).height(500).width(780);
+          var chartDataGeo = chartDataHelper('country', 'Country', false, 'Total');
+          elasticDataHelper(elasticJSON.facets.top_countries.terms, 'topCountries', false, chartDataGeo, 'term', 'count', 'chart_div', 'GeoChart');
 
           // Resize the chart_div parent to fit its contents.
           var totalChildHeight = 0;
@@ -112,29 +124,6 @@
               totalChildHeight += $(this).height();
           });
           $('#chart_div').height(totalChildHeight);
-
-
-        // Create the Country Chart
-        // Get country value data
-        var countryDataValue = [];
-        $('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Country tr.ds-table-row').each(function(){
-          var country = $(this).find('.country').html();
-          var count = parseInt($(this).find('.count').html(), 10);
-          countryDataValue.push([country, count]);
-        });
-
-        // Put data from Elastic response into a ChartData object
-        var country_chart_data = chartMaker.chartData();
-        country_chart_data.addColumn('string', 'Country');
-        country_chart_data.addColumn('number', 'Popularity');
-        country_chart_data.addRows(countryDataValue);
-
-        // Create a division to put the map in.
-        var mapDivId = 'aspect_dashboard_ElasticSearchStatsViewer_div_chart_div_map';
-        // Set the size of the div.
-        $("#" + mapDivId).height(500).width(780);
-
-        chartMaker.addChart('country_chart', google.visualization.GeoChart, country_chart_data, mapDivId);
 
         chartMaker.drawAllCharts();
       });
