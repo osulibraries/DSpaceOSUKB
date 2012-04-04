@@ -49,28 +49,33 @@
       return chartMaker;
     };
 
-    google.load('visualization', '1',{'packages':['annotatedtimeline', 'geochart']});
+    google.load('visualization', '1',{'packages':['annotatedtimeline', 'geochart', 'corechart']});
     google.setOnLoadCallback(function () {
       jQuery(document).ready(function ($) {
         var chartMaker = new ChartMaker();
 
         // Get data from elastic response
+        var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
+
+        //Monthly Downloads - include total
         var total = 0;
         var dataValue = [];
-        var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
         $.each(elasticJSON.facets.monthly_downloads.entries, function (index, entry) {
           total = total + entry.count;
           dataValue.push([new Date(entry.time), entry.count, total]);
         });
 
-        // Put data from alastic response into a CartData object
+        // Put data from Elastic response into a ChartData object
         var main_chart_data = chartMaker.chartData();
         main_chart_data.addColumn('date', 'Date');
         main_chart_data.addColumn('number', 'Items Added');
         main_chart_data.addColumn('number', 'Total Items');
         main_chart_data.addRows(dataValue);
 
+        chartMaker.addChart('main_chart', google.visualization.LineChart, main_chart_data, 'chart_div');
 
+
+        // Create the Country Chart
         // Get country value data
         var countryDataValue = [];
         $('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Country tr.ds-table-row').each(function(){
@@ -79,7 +84,7 @@
           countryDataValue.push([country, count]);
         });
 
-        // Put data from alastic response into a CartData object
+        // Put data from Elastic response into a ChartData object
         var country_chart_data = chartMaker.chartData();
         country_chart_data.addColumn('string', 'Country');
         country_chart_data.addColumn('number', 'Popularity');
@@ -87,10 +92,9 @@
 
         // Create a division to put the map in.
         var mapDivId = 'aspect_dashboard_ElasticSearchStatsViewer_div_chart_div_map';
-        var mapDiv = $("#" + mapDivId).height(500).width(780);
+        // Set the size of the div.
+        $("#" + mapDivId).height(500).width(780);
 
-        // Add charts to the chart maker and then draw them.
-        chartMaker.addChart('main_chart', google.visualization.AnnotatedTimeLine, main_chart_data, 'chart_div');
         chartMaker.addChart('country_chart', google.visualization.GeoChart, country_chart_data, mapDivId);
 
         chartMaker.drawAllCharts();
