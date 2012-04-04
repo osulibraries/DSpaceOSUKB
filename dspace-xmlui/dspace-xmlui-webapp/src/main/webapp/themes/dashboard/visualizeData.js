@@ -60,7 +60,7 @@
         // Get data from elastic response
         var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
 
-          function elasticDataHelper(entries, name, includeTotal, textAdded, textTotal, textChartDiv) {
+          function elasticDataHelper(entries, name, includeTotal, main_chart_data, keyField, valueField, textChartDiv, chartType) {
               var total = 0;
               var dataValue = [];
               $.each(entries, function(index, entry) {
@@ -99,8 +99,12 @@
 
           // Use a helper to do all the work to create our downloads charts.
           // There is one parent div chart_div, and we will append child divs for each chart.
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, 'Items Added', 'Total Items', 'chart_div');
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, 'Items Added', 'Total Items', 'chart_div');
+          var chartDataTotal = chartDataHelper('date', 'Items Added', true, 'Total Items');
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, chartDataTotal, 'time', 'count', 'chart_div', 'LineChart');
+
+          var chartDataNoTotal = chartDataHelper('date', 'Items Added', false, 'Total Items');
+          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, chartDataNoTotal, 'time', 'count', 'chart_div', 'LineChart');
+
 
           // Resize the chart_div parent to fit its contents.
           var totalChildHeight = 0;
