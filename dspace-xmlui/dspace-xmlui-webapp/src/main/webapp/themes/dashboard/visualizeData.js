@@ -72,17 +72,29 @@
                   }
               });
 
+             //We have our chartData object passed (with defaults set) now.
+              main_chart_data.addRows(dataValue);
+
+              chartMaker.addChart(name, google.visualization[chartType], main_chart_data, textChartDiv);
+          }
+
+          function chartDataHelper(type, textAdded, includeTotal, textTotal) {
               // Put data from Elastic response into a ChartData object
               var main_chart_data = chartMaker.chartData();
-              main_chart_data.addColumn('date', 'Date');
+
+              if(type == 'date') {
+                  main_chart_data.addColumn('date', 'Date');
+              } else if(type == 'country') {
+                  main_chart_data.addColumn('string', 'Country');
+              }
+
+
               main_chart_data.addColumn('number', textAdded);
               if(includeTotal) {
                   main_chart_data.addColumn('number', textTotal);
               }
 
-              main_chart_data.addRows(dataValue);
-
-              chartMaker.addChart(name, google.visualization.LineChart, main_chart_data, textChartDiv);
+              return main_chart_data;
           }
 
           // Use a helper to do all the work to create our downloads charts.
