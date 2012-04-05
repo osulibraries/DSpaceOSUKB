@@ -74,6 +74,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 cal.roll(Calendar.YEAR, -5);
                 cal.set(Calendar.MONTH, 0);
                 dateStart = cal.getTime();
+
+                division.addHidden("baseURLStats").setValue(request.getRequestURI());
                 
             } else {
                 //Other pages will show a form to choose which date range.

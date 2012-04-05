@@ -218,7 +218,8 @@
       });
 
       //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
-      $('<p>Countries with most Downloads to the Collection/Community</p>').insertBefore('#dspaceChart_topCountries');
-      $('<p>US Cities with Most Downloads to the Collection/Community</p>').insertBefore('#dspaceChart_topUSCities');
+      var baseURLStats = $('input[name=baseURLStats]').val();
+      $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
+      $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
     });
 })(this);
