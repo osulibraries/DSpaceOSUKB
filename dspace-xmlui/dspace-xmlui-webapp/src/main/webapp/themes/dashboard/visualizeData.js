@@ -164,7 +164,7 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
-        var chartDataTotal = chartDataHelper('date', 'Date', 'Items Added', true, 'Total Items');
+        var chartDataTotal = chartDataHelper('date', 'Date', 'Files Downloaded', true, 'Total Downloads');
         chartMaker.addChart({
             entries: elasticJSON.facets.monthly_downloads.entries,
             name: 'downloadsWithTotal',
@@ -176,7 +176,7 @@
 
 
         // Add a chart to show monthly downloads (without the total).
-        var chartDataNoTotal = chartDataHelper('date', 'Date', 'Items Added', false, 'Total Items');
+        var chartDataNoTotal = chartDataHelper('date', 'Date', 'Files Downloaded', false, 'Total Downloads');
         chartMaker.addChart({
             entries: elasticJSON.facets.monthly_downloads.entries,
             name: 'downloadsMonthly',
@@ -186,14 +186,14 @@
             options: options});
 
         // Add a chart to show downloads from various countries.
-        var chartDataGeo = chartDataHelper('string', 'Country', 'Views', false, 'Total');
+        var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
         chartMaker.addChart({
             entries: elasticJSON.facets.top_countries.terms,
             name: 'topCountries',
             chartData: chartDataGeo,
             options: options});
 
-        // Add a pie chart that shows country download data.
+        // Add a pie chart that shows top DSO Types usage.
         var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
         chartMaker.addChart({
             entries: elasticJSON.facets.top_types.terms,
