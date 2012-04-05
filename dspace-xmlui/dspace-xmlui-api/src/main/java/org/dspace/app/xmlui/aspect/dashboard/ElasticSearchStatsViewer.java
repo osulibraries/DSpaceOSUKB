@@ -59,12 +59,33 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             division.setHead("Elastic Data Display");
             division.addPara(dso.getType() + " " + dso.getName());
 
-            ReportGenerator reportGenerator = new ReportGenerator();
-            reportGenerator.addReportGeneratorForm(division, ObjectModelHelper.getRequest(objectModel));
-            Date dateStart = reportGenerator.getDateStart();
-            Date dateEnd = reportGenerator.getDateEnd();
+            Date dateStart; 
+            Date dateEnd;
+
             Request request = ObjectModelHelper.getRequest(objectModel);
-            log.info(request.getRequestURI());
+            String[] requestURIElements = request.getRequestURI().split("/");
+
+            // If we are on the homepage of the statistics portal, then we just show the summary report
+            // Otherwise we will show a form to let user enter more information for deeper detail.
+            if(requestURIElements[requestURIElements.length-1].trim().equalsIgnoreCase("elasticstatistics")) {
+                //Homepage will show the last 5 years worth of Data, and no form generator.
+                Calendar cal = Calendar.getInstance();
+                dateEnd = cal.getTime();
+                
+                cal.roll(Calendar.YEAR, -5);
+                cal.set(Calendar.MONTH, 0);
+                dateStart = cal.getTime();
+                
+            } else {
+                //Other pages will show a form to choose which date range.
+                ReportGenerator reportGenerator = new ReportGenerator();
+                reportGenerator.addReportGeneratorForm(division, request);
+                
+                dateStart = reportGenerator.getDateStart();
+                dateEnd = reportGenerator.getDateEnd();
+
+                log.info("Requested report is: "+requestURIElements[requestURIElements.length-1]);
+            }
 
             // Show some non-usage-stats.
             // @TODO Refactor the non-usage stats out of the StatsTransformer
