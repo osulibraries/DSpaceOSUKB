@@ -196,7 +196,7 @@
         // Add a pie chart that shows country download data.
         var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
         chartMaker.addChart({
-            entries: elasticJSON.facets.top_countries.terms,
+            entries: elasticJSON.facets.top_types.terms,
             name: 'topTypes',
             chartData: chartDataPie,
             chartType: 'PieChart',
