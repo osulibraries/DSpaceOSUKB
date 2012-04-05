@@ -164,7 +164,8 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
-        var chartDataTotal = chartDataHelper('date', 'Date', 'Files Downloaded', true, 'Total Downloads');
+        var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
+        var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
         chartMaker.addChart({
             entries: elasticJSON.facets.monthly_downloads.entries,
             name: 'downloadsWithTotal',
@@ -172,18 +173,18 @@
             chartData: chartDataTotal,
             keyField: 'time',
             chartType: 'LineChart',
-            options: options});
+            options: optionsDownloads});
 
 
         // Add a chart to show monthly downloads (without the total).
-        var chartDataNoTotal = chartDataHelper('date', 'Date', 'Files Downloaded', false, 'Total Downloads');
+        var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
         chartMaker.addChart({
             entries: elasticJSON.facets.monthly_downloads.entries,
             name: 'downloadsMonthly',
             chartData: chartDataNoTotal,
             keyField: 'time',
             chartType: 'LineChart',
-            options: options});
+            options: optionsDownloads});
 
         // Add a chart to show downloads from various countries.
         var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
@@ -215,5 +216,9 @@
         // Finally, we draw all of the charts.
         chartMaker.drawAllCharts();
       });
+
+      //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
+      $('<p>Countries with most Downloads to the Collection/Community</p>').insertBefore('#dspaceChart_topCountries');
+      $('<p>US Cities with Most Downloads to the Collection/Community</p>').insertBefore('#dspaceChart_topUSCities');
     });
 })(this);
