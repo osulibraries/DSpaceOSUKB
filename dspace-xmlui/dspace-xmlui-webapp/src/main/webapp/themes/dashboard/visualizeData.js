@@ -12,7 +12,7 @@
     (function ($) {
         context.ChartMaker = function() {
           var chartMaker = {};
-          // Make a place to store charts we want to draw later.
+          // A place to store charts to draw later.
           chartMaker.charts = {};
 
           // A shortcut to the google.visualization.DataTable function.
@@ -25,43 +25,92 @@
           // to put the chart in and add a new chart to `ChartMaker`'s internal
           // list of charts.
           //
-          // `addChart` takes 5 arguments:
+          // `addChart` takes an object (`userConfig`) that should have the
+          // following keys.
           //
-          // * `name` - A nice name to give the chart so the user can reference it
+          // * `entries` {object} The entries we use to create the chart.
+          // * `name` {string} A nice name to give the chart so the user can reference it
           // later.
-          // * `chart` - A function used to actually create the chart
-          // (e.g. google.visualization.someCoolChart)
-          // * `data` - An instance of ChartMaker.chartData containing the data for
+          // * `includeTotal` {boolean} Whether or not to include the total in
+          // each row.
+          // * `chartData` {object} An instance of ChartMaker.chartData containing the data for
           // the chart being added.
-          // * `parent` - The parent div to create the chart under
-          // * `options` - A map of options.
-          chartMaker.addChart = function (name, chart, data, parent, options) {
-            var par = $('#' + parent);
-            //par.height(par.height() + 280);
-            par.append("<div style='height:280px; width:750px;' id='"+ name + "'> </div>");
-            console.log(parent + " child=" + name);
-            this.charts[name] = {
-              chart: new chart(document.getElementById(name)),
-              data: data, options: options};
+          // * `keyField` {string} The name of the key to use on entries.
+          // * `valueField` {string} The name of the value to use on entries.
+          // * `parentElement` {string} The parent div to create the chart under
+          // * `chartType` {string} The key specifying what type of chart to
+          // use from `google.visualization`.
+          chartMaker.addChart = function (userConfig) {
+            var c = $.extend({
+                entries: [],
+                name: '',
+                includeTotal: false,
+                chartData: null,
+                keyField: 'term',
+                valueField: 'count',
+                parentElement: 'aspect_dashboard_ElasticSearchStatsViewer_div_chart_div',
+                chartType: 'GeoChart'
+            }, userConfig);
+
+            // `dataValue` will eventually become the rows of data in our
+            // chart.
+            var dataValue = [];
+            var total = 0;
+
+            // For each entry construct a vector to add to push onto
+            // `dataValue`.
+            $.each(c.entries, function(index, entry) {
+              newEntry = [];
+              if(c.chartType == 'LineChart') {
+                newEntry.push(new Date(entry[c.keyField]));
+              } else {
+                newEntry.push(entry[c.keyField]);
+              }
+              newEntry.push(entry[c.valueField]);
+              if(c.includeTotal) {
+                total += entry.count;
+                newEntry.push(total);
+              }
+              dataValue.push(newEntry);
+            });
+
+            // Add rows (`dataValue`) to the chartData.
+            c.chartData.addRows(dataValue);
+
+            // Add a child element
+            var par = $('#' + c.parentElement);
+            par.append("<div style='height:280px; width:750px;' " +
+                "id='dspaceChart_" + c.name + "'> </div>");
+            this.charts[c.name] = {
+              chart: new google.visualization[c.chartType](
+                document.getElementById("dspaceChart_" + c.name)),
+              data: c.chartData,
+              options: c.options
+            };
           };
 
-          // `drawChart` takes a chart from ChartMakers internal `charts` array
-          // (specified by the `name` parameter) and graws that chart.
+          // `drawChart` takes a chart from ChartMaker's internal `charts` array
+          // (specified by the `name` parameter) and draws that chart.
           chartMaker.drawChart = function(name, globalOptions) {
             if (typeof globalOptions === 'undefined') {
               globalOptions = {};
             }
             var cobj = this.charts[name];
+
+            // Allow the user to overwrite data with a passed in options.
             var data = cobj.data;
             if ('data' in globalOptions) {
               data = globalOptions.data;
             }
 
-            //Merge the Global Options with the local options for the chart
+            // Merge the Global Options with the local options for the chart
             var combinedOptions = $.extend(globalOptions, cobj.options);
+            // Draw the named chart!
             cobj.chart.draw(data, combinedOptions);
           };
 
+          // `drawAllCharts` simply loops through the defined charts and draws
+          // each one.
           chartMaker.drawAllCharts = function (options) {
             for (var name in this.charts) {
               this.drawChart(name, options);
@@ -71,84 +120,89 @@
         };
     })(jQuery);
 
+    // ## Now some user level code. . .
+    // Load the visualization Library
     google.load('visualization', '1',{'packages':['annotatedtimeline', 'geochart', 'corechart']});
+
+    // Set the callback for once the visualization library has loaded and make
+    // sure the DOM has loaded as well.
     google.setOnLoadCallback(function () {
       jQuery(document).ready(function ($) {
+        //Create a ChartMaker instance.
         var chartMaker = new ChartMaker();
 
-        // Get data from elastic response
+        // Get data from elastic that has been dumped on the page.
         var elasticJSON = $.parseJSON($('#aspect_dashboard_ElasticSearchStatsViewer_field_response').val());
 
-          function elasticDataHelper(entries, name, includeTotal, main_chart_data, keyField, valueField, textChartDiv, chartType, options) {
-              var total = 0;
-              var dataValue = [];
-              $.each(entries, function(index, entry) {
-                  if(includeTotal) {
-                      total += entry.count;
-                      if(chartType == 'LineChart') {
-                          dataValue.push([new Date(entry[keyField]), entry[valueField], total]);
-                      } else {
-                          dataValue.push([entry[keyField], entry[valueField], total]);
-                      }
+        // `function chartDataHelper` creates a chartData object from a few
+        // parameters.
+        function chartDataHelper(type, textKey, textValue, includeTotal, textTotal) {
+          // Put data from Elastic response into a ChartData object
+          var main_chart_data = chartMaker.chartData();
 
-                  } else {
-                      if(chartType == 'LineChart') {
-                        dataValue.push([new Date(entry[keyField]), entry[valueField]]);
-                      } else {
-                          dataValue.push([entry[keyField], entry[valueField]]);
-                      }
-                  }
-              });
-
-             //We have our chartData object passed (with defaults set) now.
-              main_chart_data.addRows(dataValue);
-
-              chartMaker.addChart(name, google.visualization[chartType], main_chart_data, textChartDiv, options);
+          if(type == 'date') {
+            main_chart_data.addColumn('date', textKey);
+          } else {
+            main_chart_data.addColumn('string', textKey);
           }
 
-          function chartDataHelper(type, textKey, textValue, includeTotal, textTotal) {
-              // Put data from Elastic response into a ChartData object
-              var main_chart_data = chartMaker.chartData();
-
-              if(type == 'date') {
-                  main_chart_data.addColumn('date', textKey);
-              } else {
-                  main_chart_data.addColumn('string', textKey);
-              }
-
-
-              main_chart_data.addColumn('number', textValue);
-              if(includeTotal) {
-                  main_chart_data.addColumn('number', textTotal);
-              }
-
-              return main_chart_data;
+          main_chart_data.addColumn('number', textValue);
+          if(includeTotal) {
+            main_chart_data.addColumn('number', textTotal);
           }
 
-          var options = { title : 'Views per DSpaceObject Type' };
+          return main_chart_data;
+        }
 
-          // Use a helper to do all the work to create our downloads charts.
-          // There is one parent div chart_div, and we will append child divs for each chart.
-          var chartDataTotal = chartDataHelper('date', 'Date', 'Items Added', true, 'Total Items');
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsWithTotal', true, chartDataTotal, 'time', 'count', 'chart_div', 'LineChart', options);
+        // Set the title for the charts.
+        var options = { title : 'Views per DSpaceObject Type' };
 
-          var chartDataNoTotal = chartDataHelper('date', 'Date', 'Items Added', false, 'Total Items');
-          elasticDataHelper(elasticJSON.facets.monthly_downloads.entries, 'downloadsMonthly', false, chartDataNoTotal, 'time', 'count', 'chart_div', 'LineChart', options);
+        // ### Start adding charts!
+        //
+        // Use a helper to do all the work to create the
+        // associated charts data tables.
+        // There is one parent div chart_div, and we will append child divs for each chart.
 
-          //TODO Map looks better at size $("#" + mapDivId).height(500).width(780);
-          var chartDataGeo = chartDataHelper('string', 'Country', 'Views', false, 'Total');
-          elasticDataHelper(elasticJSON.facets.top_countries.terms, 'topCountries', false, chartDataGeo, 'term', 'count', 'chart_div', 'GeoChart', options);
+        // Add a chart to show total downloads.
+        var chartDataTotal = chartDataHelper('date', 'Date', 'Items Added', true, 'Total Items');
+        chartMaker.addChart({
+            entries: elasticJSON.facets.monthly_downloads.entries,
+            name: 'downloadsWithTotal',
+            includeTotal: true,
+            chartData: chartDataTotal,
+            keyField: 'time',
+            chartType: 'LineChart',
+            options: options});
 
-          var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
-          elasticDataHelper(elasticJSON.facets.top_types.terms, 'topTypes', false, chartDataPie, 'term', 'count', 'chart_div', 'PieChart', options);
 
-          // Resize the chart_div parent to fit its contents.
-          var totalChildHeight = 0;
-          $('#chart_div').children().each(function() {
-              totalChildHeight += $(this).height();
-          });
-          $('#chart_div').height(totalChildHeight);
+        // Add a chart to show monthly downloads (without the total).
+        var chartDataNoTotal = chartDataHelper('date', 'Date', 'Items Added', false, 'Total Items');
+        chartMaker.addChart({
+            entries: elasticJSON.facets.monthly_downloads.entries,
+            name: 'downloadsMonthly',
+            chartData: chartDataNoTotal,
+            keyField: 'time',
+            chartType: 'LineChart',
+            options: options});
 
+        // Add a chart to show downloads from various countries.
+        var chartDataGeo = chartDataHelper('string', 'Country', 'Views', false, 'Total');
+        chartMaker.addChart({
+            entries: elasticJSON.facets.top_countries.terms,
+            name: 'topCountries',
+            chartData: chartDataGeo,
+            options: options});
+
+        // Add a pie chart that shows country download data.
+        var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
+        chartMaker.addChart({
+            entries: elasticJSON.facets.top_countries.terms,
+            name: 'topTypes',
+            chartData: chartDataPie,
+            chartType: 'PieChart',
+            options: options});
+
+        // Finally, we draw all of the charts.
         chartMaker.drawAllCharts();
       });
     });

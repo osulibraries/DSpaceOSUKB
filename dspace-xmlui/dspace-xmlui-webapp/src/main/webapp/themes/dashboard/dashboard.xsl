@@ -61,12 +61,6 @@
     <xsl:import href="../dri2xhtml.xsl"/>
     <xsl:output indent="yes"/>
 
-    <xsl:template match="dri:div[@n='chart_div']" priority="2">
-        <div id="chart_div" style="width: 700px; height: 240px;">
-            <xsl:text> </xsl:text>
-        </div>
-    </xsl:template>
-
     <xsl:template name="extraHead-top">
         <script type="text/javascript" src="https://www.google.com/jsapi">
             <xsl:text> </xsl:text>
