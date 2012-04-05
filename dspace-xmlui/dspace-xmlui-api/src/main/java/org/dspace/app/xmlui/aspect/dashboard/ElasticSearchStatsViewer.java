@@ -17,9 +17,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.action.search.SearchRequestBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.common.lucene.search.TermFilter;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -131,19 +130,32 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
             log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
 
+            TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+
             SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(termQuery)
                     .setSize(0)
                     .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                     .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                    .addFacet(FacetBuilders.termsFacet("top_countries").field("countryCode").size(150))
+                    .addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
+                            .facetFilter(justOriginals))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
-                            .facetFilter(FilterBuilders.termFilter("type", "bitstream"))
-                            .facetFilter(FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)))
+                            .facetFilter(FilterBuilders.andFilter(
+                                    FilterBuilders.termFilter("type", "bitstream"),
+                                    justOriginals,
+                                    FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
+                            )))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
-                            .facetFilter(FilterBuilders.termFilter("type", "bitstream")))
-                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month").facetFilter(FilterBuilders.termFilter("type", "bitstream")));
+                            .facetFilter(FilterBuilders.andFilter(
+                                    FilterBuilders.termFilter("type", "bitstream"),
+                                    justOriginals
+                            )))
+                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
+                            .facetFilter(FilterBuilders.andFilter(
+                                    FilterBuilders.termFilter("type", "bitstream"),
+                                    justOriginals
+                            )));
 
             division.addHidden("request").setValue(searchRequestBuilder.toString());
 
