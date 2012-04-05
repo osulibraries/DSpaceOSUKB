@@ -134,6 +134,29 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
                 <map:serialize type="xml"/>
             </map:match>
 
+            <map:match pattern="handle/*/*/elasticstatistics/*">
+                <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                    <map:transform type="ElasticSearchStatsViewer"/>
+                </map:match>
+
+                <map:match type="StatisticsAuthorizedMatcher" pattern="!READ">
+                    <map:select type="AuthenticatedSelector">
+                        <map:when test="eperson">
+                            <map:transform type="RestrictedItem"/>
+                            <map:serialize/>
+                        </map:when>
+                        <map:otherwise>
+                            <map:act type="StartAuthentication">
+                                <map:parameter name="header" value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
+                                <map:parameter name="message" value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
+                            </map:act>
+                            <map:serialize/>
+                        </map:otherwise>
+                    </map:select>
+                </map:match>
+                <map:serialize type="xml"/>
+            </map:match>
+
             <!--
             <map:match pattern="growth-statistics">
                 <map:match type="StatisticsAuthorizedMatcher" pattern="READ">

@@ -2,6 +2,7 @@ package org.dspace.app.xmlui.aspect.dashboard;
 
 import edu.osu.library.dspace.statistics.ElasticSearchLogger;
 import org.apache.cocoon.environment.ObjectModelHelper;
+import org.apache.cocoon.environment.Request;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.aspect.statistics.ReportGenerator;
 import org.dspace.app.xmlui.aspect.statistics.StatisticsTransformer;
@@ -62,6 +63,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             reportGenerator.addReportGeneratorForm(division, ObjectModelHelper.getRequest(objectModel));
             Date dateStart = reportGenerator.getDateStart();
             Date dateEnd = reportGenerator.getDateEnd();
+            Request request = ObjectModelHelper.getRequest(objectModel);
+            log.info(request.getRequestURI());
 
             // Show some non-usage-stats.
             // @TODO Refactor the non-usage stats out of the StatsTransformer
