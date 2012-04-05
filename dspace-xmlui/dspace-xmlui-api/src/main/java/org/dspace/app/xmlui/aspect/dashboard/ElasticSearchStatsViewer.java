@@ -143,7 +143,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     .addFacet(FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
                             .facetFilter(FilterBuilders.andFilter(
                                     FilterBuilders.termFilter("countryCode", "US"),
-                                    justOriginals
+                                    justOriginals,
+                                    FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
                             )))
                     .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                             .facetFilter(FilterBuilders.andFilter(
