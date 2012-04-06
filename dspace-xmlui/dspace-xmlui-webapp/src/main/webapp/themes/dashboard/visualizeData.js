@@ -164,54 +164,64 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
-        var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
-        var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
-        chartMaker.addChart({
-            entries: elasticJSON.facets.monthly_downloads.entries,
-            name: 'downloadsWithTotal',
-            includeTotal: true,
-            chartData: chartDataTotal,
-            keyField: 'time',
-            chartType: 'LineChart',
-            options: optionsDownloads});
+        if(elasticJSON.facets["monthly_downloads"] !== undefined) {
+            var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
+            var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+            chartMaker.addChart({
+                entries: elasticJSON.facets.monthly_downloads.entries,
+                name: 'downloadsWithTotal',
+                includeTotal: true,
+                chartData: chartDataTotal,
+                keyField: 'time',
+                chartType: 'LineChart',
+                options: optionsDownloads});
+          }
 
 
         // Add a chart to show monthly downloads (without the total).
-        var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
-        chartMaker.addChart({
-            entries: elasticJSON.facets.monthly_downloads.entries,
-            name: 'downloadsMonthly',
-            chartData: chartDataNoTotal,
-            keyField: 'time',
-            chartType: 'LineChart',
-            options: optionsDownloads});
+        if(elasticJSON.facets["monthly_downloads"] !== undefined) {
+            var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
+            chartMaker.addChart({
+                entries: elasticJSON.facets.monthly_downloads.entries,
+                name: 'downloadsMonthly',
+                chartData: chartDataNoTotal,
+                keyField: 'time',
+                chartType: 'LineChart',
+                options: optionsDownloads});
+        }
 
         // Add a chart to show downloads from various countries.
-        var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
-        chartMaker.addChart({
-            entries: elasticJSON.facets.top_countries.terms,
-            name: 'topCountries',
-            chartData: chartDataGeo,
-            options: options});
+        if(elasticJSON.facets["top_countries"] !== undefined) {
+            var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
+            chartMaker.addChart({
+                entries: elasticJSON.facets.top_countries.terms,
+                name: 'topCountries',
+                chartData: chartDataGeo,
+                options: options});
+        }
+
 
         // Add a chart to show downloads from various countries.
-        var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
-        var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
-        chartMaker.addChart({
-            entries: elasticJSON.facets.top_US_cities.terms,
-            name: 'topUSCities',
-            chartData: chartDataGeoUS,
-            options: optionsUS});
-
+        if(elasticJSON.facets["top_US_cities"] !== undefined) {
+            var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
+            var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
+            chartMaker.addChart({
+                entries: elasticJSON.facets.top_US_cities.terms,
+                name: 'topUSCities',
+                chartData: chartDataGeoUS,
+                options: optionsUS});
+        }
 
         // Add a pie chart that shows top DSO Types usage.
-        var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
-        chartMaker.addChart({
-            entries: elasticJSON.facets.top_types.terms,
-            name: 'topTypes',
-            chartData: chartDataPie,
-            chartType: 'PieChart',
-            options: options});
+        if(elasticJSON.facets["top_types"] !== undefined) {
+            var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
+            chartMaker.addChart({
+                entries: elasticJSON.facets.top_types.terms,
+                name: 'topTypes',
+                chartData: chartDataPie,
+                chartType: 'PieChart',
+                options: options});
+        }
 
         // Finally, we draw all of the charts.
         chartMaker.drawAllCharts();
@@ -221,5 +231,7 @@
       var baseURLStats = $('input[name=baseURLStats]').val();
       $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
       $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
+        
+      $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
     });
 })(this);

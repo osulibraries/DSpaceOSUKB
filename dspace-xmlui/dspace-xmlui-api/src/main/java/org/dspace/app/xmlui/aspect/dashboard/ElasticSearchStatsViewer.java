@@ -61,6 +61,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             Date dateStart; 
             Date dateEnd;
 
+            division.addHidden("baseURLStats").setValue(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics");
             Request request = ObjectModelHelper.getRequest(objectModel);
             String[] requestURIElements = request.getRequestURI().split("/");
 
@@ -75,7 +76,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 cal.set(Calendar.MONTH, 0);
                 dateStart = cal.getTime();
 
-                division.addHidden("baseURLStats").setValue(request.getRequestURI());
+
+
+                showAllReports(division, dateStart, dateEnd, dso, client);
                 
             } else {
                 //Other pages will show a form to choose which date range.
@@ -85,136 +88,176 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 dateStart = reportGenerator.getDateStart();
                 dateEnd = reportGenerator.getDateEnd();
 
-                log.info("Requested report is: "+requestURIElements[requestURIElements.length-1]);
+                String requestedReport = requestURIElements[requestURIElements.length-1];
+                log.info("Requested report is: "+ requestedReport);
+                if(requestedReport.equalsIgnoreCase("topCountries")) {
+                    showTopCountries(division, client, dso);
+                }
             }
-
-            // Show some non-usage-stats.
-            // @TODO Refactor the non-usage stats out of the StatsTransformer
-            StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
-
-            // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
-            if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
-                statisticsTransformerInstance.addItemsInContainer(dso, division);
-            }
-
-            // 2 - Number of Files in The Container (monthly and cumulative)
-            if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
-                statisticsTransformerInstance.addFilesInContainer(dso, division);
-            }
-
-
-
-
-            String owningObjectType = "";
-            switch (dso.getType()) {
-                case Constants.COLLECTION:
-                    owningObjectType = "owningColl";
-                    break;
-                case Constants.COMMUNITY:
-                    owningObjectType = "owningComm";
-                    break;
-            }
-
-            TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
-
-
-
-            Calendar calendar = Calendar.getInstance();
-
-            // Show Previous Whole Month
-            calendar.add(Calendar.MONTH, -1);
-
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-            String lowerBound = dateFormat.format(calendar.getTime());
-            
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-            String upperBound = dateFormat.format(calendar.getTime());
-
-            log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
-
-            TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
-
-            SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(termQuery)
-                    .setSize(0)
-                    .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
-                    .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                    .addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
-                            .facetFilter(justOriginals))
-                    .addFacet(FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
-                            .facetFilter(FilterBuilders.andFilter(
-                                    FilterBuilders.termFilter("countryCode", "US"),
-                                    justOriginals,
-                                    FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
-                            )))
-                    .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
-                            .facetFilter(FilterBuilders.andFilter(
-                                    FilterBuilders.termFilter("type", "bitstream"),
-                                    justOriginals,
-                                    FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
-                            )))
-                    .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
-                            .facetFilter(FilterBuilders.andFilter(
-                                    FilterBuilders.termFilter("type", "bitstream"),
-                                    justOriginals
-                            )))
-                    .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
-                            .facetFilter(FilterBuilders.andFilter(
-                                    FilterBuilders.termFilter("type", "bitstream"),
-                                    justOriginals
-                            )));
-
-            division.addHidden("request").setValue(searchRequestBuilder.toString());
-
-            SearchResponse resp = searchRequestBuilder.execute().actionGet();
-
-            if(resp == null) {
-                log.info("Elastic Search is down for searching.");
-                division.addPara("Elastic Search seems to be down :(");
-                return;
-            }
-
-            //division.addPara(resp.toString());
-            division.addHidden("response").setValue(resp.toString());
-
-
-            division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + resp.getHits().totalHits() + " hits.");
-
-            // Number of File Downloads Per Month
-            Facets facets = resp.getFacets();
-            if(facets == null) {
-                log.info("Elastic Search gives no facets");
-                return;
-            }
-
-            division.addDivision("chart_div");
-
-            //DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
-            //addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
-
-            // Number of Unique Visitors per Month
-            //TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
-            //addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
-
-            //TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
-            //addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
-
-            // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
-            //TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
-            //addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
-
-            // Top Downloads to Owning Object
-            TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
-            addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
-
-            TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-            addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
-
 
         } finally {
             client.close();
         }
+    }
+    
+    public void showAllReports(Division division, Date dateStart, Date dateEnd, DSpaceObject dso, Client client) throws WingException, SQLException{
+        // Show some non-usage-stats.
+        // @TODO Refactor the non-usage stats out of the StatsTransformer
+        StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
+
+        // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
+        if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+            statisticsTransformerInstance.addItemsInContainer(dso, division);
+        }
+
+        // 2 - Number of Files in The Container (monthly and cumulative)
+        if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+            statisticsTransformerInstance.addFilesInContainer(dso, division);
+        }
+
+
+
+
+        String owningObjectType = "";
+        switch (dso.getType()) {
+            case Constants.COLLECTION:
+                owningObjectType = "owningColl";
+                break;
+            case Constants.COMMUNITY:
+                owningObjectType = "owningComm";
+                break;
+        }
+
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+
+
+
+        Calendar calendar = Calendar.getInstance();
+
+        // Show Previous Whole Month
+        calendar.add(Calendar.MONTH, -1);
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        String lowerBound = dateFormat.format(calendar.getTime());
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String upperBound = dateFormat.format(calendar.getTime());
+
+        log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
+
+        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(termQuery)
+                .setSize(0)
+                .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
+                .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
+                .addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
+                        .facetFilter(justOriginals))
+                .addFacet(FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
+                        .facetFilter(FilterBuilders.andFilter(
+                                FilterBuilders.termFilter("countryCode", "US"),
+                                justOriginals,
+                                FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
+                        )))
+                .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
+                        .facetFilter(FilterBuilders.andFilter(
+                                FilterBuilders.termFilter("type", "bitstream"),
+                                justOriginals,
+                                FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
+                        )))
+                .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
+                        .facetFilter(FilterBuilders.andFilter(
+                                FilterBuilders.termFilter("type", "bitstream"),
+                                justOriginals
+                        )))
+                .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
+                        .facetFilter(FilterBuilders.andFilter(
+                                FilterBuilders.termFilter("type", "bitstream"),
+                                justOriginals
+                        )));
+
+        division.addHidden("request").setValue(searchRequestBuilder.toString());
+
+        SearchResponse resp = searchRequestBuilder.execute().actionGet();
+
+        if(resp == null) {
+            log.info("Elastic Search is down for searching.");
+            division.addPara("Elastic Search seems to be down :(");
+            return;
+        }
+
+        //division.addPara(resp.toString());
+        division.addHidden("response").setValue(resp.toString());
+
+
+        division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + resp.getHits().totalHits() + " hits.");
+
+        // Number of File Downloads Per Month
+        Facets facets = resp.getFacets();
+        if(facets == null) {
+            log.info("Elastic Search gives no facets");
+            return;
+        }
+
+        division.addDivision("chart_div");
+
+        //DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
+        //addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
+
+        // Number of Unique Visitors per Month
+        //TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
+        //addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
+
+        //TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
+        //addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
+
+        // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
+        //TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
+        //addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
+
+        // Top Downloads to Owning Object
+        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+        addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
+
+        TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+        addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+    }
+    
+    public void showTopCountries(Division division, Client client, DSpaceObject dso) throws WingException {
+        //TODO DRY
+        String owningObjectType = "";
+        switch (dso.getType()) {
+            case Constants.COLLECTION:
+                owningObjectType = "owningColl";
+                break;
+            case Constants.COMMUNITY:
+                owningObjectType = "owningComm";
+                break;
+        }
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+
+        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(termQuery)
+                .setSize(0).addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
+                .facetFilter(justOriginals));
+        division.addHidden("request").setValue(searchRequestBuilder.toString());
+
+        SearchResponse resp = searchRequestBuilder.execute().actionGet();
+
+        if(resp == null) {
+            log.info("Elastic Search is down for searching.");
+            division.addPara("Elastic Search seems to be down :(");
+            return;
+        }
+
+        //division.addPara(resp.toString());
+        division.addHidden("response").setValue(resp.toString());
+        division.addDivision("chart_div");
     }
 
 
