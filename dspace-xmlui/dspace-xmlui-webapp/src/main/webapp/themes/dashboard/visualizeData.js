@@ -61,13 +61,13 @@
             // `dataValue`.
             $.each(c.entries, function(index, entry) {
               newEntry = [];
-              if(c.chartType == 'LineChart') {
+              if (c.chartType == 'LineChart') {
                 newEntry.push(new Date(entry[c.keyField]));
               } else {
                 newEntry.push(entry[c.keyField]);
               }
               newEntry.push(entry[c.valueField]);
-              if(c.includeTotal) {
+              if (c.includeTotal) {
                 total += entry.count;
                 newEntry.push(total);
               }
@@ -140,14 +140,14 @@
           // Put data from Elastic response into a ChartData object
           var main_chart_data = chartMaker.chartData();
 
-          if(type == 'date') {
+          if (type == 'date') {
             main_chart_data.addColumn('date', textKey);
           } else {
             main_chart_data.addColumn('string', textKey);
           }
 
           main_chart_data.addColumn('number', textValue);
-          if(includeTotal) {
+          if (includeTotal) {
             main_chart_data.addColumn('number', textTotal);
           }
 
@@ -164,24 +164,24 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
-          var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
+        var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
         /*
-        if(elasticJSON.facets["monthly_downloads"] !== undefined) {
-            var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
-            chartMaker.addChart({
-                entries: elasticJSON.facets.monthly_downloads.entries,
-                name: 'downloadsWithTotal',
-                includeTotal: true,
-                chartData: chartDataTotal,
-                keyField: 'time',
-                chartType: 'LineChart',
-                options: optionsDownloads});
-          }
+        if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
+          var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+          chartMaker.addChart({
+              entries: elasticJSON.facets.monthly_downloads.entries,
+              name: 'downloadsWithTotal',
+              includeTotal: true,
+              chartData: chartDataTotal,
+              keyField: 'time',
+              chartType: 'LineChart',
+              options: optionsDownloads});
+        }
         */
 
 
         // Add a chart to show monthly downloads (without the total).
-        if(elasticJSON.facets["monthly_downloads"] !== undefined) {
+        if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
             var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
             chartMaker.addChart({
                 entries: elasticJSON.facets.monthly_downloads.entries,
@@ -193,7 +193,7 @@
         }
 
         // Add a chart to show downloads from various countries.
-        if(elasticJSON.facets["top_countries"] !== undefined) {
+        if (typeof elasticJSON.facets.top_countries !== 'undefined') {
             var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
             chartMaker.addChart({
                 entries: elasticJSON.facets.top_countries.terms,
@@ -201,7 +201,7 @@
                 chartData: chartDataGeo,
                 options: options});
 
-            if($('input[name=reportDepth]').val() == "detail") {
+            if ($('input[name=reportDepth]').val() == "detail") {
                 chartMaker.addChart({
                     entries: elasticJSON.facets.top_countries.terms,
                     name: 'topCountriesTable',
@@ -215,7 +215,7 @@
 
         // Add a chart to show downloads from various countries.
         /*
-        if(elasticJSON.facets["top_US_cities"] !== undefined) {
+        if (typeof elasticJSON.facets.top_US_cities !== 'undefined') {
             var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
             var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
             chartMaker.addChart({
@@ -228,7 +228,7 @@
 
         // Add a pie chart that shows top DSO Types usage.
         /*
-        if(elasticJSON.facets["top_types"] !== undefined) {
+        if (typeof elasticJSON.facets.top_types !== 'undefined') {
             var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
             chartMaker.addChart({
                 entries: elasticJSON.facets.top_types.terms,
@@ -241,19 +241,19 @@
 
         // Finally, we draw all of the charts.
         chartMaker.drawAllCharts();
+
+        //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
+        var baseURLStats = $('input[name=baseURLStats]').val();
+        $('<p><a href="'+ baseURLStats + '/itemsAdded">Number of Items Added to the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
+        $('<p><a href="'+ baseURLStats + '/filesAdded">Number of Files in the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
+        $('<p><a href="'+ baseURLStats + '/fileDownloads">Number of File Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
+        $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
+        $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
+        $('<p><a href="'+ baseURLStats + '/topDownloads">Top Downloaded Files in the Collection/Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
+
+        if ($('input[name=reportDepth]').val() == "detail") {
+            $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+        }
       });
-
-      //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
-      var baseURLStats = $('input[name=baseURLStats]').val();
-      $('<p><a href="'+ baseURLStats + '/itemsAdded">Number of Items Added to the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
-      $('<p><a href="'+ baseURLStats + '/filesAdded">Number of Files in the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
-      $('<p><a href="'+ baseURLStats + '/fileDownloads">Number of File Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
-      $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
-      $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
-      $('<p><a href="'+ baseURLStats + '/topDownloads">Top Downloaded Files in the Collection/Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
-
-      if($('input[name=reportDepth]').val() == "detail") {
-          $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
-      }
     });
 })(this);
