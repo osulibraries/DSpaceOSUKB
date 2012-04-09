@@ -76,8 +76,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 cal.set(Calendar.MONTH, 0);
                 dateStart = cal.getTime();
 
-
-
+                division.addHidden("reportDepth").setValue("summary");
                 showAllReports(division, dateStart, dateEnd, dso, client);
                 
             } else {
@@ -90,6 +89,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
                 String requestedReport = requestURIElements[requestURIElements.length-1];
                 log.info("Requested report is: "+ requestedReport);
+                division.addHidden("reportDepth").setValue("detail");
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
                     showTopCountries(division, client, dso);
                 }

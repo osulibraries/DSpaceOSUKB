@@ -198,6 +198,8 @@
                 name: 'topCountries',
                 chartData: chartDataGeo,
                 options: options});
+
+            if($('input[name=reportDepth]').val() == "detail") {
                 chartMaker.addChart({
                     entries: elasticJSON.facets.top_countries.terms,
                     name: 'topCountriesTable',
@@ -205,6 +207,7 @@
                     options:options,
                     chartType: 'Table'
                 });
+            }
         }
 
 
@@ -238,7 +241,9 @@
       var baseURLStats = $('input[name=baseURLStats]').val();
       $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
       $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
-        
-      $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+
+      if($('input[name=reportDepth]').val() == "detail") {
+          $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+      }
     });
 })(this);
