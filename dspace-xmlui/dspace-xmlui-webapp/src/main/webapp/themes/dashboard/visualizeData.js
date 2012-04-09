@@ -241,6 +241,9 @@
 
       //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
       var baseURLStats = $('input[name=baseURLStats]').val();
+      $('<p><a href="'+ baseURLStats + '/itemsAdded">Number of Items Added to the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
+      $('<p><a href="'+ baseURLStats + '/filesAdded">Number of Files in the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
+      $('<p><a href="'+ baseURLStats + '/fileDownloads">Number of File Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
       $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
       $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
 
