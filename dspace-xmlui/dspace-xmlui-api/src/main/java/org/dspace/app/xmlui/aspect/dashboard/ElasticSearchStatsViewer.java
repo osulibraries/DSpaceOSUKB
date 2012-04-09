@@ -91,7 +91,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 log.info("Requested report is: "+ requestedReport);
                 division.addHidden("reportDepth").setValue("detail");
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
-                    showTopCountries(division, client, dso);
+                    showTopCountries(division, client, dso, dateStart, dateEnd);
                 }
             }
 
@@ -225,7 +225,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
     }
     
-    public void showTopCountries(Division division, Client client, DSpaceObject dso) throws WingException {
+    public void showTopCountries(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
         //TODO DRY
         String owningObjectType = "";
         switch (dso.getType()) {
@@ -237,14 +237,20 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 break;
         }
         TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+        FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
+        FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
+
 
         TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(termQuery)
+                .setQuery(filteredQueryBuilder)
                 .setSize(0).addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
-                .facetFilter(justOriginals));
+                .facetFilter(FilterBuilders.andFilter(
+                    justOriginals,
+                    FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))));
+
         division.addHidden("request").setValue(searchRequestBuilder.toString());
 
         SearchResponse resp = searchRequestBuilder.execute().actionGet();
