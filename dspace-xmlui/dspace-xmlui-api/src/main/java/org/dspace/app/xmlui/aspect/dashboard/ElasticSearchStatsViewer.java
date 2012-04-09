@@ -221,8 +221,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
         addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
 
-        TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-        addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+        //TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+        //addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
     }
     
     public void showTopCountries(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {

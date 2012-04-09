@@ -214,6 +214,7 @@
 
 
         // Add a chart to show downloads from various countries.
+        /*
         if(elasticJSON.facets["top_US_cities"] !== undefined) {
             var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
             var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
@@ -223,8 +224,10 @@
                 chartData: chartDataGeoUS,
                 options: optionsUS});
         }
+        */
 
         // Add a pie chart that shows top DSO Types usage.
+        /*
         if(elasticJSON.facets["top_types"] !== undefined) {
             var chartDataPie = chartDataHelper('string', 'Type', 'Views', false, '');
             chartMaker.addChart({
@@ -234,6 +237,7 @@
                 chartType: 'PieChart',
                 options: options});
         }
+        */
 
         // Finally, we draw all of the charts.
         chartMaker.drawAllCharts();
@@ -246,6 +250,7 @@
       $('<p><a href="'+ baseURLStats + '/fileDownloads">Number of File Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
       $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
       $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
+      $('<p><a href="'+ baseURLStats + '/topDownloads">Top Downloaded Files in the Collection/Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
 
       if($('input[name=reportDepth]').val() == "detail") {
           $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
