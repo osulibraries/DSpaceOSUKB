@@ -122,7 +122,7 @@
 
     // ## Now some user level code. . .
     // Load the visualization Library
-    google.load('visualization', '1',{'packages':['annotatedtimeline', 'geochart', 'corechart']});
+    google.load('visualization', '1',{'packages':['annotatedtimeline', 'geochart', 'corechart', 'table']});
 
     // Set the callback for once the visualization library has loaded and make
     // sure the DOM has loaded as well.
@@ -198,6 +198,13 @@
                 name: 'topCountries',
                 chartData: chartDataGeo,
                 options: options});
+                chartMaker.addChart({
+                    entries: elasticJSON.facets.top_countries.terms,
+                    name: 'topCountriesTable',
+                    chartData: chartDataGeo,
+                    options:options,
+                    chartType: 'Table'
+                });
         }
 
 
