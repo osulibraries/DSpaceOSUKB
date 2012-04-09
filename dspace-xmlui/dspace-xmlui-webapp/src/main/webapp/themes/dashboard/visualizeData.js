@@ -164,8 +164,9 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
+          var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
+        /*
         if(elasticJSON.facets["monthly_downloads"] !== undefined) {
-            var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
             var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
             chartMaker.addChart({
                 entries: elasticJSON.facets.monthly_downloads.entries,
@@ -176,6 +177,7 @@
                 chartType: 'LineChart',
                 options: optionsDownloads});
           }
+        */
 
 
         // Add a chart to show monthly downloads (without the total).
