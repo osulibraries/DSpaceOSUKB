@@ -61,11 +61,12 @@
             // `dataValue`.
             $.each(c.entries, function(index, entry) {
               newEntry = [];
-              if (c.chartType == 'LineChart') {
+              if (c.chartData.A[0].type == 'date') {
                 newEntry.push(new Date(entry[c.keyField]));
               } else {
                 newEntry.push(entry[c.keyField]);
               }
+
               newEntry.push(entry[c.valueField]);
               if (c.includeTotal) {
                 total += entry.count;
