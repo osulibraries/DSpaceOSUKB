@@ -191,6 +191,20 @@
                 keyField: 'time',
                 chartType: 'LineChart',
                 options: optionsDownloads});
+
+            if ($('input[name=reportDepth]').val() == "detail") {
+                var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+                chartMaker.addChart({
+                    entries: elasticJSON.facets.monthly_downloads.entries,
+                    name: 'downloadsMonthlyTable',
+                    chartData: chartDataTotal,
+                    includeTotal : true,
+                    keyField : 'time',
+                    options:optionsDownloads,
+                    chartType: 'Table'
+                });
+            }
+
         }
 
         // Add a chart to show downloads from various countries.
