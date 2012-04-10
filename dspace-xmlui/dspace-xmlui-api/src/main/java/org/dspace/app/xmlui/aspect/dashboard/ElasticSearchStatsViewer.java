@@ -121,20 +121,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             statisticsTransformerInstance.addFilesInContainer(dso, division);
         }
 
-
-
-
-        String owningObjectType = "";
-        switch (dso.getType()) {
-            case Constants.COLLECTION:
-                owningObjectType = "owningColl";
-                break;
-            case Constants.COMMUNITY:
-                owningObjectType = "owningComm";
-                break;
-        }
-
-        TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
 
 
 
@@ -232,17 +219,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     }
     
     public void showTopCountries(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
-        //TODO DRY
-        String owningObjectType = "";
-        switch (dso.getType()) {
-            case Constants.COLLECTION:
-                owningObjectType = "owningColl";
-                break;
-            case Constants.COMMUNITY:
-                owningObjectType = "owningComm";
-                break;
-        }
-        TermQueryBuilder termQuery = QueryBuilders.termQuery(owningObjectType, dso.getID());
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
 
@@ -340,6 +317,17 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             Date facetDate = new Date(histogramEntry.getTime());
             dataRow.addCell("date", Cell.ROLE_DATA,"date").addContent(dateFormat.format(facetDate));
             dataRow.addCell("count", Cell.ROLE_DATA,"count").addContent("" + histogramEntry.getCount());
+        }
+    }
+    
+    private String getOwningText(DSpaceObject dso) {
+        switch (dso.getType()) {
+            case Constants.COLLECTION:
+                return "owningColl";
+            case Constants.COMMUNITY:
+                return "owningComm";
+            default:
+                return "";
         }
     }
     
