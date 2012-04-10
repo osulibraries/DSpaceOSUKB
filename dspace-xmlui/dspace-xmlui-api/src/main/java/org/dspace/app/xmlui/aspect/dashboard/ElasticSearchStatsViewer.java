@@ -98,6 +98,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 }
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
                     showTopCountries(division, client, dso, dateStart, dateEnd);
+                } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
+                    showMonthlyDownloads(division, client, dso, dateStart, dateEnd);
                 }
             }
 
@@ -233,6 +235,39 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 .facetFilter(FilterBuilders.andFilter(
                     justOriginals,
                     FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))));
+
+        division.addHidden("request").setValue(searchRequestBuilder.toString());
+
+        SearchResponse resp = searchRequestBuilder.execute().actionGet();
+
+        if(resp == null) {
+            log.info("Elastic Search is down for searching.");
+            division.addPara("Elastic Search seems to be down :(");
+            return;
+        }
+
+        //division.addPara(resp.toString());
+        division.addHidden("response").setValue(resp.toString());
+        division.addDivision("chart_div");
+    }
+    
+    public void showMonthlyDownloads(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
+        TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
+        FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
+        FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
+
+
+        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
+            .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+            .setQuery(filteredQueryBuilder)
+            .setSize(0)
+            .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
+                    .facetFilter(FilterBuilders.andFilter(
+                            FilterBuilders.termFilter("type", "bitstream"),
+                            justOriginals
+                    )));
 
         division.addHidden("request").setValue(searchRequestBuilder.toString());
 
