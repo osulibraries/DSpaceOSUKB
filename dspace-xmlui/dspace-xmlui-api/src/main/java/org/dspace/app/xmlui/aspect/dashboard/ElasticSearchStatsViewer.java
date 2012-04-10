@@ -77,6 +77,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 dateStart = cal.getTime();
 
                 division.addHidden("reportDepth").setValue("summary");
+                division.addPara("Showing Last Five Years of Data");
                 showAllReports(division, dateStart, dateEnd, dso, client);
                 
             } else {
@@ -90,6 +91,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 String requestedReport = requestURIElements[requestURIElements.length-1];
                 log.info("Requested report is: "+ requestedReport);
                 division.addHidden("reportDepth").setValue("detail");
+                if(dateStart != null && dateEnd != null) {
+                    division.addPara("Showing Data from:"+dateFormat.format(dateStart) + " to:"+dateFormat.format(dateEnd));
+                } else {
+                    division.addPara("Showing Data from: no range limit");
+                }
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
                     showTopCountries(division, client, dso, dateStart, dateEnd);
                 }
