@@ -166,20 +166,6 @@
 
         // Add a chart to show total downloads.
         var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
-        /*
-        if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
-          var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
-          chartMaker.addChart({
-              entries: elasticJSON.facets.monthly_downloads.entries,
-              name: 'downloadsWithTotal',
-              includeTotal: true,
-              chartData: chartDataTotal,
-              keyField: 'time',
-              chartType: 'LineChart',
-              options: optionsDownloads});
-        }
-        */
-
 
         // Add a chart to show monthly downloads (without the total).
         if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
@@ -194,6 +180,8 @@
 
             if ($('input[name=reportDepth]').val() == "detail") {
                 var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+
+                // Table with raw data of # Downloads each month
                 chartMaker.addChart({
                     entries: elasticJSON.facets.monthly_downloads.entries,
                     name: 'downloadsMonthlyTable',
@@ -203,7 +191,18 @@
                     options:optionsDownloads,
                     chartType: 'Table'
                 });
-            }
+
+                // Chart of Downloads with aggregate total
+                var chartDataTotal2 = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+                chartMaker.addChart({
+                  entries: elasticJSON.facets.monthly_downloads.entries,
+                  name: 'downloadsWithTotal',
+                  includeTotal: true,
+                  chartData: chartDataTotal2,
+                  keyField: 'time',
+                  chartType: 'LineChart',
+                  options: optionsDownloads});
+                }
 
         }
 
