@@ -89,8 +89,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             dso = HandleUtil.obtainHandle(objectModel);
 
             division = body.addDivision("elastic-stats");
-            division.setHead("Elastic Data Display");
-            division.addPara(dso.getType() + " " + dso.getName());
+            division.setHead("Statistical Report for " + dso.getName());
+            division.addHidden("containerName").setValue(dso.getName());
 
             division.addHidden("baseURLStats").setValue(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics");
             Request request = ObjectModelHelper.getRequest(objectModel);
@@ -136,6 +136,17 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     facetedQueryBuilder(facetTopCountries);
                 } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
                     facetedQueryBuilder(facetMonthlyDownloads);
+                } else if(requestedReport.equalsIgnoreCase("topDownloads")) {
+                    List<AbstractFacetBuilder> facets = new ArrayList<AbstractFacetBuilder>();
+                    facets.add(facetTopBitstreamsAllTime);
+                    facets.add(facetTopBitstreamsLastMonth());
+                    SearchResponse resp = facetedQueryBuilder(facets);
+
+                    TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+                    addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+
+                    TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+                    addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
                 } else if(requestedReport.equalsIgnoreCase("itemsAdded")) {
                     StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
 
@@ -186,11 +197,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
         // Top Downloads to Owning Object
         TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
-        //@TODO Renabel
         addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
-
-        //TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-        //addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
     }
     
     public AbstractFacetBuilder facetTopBitstreamsLastMonth() {

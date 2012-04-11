@@ -165,7 +165,8 @@
         // There is one parent div chart_div, and we will append child divs for each chart.
 
         // Add a chart to show total downloads.
-        var optionsDownloads = {title: 'Number of File Downloads to the Collection/Community'};
+        var name = $('input[name=containerName]').val();
+        var optionsDownloads = {title: 'Number of File Downloads: ' + name };
 
         // Add a chart to show monthly downloads (without the total).
         if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
@@ -258,12 +259,12 @@
 
         //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
         var baseURLStats = $('input[name=baseURLStats]').val();
-        $('<p><a href="'+ baseURLStats + '/itemsAdded">Number of Items Added to the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
-        $('<p><a href="'+ baseURLStats + '/filesAdded">Number of Files in the Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
-        $('<p><a href="'+ baseURLStats + '/fileDownloads">Number of File Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
-        $('<p><a href="'+ baseURLStats + '/topCountries">Countries with most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topCountries');
-        $('<p><a href="'+ baseURLStats + '/topUSCities">US Cities with Most Downloads to the Collection/Community</a></p>').insertBefore('#dspaceChart_topUSCities');
-        $('<p><a href="'+ baseURLStats + '/topDownloads">Top Downloaded Files in the Collection/Community</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
+        $('<p><a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
+        $('<p><a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
+        $('<p>Number of File Downloads. <a href="'+ baseURLStats + '/fileDownloads">For more information.</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
+        $('<p>Countries with most Downloads. <a href="'+ baseURLStats + '/topCountries">For more information.</a></p>').insertBefore('#dspaceChart_topCountries');
+        $('<p><a href="'+ baseURLStats + '/topUSCities">For more information.</a></p>').insertBefore('#dspaceChart_topUSCities');
+        $('<p><a href="'+ baseURLStats + '/topDownloads">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
 
         if ($('input[name=reportDepth]').val() == "detail") {
             $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
