@@ -123,9 +123,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 log.info("Requested report is: "+ requestedReport);
                 division.addHidden("reportDepth").setValue("detail");
                 if(dateStart != null && dateEnd != null) {
-                    division.addPara("Showing Data from:"+dateFormat.format(dateStart) + " to:"+dateFormat.format(dateEnd));
-                } else {
-                    division.addPara("Showing Data from: no range limit");
+                    division.addPara("Showing Data from: "+dateFormat.format(dateStart) + " to: "+dateFormat.format(dateEnd));
+                } else if (dateStart != null && dateEnd == null) {
+                    division.addPara("Showing Data starting from: "+dateFormat.format(dateStart));
+                } else if(dateStart == null && dateEnd != null) {
+                    division.addPara("Showing Data ending with: "+dateFormat.format(dateEnd));
+                } else if(dateStart == null && dateEnd == null) {
+                    division.addPara("Showing Data from: all data");
                 }
                 
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
