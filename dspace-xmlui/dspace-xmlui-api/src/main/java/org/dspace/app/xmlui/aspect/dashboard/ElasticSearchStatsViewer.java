@@ -158,11 +158,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         summaryFacets.add(facetTopCountries);
         summaryFacets.add(facetTopUSCities);
+        summaryFacets.add(facetTopBitstreamsLastMonth());
         summaryFacets.add(facetTopBitstreamsAllTime);
         summaryFacets.add(facetMonthlyDownloads);
 
 
 
+    
+    public AbstractFacetBuilder facetTopBitstreamsLastMonth() {
         Calendar calendar = Calendar.getInstance();
 
         // Show Previous Whole Month
@@ -175,6 +178,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         String upperBound = dateFormat.format(calendar.getTime());
 
         log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
+        
+        return FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
+                .facetFilter(FilterBuilders.andFilter(
+                        FilterBuilders.termFilter("type", "bitstream"),
+                        justOriginals,
+                        FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
+                ));
+    }
 
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
