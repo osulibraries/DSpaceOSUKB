@@ -41,6 +41,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMMM yyyy");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+
+    private static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
     public void addPageMeta(PageMeta pageMeta) throws WingException {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
     }
@@ -137,7 +139,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
         log.info("Lower:"+lowerBound+" -- Upper:"+upperBound);
 
-        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -222,9 +223,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
 
-
-        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
-
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(filteredQueryBuilder)
@@ -239,9 +237,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
-
-
-        TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
             .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
