@@ -422,7 +422,7 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             java.util.List<TableRow> tableRowList = tri.toList();
             
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
-            displayAsGrid(division, monthlyDataGrid, "itemsAddedGrid", "Number of Items Added to the " + StringUtils.capitalize(typeTextLower));
+            displayAsGrid(division, monthlyDataGrid, "itemsAddedGrid", "Number of Items Added to the " + dso.getName());
             
         } catch (SQLException e) {
             log.error(e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
@@ -656,7 +656,7 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
 
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
             
-            displayAsGrid(division, monthlyDataGrid, "filesInContainer-grid", "Number of Files in the "+StringUtils.capitalize(typeTextLower));
+            displayAsGrid(division, monthlyDataGrid, "filesInContainer-grid", "Number of Files in the "+dso.getName());
             //displayAsTableRows(division, tableRowList, "Number of Files in the "+getTypeAsString(dso));
 
         } catch (SQLException e) {
