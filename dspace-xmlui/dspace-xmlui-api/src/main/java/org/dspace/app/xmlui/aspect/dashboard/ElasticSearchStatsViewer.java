@@ -49,6 +49,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 justOriginals,
                 FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))
             );
+
+    private static AbstractFacetBuilder facetMonthlyDownloads = FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
+            .facetFilter(FilterBuilders.andFilter(
+                FilterBuilders.termFilter("type", "bitstream"),
+                justOriginals
+            ));
     
     private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
@@ -107,7 +113,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
                     showTopCountries(division, client, dso, dateStart, dateEnd);
                 } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
-                    showMonthlyDownloads(division, client, dso, dateStart, dateEnd);
+                    facetedQueryBuilder(facetMonthlyDownloads);
                 }
             }
 
@@ -135,6 +141,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         summaryFacets.add(facetTopTypes);
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         summaryFacets.add(facetTopCountries);
+        summaryFacets.add(facetMonthlyDownloads);
 
 
 
@@ -174,11 +181,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                                 FilterBuilders.termFilter("type", "bitstream"),
                                 justOriginals
                         )))
-                .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
-                        .facetFilter(FilterBuilders.andFilter(
-                                FilterBuilders.termFilter("type", "bitstream"),
-                                justOriginals
-                        )));
 
         division.addHidden("request").setValue(searchRequestBuilder.toString());
 
@@ -241,21 +243,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             searchRequestBuilder.addFacet(facet);
         }
 
-    
-    public void showMonthlyDownloads(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
-        TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
-        FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
-        FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
-
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
-            .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-            .setQuery(filteredQueryBuilder)
-            .setSize(0)
-            .addFacet(FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
-                    .facetFilter(FilterBuilders.andFilter(
-                            FilterBuilders.termFilter("type", "bitstream"),
-                            justOriginals
-                    )));
 
         division.addHidden("request").setValue(searchRequestBuilder.toString());
 
