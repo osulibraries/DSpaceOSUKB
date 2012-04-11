@@ -42,6 +42,7 @@ package org.dspace.app.xmlui.aspect.dashboard;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -53,15 +54,16 @@ import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.dspace.app.xmlui.aspect.submission.Submissions;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.app.xmlui.wing.element.Item;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.Collection;
+import org.dspace.content.*;
 import org.dspace.core.Constants;
+import org.dspace.eperson.EPerson;
 import org.dspace.statistics.ObjectCount;
 import org.dspace.statistics.SolrLogger;
 import org.dspace.storage.rdbms.DatabaseManager;
@@ -116,6 +118,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
         actionSelect.addOption(false, "itemgrowth", "Number of Items in the Repository (Monthly) -- Google Chart");
         actionSelect.addOption(false, "commitems", "Items in Communities");
         actionSelect.addOption(false, "topDownloadsMonth", "Top Downloads for Month");
+        actionSelect.addOption(false, "submissionsByUser", "Submissions by Cheryl to OSUL Research");
 
         Para buttons = search.addPara();
         buttons.addButton("submit_add").setValue("Create Report");
@@ -136,6 +139,9 @@ public class DashboardViewer extends AbstractDSpaceTransformer
         } else if (reportName.equals("topDownloadsMonth"))
         {
             addMonthlyTopDownloads(division);
+        } else if (reportName.equals("submissionsByUser"))
+        {
+            querySubmissionsByUser(division);
         }
 
 
@@ -193,6 +199,43 @@ public class DashboardViewer extends AbstractDSpaceTransformer
             dataRow.addCell("items_total",Cell.ROLE_DATA, null).addContent(totalItems);
         }
 
+    }
+
+    private void querySubmissionsByUser(Division division) throws SQLException, WingException, AuthorizeException
+    {
+        Collection osulResearchCollection = Collection.find(context, 23);
+        context.ignoreAuthorization();
+        EPerson cheryl = EPerson.findByEmail(context, "obong.1@osu.edu");
+        ItemIterator itemIterator = osulResearchCollection.getAllItems();
+
+        List<org.dspace.content.Item> cherylsItems = new ArrayList<org.dspace.content.Item>();
+        
+        while(itemIterator.hasNext()) {
+            org.dspace.content.Item item = itemIterator.next();
+            if(item.getSubmitter().equals(cheryl)) {
+                cherylsItems.add(item);
+            }
+        }
+        
+        Table table = division.addTable("submissionsByUser", cherylsItems.size(), 4);
+        table.setHead("Items Submitted to "+osulResearchCollection.getName() + " by " + cheryl.getName());
+        Row headerRow = table.addRow(Row.ROLE_HEADER);
+        headerRow.addCellContent("Title");
+        headerRow.addCellContent("Author");
+        headerRow.addCellContent("Date Issued");
+        headerRow.addCellContent("Date Accessioned");
+        
+        for(org.dspace.content.Item item : cherylsItems) {
+            Row bodyRow = table.addRow(Row.ROLE_DATA);
+            bodyRow.addCell().addXref(contextPath + "/handle/" + item.getHandle(), item.getName());
+            bodyRow.addCellContent(item.getMetadata("dc.creator")[0].value);
+            bodyRow.addCellContent(item.getMetadata("dc.date.issued")[0].value);
+            bodyRow.addCellContent(item.getMetadata("dc.date.accessioned")[0].value);
+        }
+        
+        
+        
+        
     }
 
     /**
