@@ -20,7 +20,6 @@ import org.elasticsearch.client.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.facet.AbstractFacetBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
-import org.elasticsearch.search.facet.Facets;
 import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 
@@ -198,10 +197,20 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                         FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
                 ));
     }
+    
+    public String getLastMonthString() {
+        Calendar calendar = Calendar.getInstance();
+        // Show Previous Whole Month
+        calendar.add(Calendar.MONTH, -1);
 
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         return monthAndYearFormat.format(calendar.getTime());
     }
+    
+    public SearchResponse facetedQueryBuilder(AbstractFacetBuilder facet) throws WingException{
+        List<AbstractFacetBuilder> facetList = new ArrayList<AbstractFacetBuilder>();
+        facetList.add(facet);
+        return facetedQueryBuilder(facetList);
     }
     
     public SearchResponse facetedQueryBuilder(List<AbstractFacetBuilder> facetList) throws WingException {
