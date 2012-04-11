@@ -56,6 +56,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 justOriginals
             ));
     
+    private static AbstractFacetBuilder facetTopBitstreamsAllTime = FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
+            .facetFilter(FilterBuilders.andFilter(
+                    FilterBuilders.termFilter("type", "bitstream"),
+                    justOriginals
+            ));
     private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException {
@@ -141,6 +146,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         summaryFacets.add(facetTopTypes);
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         summaryFacets.add(facetTopCountries);
+        summaryFacets.add(facetTopBitstreamsAllTime);
         summaryFacets.add(facetMonthlyDownloads);
 
 
@@ -175,11 +181,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                                 FilterBuilders.termFilter("type", "bitstream"),
                                 justOriginals,
                                 FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
-                        )))
-                .addFacet(FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
-                        .facetFilter(FilterBuilders.andFilter(
-                                FilterBuilders.termFilter("type", "bitstream"),
-                                justOriginals
                         )))
 
         division.addHidden("request").setValue(searchRequestBuilder.toString());
