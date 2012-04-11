@@ -61,6 +61,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     FilterBuilders.termFilter("type", "bitstream"),
                     justOriginals
             ));
+    
+    private static AbstractFacetBuilder facetTopUSCities = FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
+            .facetFilter(FilterBuilders.andFilter(
+                FilterBuilders.termFilter("countryCode", "US"),
+                justOriginals,
+                FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
+            ));
     private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException {
@@ -146,6 +153,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         summaryFacets.add(facetTopTypes);
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         summaryFacets.add(facetTopCountries);
+        summaryFacets.add(facetTopUSCities);
         summaryFacets.add(facetTopBitstreamsAllTime);
         summaryFacets.add(facetMonthlyDownloads);
 
@@ -170,12 +178,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 .setQuery(termQuery)
                 .setSize(0)
                 .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                .addFacet(FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
-                        .facetFilter(FilterBuilders.andFilter(
-                                FilterBuilders.termFilter("countryCode", "US"),
-                                justOriginals,
-                                FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
-                        )))
                 .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                         .facetFilter(FilterBuilders.andFilter(
                                 FilterBuilders.termFilter("type", "bitstream"),
