@@ -43,6 +43,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
 
     private static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+
+    private static AbstractFacetBuilder facetTopCountries = FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
+            .facetFilter(FilterBuilders.andFilter(
+                justOriginals,
+                FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))
+            );
     
     private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
@@ -125,7 +131,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             statisticsTransformerInstance.addFilesInContainer(dso, division);
         }
 
+        List<AbstractFacetBuilder> summaryFacets = new ArrayList<AbstractFacetBuilder>();
+        summaryFacets.add(facetTopTypes);
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
+        summaryFacets.add(facetTopCountries);
 
 
 
@@ -148,8 +157,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 .setQuery(termQuery)
                 .setSize(0)
                 .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
-                .addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
-                        .facetFilter(justOriginals))
                 .addFacet(FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
                         .facetFilter(FilterBuilders.andFilter(
                                 FilterBuilders.termFilter("countryCode", "US"),
