@@ -217,7 +217,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         //addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
     }
     
-    public void showTopCountries(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
+    public SearchResponse facetedQueryBuilder(List<AbstractFacetBuilder> facetList) throws WingException {
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
@@ -228,25 +228,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(filteredQueryBuilder)
-                .setSize(0).addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
-                .facetFilter(FilterBuilders.andFilter(
-                    justOriginals,
-                    FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))));
+                .setSize(0);
 
-        division.addHidden("request").setValue(searchRequestBuilder.toString());
-
-        SearchResponse resp = searchRequestBuilder.execute().actionGet();
-
-        if(resp == null) {
-            log.info("Elastic Search is down for searching.");
-            division.addPara("Elastic Search seems to be down :(");
-            return;
+        for(AbstractFacetBuilder facet : facetList) {
+            searchRequestBuilder.addFacet(facet);
         }
 
-        //division.addPara(resp.toString());
-        division.addHidden("response").setValue(resp.toString());
-        division.addDivision("chart_div");
-    }
     
     public void showMonthlyDownloads(Division division, Client client, DSpaceObject dso, Date dateStart, Date dateEnd) throws WingException {
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
