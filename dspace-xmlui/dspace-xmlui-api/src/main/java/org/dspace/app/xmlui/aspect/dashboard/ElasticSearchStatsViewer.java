@@ -43,6 +43,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
 
     private static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+    
+    private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
+
     public void addPageMeta(PageMeta pageMeta) throws WingException {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
     }
@@ -144,7 +147,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(termQuery)
                 .setSize(0)
-                .addFacet(FacetBuilders.termsFacet("top_types").field("type"))
                 .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
                 .addFacet(FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
                         .facetFilter(justOriginals))
