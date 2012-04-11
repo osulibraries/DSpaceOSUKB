@@ -41,6 +41,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMMM yyyy");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static Client client;
+    private static Division division;
+    private static DSpaceObject dso;
+    private static Date dateStart;
+    private static Date dateEnd;
 
     private static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
 
@@ -78,17 +83,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     }
 
     public void addBody(Body body) throws WingException, SQLException {
-        Client client = ElasticSearchLogger.createElasticClient(false);
+        client = ElasticSearchLogger.createElasticClient(false);
         try {
             //Try to find our dspace object
-            DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
+            dso = HandleUtil.obtainHandle(objectModel);
 
-            Division division = body.addDivision("elastic-stats");
+            division = body.addDivision("elastic-stats");
             division.setHead("Elastic Data Display");
             division.addPara(dso.getType() + " " + dso.getName());
-
-            Date dateStart; 
-            Date dateEnd;
 
             division.addHidden("baseURLStats").setValue(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics");
             Request request = ObjectModelHelper.getRequest(objectModel);
@@ -107,7 +109,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
                 division.addHidden("reportDepth").setValue("summary");
                 division.addPara("Showing Last Five Years of Data");
-                showAllReports(division, dateStart, dateEnd, dso, client);
+                showAllReports();
                 
             } else {
                 //Other pages will show a form to choose which date range.
@@ -137,7 +139,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         }
     }
     
-    public void showAllReports(Division division, Date dateStart, Date dateEnd, DSpaceObject dso, Client client) throws WingException, SQLException{
+    public void showAllReports() throws WingException, SQLException{
         // Show some non-usage-stats.
         // @TODO Refactor the non-usage stats out of the StatsTransformer
         StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
