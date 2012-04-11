@@ -132,6 +132,19 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     facetedQueryBuilder(facetTopCountries);
                 } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
                     facetedQueryBuilder(facetMonthlyDownloads);
+                } else if(requestedReport.equalsIgnoreCase("itemsAdded")) {
+                    StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
+
+                    // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
+                    if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+                        statisticsTransformerInstance.addItemsInContainer(dso, division);
+                    }
+                } else if(requestedReport.equalsIgnoreCase("filesAdded")) {
+                    StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
+                    // 2 - Number of Files in The Container (monthly and cumulative)
+                    if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
+                        statisticsTransformerInstance.addFilesInContainer(dso, division);
+                    }
                 }
             }
 
