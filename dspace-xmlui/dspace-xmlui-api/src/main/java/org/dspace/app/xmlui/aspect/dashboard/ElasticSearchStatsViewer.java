@@ -68,6 +68,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 justOriginals,
                 FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
             ));
+    
+    private static AbstractFacetBuilder facetTopUniqueIP = FacetBuilders.termsFacet("top_unique_ips").field("ip");
+    
     private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException {
@@ -151,6 +154,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
         List<AbstractFacetBuilder> summaryFacets = new ArrayList<AbstractFacetBuilder>();
         summaryFacets.add(facetTopTypes);
+        summaryFacets.add(facetTopUniqueIP);
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         summaryFacets.add(facetTopCountries);
         summaryFacets.add(facetTopUSCities);
@@ -177,7 +181,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(termQuery)
                 .setSize(0)
-                .addFacet(FacetBuilders.termsFacet("top_unique_ips").field("ip"))
                 .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                         .facetFilter(FilterBuilders.andFilter(
                                 FilterBuilders.termFilter("type", "bitstream"),
