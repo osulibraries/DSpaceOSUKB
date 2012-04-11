@@ -18,6 +18,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.facet.AbstractFacetBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.Facets;
 import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
@@ -127,8 +128,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 } else {
                     division.addPara("Showing Data from: no range limit");
                 }
+                
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
-                    showTopCountries(division, client, dso, dateStart, dateEnd);
+                    facetedQueryBuilder(facetTopCountries);
                 } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
                     facetedQueryBuilder(facetMonthlyDownloads);
                 }
@@ -157,15 +159,23 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         List<AbstractFacetBuilder> summaryFacets = new ArrayList<AbstractFacetBuilder>();
         summaryFacets.add(facetTopTypes);
         summaryFacets.add(facetTopUniqueIP);
-        TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
+        summaryFacets.add(facetTopCountries);
         summaryFacets.add(facetTopCountries);
         summaryFacets.add(facetTopUSCities);
         summaryFacets.add(facetTopBitstreamsLastMonth());
         summaryFacets.add(facetTopBitstreamsAllTime);
         summaryFacets.add(facetMonthlyDownloads);
 
+        SearchResponse resp = facetedQueryBuilder(summaryFacets);
 
+        // Top Downloads to Owning Object
+        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+        //@TODO Renabel
+        addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
 
+        //TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+        //addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+    }
     
     public AbstractFacetBuilder facetTopBitstreamsLastMonth() {
         Calendar calendar = Calendar.getInstance();
@@ -189,63 +199,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 ));
     }
 
-
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(termQuery)
-                .setSize(0)
-                .addFacet(FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
-                        .facetFilter(FilterBuilders.andFilter(
-                                FilterBuilders.termFilter("type", "bitstream"),
-                                justOriginals,
-                                FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
-                        )))
-
-        division.addHidden("request").setValue(searchRequestBuilder.toString());
-
-        SearchResponse resp = searchRequestBuilder.execute().actionGet();
-
-        if(resp == null) {
-            log.info("Elastic Search is down for searching.");
-            division.addPara("Elastic Search seems to be down :(");
-            return;
-        }
-
-        //division.addPara(resp.toString());
-        division.addHidden("response").setValue(resp.toString());
-
-
-        division.addPara("Querying bitstreams for elastic, Took " + resp.tookInMillis() + " ms to get " + resp.getHits().totalHits() + " hits.");
-
-        // Number of File Downloads Per Month
-        Facets facets = resp.getFacets();
-        if(facets == null) {
-            log.info("Elastic Search gives no facets");
-            return;
-        }
-
-        division.addDivision("chart_div");
-
-        //DateHistogramFacet monthlyDownloadsFacet = facets.facet(DateHistogramFacet.class, "monthly_downloads");
-        //addDateHistogramToTable(monthlyDownloadsFacet, division, "MonthlyDownloads", "Number of Downloads (per month)");
-
-        // Number of Unique Visitors per Month
-        //TermsFacet uniquesFacet = resp.getFacets().facet(TermsFacet.class, "top_unique_ips");
-        //addTermFacetToTable(uniquesFacet, division, "Uniques", "Unique Visitors (per year)");
-
-        //TermsFacet countryFacet = resp.getFacets().facet(TermsFacet.class, "top_countries");
-        //addTermFacetToTable(countryFacet, division, "Country", "Top Country Views (all time)");
-
-        // Need to cast the facets to a TermsFacet so that we can get things like facet count. I think this is obscure.
-        //TermsFacet termsFacet = resp.getFacets().facet(TermsFacet.class, "top_types");
-        //addTermFacetToTable(termsFacet, division, "types", "Facetting of Hits to this owningObject by resource type");
-
-        // Top Downloads to Owning Object
-        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
-        addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + monthAndYearFormat.format(calendar.getTime()));
-
-        //TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-        //addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return monthAndYearFormat.format(calendar.getTime());
+    }
     }
     
     public SearchResponse facetedQueryBuilder(List<AbstractFacetBuilder> facetList) throws WingException {
@@ -270,12 +226,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         if(resp == null) {
             log.info("Elastic Search is down for searching.");
             division.addPara("Elastic Search seems to be down :(");
-            return;
+            return null;
         }
 
         //division.addPara(resp.toString());
         division.addHidden("response").setValue(resp.toString());
         division.addDivision("chart_div");
+        
+        return resp;
     }
 
 
