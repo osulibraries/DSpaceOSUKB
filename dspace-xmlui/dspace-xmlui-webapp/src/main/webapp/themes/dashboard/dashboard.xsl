@@ -68,6 +68,12 @@
     </xsl:template>
 
     <xsl:template name="extraBody-end">
+        <script type="text/javascript" src="/dspace/themes/dashboard/lib/jquery-ui-1.8.18.datepicker-only.min.js">
+            <xsl:text> </xsl:text>
+        </script>
+        <script type="text/javascript" src="/dspace/themes/dashboard/lib/report-generator-mod.js">
+            <xsl:text> </xsl:text>
+        </script>
         <script type="text/javascript" src="/dspace/themes/dashboard/visualizeData.js">
             <xsl:text> </xsl:text>
         </script>
