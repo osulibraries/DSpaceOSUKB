@@ -104,5 +104,54 @@
             <xsl:apply-templates />
         </td>
     </xsl:template>
+    <xsl:template match="dri:field[@rend='slick']">
+      <div>
+          <xsl:attribute name="class">
+              <xsl:text>slick-wrapper</xsl:text>
+          </xsl:attribute>
+          <xsl:attribute name="id">
+              <xsl:value-of select="translate(@id,'.','_')"/>
+              <xsl:text>_wrapper</xsl:text>
+          </xsl:attribute>
+          <label>
+              <xsl:attribute name="for">
+                  <xsl:value-of select="translate(@id,'.','_')"/>
+              </xsl:attribute>
+              <xsl:value-of select="dri:label" />
+              <xsl:text>:</xsl:text>
+          </label>
+          <input>
+              <xsl:attribute name="id">
+                  <xsl:value-of select="translate(@id,'.','_')"/>
+              </xsl:attribute>
+              <xsl:attribute name="name">
+                  <xsl:value-of select="@n" />
+              </xsl:attribute>
+              <xsl:attribute name="type">
+                  <xsl:value-of select="@type" />
+              </xsl:attribute>
+              <xsl:attribute name="value">
+                  <xsl:choose>
+                      <xsl:when test="@type='checkbox'">
+                          <xsl:value-of select="dri:option/@returnValue" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                          <xsl:value-of select="dri:value" />
+                      </xsl:otherwise>
+                  </xsl:choose>
+              </xsl:attribute>
+          </input>
+          <p>
+              <xsl:attribute name="id">
+                  <xsl:text>help_</xsl:text>
+                  <xsl:value-of select="translate(@id,'.','_')"/>
+              </xsl:attribute>
+              <xsl:attribute name="class">
+                  <xsl:text>help</xsl:text>
+              </xsl:attribute>
+              <xsl:value-of select="dri:help" />
+          </p>
+      </div>
+    </xsl:template>
     
 </xsl:stylesheet>

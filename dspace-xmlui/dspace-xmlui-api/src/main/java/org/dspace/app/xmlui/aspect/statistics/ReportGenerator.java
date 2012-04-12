@@ -40,32 +40,20 @@
 
 package org.dspace.app.xmlui.aspect.statistics;
 
+import org.apache.cocoon.environment.Request;
+import org.apache.commons.validator.routines.DateValidator;
+import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.dspace.app.xmlui.wing.WingException;
+import org.dspace.app.xmlui.wing.element.*;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.cocoon.environment.Request;
-
-import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.validator.routines.DateValidator;
-
-import org.apache.log4j.Logger;
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import org.dspace.app.xmlui.wing.element.*;
-
-import org.dspace.app.xmlui.wing.WingException;
-
-import org.dspace.content.DSpaceObject;
 
 /**
  * Use a form to dynamically generate a variety of reports.
@@ -128,9 +116,7 @@ public class ReportGenerator
             division.setHead("Report Generator");
             division.addPara("Used to generate reports with an arbitrary date range.");
 
-
             Division search = parentDivision.addInteractiveDivision("choose-report", request.getRequestURI(), Division.METHOD_GET, "primary");
-            org.dspace.app.xmlui.wing.element.List actionsList = search.addList("actions", "form");
 
             params = new HashMap<String, String>();
             for (Enumeration<String> paramNames = (Enumeration<String>) request.getParameterNames(); paramNames.hasMoreElements(); ) {
@@ -141,8 +127,8 @@ public class ReportGenerator
             params = ReportGenerator.checkAndNormalizeParameters(params);
 
             //Create Date Range part of form
-            Item dateFrom = actionsList.addItem();
-            Text from = dateFrom.addText("from");
+            Para reportForm = search.addPara();
+            Text from = reportForm.addText("from", "slick");
             from.setLabel("From");
             from.setHelp("The start date of the report, ex 2008-01-01");
             if (params.containsKey("from")) {
@@ -150,8 +136,7 @@ public class ReportGenerator
                 from.setValue(params.get("from"));
             }
 
-            Item dateTo = actionsList.addItem();
-            Text to = dateTo.addText("to");
+            Text to = reportForm.addText("to", "slick");
             to.setLabel("To");
             to.setHelp("The end date of the report, ex 2010-12-31");
             if (params.containsKey("to")) {
@@ -160,14 +145,12 @@ public class ReportGenerator
             }
 
             //Add whether it is fiscal or not
-            Item fiscality = actionsList.addItem();
-            CheckBox isFiscal = fiscality.addCheckBox("fiscal");
+            CheckBox isFiscal = reportForm.addCheckBox("fiscal", "slick");
             isFiscal.setLabel("Use Fiscal Years?");
             //Set up fiscal option with the correct default
             isFiscal.addOption(params.containsKey("fiscal") && params.get("fiscal").equals("1"), 1, "");
 
-            Para buttons = search.addPara();
-            buttons.addButton("submit_add").setValue("Generate");
+            reportForm.addButton("submit_add").setValue("Generate");
         } catch (WingException e) {
             log.error(e.getMessage());
         }
