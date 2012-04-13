@@ -69,7 +69,7 @@
 
               newEntry.push(entry[c.valueField]);
               if (c.includeTotal) {
-                total += entry.count;
+                total += entry[c.valueField];
                 newEntry.push(total);
               }
               dataValue.push(newEntry);
