@@ -171,7 +171,6 @@
 
         // Add a chart to show total downloads.
         var name = $('input[name=containerName]').val();
-        var optionsDownloads = {title: 'Number of File Downloads: ' + name };
 
         var optionsItemsAdded = {title: 'Number of Items Added: ' + name};
         var rawAdded = $('input[name="gson-itemsAdded"]');
@@ -213,8 +212,10 @@
                 chartType: 'Table',
                 options: optionsItemsAdded});
         }
+
+        var optionsDownloads = {title: 'Number of File Downloads: ' + name };
         // Add a chart to show monthly downloads (without the total).
-        if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
+        if ((elasticJSON !== null) && (typeof elasticJSON.facets.monthly_downloads !== 'undefined')) {
             var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
             chartMaker.addChart({
                 entries: elasticJSON.facets.monthly_downloads.entries,
@@ -253,7 +254,7 @@
         }
 
         // Add a chart to show downloads from various countries.
-        if (typeof elasticJSON.facets.top_countries !== 'undefined') {
+        if ((elasticJSON !== null) && (typeof elasticJSON.facets.top_countries !== 'undefined')) {
             var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
             chartMaker.addChart({
                 entries: elasticJSON.facets.top_countries.terms,
@@ -302,15 +303,19 @@
 
         //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
         var baseURLStats = $('input[name=baseURLStats]').val();
-        $('<p><a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
-        $('<p><a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
-        $('<p>Number of File Downloads. <a href="'+ baseURLStats + '/fileDownloads">For more information.</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
-        $('<p>Countries with most Downloads. <a href="'+ baseURLStats + '/topCountries">For more information.</a></p>').insertBefore('#dspaceChart_topCountries');
-        $('<p><a href="'+ baseURLStats + '/topUSCities">For more information.</a></p>').insertBefore('#dspaceChart_topUSCities');
-        $('<p><a href="'+ baseURLStats + '/topDownloads">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
+
+        if ($('input[name=reportDepth]').val() == "summary") {
+            $('<p><a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
+            $('<p><a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
+            $('<p>Number of File Downloads. <a href="'+ baseURLStats + '/fileDownloads">For more information.</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
+            $('<p>Countries with most Downloads. <a href="'+ baseURLStats + '/topCountries">For more information.</a></p>').insertBefore('#dspaceChart_topCountries');
+            $('<p><a href="'+ baseURLStats + '/topUSCities">For more information.</a></p>').insertBefore('#dspaceChart_topUSCities');
+            $('<p><a href="'+ baseURLStats + '/topDownloads">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
+        }
 
         if ($('input[name=reportDepth]').val() == "detail") {
-            $('<p><a href="' + baseURLStats + '">Back to Main Summary Statistics for this Collection/Community</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+            $('<p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+
         }
       });
     });
