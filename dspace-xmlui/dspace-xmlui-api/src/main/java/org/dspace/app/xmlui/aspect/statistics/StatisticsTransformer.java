@@ -567,6 +567,24 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
     public void displayAsGrid(Division division, Integer[][] monthlyDataGrid, String name, String header) throws WingException {
         if(monthlyDataGrid == null || monthlyDataGrid.length == 0) {
             log.error("Grid has no data: "+ header);
+            Table gridTable = division.addTable(name, 1,1);
+            gridTable.setHead("No Data Available for " + header);
+            Row gridHeader = gridTable.addRow(Row.ROLE_HEADER);
+            gridHeader.addCell().addContent("Year");
+            gridHeader.addCell().addContent("JAN");
+            gridHeader.addCell().addContent("FEB");
+            gridHeader.addCell().addContent("MAR");
+            gridHeader.addCell().addContent("APR");
+            gridHeader.addCell().addContent("MAY");
+            gridHeader.addCell().addContent("JUN");
+            gridHeader.addCell().addContent("JUL");
+            gridHeader.addCell().addContent("AUG");
+            gridHeader.addCell().addContent("SEP");
+            gridHeader.addCell().addContent("OCT");
+            gridHeader.addCell().addContent("NOV");
+            gridHeader.addCell().addContent("DEC");
+            gridHeader.addCell().addContent("Total YR");
+            gridHeader.addCell().addContent("Total Cumulative");
             return;
         }
 
