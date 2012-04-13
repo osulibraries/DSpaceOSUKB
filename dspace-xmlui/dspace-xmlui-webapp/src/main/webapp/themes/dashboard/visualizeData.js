@@ -229,8 +229,7 @@
 
 
         // Add a chart to show downloads from various countries.
-        /*
-        if (typeof elasticJSON.facets.top_US_cities !== 'undefined') {
+        if ((elasticJSON !== null) && typeof elasticJSON.facets.top_US_cities !== 'undefined' && $('input[name=reportDepth]').val() == "detail") {
             var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
             var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
             chartMaker.addChart({
@@ -239,7 +238,6 @@
                 chartData: chartDataGeoUS,
                 options: optionsUS});
         }
-        */
 
         // Add a pie chart that shows top DSO Types usage.
         /*

@@ -133,7 +133,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 }
                 
                 if(requestedReport.equalsIgnoreCase("topCountries")) {
-                    facetedQueryBuilder(facetTopCountries);
+                    facetedQueryBuilder(facetTopCountries, facetTopUSCities);
                 } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
                     facetedQueryBuilder(facetMonthlyDownloads);
                 } else if(requestedReport.equalsIgnoreCase("topDownloads")) {
@@ -153,12 +153,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
                     if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
                         statisticsTransformerInstance.addItemsInContainer(dso, division);
+                        division.addDivision("chart_div");
                     }
                 } else if(requestedReport.equalsIgnoreCase("filesAdded")) {
                     StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
                     // 2 - Number of Files in The Container (monthly and cumulative)
                     if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
                         statisticsTransformerInstance.addFilesInContainer(dso, division);
+                        division.addDivision("chart_div");
                     }
                 }
             }
@@ -234,6 +236,16 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     public SearchResponse facetedQueryBuilder(AbstractFacetBuilder facet) throws WingException{
         List<AbstractFacetBuilder> facetList = new ArrayList<AbstractFacetBuilder>();
         facetList.add(facet);
+        return facetedQueryBuilder(facetList);
+    }
+
+    public SearchResponse facetedQueryBuilder(AbstractFacetBuilder... facets) throws WingException {
+        List<AbstractFacetBuilder> facetList = new ArrayList<AbstractFacetBuilder>();
+
+        for(AbstractFacetBuilder facet : facets) {
+            facetList.add(facet);
+        }
+
         return facetedQueryBuilder(facetList);
     }
     
