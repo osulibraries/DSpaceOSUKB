@@ -46,6 +46,7 @@
                 name: '',
                 includeTotal: false,
                 chartData: null,
+                dataSection: null,
                 keyField: 'term',
                 valueField: 'count',
                 parentElement: 'aspect_dashboard_ElasticSearchStatsViewer_div_chart_div',
@@ -60,6 +61,10 @@
             // For each entry construct a vector to add to push onto
             // `dataValue`.
             $.each(c.entries, function(index, entry) {
+              if(c.dataSection != null) {
+                  entry = entry[c.dataSection];
+              }
+
               newEntry = [];
               if (c.chartData.A[0].type == 'date') {
                 newEntry.push(new Date(entry[c.keyField]));
