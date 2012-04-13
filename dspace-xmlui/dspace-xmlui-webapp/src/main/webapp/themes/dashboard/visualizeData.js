@@ -213,6 +213,47 @@
                 options: optionsItemsAdded});
         }
 
+        var optionsFilesAdded = {title: 'Number of Files Added: ' + name};
+        var rawFilesAdded = $('input[name="gson-filesAdded"]');
+        var filesAddedJSON = $.parseJSON(rawFilesAdded.val());
+        if((filesAddedJSON !== null) && $('input[name=reportDepth]').val() == "detail") {
+            var chartFilesAdded = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            chartMaker.addChart({
+                entries: filesAddedJSON,
+                name: 'filesAddedMonthly',
+                chartData: chartFilesAdded,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: true,
+                chartType: 'LineChart',
+                options: optionsFilesAdded});
+
+            var chartFilesAddedNoTotal = chartDataHelper('date', 'Date', 'Added Monthly', false, 'Added Total');
+            chartMaker.addChart({
+                entries: filesAddedJSON,
+                name: 'filesAddedMonthlyNoTotal',
+                chartData: chartFilesAddedNoTotal,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: false,
+                chartType: 'LineChart',
+                options: optionsFilesAdded});
+
+            var chartFilesAddedTotalTable = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            chartMaker.addChart({
+                entries: filesAddedJSON,
+                name: 'filesAddedMonthlyTotalTable',
+                chartData: chartFilesAddedTotalTable,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: true,
+                chartType: 'Table',
+                options: optionsFilesAdded});
+        }
+
         var optionsDownloads = {title: 'Number of File Downloads: ' + name };
         // Add a chart to show monthly downloads (without the total).
         if ((elasticJSON !== null) && (typeof elasticJSON.facets.monthly_downloads !== 'undefined')) {

@@ -658,6 +658,9 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
 
             java.util.List<TableRow> tableRowList = tri.toList();
 
+            Gson gson = new Gson();
+            division.addHidden("gson-filesAdded").setValue(gson.toJson(tableRowList));
+
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
             
             displayAsGrid(division, monthlyDataGrid, "filesInContainer-grid", "Number of Files in the "+dso.getName());
