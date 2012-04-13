@@ -173,6 +173,46 @@
         var name = $('input[name=containerName]').val();
         var optionsDownloads = {title: 'Number of File Downloads: ' + name };
 
+        var optionsItemsAdded = {title: 'Number of Items Added: ' + name};
+        var rawAdded = $('input[name="gson-itemsAdded"]');
+        var addedJSON = $.parseJSON(rawAdded.val());
+        if((addedJSON !== null) && $('input[name=reportDepth]').val() == "detail") {
+            var chartItemsAdded = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            chartMaker.addChart({
+                entries: addedJSON,
+                name: 'itemsAddedMonthly',
+                chartData: chartItemsAdded,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: true,
+                chartType: 'LineChart',
+                options: optionsItemsAdded});
+
+            var chartItemsAddedNoTotal = chartDataHelper('date', 'Date', 'Added Monthly', false, 'Added Total');
+            chartMaker.addChart({
+                entries: addedJSON,
+                name: 'itemsAddedMonthlyNoTotal',
+                chartData: chartItemsAddedNoTotal,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: false,
+                chartType: 'LineChart',
+                options: optionsItemsAdded});
+
+            var chartItemsAddedTotalTable = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            chartMaker.addChart({
+                entries: addedJSON,
+                name: 'itemsAddedMonthlyTotalTable',
+                chartData: chartItemsAddedTotalTable,
+                dataSection: 'data',
+                keyField: 'yearmo',
+                valueField: 'countitem',
+                includeTotal: true,
+                chartType: 'Table',
+                options: optionsItemsAdded});
+        }
         // Add a chart to show monthly downloads (without the total).
         if (typeof elasticJSON.facets.monthly_downloads !== 'undefined') {
             var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
