@@ -7,12 +7,7 @@
  */
 package org.dspace.app.xmlui.aspect.statistics;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.google.gson.Gson;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
 import org.apache.commons.lang.StringUtils;
@@ -21,8 +16,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.utils.UIException;
-import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.Message;
+import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.authorize.AuthorizeException;
@@ -39,6 +34,12 @@ import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class StatisticsTransformer extends AbstractDSpaceTransformer {
 
@@ -420,6 +421,9 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             tri = DatabaseManager.query(context, querySpecifyContainer, dso.getID());
 
             java.util.List<TableRow> tableRowList = tri.toList();
+
+            Gson gson = new Gson();
+            division.addHidden("gson-itemsAdded").setValue(gson.toJson(tableRowList));
             
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
             displayAsGrid(division, monthlyDataGrid, "itemsAddedGrid", "Number of Items Added to the " + dso.getName());
