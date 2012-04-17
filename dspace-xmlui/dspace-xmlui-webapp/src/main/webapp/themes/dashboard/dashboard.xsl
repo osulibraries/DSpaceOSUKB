@@ -127,6 +127,11 @@
               <xsl:attribute name="name">
                   <xsl:value-of select="@n" />
               </xsl:attribute>
+              <xsl:if test="@type='text'">
+                <xsl:attribute name="class">
+                  <xsl:text>date-picker</xsl:text>
+                </xsl:attribute>
+              </xsl:if>
               <xsl:attribute name="type">
                   <xsl:value-of select="@type" />
               </xsl:attribute>
