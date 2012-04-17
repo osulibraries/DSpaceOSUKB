@@ -286,17 +286,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private void addTermFacetToTable(TermsFacet termsFacet, Division division, String termName, String tableHeader) throws WingException, SQLException {
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
 
-        if(termsFacetEntries.size() == 0) {
-            division.addPara("Empty result set for: "+termName);
-            return;
-        }
-
-        log.info("Country or "+termName);
         if(termName.equalsIgnoreCase("country")) {
             division.addDivision("chart_div_map");
         }
 
-        Table facetTable = division.addTable("facet-"+termName, termsFacetEntries.size(), 10);
+        Table facetTable = division.addTable("facet-"+termName, termsFacetEntries.size()+1, 10);
         facetTable.setHead(tableHeader);
 
         Row facetTableHeaderRow = facetTable.addRow(Row.ROLE_HEADER);
@@ -310,6 +304,11 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         }
 
         facetTableHeaderRow.addCell().addContent("Count");
+
+        if(termsFacetEntries.size() == 0) {
+            facetTable.addRow().addCell().addContent("No Data Available");
+            return;
+        }
 
         for(TermsFacet.Entry facetEntry : termsFacetEntries) {
             Row row = facetTable.addRow();
