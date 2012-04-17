@@ -57,13 +57,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
     private static AbstractFacetBuilder facetMonthlyDownloads = FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
             .facetFilter(FilterBuilders.andFilter(
-                FilterBuilders.termFilter("type", "bitstream"),
+                FilterBuilders.termFilter("type", "BITSTREAM"),
                 justOriginals
             ));
     
     private static AbstractFacetBuilder facetTopBitstreamsAllTime = FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
             .facetFilter(FilterBuilders.andFilter(
-                    FilterBuilders.termFilter("type", "bitstream"),
+                    FilterBuilders.termFilter("type", "BITSTREAM"),
                     justOriginals
             ));
     
@@ -218,7 +218,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         
         return FacetBuilders.termsFacet("top_bitstreams_lastmonth").field("id")
                 .facetFilter(FilterBuilders.andFilter(
-                        FilterBuilders.termFilter("type", "bitstream"),
+                        FilterBuilders.termFilter("type", "BITSTREAM"),
                         justOriginals,
                         FilterBuilders.rangeFilter("time").from(lowerBound).to(upperBound)
                 ));
