@@ -71,6 +71,14 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         }
     }
 
+    public StatisticsTransformer() {
+        try {
+            this.context = new Context();
+        } catch (SQLException e) {
+            log.error("Error getting context in StatisticsTransformer:" + e.getMessage());
+        }
+    }
+
     /**
      * Add a page title and trail links
      */
