@@ -117,7 +117,7 @@
     <xsl:template name="buildBodyOSU">
         <div id="osu-Navbar">
             <p>
-                <a href="#ds-main" id="skip" class="osu-semantic">skip to main content</a>
+                <a href="#ds-body" id="skip" class="osu-semantic">skip to main content</a>
             </p>
             <h2 class="osu-semantic">OSU Navigation Bar</h2>
             <div id="osu-NavbarBreadcrumb">
