@@ -131,23 +131,53 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 } else if(dateStart == null && dateEnd == null) {
                     division.addPara("Showing Data from: all data");
                 }
+
+                // If the page has a response type in the request (json, xml, csv), then we can export a file.
+                String[] expectedResponseType = request.getParameterValues("responseType");
+                String responseType ="";
+                if(expectedResponseType != null && expectedResponseType.length > 0) {
+                    responseType = expectedResponseType[0];
+                }
                 
-                if(requestedReport.equalsIgnoreCase("topCountries")) {
-                    facetedQueryBuilder(facetTopCountries, facetTopUSCities);
-                } else if(requestedReport.equalsIgnoreCase("fileDownloads")) {
-                    facetedQueryBuilder(facetMonthlyDownloads);
-                } else if(requestedReport.equalsIgnoreCase("topDownloads")) {
+                if(requestedReport.equalsIgnoreCase("topCountries"))
+                {
+                    SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetTopCountries, facetTopUSCities);
+                    if(responseType.equalsIgnoreCase("csv")) {
+
+                    } else {
+                        searchResponseToDRI(requestBuilder);
+                    }
+                }
+                else if(requestedReport.equalsIgnoreCase("fileDownloads"))
+                {
+                    SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetMonthlyDownloads);
+                    if(responseType.equalsIgnoreCase("csv")) {
+
+                    } else {
+                        searchResponseToDRI(requestBuilder);
+                    }
+                }
+                else if(requestedReport.equalsIgnoreCase("topDownloads"))
+                {
                     List<AbstractFacetBuilder> facets = new ArrayList<AbstractFacetBuilder>();
                     facets.add(facetTopBitstreamsAllTime);
                     facets.add(facetTopBitstreamsLastMonth());
-                    SearchResponse resp = facetedQueryBuilder(facets);
+                    SearchRequestBuilder requestBuilder = facetedQueryBuilder(facets);
 
-                    TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-                    addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+                    if(responseType.equalsIgnoreCase("csv")) {
+                        //searchResponseToCSV(requestBuilder);
+                    } else {
+                        SearchResponse resp = searchResponseToDRI(requestBuilder);
 
-                    TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
-                    addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
-                } else if(requestedReport.equalsIgnoreCase("itemsAdded")) {
+                        TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+                        addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+
+                        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+                        addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
+                    }
+                }
+                else if(requestedReport.equalsIgnoreCase("itemsAdded"))
+                {
                     StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
 
                     // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
@@ -155,7 +185,9 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                         statisticsTransformerInstance.addItemsInContainer(dso, division);
                         division.addDivision("chart_div");
                     }
-                } else if(requestedReport.equalsIgnoreCase("filesAdded")) {
+                }
+                else if(requestedReport.equalsIgnoreCase("filesAdded"))
+                {
                     StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(dateStart, dateEnd);
                     // 2 - Number of Files in The Container (monthly and cumulative)
                     if(dso instanceof org.dspace.content.Collection || dso instanceof Community) {
@@ -195,9 +227,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         summaryFacets.add(facetTopBitstreamsAllTime);
         summaryFacets.add(facetMonthlyDownloads);
 
-        SearchResponse resp = facetedQueryBuilder(summaryFacets);
+        SearchRequestBuilder requestBuilder = facetedQueryBuilder(summaryFacets);
+        SearchResponse resp = searchResponseToDRI(requestBuilder);
 
-        // Top Downloads to Owning Object
+                // Top Downloads to Owning Object
         TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
         addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
     }
@@ -233,13 +266,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         return monthAndYearFormat.format(calendar.getTime());
     }
     
-    public SearchResponse facetedQueryBuilder(AbstractFacetBuilder facet) throws WingException{
+    public SearchRequestBuilder facetedQueryBuilder(AbstractFacetBuilder facet) throws WingException{
         List<AbstractFacetBuilder> facetList = new ArrayList<AbstractFacetBuilder>();
         facetList.add(facet);
         return facetedQueryBuilder(facetList);
     }
 
-    public SearchResponse facetedQueryBuilder(AbstractFacetBuilder... facets) throws WingException {
+    public SearchRequestBuilder facetedQueryBuilder(AbstractFacetBuilder... facets) throws WingException {
         List<AbstractFacetBuilder> facetList = new ArrayList<AbstractFacetBuilder>();
 
         for(AbstractFacetBuilder facet : facets) {
@@ -249,7 +282,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         return facetedQueryBuilder(facetList);
     }
     
-    public SearchResponse facetedQueryBuilder(List<AbstractFacetBuilder> facetList) throws WingException {
+    public SearchRequestBuilder facetedQueryBuilder(List<AbstractFacetBuilder> facetList) {
         TermQueryBuilder termQuery = QueryBuilders.termQuery(getOwningText(dso), dso.getID());
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
@@ -263,7 +296,10 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             searchRequestBuilder.addFacet(facet);
         }
 
+        return searchRequestBuilder;
+    }
 
+    public SearchResponse searchResponseToDRI(SearchRequestBuilder searchRequestBuilder) throws WingException{
         division.addHidden("request").setValue(searchRequestBuilder.toString());
 
         SearchResponse resp = searchRequestBuilder.execute().actionGet();
@@ -274,10 +310,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             return null;
         }
 
-        //division.addPara(resp.toString());
         division.addHidden("response").setValue(resp.toString());
         division.addDivision("chart_div");
-        
+
+        return resp;
+    }
+
+    public SearchResponse searchResponseToCSV(SearchRequestBuilder searchRequestBuilder) {
+        SearchResponse resp = searchRequestBuilder.execute().actionGet();
         return resp;
     }
 
