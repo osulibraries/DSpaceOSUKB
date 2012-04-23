@@ -68,7 +68,7 @@
     </xsl:template>
 
     <xsl:template name="extraBody-end">
-        <script type="text/javascript" src="/dspace/themes/dashboard/lib/jquery-ui-1.8.18.datepicker-only.min.js">
+        <script type="text/javascript" src="/dspace/themes/dashboard/lib/jquery.ui.datepicker-accessible.min.js">
             <xsl:text> </xsl:text>
         </script>
         <script type="text/javascript" src="/dspace/themes/dashboard/lib/report-generator-mod.js">
