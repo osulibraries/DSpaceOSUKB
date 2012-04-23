@@ -10,16 +10,23 @@ import org.apache.cocoon.environment.Response;
 import org.apache.cocoon.environment.SourceResolver;
 import org.apache.cocoon.reading.AbstractReader;
 import org.apache.log4j.Logger;
+import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.content.DSpaceObject;
+import org.dspace.core.Context;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.action.search.SearchRequestBuilder;
+import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
+import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,17 +39,23 @@ import java.util.Map;
 public class CSVOutputter extends AbstractReader implements Recyclable 
 {
     protected static final Logger log = Logger.getLogger(CSVOutputter.class);
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     protected Response response;
     protected Request request;
+    protected Context context;
+    protected CSVWriter writer = null;
     
     public void setup(SourceResolver sourceResolver, Map objectModel, String src, Parameters parameters) throws IOException, SAXException, ProcessingException {
         log.info("CSV Writer for stats");
         super.setup(sourceResolver, objectModel, src, parameters);
-        CSVWriter writer = null;
+
         try {
             //super.setup(sourceResolver, objectModel, src, parameters);
             this.request = ObjectModelHelper.getRequest(objectModel);
             this.response = ObjectModelHelper.getResponse(objectModel);
+
+            context = ContextUtil.obtainContext(objectModel);
 
             String requestURI = request.getRequestURI();
             String[] uriSegments = requestURI.split("/");
@@ -55,48 +68,27 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             response.setStatus(HttpServletResponse.SC_OK);
             writer = new CSVWriter(response.getWriter());
             DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
-            response.setHeader("Content-Disposition", "attachment; filename=KB-StatisticsReport-" + dso.getHandle() + "-" + requestedReport +".csv");
-
+            response.setHeader("Content-Disposition", "attachment; filename=KBStats-" + dso.getHandle() + "-" + requestedReport +".csv");
 
             //TODO Accept dates as input filter.
             ElasticSearchStatsViewer esStatsViewer = new ElasticSearchStatsViewer(dso, null, null);
-            //String[] firstRow = new String[4];
-            //firstRow[0] = "Community Name";
-            //firstRow[1] = "communityID";
-            //firstRow[2] = "Handle";
-            //firstRow[3] = "community_item_count";
-            //writer.writeNext(firstRow);
 
-            if(requestedReport.equalsIgnoreCase("topCountries")) {
-                log.info("Writing topCountries report");
-                SearchRequestBuilder requestBuilder = ElasticSearchStatsViewer.facetedQueryBuilder(ElasticSearchStatsViewer.facetTopCountries, ElasticSearchStatsViewer.facetTopUSCities);
+            if(requestedReport.equalsIgnoreCase("topCountries"))
+            {
+                SearchRequestBuilder requestBuilder = esStatsViewer.facetedQueryBuilder(esStatsViewer.facetTopCountries);
                 SearchResponse searchResponse = requestBuilder.execute().actionGet();
-                log.info(searchResponse.toString());
-                String[] temp = new String[2];
-                temp[0] = searchResponse.toString();
-                temp[1] = "";
-                writer.writeNext(temp);
 
-                
-            } else if (requestedReport.equalsIgnoreCase("fileDownloads")) {
-                log.info("Writing topCountries report");
-                //SearchRequestBuilder requestBuilder = ElasticSearchStatsViewer.facetedQueryBuilder(ElasticSearchStatsViewer.facetTopCountries, ElasticSearchStatsViewer.facetTopUSCities);
-                //SearchResponse searchResponse = requestBuilder.execute().actionGet();
-                //log.info(searchResponse.toString());
-                String[] temp = new String[2];
-                temp[0] = "File";
-                //temp[0] = searchResponse.toString();
-                temp[1] = "Downloads";
-                writer.writeNext(temp);
+                TermsFacet topCountriesFacet = searchResponse.getFacets().facet(TermsFacet.class, "top_countries");
+                addTermFacetToWriter(topCountriesFacet);
             }
+            else if (requestedReport.equalsIgnoreCase("fileDownloads"))
+            {
+                SearchRequestBuilder requestBuilder = esStatsViewer.facetedQueryBuilder(esStatsViewer.facetMonthlyDownloads);
+                SearchResponse searchResponse = requestBuilder.execute().actionGet();
 
-
-
-
-            
-
-
-
+                DateHistogramFacet monthlyDownloadsFacet = searchResponse.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
+                addDateHistogramFacetToWriter(monthlyDownloadsFacet);
+            }
 
         } catch (SQLException e) {
             log.error("Some Error:" + e.getMessage());
@@ -115,6 +107,64 @@ public class CSVOutputter extends AbstractReader implements Recyclable
                 log.error("Hilarity Ensues... IO Exception while closing the csv writer.");
             }
 
+        }
+    }
+
+    private void addTermFacetToWriter(TermsFacet termsFacet) throws SQLException {
+        List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
+
+        writer.writeNext(new String[]{"term", "count"});
+        
+
+        /*
+        if(termName.equalsIgnoreCase("bitstream")) {
+            facetTableHeaderRow.addCellContent("Title");
+            facetTableHeaderRow.addCellContent("Creator");
+            facetTableHeaderRow.addCellContent("Publisher");
+            facetTableHeaderRow.addCellContent("Date");
+        } else {
+            facetTableHeaderRow.addCell().addContent(termName);
+        }
+        */
+
+        if(termsFacetEntries.size() == 0) {
+            return;
+        }
+
+        
+        for(TermsFacet.Entry facetEntry : termsFacetEntries) {
+
+            /*if(termName.equalsIgnoreCase("bitstream")) {
+                Bitstream bitstream = Bitstream.find(context, Integer.parseInt(facetEntry.getTerm()));
+                Item item = (Item) bitstream.getParentObject();
+                row.addCell().addXref(contextPath + "/handle/" + item.getHandle(), item.getName());
+                row.addCellContent(getFirstMetadataValue(item, "dc.creator"));
+                row.addCellContent(getFirstMetadataValue(item, "dc.publisher"));
+                row.addCellContent(getFirstMetadataValue(item, "dc.date.issued"));
+            } else if(termName.equalsIgnoreCase("country")) {
+                row.addCell("country", Cell.ROLE_DATA,"country").addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
+            } else {
+                row.addCell().addContent(facetEntry.getTerm());
+            }
+            row.addCell("count", Cell.ROLE_DATA, "count").addContent(facetEntry.getCount());
+            */
+            writer.writeNext(new String[]{facetEntry.getTerm(), String.valueOf(facetEntry.getCount())});
+            
+        }
+    }
+    
+    private void addDateHistogramFacetToWriter(DateHistogramFacet dateHistogramFacet) {
+        List<? extends DateHistogramFacet.Entry> monthlyFacetEntries = dateHistogramFacet.getEntries();
+
+        if(monthlyFacetEntries.size() == 0) {
+            return;
+        }
+
+        writer.writeNext(new String[]{"Month", "Count"});
+
+        for(DateHistogramFacet.Entry histogramEntry : monthlyFacetEntries) {
+            Date facetDate = new Date(histogramEntry.getTime());
+            writer.writeNext(new String[]{dateFormat.format(facetDate), String.valueOf(histogramEntry.getCount())});
         }
     }
 
