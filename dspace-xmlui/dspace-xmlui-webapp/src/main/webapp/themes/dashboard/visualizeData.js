@@ -358,7 +358,7 @@
             $('<div>' +
                 '<p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>' +
                 '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>' +
-                '<a href="#" onclick="alert(\'Download as CSV Coming Soon\'); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a>' +
+                '<a href="' + baseURLStats + '/csv/fileDownloads"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a>' +
                 '</div>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
 
         }
