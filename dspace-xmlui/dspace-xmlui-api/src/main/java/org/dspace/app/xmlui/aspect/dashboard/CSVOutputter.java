@@ -61,6 +61,7 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             String[] uriSegments = requestURI.split("/");
             String requestedReport = uriSegments[uriSegments.length-1];
             if(requestedReport == null || requestedReport.length() < 1) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
@@ -88,6 +89,21 @@ public class CSVOutputter extends AbstractReader implements Recyclable
 
                 DateHistogramFacet monthlyDownloadsFacet = searchResponse.getFacets().facet(DateHistogramFacet.class, "monthly_downloads");
                 addDateHistogramFacetToWriter(monthlyDownloadsFacet);
+            }
+            else if (requestedReport.equalsIgnoreCase("itemsAdded"))
+            {
+                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            }
+            else if(requestedReport.equalsIgnoreCase("filesAdded"))
+            {
+                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            }
+            else if(requestedReport.equalsIgnoreCase("topDownloads"))
+            {
+                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            }
+            else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
         } catch (SQLException e) {
