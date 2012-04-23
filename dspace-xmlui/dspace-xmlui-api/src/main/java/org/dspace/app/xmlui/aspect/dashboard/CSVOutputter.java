@@ -13,7 +13,10 @@ import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
+import org.dspace.content.Bitstream;
+import org.dspace.content.DCValue;
 import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.action.search.SearchRequestBuilder;
@@ -80,7 +83,7 @@ public class CSVOutputter extends AbstractReader implements Recyclable
                 SearchResponse searchResponse = requestBuilder.execute().actionGet();
 
                 TermsFacet topCountriesFacet = searchResponse.getFacets().facet(TermsFacet.class, "top_countries");
-                addTermFacetToWriter(topCountriesFacet);
+                addTermFacetToWriter(topCountriesFacet, "");
             }
             else if (requestedReport.equalsIgnoreCase("fileDownloads"))
             {
@@ -100,7 +103,12 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             }
             else if(requestedReport.equalsIgnoreCase("topDownloads"))
             {
-                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+                SearchRequestBuilder requestBuilder = esStatsViewer.facetedQueryBuilder(esStatsViewer.facetTopBitstreamsAllTime);
+                SearchResponse searchResponse = requestBuilder.execute().actionGet();
+                log.info(searchResponse.toString());
+
+                TermsFacet topBitstreams = searchResponse.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+                addTermFacetToWriter(topBitstreams, "bitstream");
             }
             else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -126,47 +134,55 @@ public class CSVOutputter extends AbstractReader implements Recyclable
         }
     }
 
-    private void addTermFacetToWriter(TermsFacet termsFacet) throws SQLException {
+    private void addTermFacetToWriter(TermsFacet termsFacet, String termType) throws SQLException {
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
 
-        writer.writeNext(new String[]{"term", "count"});
-        
-
-        /*
-        if(termName.equalsIgnoreCase("bitstream")) {
-            facetTableHeaderRow.addCellContent("Title");
-            facetTableHeaderRow.addCellContent("Creator");
-            facetTableHeaderRow.addCellContent("Publisher");
-            facetTableHeaderRow.addCellContent("Date");
+        if(termType.equalsIgnoreCase("bitstream")) {
+            writer.writeNext(new String[]{"BitstreamID", "Bitstream Name", "Bitstream Bundle", "Item Title", "Item Handle", "Item Creator", "Item Publisher", "Item Issue Date", "Count"});
         } else {
-            facetTableHeaderRow.addCell().addContent(termName);
+            writer.writeNext(new String[]{"term", "count"});
         }
-        */
-
         if(termsFacetEntries.size() == 0) {
             return;
         }
-
         
-        for(TermsFacet.Entry facetEntry : termsFacetEntries) {
-
-            /*if(termName.equalsIgnoreCase("bitstream")) {
+        for(TermsFacet.Entry facetEntry : termsFacetEntries)
+        {
+            if(termType.equalsIgnoreCase("bitstream"))
+            {
                 Bitstream bitstream = Bitstream.find(context, Integer.parseInt(facetEntry.getTerm()));
                 Item item = (Item) bitstream.getParentObject();
-                row.addCell().addXref(contextPath + "/handle/" + item.getHandle(), item.getName());
-                row.addCellContent(getFirstMetadataValue(item, "dc.creator"));
-                row.addCellContent(getFirstMetadataValue(item, "dc.publisher"));
-                row.addCellContent(getFirstMetadataValue(item, "dc.date.issued"));
-            } else if(termName.equalsIgnoreCase("country")) {
-                row.addCell("country", Cell.ROLE_DATA,"country").addContent(new Locale("en", facetEntry.getTerm()).getDisplayCountry());
+                
+                String[] entryValues = new String[9];
+                
+                entryValues[0] = bitstream.getID() + "";
+                entryValues[1] = bitstream.getName();
+                entryValues[2] = bitstream.getBundles()[0].getName();
+                entryValues[3] = item.getName();
+                entryValues[4] = "http://hdl.handle.net/" + item.getHandle();
+                entryValues[5] = wrapInDelimitedString(item.getMetadata("dc.creator"));
+                entryValues[6] = wrapInDelimitedString(item.getMetadata("dc.publisher"));
+                entryValues[7] = wrapInDelimitedString(item.getMetadata("dc.date.issued"));
+                entryValues[8] = facetEntry.getCount() + "";
+                writer.writeNext(entryValues);
             } else {
-                row.addCell().addContent(facetEntry.getTerm());
+                writer.writeNext(new String[]{facetEntry.getTerm(), String.valueOf(facetEntry.getCount())});
             }
-            row.addCell("count", Cell.ROLE_DATA, "count").addContent(facetEntry.getCount());
-            */
-            writer.writeNext(new String[]{facetEntry.getTerm(), String.valueOf(facetEntry.getCount())});
-            
         }
+    }
+    
+    public String wrapInDelimitedString(DCValue[] metadataEntries) {
+        StringBuilder metadataString = new StringBuilder();
+
+        for(DCValue metadataEntry : metadataEntries) {
+            if(metadataString.length() > 0) {
+                // Delimit entries with the || double pipe character sequence.
+                metadataString.append("\\|\\|");
+            }
+            metadataString.append(metadataEntry.value);
+        }
+        
+        return metadataString.toString();
     }
     
     private void addDateHistogramFacetToWriter(DateHistogramFacet dateHistogramFacet) {

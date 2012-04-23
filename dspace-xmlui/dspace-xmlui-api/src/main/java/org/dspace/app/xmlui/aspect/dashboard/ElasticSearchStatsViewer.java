@@ -157,11 +157,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 }
                 else if(requestedReport.equalsIgnoreCase("topDownloads"))
                 {
-                    List<AbstractFacetBuilder> facets = new ArrayList<AbstractFacetBuilder>();
-                    facets.add(facetTopBitstreamsAllTime);
-                    facets.add(facetTopBitstreamsLastMonth());
-                    SearchRequestBuilder requestBuilder = facetedQueryBuilder(facets);
-
+                    SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetTopBitstreamsAllTime, facetTopBitstreamsLastMonth());
                     SearchResponse resp = searchResponseToDRI(requestBuilder);
 
                     TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
