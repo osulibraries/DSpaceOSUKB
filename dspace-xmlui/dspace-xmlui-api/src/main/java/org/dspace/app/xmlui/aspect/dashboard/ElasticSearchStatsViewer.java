@@ -153,20 +153,12 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 if(requestedReport.equalsIgnoreCase("topCountries"))
                 {
                     SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetTopCountries, facetTopUSCities);
-                    if(responseType.equalsIgnoreCase("csv")) {
-
-                    } else {
-                        searchResponseToDRI(requestBuilder);
-                    }
+                    searchResponseToDRI(requestBuilder);
                 }
                 else if(requestedReport.equalsIgnoreCase("fileDownloads"))
                 {
                     SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetMonthlyDownloads);
-                    if(responseType.equalsIgnoreCase("csv")) {
-
-                    } else {
-                        searchResponseToDRI(requestBuilder);
-                    }
+                    searchResponseToDRI(requestBuilder);
                 }
                 else if(requestedReport.equalsIgnoreCase("topDownloads"))
                 {
@@ -175,17 +167,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     facets.add(facetTopBitstreamsLastMonth());
                     SearchRequestBuilder requestBuilder = facetedQueryBuilder(facets);
 
-                    if(responseType.equalsIgnoreCase("csv")) {
-                        //searchResponseToCSV(requestBuilder);
-                    } else {
-                        SearchResponse resp = searchResponseToDRI(requestBuilder);
+                    SearchResponse resp = searchResponseToDRI(requestBuilder);
 
-                        TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
-                        addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
+                    TermsFacet bitstreamsAllTimeFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_alltime");
+                    addTermFacetToTable(bitstreamsAllTimeFacet, division, "Bitstream", "Top Downloads (all time)");
 
-                        TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
-                        addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
-                    }
+                    TermsFacet bitstreamsFacet = resp.getFacets().facet(TermsFacet.class, "top_bitstreams_lastmonth");
+                    addTermFacetToTable(bitstreamsFacet, division, "Bitstream", "Top Downloads for " + getLastMonthString());
                 }
                 else if(requestedReport.equalsIgnoreCase("itemsAdded"))
                 {
@@ -326,13 +314,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
 
         return resp;
     }
-
-    public SearchResponse searchResponseToCSV(SearchRequestBuilder searchRequestBuilder) {
-        SearchResponse resp = searchRequestBuilder.execute().actionGet();
-        return resp;
-    }
-
-
 
     private void addTermFacetToTable(TermsFacet termsFacet, Division division, String termName, String tableHeader) throws WingException, SQLException {
         List<? extends TermsFacet.Entry> termsFacetEntries = termsFacet.getEntries();
