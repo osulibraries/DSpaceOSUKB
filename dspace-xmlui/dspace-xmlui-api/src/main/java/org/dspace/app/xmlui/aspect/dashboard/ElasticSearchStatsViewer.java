@@ -82,6 +82,17 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
     }
 
+    public ElasticSearchStatsViewer() {
+
+    }
+
+    public ElasticSearchStatsViewer(DSpaceObject dso, Date dateStart, Date dateEnd) {
+        this.dso = dso;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        client = ElasticSearchLogger.createElasticClient(false);
+    }
+    
     public void addBody(Body body) throws WingException, SQLException {
         client = ElasticSearchLogger.createElasticClient(false);
         try {

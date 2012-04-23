@@ -58,6 +58,8 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             response.setHeader("Content-Disposition", "attachment; filename=KB-StatisticsReport-" + dso.getHandle() + "-" + requestedReport +".csv");
 
 
+            //TODO Accept dates as input filter.
+            ElasticSearchStatsViewer esStatsViewer = new ElasticSearchStatsViewer(dso, null, null);
             //String[] firstRow = new String[4];
             //firstRow[0] = "Community Name";
             //firstRow[1] = "communityID";
