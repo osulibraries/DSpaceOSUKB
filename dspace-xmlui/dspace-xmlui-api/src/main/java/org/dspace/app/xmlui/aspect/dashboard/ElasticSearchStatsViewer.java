@@ -143,13 +143,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                     division.addPara("Showing Data from: all data");
                 }
 
-                // If the page has a response type in the request (json, xml, csv), then we can export a file.
-                String[] expectedResponseType = request.getParameterValues("responseType");
-                String responseType ="";
-                if(expectedResponseType != null && expectedResponseType.length > 0) {
-                    responseType = expectedResponseType[0];
-                }
-                
+                division.addHidden("reportName").setValue(requestedReport);
+
                 if(requestedReport.equalsIgnoreCase("topCountries"))
                 {
                     SearchRequestBuilder requestBuilder = facetedQueryBuilder(facetTopCountries, facetTopUSCities);
