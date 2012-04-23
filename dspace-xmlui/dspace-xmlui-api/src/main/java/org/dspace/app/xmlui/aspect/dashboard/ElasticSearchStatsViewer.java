@@ -47,36 +47,36 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static Date dateStart;
     private static Date dateEnd;
 
-    private static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
+    protected static TermFilterBuilder justOriginals = FilterBuilders.termFilter("bundleName", "ORIGINAL");
 
-    private static AbstractFacetBuilder facetTopCountries = FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
+    protected static AbstractFacetBuilder facetTopCountries = FacetBuilders.termsFacet("top_countries").field("country.untouched").size(150)
             .facetFilter(FilterBuilders.andFilter(
                 justOriginals,
                 FilterBuilders.notFilter(FilterBuilders.termFilter("country.untouched", "")))
             );
 
-    private static AbstractFacetBuilder facetMonthlyDownloads = FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
+    protected static AbstractFacetBuilder facetMonthlyDownloads = FacetBuilders.dateHistogramFacet("monthly_downloads").field("time").interval("month")
             .facetFilter(FilterBuilders.andFilter(
                 FilterBuilders.termFilter("type", "BITSTREAM"),
                 justOriginals
             ));
     
-    private static AbstractFacetBuilder facetTopBitstreamsAllTime = FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
+    protected static AbstractFacetBuilder facetTopBitstreamsAllTime = FacetBuilders.termsFacet("top_bitstreams_alltime").field("id")
             .facetFilter(FilterBuilders.andFilter(
                     FilterBuilders.termFilter("type", "BITSTREAM"),
                     justOriginals
             ));
     
-    private static AbstractFacetBuilder facetTopUSCities = FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
+    protected static AbstractFacetBuilder facetTopUSCities = FacetBuilders.termsFacet("top_US_cities").field("city.untouched").size(50)
             .facetFilter(FilterBuilders.andFilter(
                 FilterBuilders.termFilter("countryCode", "US"),
                 justOriginals,
                 FilterBuilders.notFilter(FilterBuilders.termFilter("city.untouched", ""))
             ));
     
-    private static AbstractFacetBuilder facetTopUniqueIP = FacetBuilders.termsFacet("top_unique_ips").field("ip");
+    protected static AbstractFacetBuilder facetTopUniqueIP = FacetBuilders.termsFacet("top_unique_ips").field("ip");
     
-    private static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
+    protected static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
     public void addPageMeta(PageMeta pageMeta) throws WingException {
         pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
