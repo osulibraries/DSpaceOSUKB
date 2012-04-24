@@ -392,18 +392,10 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         }
 
     }
+    
+    public java.util.List<TableRow> addItemsInContainer(DSpaceObject dso) {
+        java.util.List<TableRow> tableRowList = null;
 
-    /**
-     * Only call this on a container object (collection or community).
-     * @param dso
-     * @param division
-     */
-    public void addItemsInContainer(DSpaceObject dso, Division division) {
-        // Must be either collection or community.
-        if(!(dso instanceof Collection || dso instanceof Community)) {
-            return;
-        }
-        
         String typeTextLower = dso.getTypeText().toLowerCase();
 
         String querySpecifyContainer = "SELECT to_char(date_trunc('month', t1.ts), 'YYYY-MM') AS yearmo, count(*) as countitem " +
@@ -423,21 +415,33 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         }
 
         querySpecifyContainer += ") t1 GROUP BY date_trunc('month', t1.ts) order by yearmo asc";
-        
+
         try {
             TableRowIterator tri;
             tri = DatabaseManager.query(context, querySpecifyContainer, dso.getID());
 
-            java.util.List<TableRow> tableRowList = tri.toList();
+            tableRowList = tri.toList();
+            return tableRowList;
+        } catch (Exception e) {
 
-            Gson gson = new Gson();
+        }
+        return tableRowList;
+    }
+
+    /**
+     * Only call this on a container object (collection or community).
+     * @param dso
+     * @param division
+     */
+    public void addItemsInContainer(DSpaceObject dso, Division division) {
+        java.util.List<TableRow> tableRowList = addItemsInContainer(dso);
+
+        Gson gson = new Gson();
+        try {
             division.addHidden("gson-itemsAdded").setValue(gson.toJson(tableRowList));
             
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
             displayAsGrid(division, monthlyDataGrid, "itemsAddedGrid", "Number of Items Added to the " + dso.getName());
-            
-        } catch (SQLException e) {
-            log.error(e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
         } catch (WingException e) {
             log.error(e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -653,18 +657,15 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         }
     }
 
-    public void addFilesInContainer(DSpaceObject dso, Division division) {
-        // Must be either collection or community.
-        if(!(dso instanceof Collection || dso instanceof Community)) {
-            return;
-        }
+    public java.util.List<TableRow> addFilesInContainerQuery(DSpaceObject dso) {
+        java.util.List<TableRow> tableRowList = null;
         String typeTextLower = dso.getTypeText().toLowerCase();
 
         String querySpecifyContainer = "SELECT to_char(date_trunc('month', t1.ts), 'YYYY-MM') AS yearmo, count(*) as countitem " +
                 "FROM ( SELECT to_timestamp(text_value, 'YYYY-MM-DD') AS ts FROM metadatavalue, item, item2bundle, bundle, bundle2bitstream, " +
                 typeTextLower + "2item " +
                 "WHERE metadata_field_id = 12 AND metadatavalue.item_id = item.item_id AND item.in_archive=true AND " +
-                    "item2bundle.bundle_id = bundle.bundle_id AND item2bundle.item_id = item.item_id AND bundle.bundle_id = bundle2bitstream.bundle_id AND bundle.\"name\" = 'ORIGINAL' AND "+
+                "item2bundle.bundle_id = bundle.bundle_id AND item2bundle.item_id = item.item_id AND bundle.bundle_id = bundle2bitstream.bundle_id AND bundle.\"name\" = 'ORIGINAL' AND "+
                 typeTextLower + "2item.item_id = item.item_id AND "+
                 typeTextLower + "2item."+typeTextLower+"_id = ? ";
 
@@ -682,18 +683,25 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
         try {
             TableRowIterator tri = DatabaseManager.query(context, querySpecifyContainer, dso.getID());
 
-            java.util.List<TableRow> tableRowList = tri.toList();
+            tableRowList = tri.toList();
+        } catch (Exception e) {
+            
+        }
 
-            Gson gson = new Gson();
+        return tableRowList;
+    }
+    
+    public void addFilesInContainer(DSpaceObject dso, Division division) {
+        java.util.List<TableRow> tableRowList = addFilesInContainerQuery(dso);
+
+        Gson gson = new Gson();
+        try {
             division.addHidden("gson-filesAdded").setValue(gson.toJson(tableRowList));
 
             Integer[][] monthlyDataGrid = convertTableRowListToIntegerGrid(tableRowList, "yearmo", "countitem");
             
             displayAsGrid(division, monthlyDataGrid, "filesInContainer-grid", "Number of Files in the "+dso.getName());
             //displayAsTableRows(division, tableRowList, "Number of Files in the "+getTypeAsString(dso));
-
-        } catch (SQLException e) {
-            log.error(e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
         } catch (WingException e) {
             log.error(e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
         }

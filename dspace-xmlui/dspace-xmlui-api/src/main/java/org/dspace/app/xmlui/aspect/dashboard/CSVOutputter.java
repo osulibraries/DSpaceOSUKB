@@ -10,6 +10,7 @@ import org.apache.cocoon.environment.Response;
 import org.apache.cocoon.environment.SourceResolver;
 import org.apache.cocoon.reading.AbstractReader;
 import org.apache.log4j.Logger;
+import org.dspace.app.xmlui.aspect.statistics.StatisticsTransformer;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.wing.WingException;
@@ -18,6 +19,7 @@ import org.dspace.content.DCValue;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+import org.dspace.storage.rdbms.TableRow;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.action.search.SearchRequestBuilder;
 import org.elasticsearch.search.facet.datehistogram.DateHistogramFacet;
@@ -95,11 +97,24 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             }
             else if (requestedReport.equalsIgnoreCase("itemsAdded"))
             {
-                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+                StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(null, null);
+
+                // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
+                writer.writeNext(new String[]{"Date", "Items Added"});
+                List<TableRow> tableRowList = statisticsTransformerInstance.addItemsInContainer(dso);
+                for(TableRow row: tableRowList) {
+                    writer.writeNext(new String[]{row.getStringColumn("yearmo"), row.getLongColumn("countitem") + ""});
+                }
             }
             else if(requestedReport.equalsIgnoreCase("filesAdded"))
             {
-                response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+                StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(null, null);
+                // 2 - Number of Files in The Container (monthly and cumulative)
+                writer.writeNext(new String[]{"Date", "Files Added"});
+                List<TableRow> tableRowList = statisticsTransformerInstance.addFilesInContainerQuery(dso);
+                for(TableRow row: tableRowList) {
+                    writer.writeNext(new String[]{row.getStringColumn("yearmo"), row.getLongColumn("countitem") + ""});
+                }
             }
             else if(requestedReport.equalsIgnoreCase("topDownloads"))
             {
