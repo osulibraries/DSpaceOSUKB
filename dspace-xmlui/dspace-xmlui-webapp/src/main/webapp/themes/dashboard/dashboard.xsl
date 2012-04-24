@@ -68,7 +68,7 @@
     </xsl:template>
 
     <xsl:template name="extraBody-end">
-        <script type="text/javascript" src="/dspace/themes/dashboard/lib/jquery-ui-1.8.18.datepicker-only.min.js">
+        <script type="text/javascript" src="/dspace/themes/dashboard/lib/jquery.ui.datepicker-accessible.min.js">
             <xsl:text> </xsl:text>
         </script>
         <script type="text/javascript" src="/dspace/themes/dashboard/lib/report-generator-mod.js">
@@ -127,6 +127,11 @@
               <xsl:attribute name="name">
                   <xsl:value-of select="@n" />
               </xsl:attribute>
+              <xsl:if test="@type='text'">
+                <xsl:attribute name="class">
+                  <xsl:text>date-picker</xsl:text>
+                </xsl:attribute>
+              </xsl:if>
               <xsl:attribute name="type">
                   <xsl:value-of select="@type" />
               </xsl:attribute>
