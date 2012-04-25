@@ -335,6 +335,12 @@
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[substring(@element, 1, 9) = 'citation_']">
                 <meta name="{@element}" content="{.}"></meta>
             </xsl:for-each>
+
+            <!-- Add OpenGraph metadata to page.-->
+            <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[substring(@element, 1, 3) = 'og:']">
+                <meta name="{@element}" content="{.}"></meta>
+            </xsl:for-each>
+
             <xsl:call-template name="extraHead-bottom"/>
 
         </head>
@@ -358,6 +364,20 @@
                     <xsl:text> </xsl:text>
                 </span>
             </a>
+
+            <!-- Include an invisible KB logo, usefull for robots that "lint" the page, such as FaceBook-->
+            <img>
+                <xsl:attribute name="src">
+                    <xsl:value-of select="$context-path"/>
+                    <xsl:text>/static/images/kb-logo-small.jpg</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="alt">
+                    <xsl:text>Logo of the Ohio State University Knowledge Bank</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="style">
+                    <xsl:text>display:none</xsl:text>
+                </xsl:attribute>
+            </img>
             <!-- Commenting out default action of the header. It has broken into individual smaller blocks.
             -<h1 class="pagetitle">
             -    <xsl:choose>
