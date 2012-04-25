@@ -202,7 +202,7 @@ public class ItemViewer extends AbstractDSpaceTransformer implements CacheablePr
             
             String handle = item.getHandle();
             if(handle != null && handle.length() > 0) {
-                pageMeta.addMetadata("og:url", "http://hdl.handle.net/" + handle);
+                pageMeta.addMetadata("og:url").addContent("http://hdl.handle.net/" + handle);
             }
 
             // Look for image bitstreams, and add them to og:images
