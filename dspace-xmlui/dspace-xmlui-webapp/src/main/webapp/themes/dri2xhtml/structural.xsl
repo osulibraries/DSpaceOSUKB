@@ -338,7 +338,11 @@
 
             <!-- Add OpenGraph metadata to page.-->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[substring(@element, 1, 3) = 'og:']">
-                <meta name="{@element}" content="{.}"></meta>
+                <meta content="{.}">
+                    <xsl:attribute name="property">
+                        <xsl:value-of select="@element"/>
+                    </xsl:attribute>
+                </meta>
             </xsl:for-each>
 
             <xsl:call-template name="extraHead-bottom"/>
