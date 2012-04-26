@@ -358,9 +358,9 @@
 
         if ($('input[name=reportDepth]').val() == "detail") {
             $('<div>' +
-                '<p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>' +
-                '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>' +
-                '<a href="' + baseURLStats + '/csv/' + reportName + '"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a>' +
+                '<p><a href="' + baseURLStats + '" class="small-icon left-arrow-icon">Back to Summary Statistics for ' + name + '</a></p><br/>' +
+                '<a href="#" onclick="window.print(); return false;" class="small-icon print-icon">Print This Report</a><br/>' +
+                '<a href="' + baseURLStats + '/csv/' + reportName + '" class="small-icon excel-icon">Download Data as .csv</a>' +
                 '</div>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
 
         }
