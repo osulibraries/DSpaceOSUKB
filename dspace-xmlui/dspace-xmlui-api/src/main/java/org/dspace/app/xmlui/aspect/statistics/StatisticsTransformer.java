@@ -452,10 +452,29 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             return null;
         }
 
-        String yearmoStart = tableRowList.get(0).getStringColumn(dateColumn);
-        Integer yearStart = Integer.valueOf(yearmoStart.split("-")[0]);
-        String yearmoLast = tableRowList.get(tableRowList.size()-1).getStringColumn(dateColumn);
-        Integer yearLast = Integer.valueOf(yearmoLast.split("-")[0]);
+        // If we have a requested time-range for data, then we need to ensure we zero-fill the data during that time range.
+        // Otherwise, if no requested time-range, then just make table size of data.
+        // a year-mo is 2008-05
+        Integer yearStart;
+        Integer yearLast;
+
+        if(dateStart != null) {
+            Calendar myTime = Calendar.getInstance();
+            myTime.setTime(dateStart);
+            yearStart = myTime.get(Calendar.YEAR);
+        } else {
+            String yearmoStart = tableRowList.get(0).getStringColumn(dateColumn);
+            yearStart = Integer.valueOf(yearmoStart.split("-")[0]);
+        }
+
+        if(dateEnd != null) {
+            Calendar myTime = Calendar.getInstance();
+            myTime.setTime(dateEnd);
+            yearLast = myTime.get(Calendar.YEAR);
+        } else {
+            String yearmoLast = tableRowList.get(tableRowList.size()-1).getStringColumn(dateColumn);
+            yearLast = Integer.valueOf(yearmoLast.split("-")[0]);
+        }
         //                    distinctBetween(2011, 2005)  = 7
         int distinctNumberOfYears = yearLast-yearStart+1;
         
