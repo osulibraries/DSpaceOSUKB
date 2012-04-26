@@ -70,7 +70,8 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
         DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
         if(dso != null && dso.getHandle() != null){
             statistics.setHead(T_statistics_head);
-            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
+            // Disable Link to SOLR Statistics PMD
+            // statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
 
             // Add a link to the Elastic Statistics
             statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics", "Elastic Statistics");
@@ -78,8 +79,9 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
         }else{
             // This Navigation is only called either on a DSO related page, or the homepage
             // If on the home page: add statistics link for the home page
-            statistics.setHead(T_statistics_head);
-            statistics.addItemXref(contextPath + "/statistics-home", T_statistics_view);
+            // Disable link to SOLR Statistics PMD
+            // statistics.setHead(T_statistics_head);
+            //statistics.addItemXref(contextPath + "/statistics-home", T_statistics_view);
         }
 
         // Add a link to the stats Dashboard if the user is a member of the admin group.
