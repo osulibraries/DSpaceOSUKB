@@ -111,7 +111,7 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
             </map:match>
 
 
-            <map:match pattern="handle/*/*/elasticstatistics">
+            <map:match pattern="handle/*/*/stats">
                 <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
                     <map:transform type="ElasticSearchStatsViewer"/>
                 </map:match>
@@ -134,7 +134,7 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
                 <map:serialize type="xml"/>
             </map:match>
 
-            <map:match pattern="handle/*/*/elasticstatistics/*">
+            <map:match pattern="handle/*/*/stats/*">
                 <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
                     <map:transform type="ElasticSearchStatsViewer"/>
                 </map:match>

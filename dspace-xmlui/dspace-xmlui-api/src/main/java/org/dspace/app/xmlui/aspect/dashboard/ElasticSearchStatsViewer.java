@@ -37,6 +37,8 @@ import java.util.List;
  */
 public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     private static Logger log = Logger.getLogger(ElasticSearchStatsViewer.class);
+    
+    public static final String elasticStatisticsPath = "stats";
 
     private static SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMMM yyyy");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,13 +105,13 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             division.setHead("Statistical Report for " + dso.getName());
             division.addHidden("containerName").setValue(dso.getName());
 
-            division.addHidden("baseURLStats").setValue(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics");
+            division.addHidden("baseURLStats").setValue(contextPath + "/handle/" + dso.getHandle() + "/" + elasticStatisticsPath);
             Request request = ObjectModelHelper.getRequest(objectModel);
             String[] requestURIElements = request.getRequestURI().split("/");
 
             // If we are on the homepage of the statistics portal, then we just show the summary report
             // Otherwise we will show a form to let user enter more information for deeper detail.
-            if(requestURIElements[requestURIElements.length-1].trim().equalsIgnoreCase("elasticstatistics")) {
+            if(requestURIElements[requestURIElements.length-1].trim().equalsIgnoreCase(elasticStatisticsPath)) {
                 //Homepage will show the last 5 years worth of Data, and no form generator.
                 Calendar cal = Calendar.getInstance();
                 dateEnd = cal.getTime();

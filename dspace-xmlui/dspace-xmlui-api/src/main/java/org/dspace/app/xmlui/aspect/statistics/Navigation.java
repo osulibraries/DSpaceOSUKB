@@ -7,6 +7,7 @@
  */
 package org.dspace.app.xmlui.aspect.statistics;
 
+import org.dspace.app.xmlui.aspect.dashboard.ElasticSearchStatsViewer;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.element.Options;
 import org.dspace.app.xmlui.wing.element.List;
@@ -74,7 +75,7 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
             // statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
 
             // Add a link to the Elastic Statistics
-            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/elasticstatistics", "Elastic Statistics");
+            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/" + ElasticSearchStatsViewer.elasticStatisticsPath, T_statistics_view);
 
         }else{
             // This Navigation is only called either on a DSO related page, or the homepage
