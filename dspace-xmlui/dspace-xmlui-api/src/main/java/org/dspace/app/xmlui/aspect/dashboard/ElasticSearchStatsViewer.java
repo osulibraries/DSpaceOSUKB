@@ -234,7 +234,6 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         summaryFacets.add(facetTopTypes);
         summaryFacets.add(facetTopUniqueIP);
         summaryFacets.add(facetTopCountries);
-        summaryFacets.add(facetTopCountries);
         summaryFacets.add(facetTopUSCities);
         summaryFacets.add(facetTopBitstreamsLastMonth());
         summaryFacets.add(facetTopBitstreamsAllTime);
