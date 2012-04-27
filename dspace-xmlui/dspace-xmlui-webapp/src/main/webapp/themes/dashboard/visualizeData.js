@@ -5,13 +5,14 @@
 // Firstly we wrap our code in a closure to keep variables local.
 (function (context) {
 
-    // ### Chart Maker
-    //
-    // Create a helper module called chart maker that allows us to specify and
-    // draw charts.
     (function ($) {
         var dateStart = new Date($('input[name=dateStart]').val());
         var dateEnd = new Date($('input[name=dateEnd]').val());
+
+        // ### Chart Maker
+        //
+        // Create a helper module called chart maker that allows us to specify and
+        // draw charts.
         context.ChartMaker = function() {
           var chartMaker = {};
           // A place to store charts to draw later.
@@ -60,6 +61,19 @@
             var dataValue = [];
             var total = 0;
 
+            // Cheat with dates / data, and zero-fill the start/end edges, and "hopefully" things work out...
+            // Set certainty to our cheat date to false, so it gets a dotted line.
+            if (c.chartData.A[0].type == 'date' && isValidDate(dateStart) && c.chartType == 'LineChart') {
+                var cheatDateStart = [];
+                cheatDateStart.push(dateStart);
+                cheatDateStart.push(0);
+                if(c.includeTotal) {
+                    cheatDateStart.push(total);
+                }
+                cheatDateStart.push(false);
+                dataValue.push(cheatDateStart);
+            }
+
             // For each entry construct a vector to add to push onto
             // `dataValue`.
             $.each(c.entries, function(index, entry) {
@@ -79,8 +93,25 @@
                 total += entry[c.valueField];
                 newEntry.push(total);
               }
+
+              // Certain data gets a certainty score of true. (solid line)
+              if (c.chartData.A[0].type == 'date' && c.chartType=='LineChart') {
+                  newEntry.push(true);
+              }
               dataValue.push(newEntry);
             });
+
+            //Cheat and zero-fill in the last date. Certainty is false, so dotted line.
+            if (c.chartData.A[0].type == 'date' && isValidDate(dateEnd) && c.chartType=='LineChart') {
+              var cheatDateEnd = [];
+              cheatDateEnd.push(dateEnd);
+              cheatDateEnd.push(0);
+              if(c.includeTotal) {
+                  cheatDateEnd.push(total);
+              }
+              cheatDateEnd.push(false);
+              dataValue.push(cheatDateEnd);
+            }
 
             // Add rows (`dataValue`) to the chartData.
             c.chartData.addRows(dataValue);
@@ -144,19 +175,29 @@
 
         // `function chartDataHelper` creates a chartData object from a few
         // parameters.
-        function chartDataHelper(type, textKey, textValue, includeTotal, textTotal) {
+        // Required userConfig values: textKey, textValue
+        // Optional userConfig values: textTotal, hasCertainty
+        function chartDataHelper(userConfig) {
+          // Set some defaults, but allow user over-ride
+          var c = $.extend({
+            type:'string',
+            includeTotal : false,
+            hasCertainty: false
+          }, userConfig);
+
           // Put data from Elastic response into a ChartData object
           var main_chart_data = chartMaker.chartData();
 
-          if (type == 'date') {
-            main_chart_data.addColumn('date', textKey);
-          } else {
-            main_chart_data.addColumn('string', textKey);
+          main_chart_data.addColumn(c.type, c.textKey);
+          main_chart_data.addColumn('number', c.textValue);
+
+          if (c.includeTotal) {
+            main_chart_data.addColumn('number', c.textTotal);
           }
 
-          main_chart_data.addColumn('number', textValue);
-          if (includeTotal) {
-            main_chart_data.addColumn('number', textTotal);
+          // Add a certainty column for date data.
+          if (c.hasCertainty == true) {
+            main_chart_data.addColumn({type:'boolean',role:'certainty'}); // certainty col.
           }
 
           return main_chart_data;
@@ -178,7 +219,14 @@
         var rawAdded = $('input[name="gson-itemsAdded"]');
         var addedJSON = $.parseJSON(rawAdded.val());
         if((addedJSON !== null) && $('input[name=reportDepth]').val() == "detail") {
-            var chartItemsAdded = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            var chartItemsAdded = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                includeTotal: true,
+                textTotal: 'Added Total',
+                hasCertainty: true
+            });
             chartMaker.addChart({
                 entries: addedJSON,
                 name: 'itemsAddedMonthly',
@@ -190,7 +238,13 @@
                 chartType: 'LineChart',
                 options: optionsItemsAdded});
 
-            var chartItemsAddedNoTotal = chartDataHelper('date', 'Date', 'Added Monthly', false, 'Added Total');
+            var chartItemsAddedNoTotal = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                includeTotal: false,
+                hasCertainty: true
+            });
             chartMaker.addChart({
                 entries: addedJSON,
                 name: 'itemsAddedMonthlyNoTotal',
@@ -202,7 +256,14 @@
                 chartType: 'LineChart',
                 options: optionsItemsAdded});
 
-            var chartItemsAddedTotalTable = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            var chartItemsAddedTotalTable = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                includeTotal: true,
+                textTotal: 'Added Total',
+                hasCertainty: false
+            });
             chartMaker.addChart({
                 entries: addedJSON,
                 name: 'itemsAddedMonthlyTotalTable',
@@ -219,7 +280,14 @@
         var rawFilesAdded = $('input[name="gson-filesAdded"]');
         var filesAddedJSON = $.parseJSON(rawFilesAdded.val());
         if((filesAddedJSON !== null) && $('input[name=reportDepth]').val() == "detail") {
-            var chartFilesAdded = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            var chartFilesAdded = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                includeTotal: true,
+                textTotal: 'Added Total',
+                hasCertainty:true
+            });
             chartMaker.addChart({
                 entries: filesAddedJSON,
                 name: 'filesAddedMonthly',
@@ -231,7 +299,12 @@
                 chartType: 'LineChart',
                 options: optionsFilesAdded});
 
-            var chartFilesAddedNoTotal = chartDataHelper('date', 'Date', 'Added Monthly', false, 'Added Total');
+            var chartFilesAddedNoTotal = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                hasCertainty: true
+            });
             chartMaker.addChart({
                 entries: filesAddedJSON,
                 name: 'filesAddedMonthlyNoTotal',
@@ -243,7 +316,13 @@
                 chartType: 'LineChart',
                 options: optionsFilesAdded});
 
-            var chartFilesAddedTotalTable = chartDataHelper('date', 'Date', 'Added Monthly', true, 'Added Total');
+            var chartFilesAddedTotalTable = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'Added Monthly',
+                includeTotal: true,
+                textTotal: 'Added Total'
+            });
             chartMaker.addChart({
                 entries: filesAddedJSON,
                 name: 'filesAddedMonthlyTotalTable',
@@ -259,7 +338,12 @@
         var optionsDownloads = {title: 'Number of File Downloads: ' + name };
         // Add a chart to show monthly downloads (without the total).
         if ((elasticJSON !== null) && (typeof elasticJSON.facets.monthly_downloads !== 'undefined')) {
-            var chartDataNoTotal = chartDataHelper('date', 'Date', 'File Downloads', false, 'Total Downloads');
+            var chartDataNoTotal = chartDataHelper({
+                type : 'date',
+                textKey : 'Date',
+                textValue : 'File Downloads',
+                hasCertainty: true
+            });
             chartMaker.addChart({
                 entries: elasticJSON.facets.monthly_downloads.entries,
                 name: 'downloadsMonthly',
@@ -269,7 +353,13 @@
                 options: optionsDownloads});
 
             if ($('input[name=reportDepth]').val() == "detail") {
-                var chartDataTotal = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+                var chartDataTotal = chartDataHelper({
+                    type : 'date',
+                    textKey : 'Date',
+                    textValue : 'File Downloads',
+                    includeTotal: true,
+                    textTotal: 'Total Downloads'
+                });
 
                 // Table with raw data of # Downloads each month
                 chartMaker.addChart({
@@ -283,7 +373,14 @@
                 });
 
                 // Chart of Downloads with aggregate total
-                var chartDataTotal2 = chartDataHelper('date', 'Date', 'File Downloads', true, 'Total Downloads');
+                var chartDataTotal2 = chartDataHelper({
+                    type : 'date',
+                    textKey : 'Date',
+                    textValue : 'File Downloads',
+                    includeTotal: true,
+                    textTotal: 'Total Downloads',
+                    hasCertainty: true
+                });
                 chartMaker.addChart({
                   entries: elasticJSON.facets.monthly_downloads.entries,
                   name: 'downloadsWithTotal',
@@ -298,7 +395,11 @@
 
         // Add a chart to show downloads from various countries.
         if ((elasticJSON !== null) && (typeof elasticJSON.facets.top_countries !== 'undefined')) {
-            var chartDataGeo = chartDataHelper('string', 'Country', 'Downloads', false, 'Total');
+            var chartDataGeo = chartDataHelper({
+                type : 'string',
+                textKey : 'Country',
+                textValue : 'Downloads'
+            });
             chartMaker.addChart({
                 entries: elasticJSON.facets.top_countries.terms,
                 name: 'topCountries',
@@ -319,7 +420,11 @@
 
         // Add a chart to show downloads from various countries.
         if ((elasticJSON !== null) && typeof elasticJSON.facets.top_US_cities !== 'undefined' && $('input[name=reportDepth]').val() == "detail") {
-            var chartDataGeoUS = chartDataHelper('string', 'City', 'Downloads', false, 'Total');
+            var chartDataGeoUS = chartDataHelper({
+                type : 'string',
+                textKey : 'City',
+                textValue : 'Downloads'
+            });
             var optionsUS = {region : 'US', displayMode : 'markers', resolution : 'provinces', magnifyingGlass : {enable: true, zoomFactor: 7.5} };
             chartMaker.addChart({
                 entries: elasticJSON.facets.top_US_cities.terms,
@@ -370,3 +475,9 @@
       });
     });
 })(this);
+
+function isValidDate(d) {
+    if ( Object.prototype.toString.call(d) !== "[object Date]" )
+        return false;
+    return !isNaN(d.getTime());
+}
