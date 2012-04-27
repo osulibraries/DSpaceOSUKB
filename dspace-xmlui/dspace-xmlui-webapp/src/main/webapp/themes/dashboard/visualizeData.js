@@ -10,6 +10,8 @@
     // Create a helper module called chart maker that allows us to specify and
     // draw charts.
     (function ($) {
+        var dateStart = new Date($('input[name=dateStart]').val());
+        var dateEnd = new Date($('input[name=dateEnd]').val());
         context.ChartMaker = function() {
           var chartMaker = {};
           // A place to store charts to draw later.
@@ -344,14 +346,15 @@
 
         //Set Titles to Charts that cannot otherwise set titles automatically (geocharts).
         var baseURLStats = $('input[name=baseURLStats]').val();
+        var timeRangeString = $('input[name=timeRangeString]').val();
 
         if ($('input[name=reportDepth]').val() == "summary") {
-            $('<p><a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
-            $('<p><a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
-            $('<p>Number of File Downloads. <a href="'+ baseURLStats + '/fileDownloads">For more information.</a></p>').insertBefore('#dspaceChart_downloadsMonthly');
-            $('<p>Countries with most Downloads. <a href="'+ baseURLStats + '/topCountries">For more information.</a></p>').insertBefore('#dspaceChart_topCountries');
-            $('<p><a href="'+ baseURLStats + '/topUSCities">For more information.</a></p>').insertBefore('#dspaceChart_topUSCities');
-            $('<p><a href="'+ baseURLStats + '/topDownloads">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
+            $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
+            $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
+            $('<h3>Number of File Downloads for ' + name + '</h3>'+timeRangeString+' <a href="'+ baseURLStats + '/fileDownloads">For more information.</a>').insertBefore('#dspaceChart_downloadsMonthly');
+            $('<h3>Countries with most Downloads ' + name + '</h3>'+timeRangeString+' <a href="'+ baseURLStats + '/topCountries">For more information.</a>').insertBefore('#dspaceChart_topCountries');
+            $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/topUSCities">For more information.</a></p>').insertBefore('#dspaceChart_topUSCities');
+            $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/topDownloads">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_facet-Bitstream');
         }
 
         var reportName = $('input[name=reportName]').val();

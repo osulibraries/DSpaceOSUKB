@@ -118,10 +118,20 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 
                 cal.roll(Calendar.YEAR, -5);
                 cal.set(Calendar.MONTH, 0);
+                cal.set(Calendar.DAY_OF_MONTH, 0);
                 dateStart = cal.getTime();
 
                 division.addHidden("reportDepth").setValue("summary");
-                division.addPara("Showing Last Five Years of Data");
+                String dateRange = "Last Five Years";
+                division.addPara("Showing Data ( " + dateRange + " )");
+                division.addHidden("timeRangeString").setValue("Data Range: " + dateRange);
+                if(dateStart != null) {
+                    division.addHidden("dateStart").setValue(dateFormat.format(dateStart));
+                }
+                if(dateEnd != null) {
+                    division.addHidden("dateEnd").setValue(dateFormat.format(dateEnd));
+                }
+
                 showAllReports();
                 
             } else {
@@ -135,15 +145,26 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 String requestedReport = requestURIElements[requestURIElements.length-1];
                 log.info("Requested report is: "+ requestedReport);
                 division.addHidden("reportDepth").setValue("detail");
+                
+                String dateRange = "";
                 if(dateStart != null && dateEnd != null) {
-                    division.addPara("Showing Data from: "+dateFormat.format(dateStart) + " to: "+dateFormat.format(dateEnd));
+                    dateRange = "from: "+dateFormat.format(dateStart) + " to: "+dateFormat.format(dateEnd);
                 } else if (dateStart != null && dateEnd == null) {
-                    division.addPara("Showing Data starting from: "+dateFormat.format(dateStart));
+                    dateRange = "starting from: "+dateFormat.format(dateStart);
                 } else if(dateStart == null && dateEnd != null) {
-                    division.addPara("Showing Data ending with: "+dateFormat.format(dateEnd));
+                    dateRange = "ending with: "+dateFormat.format(dateEnd);
                 } else if(dateStart == null && dateEnd == null) {
-                    division.addPara("Showing Data from: all data");
+                    dateRange = "All Data Available";
                 }
+                division.addPara("Showing Data ( " + dateRange + " )");
+                division.addHidden("timeRangeString").setValue(dateRange);
+                if(dateStart != null) {
+                    division.addHidden("dateStart").setValue(dateFormat.format(dateStart));
+                }
+                if(dateEnd != null) {
+                    division.addHidden("dateEnd").setValue(dateFormat.format(dateEnd));
+                }
+
 
                 division.addHidden("reportName").setValue(requestedReport);
 
