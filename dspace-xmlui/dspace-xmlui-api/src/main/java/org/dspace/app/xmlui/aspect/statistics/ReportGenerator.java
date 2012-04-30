@@ -71,35 +71,64 @@ public class ReportGenerator
      * The minimum date for the from or to field to be. (e.g. The beginning of DSpace)
      */
     private static String MINIMUM_DATE = "2008-01-01";
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    // perfect input is 2008-01-22, an alternate format is 01/22/2008
+    static String[] formatStrings = {"yyyy-MM-dd", "MM/dd/yyyy"};
 
     private Map<String, String> params;
+    
+    private Date dateStart;
+    private Date dateEnd;
 
     public Date getDateStart() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(! params.containsKey("from")) {
-            return null;
-        }
-
+        return dateStart;
+    }
+    
+    public String getDateStartFormated() {
         try {
-            return dateFormat.parse(params.get("from"));
-        } catch (ParseException e) {
-            log.error("fromDate parseError"+e.getMessage());
-            return null;
+            return dateFormat.format(dateStart);
+        } catch (Exception e) {
+            return "";
         }
+    }
+    
+    public void setDateStart() {
+        if(! params.containsKey("from")) {
+            dateStart = null;
+        } else {
+            dateStart = tryParse(params.get("from"));
+        }
+    }
+    
+    public Date tryParse(String dateString) {
+        for(String formatString : formatStrings) {
+            try {
+                return new SimpleDateFormat(formatString).parse(dateString);
+            } catch (ParseException e) {
+                log.error("ReportGenerator couldn't parse date: " + dateString + ", with pattern of: "+formatString+" with error message:"+e.getMessage());
+            }
+        }
+        return null;
     }
 
     public Date getDateEnd() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        if(! params.containsKey("to")) {
-            return null;
-        }
-
+        return dateEnd;
+    }
+    
+    public String getDateEndFormatted() {
         try {
-            return dateFormat.parse(params.get("to"));
-        } catch (ParseException e) {
-            log.error("toDate parseError"+e.getMessage());
-            return null;
+            return dateFormat.format(dateEnd);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
+    public void setDateEnd() {
+        if(! params.containsKey("to")) {
+            dateEnd= null;
+        } else {
+            dateEnd = tryParse(params.get("to"));
         }
     }
 
@@ -124,25 +153,22 @@ public class ReportGenerator
                 params.put(param, request.getParameter(param));
             }
 
-            params = ReportGenerator.checkAndNormalizeParameters(params);
+            //params = checkAndNormalizeParameters(params);
 
             //Create Date Range part of form
             Para reportForm = search.addPara();
+
+            setDateStart();
             Text from = reportForm.addText("from", "slick");
             from.setLabel("From");
             from.setHelp("The start date of the report, ex 2008-01-01");
-            if (params.containsKey("from")) {
-                //Set default value if it exists
-                from.setValue(params.get("from"));
-            }
+            from.setValue(getDateStartFormated());
 
+            setDateEnd();
             Text to = reportForm.addText("to", "slick");
             to.setLabel("To");
             to.setHelp("The end date of the report, ex 2010-12-31");
-            if (params.containsKey("to")) {
-                //Set default value if it exists
-                to.setValue(params.get("to"));
-            }
+            to.setValue(getDateEndFormatted());
 
             //Add whether it is fiscal or not
             CheckBox isFiscal = reportForm.addCheckBox("fiscal", "slick");
@@ -169,7 +195,7 @@ public class ReportGenerator
      * @throws InvalidFormatException
      * @throws ParseException
      */
-    private static Map<String,String> checkAndNormalizeParameters(Map<String,String> params)  {
+    private Map<String,String> checkAndNormalizeParameters(Map<String,String> params)  {
         try {
 
             //Create dateValidator and min and max dates
