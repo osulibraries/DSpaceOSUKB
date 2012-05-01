@@ -7,6 +7,7 @@
  */
 package org.dspace.app.xmlui.aspect.statistics;
 
+import org.dspace.app.xmlui.aspect.dashboard.ElasticSearchStatsViewer;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.element.Options;
 import org.dspace.app.xmlui.wing.element.List;
@@ -15,6 +16,7 @@ import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.DSpaceObject;
 import org.apache.cocoon.caching.CacheableProcessingComponent;
 import org.apache.excalibur.source.SourceValidity;
@@ -69,13 +71,23 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
         DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
         if(dso != null && dso.getHandle() != null){
             statistics.setHead(T_statistics_head);
-            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
+            // Disable Link to SOLR Statistics PMD
+            // statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/statistics", T_statistics_view);
+
+            // Add a link to the Elastic Statistics
+            statistics.addItemXref(contextPath + "/handle/" + dso.getHandle() + "/" + ElasticSearchStatsViewer.elasticStatisticsPath, T_statistics_view);
 
         }else{
             // This Navigation is only called either on a DSO related page, or the homepage
             // If on the home page: add statistics link for the home page
-            statistics.setHead(T_statistics_head);
-            statistics.addItemXref(contextPath + "/statistics-home", T_statistics_view);
+            // Disable link to SOLR Statistics PMD
+            // statistics.setHead(T_statistics_head);
+            //statistics.addItemXref(contextPath + "/statistics-home", T_statistics_view);
+        }
+
+        // Add a link to the stats Dashboard if the user is a member of the admin group.
+        if(context.getCurrentUser() != null && AuthorizeManager.isAdmin(context)) {
+            statistics.addItemXref(contextPath + "/dashboard", "Dashboard");
         }
 
 
