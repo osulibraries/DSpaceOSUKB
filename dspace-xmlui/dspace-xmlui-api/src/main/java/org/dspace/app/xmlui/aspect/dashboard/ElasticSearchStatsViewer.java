@@ -8,6 +8,7 @@ import org.dspace.app.xmlui.aspect.statistics.ReportGenerator;
 import org.dspace.app.xmlui.aspect.statistics.StatisticsTransformer;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
+import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.content.*;
@@ -80,8 +81,19 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     
     protected static AbstractFacetBuilder facetTopTypes = FacetBuilders.termsFacet("top_types").field("type");
 
-    public void addPageMeta(PageMeta pageMeta) throws WingException {
-        pageMeta.addMetadata("title").addContent("Elastic Search Data Display");
+    /** Language strings */
+    private static final Message T_dspace_home = message("xmlui.general.dspace_home");
+
+    private static final Message T_trail = message("xmlui.ArtifactBrowser.ItemViewer.trail");
+
+    public void addPageMeta(PageMeta pageMeta) throws WingException, SQLException {
+        DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
+
+        pageMeta.addMetadata("title").addContent("Statistics Report for : " + dso.getName());
+
+        pageMeta.addTrailLink(contextPath + "/",T_dspace_home);
+        HandleUtil.buildHandleTrail(dso,pageMeta,contextPath);
+        pageMeta.addTrail().addContent("View Statistics");
     }
 
     public ElasticSearchStatsViewer() {
