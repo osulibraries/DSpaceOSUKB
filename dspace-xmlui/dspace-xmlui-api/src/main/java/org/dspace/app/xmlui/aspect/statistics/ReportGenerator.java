@@ -214,12 +214,12 @@ public class ReportGenerator
 
             if (hasFrom || hasTo) {
                 if (hasFrom) {
-                    fromDate = dateFormat.parse(params.get("from"));
+                    fromDate = tryParse(params.get("from"));
                     params.put("from", dateFormat.format(fromDate));
                     validToAndFrom = validToAndFrom && dateValidator.compareDates(minimumDate, fromDate, null) <= 0;
                 }
                 if (hasTo) {
-                    toDate = dateFormat.parse(params.get("to"));
+                    toDate = tryParse(params.get("to"));
                     params.put("to", dateFormat.format(toDate));
                     validToAndFrom = validToAndFrom && dateValidator.compareDates(toDate, maximumDate, null) <= 0;
                 }

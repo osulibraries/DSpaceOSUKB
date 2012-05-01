@@ -453,6 +453,10 @@
         var baseURLStats = $('input[name=baseURLStats]').val();
         var timeRangeString = $('input[name=timeRangeString]').val();
 
+        //TODO these dates are already accessed in different scope/context, its a waste to reexecute
+        var fromDateString = $('input[name=dateStart]').val();
+        var toDateString = $('input[name=dateEnd]').val();
+
         if ($('input[name=reportDepth]').val() == "summary") {
             $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/itemsAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_itemsAddedGrid');
             $('<p>'+timeRangeString+' <a href="'+ baseURLStats + '/filesAdded">For more information.</a></p>').insertBefore('#aspect_dashboard_ElasticSearchStatsViewer_table_filesInContainer-grid');
@@ -465,11 +469,23 @@
         var reportName = $('input[name=reportName]').val();
 
         if ($('input[name=reportDepth]').val() == "detail") {
-            $('<div>' +
-                '<p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>' +
-                '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>' +
-                '<a href="' + baseURLStats + '/csv/' + reportName + '"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a>' +
-                '</div>').insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
+            var contextPanel = '<div><p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>';
+            contextPanel += '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>';
+            contextPanel += '<a href="' + baseURLStats + '/csv/' + reportName;
+            if(fromDateString !== null) {
+                contextPanel += '?from=' + fromDateString;
+            }
+            if(toDateString !== null) {
+                if(fromDateString !== null) {
+                    contextPanel += '&';
+                } else {
+                    contextPanel =+ '?';
+                }
+
+                contextPanel += 'to=' + toDateString;
+            }
+            contextPanel += '"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a></div>';
+            $(contextPanel).insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
 
         }
       });

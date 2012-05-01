@@ -10,6 +10,7 @@ import org.apache.cocoon.environment.Response;
 import org.apache.cocoon.environment.SourceResolver;
 import org.apache.cocoon.reading.AbstractReader;
 import org.apache.log4j.Logger;
+import org.dspace.app.xmlui.aspect.statistics.ReportGenerator;
 import org.dspace.app.xmlui.aspect.statistics.StatisticsTransformer;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.app.xmlui.utils.HandleUtil;
@@ -77,7 +78,30 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             response.setHeader("Content-Disposition", "attachment; filename=KBStats-" + dso.getHandle() + "-" + requestedReport +".csv");
 
             //TODO Accept dates as input filter.
-            ElasticSearchStatsViewer esStatsViewer = new ElasticSearchStatsViewer(dso, null, null);
+            String[] fromValues = request.getParameterValues("from");
+            String[] toValues = request.getParameterValues("to");
+
+            
+            Date fromDate;
+            ReportGenerator reportGeneratorInstance = new ReportGenerator();
+            if(fromValues.length > 0) {
+                fromDate = reportGeneratorInstance.tryParse(fromValues[0]);
+            } else {
+                fromDate = null;
+            }
+
+            Date toDate;
+            if(toValues.length > 0) {
+                toDate = reportGeneratorInstance.tryParse(toValues[0]);
+            } else {
+                toDate = null;
+            }
+
+            log.info("FROM: " + dateFormat.format(fromDate));
+            log.info("TO: " + dateFormat.format(toDate));
+            
+            ElasticSearchStatsViewer esStatsViewer = new ElasticSearchStatsViewer(dso, fromDate, toDate);
+            StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(fromDate, toDate);
 
             if(requestedReport.equalsIgnoreCase("topCountries"))
             {
@@ -97,8 +121,6 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             }
             else if (requestedReport.equalsIgnoreCase("itemsAdded"))
             {
-                StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(null, null);
-
                 // 1 - Number of Items in The Container (Community/Collection) (monthly and cumulative for the year)
                 writer.writeNext(new String[]{"Date", "Items Added"});
                 List<TableRow> tableRowList = statisticsTransformerInstance.addItemsInContainer(dso);
@@ -108,7 +130,6 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             }
             else if(requestedReport.equalsIgnoreCase("filesAdded"))
             {
-                StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(null, null);
                 // 2 - Number of Files in The Container (monthly and cumulative)
                 writer.writeNext(new String[]{"Date", "Files Added"});
                 List<TableRow> tableRowList = statisticsTransformerInstance.addFilesInContainerQuery(dso);
