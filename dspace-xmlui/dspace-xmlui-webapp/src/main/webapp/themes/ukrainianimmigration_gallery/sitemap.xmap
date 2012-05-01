@@ -128,8 +128,8 @@
 				<map:select type="browser">
 					<map:when test="explorer">
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="../ukrainianimmigration/lib/style.css"/>
-							<map:parameter name="stylesheet.screen#2" value="../ukrainianimmigration/lib/style-ie.css"/>
+							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
+							<map:parameter name="stylesheet.screen#2" value="lib/style-ie.css"/>
 							<map:parameter name="stylesheet.screen#3" value="../gallery/lib/gallery.css"/>
                                                         <map:parameter name="stylesheet.screen#4" value="../gallery/lib/thickbox/thickbox.css"/>
                                                         <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>
@@ -144,7 +144,7 @@
 					</map:when>
 					<map:otherwise>
 						<map:transform type="IncludePageMeta">
-							<map:parameter name="stylesheet.screen#1" value="../ukrainianimmigration/lib/style.css"/>
+							<map:parameter name="stylesheet.screen#1" value="lib/style.css"/>
                                                         <map:parameter name="stylesheet.screen#2" value="../gallery/lib/gallery.css"/>
                                                         <map:parameter name="stylesheet.screen#3" value="../gallery/lib/thickbox/thickbox.css"/>
                                                         <map:parameter name="javascript#1" value="../gallery/lib/gallery.js"/>

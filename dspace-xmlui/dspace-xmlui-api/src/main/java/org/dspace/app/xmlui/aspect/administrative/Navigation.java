@@ -7,11 +7,6 @@
  */
 package org.dspace.app.xmlui.aspect.administrative;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.Map;
-
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.cocoon.ProcessingException;
 import org.apache.cocoon.caching.CacheableProcessingComponent;
@@ -39,6 +34,11 @@ import org.dspace.content.Item;
 import org.dspace.core.Constants;
 import org.dspace.eperson.Group;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * 
@@ -73,8 +73,6 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
     private static final Message T_administrative_items 			= message("xmlui.administrative.Navigation.administrative_items");
     private static final Message T_administrative_withdrawn  		= message("xmlui.administrative.Navigation.administrative_withdrawn");
     private static final Message T_administrative_control_panel 	= message("xmlui.administrative.Navigation.administrative_control_panel");
-
-    private static final Message T_statistics            	        = message("xmlui.administrative.Navigation.statistics");
 
     private static final Message T_context_export_item 				= message("xmlui.administrative.Navigation.context_export_item");
     private static final Message T_context_export_collection 		= message("xmlui.administrative.Navigation.context_export_collection");
@@ -292,7 +290,6 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
 	        admin.addItemXref(contextPath+"/admin/item", T_administrative_items);
             admin.addItemXref(contextPath+"/admin/withdrawn", T_administrative_withdrawn);	        
 	        admin.addItemXref(contextPath+"/admin/panel", T_administrative_control_panel);
-            admin.addItemXref(contextPath+"/statistics", T_statistics);
             admin.addItemXref(contextPath+ "/admin/metadataimport", T_administrative_import_metadata);
         }
     }

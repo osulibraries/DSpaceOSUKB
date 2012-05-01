@@ -141,6 +141,55 @@ public class Bitstream extends DSpaceObject
         return new Bitstream(context, row);
     }
 
+    /**
+     * Try to find the bitstreams that have a file with the name specified. This is for when you may have the
+     * bitstream's name, but not the ID. Most processing of bitstreams should rely on "hard" information like ID,
+     * however this method is provided for situations where all you have is "soft" information like a bitstream name.
+     * The use that spawned this method was in processing log files which had the bitstream's name, but no internalID.
+     * @param context
+     * @param bitstreamName
+     * @return
+     */
+    public static Bitstream[] findByName(Context context, String bitstreamName) throws SQLException {
+        TableRowIterator tri = DatabaseManager.queryTable(context, "bitstream",  "SELECT * FROM bitstream where bitstream.\"name\" = ?", bitstreamName);
+
+        List<Bitstream> bitstreams = new ArrayList<Bitstream>();
+
+        try
+        {
+            while (tri.hasNext())
+            {
+                TableRow row = tri.next();
+
+                // First check the cache
+                Bitstream fromCache = (Bitstream) context.fromCache(
+                        Bitstream.class, row.getIntColumn("bitstream_id"));
+
+                if (fromCache != null)
+                {
+                    bitstreams.add(fromCache);
+                }
+                else
+                {
+                    bitstreams.add(new Bitstream(context, row));
+                }
+            }
+        }
+        finally
+        {
+            // close the TableRowIterator to free up resources
+            if (tri != null)
+            {
+                tri.close();
+            }
+        }
+
+        Bitstream[] bitstreamArray = new Bitstream[bitstreams.size()];
+        bitstreamArray = bitstreams.toArray(bitstreamArray);
+
+        return bitstreamArray;
+    }
+
     public static Bitstream[] findAll(Context context) throws SQLException
     {
         TableRowIterator tri = DatabaseManager.queryTable(context, "bitstream",

@@ -66,6 +66,15 @@ public abstract class DSpaceObject
     public abstract int getType();
 
     /**
+     * Provide the text name of the type of this DSpaceObject. It is most likely all uppercase.
+     * @return Object type as text
+     */
+    public String getTypeText()
+    {
+        return Constants.typeText[this.getType()];
+    }
+
+    /**
      * Get the internal ID (database primary key) of this object
      * 
      * @return internal ID of object

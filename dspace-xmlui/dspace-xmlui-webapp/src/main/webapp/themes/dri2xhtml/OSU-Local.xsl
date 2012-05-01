@@ -47,10 +47,10 @@
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
             var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
-            document.write(unescape("%3Cscript src='" + JsHost + "ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
+            document.write(unescape("%3Cscript src='" + JsHost + "ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
 
             if(!window.jQuery) {
-                document.write(unescape("%3Cscript src='<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>/static/js/jquery-1.4.4.min.js' type='text/javascript'%3E%3C/script%3E"));
+                document.write(unescape("%3Cscript src='<xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>/static/js/jquery-1.7.2.min.js' type='text/javascript'%3E%3C/script%3E"));
             }
         </script>
 
@@ -157,6 +157,7 @@
     <!-- This is a named template to be an easy way to override to add something to the buildHead -->
     <xsl:template name="extraHead-top"></xsl:template>
     <xsl:template name="extraHead-bottom"></xsl:template>
+    <xsl:template name="extraBody-end"></xsl:template>
 
 
     <!-- Peter's RSS code for options box -->

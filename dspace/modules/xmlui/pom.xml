@@ -167,6 +167,12 @@
          <scope>provided</scope>
       </dependency>
 
+
+       <dependency>
+           <groupId>org.dspace</groupId>
+           <artifactId>dspace-stats-elasticsearch</artifactId>
+           <version>1.0</version>
+       </dependency>
    </dependencies>
 
 </project>
