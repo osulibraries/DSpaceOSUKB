@@ -171,12 +171,12 @@ public class ReportGenerator
             to.setValue(getDateEndFormatted());
 
             //Add whether it is fiscal or not
-            CheckBox isFiscal = reportForm.addCheckBox("fiscal", "slick");
-            isFiscal.setLabel("Use Fiscal Years?");
+            //CheckBox isFiscal = reportForm.addCheckBox("fiscal", "slick");
+            //isFiscal.setLabel("Use Fiscal Years?");
             //Set up fiscal option with the correct default
-            isFiscal.addOption(params.containsKey("fiscal") && params.get("fiscal").equals("1"), 1, "");
+            //isFiscal.addOption(params.containsKey("fiscal") && params.get("fiscal").equals("1"), 1, "");
 
-            reportForm.addButton("submit_add").setValue("Generate");
+            reportForm.addButton("submit_add").setValue("Generate Report");
         } catch (WingException e) {
             log.error(e.getMessage());
         }
