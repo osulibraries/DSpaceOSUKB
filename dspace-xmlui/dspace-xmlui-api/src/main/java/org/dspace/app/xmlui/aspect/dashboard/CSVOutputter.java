@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -77,28 +75,37 @@ public class CSVOutputter extends AbstractReader implements Recyclable
             DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
             response.setHeader("Content-Disposition", "attachment; filename=KBStats-" + dso.getHandle() + "-" + requestedReport +".csv");
 
-            //TODO Accept dates as input filter.
-            String[] fromValues = request.getParameterValues("from");
-            String[] toValues = request.getParameterValues("to");
+            Map<String, String> params = new HashMap<String, String>();
+            for (Enumeration<String> paramNames = (Enumeration<String>) request.getParameterNames(); paramNames.hasMoreElements(); ) {
+                String param = paramNames.nextElement();
+                params.put(param, request.getParameter(param));
+            }
 
+            String fromValue = "";
+            if(params.containsKey("from")) {
+                fromValue = params.get("from");
+            }
             
+            String toValue = "";
+            if(params.containsKey("to")) {
+                toValue = params.get("to");
+            }
+
             Date fromDate;
             ReportGenerator reportGeneratorInstance = new ReportGenerator();
-            if(fromValues.length > 0) {
-                fromDate = reportGeneratorInstance.tryParse(fromValues[0]);
+
+            if(fromValue.length() > 0) {
+                fromDate = reportGeneratorInstance.tryParse(fromValue);
             } else {
                 fromDate = null;
             }
 
             Date toDate;
-            if(toValues.length > 0) {
-                toDate = reportGeneratorInstance.tryParse(toValues[0]);
+            if(toValue.length() > 0) {
+                toDate = reportGeneratorInstance.tryParse(toValue);
             } else {
                 toDate = null;
             }
-
-            log.info("FROM: " + dateFormat.format(fromDate));
-            log.info("TO: " + dateFormat.format(toDate));
             
             ElasticSearchStatsViewer esStatsViewer = new ElasticSearchStatsViewer(dso, fromDate, toDate);
             StatisticsTransformer statisticsTransformerInstance = new StatisticsTransformer(fromDate, toDate);

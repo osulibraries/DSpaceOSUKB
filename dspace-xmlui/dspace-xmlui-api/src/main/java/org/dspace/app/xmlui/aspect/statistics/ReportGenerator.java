@@ -102,6 +102,10 @@ public class ReportGenerator
     }
     
     public Date tryParse(String dateString) {
+        if(dateString == null || dateString.length() == 0) {
+            return null;
+        }
+
         for(String formatString : formatStrings) {
             try {
                 return new SimpleDateFormat(formatString).parse(dateString);
