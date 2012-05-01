@@ -51,11 +51,13 @@
         </property>
     </bean>
 
+    <!-- Disabling the ElasticSearch event listener, which disables real-time usage-event updates.
+    Will need to have a night-time batch importer setup, via cron.
     <bean class="edu.osu.library.dspace.statistics.ElasticSearchLoggerEventListener">
         <property name="eventService">
             <ref bean="dspace.eventService" />
         </property>
-    </bean>
+    </bean>-->
 
     <!--
     <bean class="com.jamespaulmuir.dspace.statistics.MongoDBLoggerUsageEventListener">
