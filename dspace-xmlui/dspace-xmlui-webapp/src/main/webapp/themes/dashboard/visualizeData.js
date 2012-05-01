@@ -472,11 +472,11 @@
             var contextPanel = '<div><p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>';
             contextPanel += '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>';
             contextPanel += '<a href="' + baseURLStats + '/csv/' + reportName;
-            if(fromDateString !== null) {
+            if(fromDateString !== null && typeof fromDateString !== 'undefined') {
                 contextPanel += '?from=' + fromDateString;
             }
-            if(toDateString !== null) {
-                if(fromDateString !== null) {
+            if(toDateString !== null && typeof toDateString !== 'undefined') {
+                if(fromDateString !== null && typeof fromDateString !== 'undefined') {
                     contextPanel += '&';
                 } else {
                     contextPanel =+ '?';
