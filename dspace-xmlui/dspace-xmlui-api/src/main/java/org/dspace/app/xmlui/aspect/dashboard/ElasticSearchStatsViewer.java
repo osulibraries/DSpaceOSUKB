@@ -104,14 +104,14 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         this.dso = dso;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        client = ElasticSearchLogger.createElasticClient(false);
+        client = ElasticSearchLogger.getInstance().getClient();
     }
     
     public void addBody(Body body) throws WingException, SQLException {
-        client = ElasticSearchLogger.createElasticClient(false);
         try {
             //Try to find our dspace object
             dso = HandleUtil.obtainHandle(objectModel);
+            client = ElasticSearchLogger.getInstance().getClient();
 
             division = body.addDivision("elastic-stats");
             division.setHead("Statistical Report for " + dso.getName());
@@ -223,7 +223,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
             }
 
         } finally {
-            client.close();
+            //client.close();
         }
     }
     
@@ -311,7 +311,7 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
         FilterBuilder rangeFilter = FilterBuilders.rangeFilter("time").from(dateStart).to(dateEnd);
         FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(termQuery, rangeFilter);
 
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.indexName)
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticSearchLogger.getInstance().indexName)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(filteredQueryBuilder)
                 .setSize(0);
