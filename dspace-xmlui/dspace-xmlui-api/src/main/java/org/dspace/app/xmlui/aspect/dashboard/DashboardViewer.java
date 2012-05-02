@@ -40,28 +40,20 @@
 
 package org.dspace.app.xmlui.aspect.dashboard;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.dspace.app.xmlui.aspect.submission.Submissions;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
-import org.dspace.app.xmlui.wing.element.Item;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.*;
+import org.dspace.content.Bitstream;
+import org.dspace.content.Bundle;
+import org.dspace.content.Collection;
+import org.dspace.content.ItemIterator;
 import org.dspace.core.Constants;
 import org.dspace.eperson.EPerson;
 import org.dspace.statistics.ObjectCount;
@@ -70,6 +62,13 @@ import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 
 
@@ -281,13 +280,13 @@ public class DashboardViewer extends AbstractDSpaceTransformer
      * @return width of the date range
      * @throws SolrServerException
      */
-    private int getWidthOfTimeFacet(int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws SolrServerException
+    /*private int getWidthOfTimeFacet(int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws SolrServerException
     {
         String query = "type: " + Constants.BITSTREAM + " AND id: " + bitstreamID;
         QueryResponse response = SolrLogger.queryWithDateFacet(query, dateType, rangeStart, rangeEnd);
         FacetField timeFacet = response.getFacetDate("time");
         return timeFacet.getValueCount();
-    }
+    }*/
 
     /**
      * Adds the date faceted statistical hits to this bitstream to the page.
@@ -299,7 +298,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
      * @param rangeEnd Number of dateType ago/future to end the query. "+1" would include the current day/month in the endpoint.
      * @throws WingException, SolrServerException
      */
-    public void getNumberOfVisitsToBitstream(Table table, boolean isHeader, int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws WingException, SolrServerException, SQLException
+    /*public void getNumberOfVisitsToBitstream(Table table, boolean isHeader, int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws WingException, SolrServerException, SQLException
     {
         String query = "type: " + Constants.BITSTREAM + " AND id: " + bitstreamID;
         QueryResponse response = SolrLogger.queryWithDateFacet(query, dateType, rangeStart, rangeEnd);
@@ -341,7 +340,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
             }
             dataRow.addCell().addContent(String.valueOf(total));
         }
-    }
+    }*/
 
     public void addMonthlyTopDownloads(Division division) throws WingException {
         Request request = ObjectModelHelper.getRequest(objectModel);

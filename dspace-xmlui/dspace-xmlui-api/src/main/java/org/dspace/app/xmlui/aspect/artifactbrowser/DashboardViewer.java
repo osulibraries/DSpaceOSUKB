@@ -136,7 +136,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
             queryNumberOfItemsPerComm(division);
         } else if(reportName.equals("bitstreamVisits"))
         {
-            addBitstreamsStatisticsVisits(division);
+            //addBitstreamsStatisticsVisits(division);
         } else if (reportName.equals("topDownloadsMonth"))
         {
             addMonthlyTopDownloads(division);
@@ -255,7 +255,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
         }
     }
 
-    public void addBitstreamsStatisticsVisits(Division division) throws WingException
+    /*public void addBitstreamsStatisticsVisits(Division division) throws WingException
     {
         try {
             int[] bitstreamIDs = { 194902, 194903, 211372, 211373, 211398, 211399, 211420, 211422, 211593, 211594, 211595, 211596, 211599, 211600,
@@ -286,7 +286,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
         {
             log.error(sqle.getMessage());
         }
-    }
+    }*/
 
     /**
      * Utility function to get the width of the date range the proper way. Is small performance cost though.
@@ -297,13 +297,13 @@ public class DashboardViewer extends AbstractDSpaceTransformer
      * @return width of the date range
      * @throws SolrServerException
      */
-    private int getWidthOfTimeFacet(int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws SolrServerException
+    /*private int getWidthOfTimeFacet(int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws SolrServerException
     {
         String query = "type: " + Constants.BITSTREAM + " AND id: " + bitstreamID;
         QueryResponse response = SolrLogger.queryWithDateFacet(query, dateType, rangeStart, rangeEnd);
         FacetField timeFacet = response.getFacetDate("time");
         return timeFacet.getValueCount();
-    }
+    }*/
 
     /**
      * Adds the date faceted statistical hits to this bitstream to the page.
@@ -315,7 +315,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
      * @param rangeEnd Number of dateType ago/future to end the query. "+1" would include the current day/month in the endpoint.
      * @throws WingException, SolrServerException
      */
-    public void getNumberOfVisitsToBitstream(Table table, boolean isHeader, int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws WingException, SolrServerException, SQLException
+    /*public void getNumberOfVisitsToBitstream(Table table, boolean isHeader, int bitstreamID, String dateType, String rangeStart, String rangeEnd) throws WingException, SolrServerException, SQLException
     {
         String query = "type: " + Constants.BITSTREAM + " AND id: " + bitstreamID;
         QueryResponse response = SolrLogger.queryWithDateFacet(query, dateType, rangeStart, rangeEnd);
@@ -357,7 +357,7 @@ public class DashboardViewer extends AbstractDSpaceTransformer
             }
             dataRow.addCell().addContent(String.valueOf(total));
         }
-    }
+    }*/
 
     public void addMonthlyTopDownloads(Division division) throws WingException {
         Request request = ObjectModelHelper.getRequest(objectModel);
