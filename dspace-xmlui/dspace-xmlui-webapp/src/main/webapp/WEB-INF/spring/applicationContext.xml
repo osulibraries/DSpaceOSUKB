@@ -51,6 +51,7 @@
         </property>
     </bean>
 
+    <!-- Elastic Search -->
     <bean class="edu.osu.library.dspace.statistics.ElasticSearchLoggerEventListener">
         <property name="eventService">
             <ref bean="dspace.eventService" />

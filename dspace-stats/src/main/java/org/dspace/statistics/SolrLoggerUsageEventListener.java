@@ -7,6 +7,7 @@
  */
 package org.dspace.statistics;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.dspace.eperson.EPerson;
 import org.dspace.services.model.Event;
@@ -35,11 +36,12 @@ public class SolrLoggerUsageEventListener extends AbstractUsageEventListener {
 			    EPerson currentUser = ue.getContext() == null ? null : ue.getContext().getCurrentUser();
 
                 SolrLogger.post(ue.getObject(), ue.getRequest(), currentUser);
+                log.info("Successfully logged " + ue.getObject().getTypeText() + "_" + ue.getObject().getID() + " " + ue.getObject().getName());
 
 			}
 			catch(Exception e)
 			{
-				log.error(e.getMessage());
+				log.error("SOLR receiveEvent Error: " + e.getMessage() + " --STACK-- " + ExceptionUtils.getStackTrace(e));
 			}
 		}
 				

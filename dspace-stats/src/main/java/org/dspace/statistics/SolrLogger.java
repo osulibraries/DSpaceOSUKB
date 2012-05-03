@@ -11,9 +11,6 @@ import com.Ostermiller.util.CSVParser;
 import com.Ostermiller.util.CSVPrinter;
 import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;
-
-import java.io.*;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
@@ -22,8 +19,10 @@ import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
+import org.apache.solr.client.solrj.request.RequestWriter;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
@@ -43,6 +42,7 @@ import org.dspace.statistics.util.LocationUtils;
 import org.dspace.statistics.util.SpiderDetector;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -87,11 +87,18 @@ public class SolrLogger
             try
             {
                 server = new CommonsHttpSolrServer(ConfigurationManager.getProperty("solr-statistics", "server"));
-                SolrQuery solrQuery = new SolrQuery()
-                        .setQuery("type:2 AND id:1");
-                server.query(solrQuery);
+                server.setRequestWriter(new RequestWriter());
+                server.setParser(new XMLResponseParser());
+
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("q", "type:2 AND id:1");
+                params.put("rows", "10");
+                params.put("wt", "xml");
+                MapSolrParams solrParams = new MapSolrParams(params);
+                server.query(solrParams);
             } catch (Exception e) {
-            	log.error(e.getMessage(), e);
+            	log.error("Error in static initialization: " + e.getMessage(), e);
             }
         }
         solr = server;
@@ -161,6 +168,7 @@ public class SolrLogger
     {
         if (solr == null || locationService == null)
         {
+            log.error("Oops, solr or locationService was null");
             return;
         }
 
@@ -175,7 +183,6 @@ public class SolrLogger
             }
 
 
-                        
             SolrInputDocument doc1 = new SolrInputDocument();
             // Save our basic info that we already have
 
@@ -281,6 +288,7 @@ public class SolrLogger
 
             storeParents(doc1, dspaceObject);
 
+
             solr.add(doc1);
             //commits are executed automatically using the solr autocommit
 //            solr.commit(false, false);
@@ -288,11 +296,12 @@ public class SolrLogger
         }
         catch (RuntimeException re)
         {
+            log.error("ReunTime "+re.getMessage());
             throw re;
         }
         catch (Exception e)
         {
-        	log.error(e.getMessage(), e);
+        	log.error("GeneralException: "+e.getMessage(), e);
         }
     }
 
@@ -436,6 +445,7 @@ public class SolrLogger
             Map<String, String> params = new HashMap<String, String>();
             params.put("q", query);
             params.put("rows", "10");
+            params.put("wt", "xml");
             MapSolrParams solrParams = new MapSolrParams(params);
             QueryResponse response = solr.query(solrParams);
             
