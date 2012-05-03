@@ -411,6 +411,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
     
     private String getOwningText(DSpaceObject dso) {
         switch (dso.getType()) {
+            case Constants.ITEM:
+                return "owningItem";
             case Constants.COLLECTION:
                 return "owningColl";
             case Constants.COMMUNITY:
