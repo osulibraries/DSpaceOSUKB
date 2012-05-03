@@ -128,7 +128,8 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 Calendar cal = Calendar.getInstance();
                 dateEnd = cal.getTime();
                 
-                cal.roll(Calendar.YEAR, -5);
+                // Rolling back 4 must equate to past five years.
+                cal.roll(Calendar.YEAR, -4);
                 cal.set(Calendar.MONTH, 0);
                 cal.set(Calendar.DAY_OF_MONTH, 0);
                 dateStart = cal.getTime();
