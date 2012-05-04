@@ -127,11 +127,15 @@ public class ElasticSearchStatsViewer extends AbstractDSpaceTransformer {
                 //Homepage will show the last 5 years worth of Data, and no form generator.
                 Calendar cal = Calendar.getInstance();
                 dateEnd = cal.getTime();
-                
-                // Rolling back 4 must equate to past five years.
-                cal.roll(Calendar.YEAR, -4);
+
+                //Roll back to Jan 1 0:00.000 five years ago.
+                cal.roll(Calendar.YEAR, -5);
                 cal.set(Calendar.MONTH, 0);
-                cal.set(Calendar.DAY_OF_MONTH, 0);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                cal.set(Calendar.HOUR_OF_DAY,0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
                 dateStart = cal.getTime();
 
                 division.addHidden("reportDepth").setValue("summary");
