@@ -145,14 +145,19 @@ public class ItemViewer extends AbstractDSpaceTransformer implements CacheablePr
 
         // Set the page title
         String title = getItemTitle(item);
+        
+        String titleSuffix = "";
+        if(showFullItem(objectModel)) {
+            titleSuffix = "  - Full Metadata";
+        }
 
         if (title != null)
         {
-            pageMeta.addMetadata("title").addContent(title);
+            pageMeta.addMetadata("title").addContent(title + titleSuffix);
         }
         else
         {
-            pageMeta.addMetadata("title").addContent(item.getHandle());
+            pageMeta.addMetadata("title").addContent(item.getHandle() + titleSuffix);
         }
 
         pageMeta.addTrailLink(contextPath + "/",T_dspace_home);
