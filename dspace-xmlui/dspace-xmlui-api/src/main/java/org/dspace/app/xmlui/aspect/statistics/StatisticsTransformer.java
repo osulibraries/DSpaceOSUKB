@@ -396,14 +396,19 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
     public java.util.List<TableRow> addItemsInContainer(DSpaceObject dso) {
         java.util.List<TableRow> tableRowList = null;
 
-        String typeTextLower = dso.getTypeText().toLowerCase();
+        String typeTextLower = "";
+        if(dso.getType() == Constants.COMMUNITY) {
+            typeTextLower = "communities";
+        } else {
+            typeTextLower = dso.getTypeText().toLowerCase();
+        }
 
         String querySpecifyContainer = "SELECT to_char(date_trunc('month', t1.ts), 'YYYY-MM') AS yearmo, count(*) as countitem " +
                 "FROM ( SELECT to_timestamp(text_value, 'YYYY-MM-DD') AS ts FROM metadatavalue, item, " +
                 typeTextLower + "2item " +
                 "WHERE metadata_field_id = 12 AND metadatavalue.item_id = item.item_id AND item.in_archive=true AND "+
                 typeTextLower + "2item.item_id = item.item_id AND "+
-                typeTextLower + "2item." + typeTextLower +"_id = ? ";
+                typeTextLower + "2item." + dso.getTypeText().toLowerCase() +"_id = ? ";
 
         if (dateStart != null) {
             String start = dateFormat.format(dateStart);
@@ -678,7 +683,13 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
 
     public java.util.List<TableRow> addFilesInContainerQuery(DSpaceObject dso) {
         java.util.List<TableRow> tableRowList = null;
-        String typeTextLower = dso.getTypeText().toLowerCase();
+
+        String typeTextLower = "";
+        if(dso.getType() == Constants.COMMUNITY) {
+            typeTextLower = "communities";
+        } else {
+            typeTextLower = dso.getTypeText().toLowerCase();
+        }
 
         String querySpecifyContainer = "SELECT to_char(date_trunc('month', t1.ts), 'YYYY-MM') AS yearmo, count(*) as countitem " +
                 "FROM ( SELECT to_timestamp(text_value, 'YYYY-MM-DD') AS ts FROM metadatavalue, item, item2bundle, bundle, bundle2bitstream, " +
@@ -686,7 +697,7 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
                 "WHERE metadata_field_id = 12 AND metadatavalue.item_id = item.item_id AND item.in_archive=true AND " +
                 "item2bundle.bundle_id = bundle.bundle_id AND item2bundle.item_id = item.item_id AND bundle.bundle_id = bundle2bitstream.bundle_id AND bundle.\"name\" = 'ORIGINAL' AND "+
                 typeTextLower + "2item.item_id = item.item_id AND "+
-                typeTextLower + "2item."+typeTextLower+"_id = ? ";
+                typeTextLower + "2item."+dso.getTypeText().toLowerCase()+"_id = ? ";
 
         if (dateStart != null) {
             String start = dateFormat.format(dateStart);
