@@ -71,10 +71,10 @@ public class ReportGenerator
      * The minimum date for the from or to field to be. (e.g. The beginning of DSpace)
      */
     private static String MINIMUM_DATE = "2008-01-01";
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     // perfect input is 2008-01-22, an alternate format is 01/22/2008
-    static String[] formatStrings = {"yyyy-MM-dd", "MM/dd/yyyy"};
+    static String[] formatStrings = {"MM/dd/yyyy", "yyyy-MM-dd"};
 
     private Map<String, String> params;
     
@@ -165,13 +165,13 @@ public class ReportGenerator
             setDateStart();
             Text from = reportForm.addText("from", "slick");
             from.setLabel("From");
-            from.setHelp("The start date of the report, ex 2008-01-01");
+            from.setHelp("The start date of the report, ex 01/31/2008");
             from.setValue(getDateStartFormated());
 
             setDateEnd();
             Text to = reportForm.addText("to", "slick");
             to.setLabel("To");
-            to.setHelp("The end date of the report, ex 2010-12-31");
+            to.setHelp("The end date of the report, ex 12/31/2012");
             to.setValue(getDateEndFormatted());
 
             //Add whether it is fiscal or not
@@ -204,7 +204,7 @@ public class ReportGenerator
 
             //Create dateValidator and min and max dates
             DateValidator dateValidator = new DateValidator(false, DateFormat.SHORT);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
             Date maximumDate = new Date();
             Date minimumDate = dateFormat.parse(ReportGenerator.MINIMUM_DATE);
