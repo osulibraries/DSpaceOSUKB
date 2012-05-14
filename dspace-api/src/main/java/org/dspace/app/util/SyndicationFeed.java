@@ -7,51 +7,34 @@
  */
 package org.dspace.app.util;
 
+import com.sun.syndication.feed.module.DCModule;
+import com.sun.syndication.feed.module.DCModuleImpl;
+import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.itunes.EntryInformation;
+import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
+import com.sun.syndication.feed.module.itunes.FeedInformation;
+import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
+import com.sun.syndication.feed.module.itunes.types.Category;
+import com.sun.syndication.feed.module.itunes.types.Duration;
+import com.sun.syndication.feed.module.itunes.types.Subcategory;
+import com.sun.syndication.feed.synd.*;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.dspace.content.*;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Constants;
+import org.dspace.handle.HandleManager;
+import org.w3c.dom.Document;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-
-import org.dspace.content.Bitstream;
-import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.DCDate;
-import org.dspace.content.DCValue;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Constants;
-import org.dspace.handle.HandleManager;
-
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.feed.synd.SyndFeedImpl;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndEnclosure;
-import com.sun.syndication.feed.synd.SyndEnclosureImpl;
-import com.sun.syndication.feed.synd.SyndImage;
-import com.sun.syndication.feed.synd.SyndImageImpl;
-import com.sun.syndication.feed.synd.SyndPerson;
-import com.sun.syndication.feed.synd.SyndPersonImpl;
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndContentImpl;
-import com.sun.syndication.feed.module.DCModuleImpl;
-import com.sun.syndication.feed.module.DCModule;
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.itunes.*;
-import com.sun.syndication.feed.module.itunes.types.Duration;
-import com.sun.syndication.io.SyndFeedOutput;
-import com.sun.syndication.io.FeedException;
-
-import org.apache.log4j.Logger;
-import org.dspace.content.Bundle;
 
 /**
  * Invoke ROME library to assemble a generic model of a syndication
@@ -221,6 +204,22 @@ public class SyndicationFeed
             }
             image.setUrl(logoURL);
             feed.setImage(image);
+        }
+
+        if(podcastFeed) {
+            FeedInformation feedInformation = new FeedInformationImpl();
+
+            Category itunesCategory = new Category();
+            itunesCategory.setName("Education");
+            Subcategory itunesSubCategory = new Subcategory();
+            itunesSubCategory.setName("Higher Education");
+            itunesCategory.setSubcategory(itunesSubCategory);
+
+            ArrayList<Category> feedCategoryList = new ArrayList<Category>();
+            feedCategoryList.add(itunesCategory);
+            feedInformation.setCategories(feedCategoryList);
+
+            feed.getModules().add(feedInformation);
         }
 
         // add entries for items
@@ -402,6 +401,7 @@ public class SyndicationFeed
                     // Get iTunes specific fields: author, subtitle, summary, duration, keywords
                     EntryInformation itunes = new EntryInformationImpl();
 
+                    //TODO Allow for multiple authors seperated...
                     String author = getOneDC(item, authorField);
                     if (author != null && author.length() > 0) {
                         itunes.setAuthor(author);                               // <itunes:author>
