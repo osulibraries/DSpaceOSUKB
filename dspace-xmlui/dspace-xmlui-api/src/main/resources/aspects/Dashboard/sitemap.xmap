@@ -60,6 +60,7 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
 
         <map:selectors>
             <map:selector name="AuthenticatedSelector" src="org.dspace.app.xmlui.aspect.general.AuthenticatedSelector"/>
+            <map:selector name="SpecifiedGroupAuthenticatedSelector" src="org.dspace.app.xmlui.aspect.dashboard.SpecifiedGroupAuthenticatedSelector"/>
         </map:selectors>
 
     </map:components>
@@ -112,49 +113,63 @@ The Dashboard Aspect is responsible providing a dashboard for statistical inquir
 
 
             <map:match pattern="handle/*/*/stats">
-                <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
-                    <map:transform type="ElasticSearchStatsViewer"/>
-                </map:match>
+                <map:select type="SpecifiedGroupAuthenticatedSelector">
+                    <map:when test="statistics_viewer">
+                        <map:transform type="ElasticSearchStatsViewer"/>
+                    </map:when>
+                    <map:otherwise>
+                        <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                            <map:transform type="ElasticSearchStatsViewer"/>
+                        </map:match>
 
-                <map:match type="StatisticsAuthorizedMatcher" pattern="!READ">
-                    <map:select type="AuthenticatedSelector">
-                        <map:when test="eperson">
-                            <map:transform type="RestrictedItem"/>
-                            <map:serialize/>
-                        </map:when>
-                        <map:otherwise>
-                            <map:act type="StartAuthentication">
-                                <map:parameter name="header" value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
-                                <map:parameter name="message" value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
-                            </map:act>
-                            <map:serialize/>
-                        </map:otherwise>
-                    </map:select>
-                </map:match>
-                <map:serialize type="xml"/>
+                        <map:match type="StatisticsAuthorizedMatcher" pattern="!READ">
+                            <map:select type="SpecifiedGroupAuthenticatedSelector">
+                                <map:when test="statistics_viewer">
+                                    <map:transform type="RestrictedItem"/>
+                                    <map:serialize/>
+                                </map:when>
+                                <map:otherwise>
+                                    <map:act type="StartAuthentication">
+                                        <map:parameter name="header" value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
+                                        <map:parameter name="message" value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
+                                    </map:act>
+                                    <map:serialize/>
+                                </map:otherwise>
+                            </map:select>
+                        </map:match>
+                        <map:serialize type="xml"/>
+                    </map:otherwise>
+                </map:select>
             </map:match>
 
             <map:match pattern="handle/*/*/stats/*">
-                <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
-                    <map:transform type="ElasticSearchStatsViewer"/>
-                </map:match>
+                <map:select type="SpecifiedGroupAuthenticatedSelector">
+                    <map:when test="statistics_viewer">
+                        <map:transform type="ElasticSearchStatsViewer"/>
+                    </map:when>
+                    <map:otherwise>
+                        <map:match type="StatisticsAuthorizedMatcher" pattern="READ">
+                            <map:transform type="ElasticSearchStatsViewer"/>
+                        </map:match>
 
-                <map:match type="StatisticsAuthorizedMatcher" pattern="!READ">
-                    <map:select type="AuthenticatedSelector">
-                        <map:when test="eperson">
-                            <map:transform type="RestrictedItem"/>
-                            <map:serialize/>
-                        </map:when>
-                        <map:otherwise>
-                            <map:act type="StartAuthentication">
-                                <map:parameter name="header" value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
-                                <map:parameter name="message" value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
-                            </map:act>
-                            <map:serialize/>
-                        </map:otherwise>
-                    </map:select>
-                </map:match>
-                <map:serialize type="xml"/>
+                        <map:match type="StatisticsAuthorizedMatcher" pattern="!READ">
+                            <map:select type="AuthenticatedSelector">
+                                <map:when test="eperson">
+                                    <map:transform type="RestrictedItem"/>
+                                    <map:serialize/>
+                                </map:when>
+                                <map:otherwise>
+                                    <map:act type="StartAuthentication">
+                                        <map:parameter name="header" value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
+                                        <map:parameter name="message" value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
+                                    </map:act>
+                                    <map:serialize/>
+                                </map:otherwise>
+                            </map:select>
+                        </map:match>
+                        <map:serialize type="xml"/>
+                    </map:otherwise>
+                </map:select>
             </map:match>
 
             <!--
