@@ -181,7 +181,7 @@ public class SyndicationFeed
             objectURL = resolveURL(request, dso);
             if (logo != null)
             {
-                logoURL = urlOfBitstream(request, logo);
+                logoURL = urlOfBitstream(request, logo, "logo.jpg");
             }
         }
         feed.setTitle(labels.containsKey(MSG_FEED_TITLE) ?
@@ -371,7 +371,7 @@ public class SyndicationFeed
                                     SyndEnclosure enc = new SyndEnclosureImpl();
                                     enc.setType(bits[i].getFormat().getMIMEType());
                                     enc.setLength(bits[i].getSize());
-                                    enc.setUrl(urlOfBitstream(request, bits[i]));
+                                    enc.setUrl(urlOfBitstream(request, bits[i], ""));
                                     enclosures.add(enc);
                                 } else {
                                     continue;
@@ -503,12 +503,13 @@ public class SyndicationFeed
     }
 
     // returns absolute URL to download content of bitstream (which might not belong to any Item)
-    private String urlOfBitstream(HttpServletRequest request, Bitstream logo)
+    // If there is no name, then allow a fallback string for filename
+    private String urlOfBitstream(HttpServletRequest request, Bitstream logo, String fallBackFileName)
     {
         String name = logo.getName();
         return resolveURL(request,null) +
                  (uiType.equalsIgnoreCase(UITYPE_XMLUI) ?"/bitstream/id/":"/retrieve/") +
-                 logo.getID()+"/"+(name == null?"":name);
+                 logo.getID()+"/"+(name == null?fallBackFileName:name);
     }
 
     /**
