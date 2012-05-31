@@ -7,23 +7,17 @@
  */
 package org.dspace.app.xmlui.aspect.administrative.collection;
 
-import java.sql.SQLException;
-
 import org.dspace.app.xmlui.aspect.administrative.FlowContainerUtils;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Division;
-import org.dspace.app.xmlui.wing.element.Item;
-import org.dspace.app.xmlui.wing.element.List;
-import org.dspace.app.xmlui.wing.element.PageMeta;
-import org.dspace.app.xmlui.wing.element.Para;
-import org.dspace.app.xmlui.wing.element.Text;
-import org.dspace.app.xmlui.wing.element.TextArea;
+import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
+import org.dspace.content.Bitstream;
 import org.dspace.content.Collection;
+
+import java.sql.SQLException;
 
 
 /**
@@ -176,7 +170,8 @@ public class EditCollectionMetadataForm extends AbstractDSpaceTransformer
 	    if (thisCollection.getLogo() != null) {
 	    	metadataList.addLabel(T_label_existing_logo);
 	    	item = metadataList.addItem();
-	    	item.addFigure(contextPath + "/bitstream/id/" + thisCollection.getLogo().getID() + "/bob.jpg", null, null);
+            Bitstream collectionLogo = thisCollection.getLogo();
+	    	item.addFigure(contextPath + "/bitstream/id/" + collectionLogo.getID() + "/" + ((collectionLogo.getName() == null) ? "logo.jpg" : collectionLogo.getName()), null, null);
 	    	item.addButton("submit_delete_logo").setValue(T_submit_delete_logo);
 	    }
 	    
