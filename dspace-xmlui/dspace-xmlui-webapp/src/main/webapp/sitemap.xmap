@@ -344,6 +344,7 @@
                                 Bitstreams not attached to to items (community / collection logos)
                                 
                                 /bitstream/id/[bitstreamID]/[ignored]
+                                /bitstream/id/[bitstreamID]/name
                         -->
                         <map:match pattern="bitstream/id/*/**">
                                 <map:select type="browser">
@@ -351,11 +352,13 @@
                                     <map:read type="BitstreamReader">
                                             <map:parameter name="userAgent" value="spider"/>
                                             <map:parameter name="bitstreamID" value="{1}"/>
+                                            <map:parameter name="name"  value="{2}"/>
                                     </map:read>
                                   </map:when>
                                   <map:otherwise>
                                     <map:read type="BitstreamReader">
                                             <map:parameter name="bitstreamID" value="{1}"/>
+                                            <map:parameter name="name" value="{2}"/>
                                     </map:read>
                                   </map:otherwise>
                                 </map:select>
