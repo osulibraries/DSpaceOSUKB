@@ -485,7 +485,7 @@
                 <span><xsl:text> </xsl:text></span>
             </div>
             <div id="osu-logo-text">
-                <p>If you have problems with the site, difficulty accessing portions of it due to incompatibility with adaptive technology, or need information in an alternative format, please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</p>
+                <p>If you have problems with the site, difficulty accessing portions of it due to incompatibility with adaptive technology, or need information in an alternative format, please contact the <a href="mailto:libkbhelp@lists.osu.edu">system administrators</a>.</p>
             </div>
             <div id="ds-footer-links">
                 <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
