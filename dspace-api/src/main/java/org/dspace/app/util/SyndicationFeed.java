@@ -31,6 +31,8 @@ import org.w3c.dom.Document;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -190,22 +192,6 @@ public class SyndicationFeed
         feed.setPublishedDate(new Date());
         feed.setUri(objectURL);
 
-        // add logo if we found one:
-        if (logoURL != null)
-        {
-            // we use the path to the logo for this, the logo itself cannot
-            // be contained in the rdf. Not all RSS-viewers show this logo.
-            SyndImage image = new SyndImageImpl();
-            image.setLink(objectURL);
-            if (StringUtils.isNotBlank(feed.getTitle())) {
-                image.setTitle(feed.getTitle());
-            } else {
-                image.setTitle(localize(labels, MSG_LOGO_TITLE));
-            }
-            image.setUrl(logoURL);
-            feed.setImage(image);
-        }
-
         if(podcastFeed) {
             FeedInformation feedInformation = new FeedInformationImpl();
 
@@ -219,7 +205,35 @@ public class SyndicationFeed
             feedCategoryList.add(itunesCategory);
             feedInformation.setCategories(feedCategoryList);
 
+            feedInformation.setOwnerName(ConfigurationManager.getProperty("dspace.name"));
+            feedInformation.setOwnerEmailAddress(ConfigurationManager.getProperty("mail.admin"));
+
+            if (logoURL != null)
+            {
+                // Set itunes:image
+                try {
+                    URL uriLogo = new URL(logoURL);
+                    feedInformation.setImage(uriLogo);
+                } catch (MalformedURLException e) {}
+            }
+
             feed.getModules().add(feedInformation);
+        } else {
+            // Set image using plain image tag.
+
+            if(logoURL != null) {
+                // we use the path to the logo for this, the logo itself cannot
+                // be contained in the rdf. Not all RSS-viewers show this logo.
+                SyndImage image = new SyndImageImpl();
+                image.setLink(objectURL);
+                if (StringUtils.isNotBlank(feed.getTitle())) {
+                    image.setTitle(feed.getTitle());
+                } else {
+                    image.setTitle(localize(labels, MSG_LOGO_TITLE));
+                }
+                image.setUrl(logoURL);
+                feed.setImage(image);
+            }
         }
 
         // add entries for items
