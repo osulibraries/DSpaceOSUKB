@@ -181,7 +181,7 @@ public class SyndicationFeed
             objectURL = resolveURL(request, dso);
             if (logo != null)
             {
-                logoURL = urlOfBitstream(request, logo, "logo.jpg");
+                logoURL = urlOfBitstream(request, logo, "logo.png");
             }
         }
         feed.setTitle(labels.containsKey(MSG_FEED_TITLE) ?
@@ -427,6 +427,9 @@ public class SyndicationFeed
                         itunes.setKeywords(subjects);                           // <itunes:keywords>
                     }
 
+                    // Set the entry artwork. IF this item has an image, then use that, fall-back to collection logo...
+
+
                     entry.getModules().add(itunes);
                 }
             }
@@ -531,17 +534,8 @@ public class SyndicationFeed
         {
             if (baseURL == null)
             {
-                if (request == null)
-                {
-                    baseURL = ConfigurationManager.getProperty("dspace.url");
-                }
-                else
-                {
-                    baseURL = (request.isSecure()) ? "https://" : "http://";
-                    baseURL += ConfigurationManager.getProperty("dspace.hostname");
-                    baseURL += ":" + request.getServerPort();
-                    baseURL += request.getContextPath();
-                }
+                baseURL = ConfigurationManager.getProperty("dspace.url");
+                //I don't think we need to construct the http vs https link.
             }
             return baseURL;
         }

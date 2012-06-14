@@ -338,12 +338,14 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                     bitstreamName = name;
                     if(name.endsWith(".jpg")) {
                         bitstreamMimeType = "image/jpeg";
+                    } else if(name.endsWith(".png")) {
+                        bitstreamMimeType = "image/png";
                     }
                 } else {
                     bitstreamName = "bitstream";
                 }
             }
-            
+
             // Log that the bitstream has been viewed, this is none-cached and the complexity
             // of adding it to the sitemap for every possible bitstre uri is not very tractable
             new DSpace().getEventService().fireEvent(
