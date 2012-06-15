@@ -192,6 +192,20 @@ public class SyndicationFeed
         feed.setPublishedDate(new Date());
         feed.setUri(objectURL);
 
+        if(logoURL != null) {
+            // we use the path to the logo for this, the logo itself cannot
+            // be contained in the rdf. Not all RSS-viewers show this logo.
+            SyndImage image = new SyndImageImpl();
+            image.setLink(objectURL);
+            if (StringUtils.isNotBlank(feed.getTitle())) {
+                image.setTitle(feed.getTitle());
+            } else {
+                image.setTitle(localize(labels, MSG_LOGO_TITLE));
+            }
+            image.setUrl(logoURL);
+            feed.setImage(image);
+        }
+
         if(podcastFeed) {
             FeedInformation feedInformation = new FeedInformationImpl();
 
@@ -218,22 +232,6 @@ public class SyndicationFeed
             }
 
             feed.getModules().add(feedInformation);
-        } else {
-            // Set image using plain image tag.
-
-            if(logoURL != null) {
-                // we use the path to the logo for this, the logo itself cannot
-                // be contained in the rdf. Not all RSS-viewers show this logo.
-                SyndImage image = new SyndImageImpl();
-                image.setLink(objectURL);
-                if (StringUtils.isNotBlank(feed.getTitle())) {
-                    image.setTitle(feed.getTitle());
-                } else {
-                    image.setTitle(localize(labels, MSG_LOGO_TITLE));
-                }
-                image.setUrl(logoURL);
-                feed.setImage(image);
-            }
         }
 
         // add entries for items
