@@ -150,13 +150,20 @@
         </xsl:call-template>
     </xsl:when>
     <xsl:when test="$clause = 18">
+        <xsl:call-template name="itemFieldDisplay.dc.description.embargo">
+            <xsl:with-param name="clause" select="$clause" />
+            <xsl:with-param name="phase" select="$phase" />
+            <xsl:with-param name="otherPhase" select="$otherPhase" />
+        </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="$clause = 19">
         <xsl:call-template name="itemFieldDisplay.dc.rights">
             <xsl:with-param name="clause" select="$clause" />
             <xsl:with-param name="phase" select="$phase" />
             <xsl:with-param name="otherPhase" select="$otherPhase" />
         </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$clause &lt; 19">
+    <xsl:when test="$clause &lt; 20">
         <xsl:call-template name="itemSummaryView-DIM-fields">
                 <xsl:with-param name="clause" select="($clause + 1)"/>
                 <xsl:with-param name="phase" select="$phase"/>
