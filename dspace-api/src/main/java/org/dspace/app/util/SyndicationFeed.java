@@ -23,6 +23,7 @@ import com.sun.syndication.io.SyndFeedOutput;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.dspace.app.util.syndicationmodule.ItunesUModuleImpl;
 import org.dspace.content.*;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
@@ -439,10 +440,11 @@ public class SyndicationFeed
                         itunes.setKeywords(subjects);                           // <itunes:keywords>
                     }
 
-                    // Set the entry artwork. IF this item has an image, then use that, fall-back to collection logo...
-
+                    ItunesUModuleImpl itunesU = new ItunesUModuleImpl();
+                    itunesU.setCategoryCode(112);   //112 = Education
 
                     entry.getModules().add(itunes);
+                    entry.getModules().add(itunesU);
                 }
             }
             feed.setEntries(entries);
