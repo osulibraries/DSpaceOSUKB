@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Invoke ROME library to assemble a generic model of a syndication
@@ -426,11 +428,29 @@ public class SyndicationFeed
                         itunes.setSummary(db.toString());                       // <itunes:summary>
                     }
 
-                    String extent = getOneDC(item, "dc.format.extent");         // assumed that user will enter this field with length of song in seconds
+
+                    String extent = getOneDC(item, "dc.format.extent");         // <itunes:duration>
                     if (extent != null && extent.length() > 0) {
-                        extent = extent.split(" ")[0];
-                        Integer duration = Integer.parseInt(extent);
-                        itunes.setDuration(new Duration(duration));             // <itunes:duration>
+                        // The values for this field could be in any odd format.
+                        // Audio Duration: 00:45:23, Video Duration: 00:45:23, Duration: 00:45:23, 00:45:23, 12354
+
+                                                        // num      not-WS     num
+                        String numericalComponentRegex = "[0-9]" + "(\\S*)" + "[0-9]";
+
+                        Pattern pattern = Pattern.compile(numericalComponentRegex);
+                        Matcher matcher = pattern.matcher(extent);
+                        if(matcher.find()) {
+                            String numericalComponent = matcher.toString().trim();
+                            Duration duration;
+                            if(numericalComponent.contains(":")) {
+                                //00:45:23
+                                 duration = new Duration(numericalComponent);
+                            } else {
+                                Integer seconds = Integer.parseInt(numericalComponent);
+                                duration = new Duration(0, 0, seconds);
+                            }
+                            itunes.setDuration(duration);
+                        }
                     }
 
                     String subject = getOneDC(item, "dc.subject");
