@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +23,7 @@ import java.net.URL;
  * Time: 3:25 PM
  * To change this template use File | Settings | File Templates.
  */
-
+@Distributive
 public class MediaDuration extends AbstractCurationTask {
     private static Logger log = Logger.getLogger(MediaDuration.class);
     
@@ -29,84 +31,93 @@ public class MediaDuration extends AbstractCurationTask {
     private static String externalSourceField;
     private static String tempDirectoryPath;
     
+    private List<String> results;
+    
     public void init(Curator curator, String taskId) throws IOException
     {
         super.init(curator, taskId);
         externalSourceField = getDefaultedConfiguration("webui.feed.podcast.sourceuri", defaultExternalMedia);
         tempDirectoryPath = ConfigurationManager.getProperty("dspace.dir") + "/temp/";
     }
-    
+
     @Override
     public int perform(DSpaceObject dso) throws IOException {
-        if(dso instanceof Item) {
-            Item item = (Item) dso;
-            DCValue[] externalMedia = item.getMetadata(externalSourceField);
-            //http://somepath.to/media.mp3
-            
-            if(externalMedia != null && externalMedia.length > 0) {
+        results = new ArrayList<String>();
+        
+        distribute(dso);
+        formatResults();
+        return Curator.CURATE_SUCCESS;
+    }
 
-                //skip doing this step if metadata-field is already filled.
-                DCValue[] formatExtentMetadata = item.getMetadata("dc.format.extent");
-                if(formatExtentMetadata != null && formatExtentMetadata.length > 0) {
-                    curator.setResult(taskId, "Value for dc.format.extent already present.");
-                    return Curator.CURATE_SKIP;
-                }
+    @Override
+    public void performItem(Item item) throws IOException {
+        DCValue[] externalMedia = item.getMetadata(externalSourceField);
+        //http://somepath.to/media.mp3
+        
+        if(externalMedia != null && externalMedia.length > 0) {
 
-                URL mediaURL = new URL(externalMedia[0].value);
-
-                File localFile = new File(tempDirectoryPath + "some-downloaded-file");
-                FileUtils.copyURLToFile(mediaURL, localFile);
-                
-
-                //Todo, generify by accepting config for path to tool.
-                Process mp3InfoProcess = Runtime.getRuntime().exec("/opt/local/bin/mp3info -p \"%S\" " + localFile.getAbsolutePath());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(mp3InfoProcess.getInputStream()));
-
-                String resultingValue = "";
-                String line;
-                while((line = reader.readLine()) != null) {
-                    resultingValue += line;
-                }
-
-                try {
-                    resultingValue = resultingValue.trim();
-                    resultingValue = resultingValue.replaceAll("\"", "");
-
-
-                    Integer durationSeconds = Integer.parseInt(resultingValue);
-
-
-                    //stuff the value into the metadata field.
-                    Duration duration = new Duration(0, 0, durationSeconds);
-                    item.addMetadata("dc", "format", "extent", null, "Audio Duration: " + duration.toString());
-                    
-                    try {
-                        item.update();
-                        curator.setResult(taskId, "Set Audio Duration to " + duration.toString());
-                        return Curator.CURATE_SUCCESS;
-
-                    } catch (Exception e) {
-                        curator.setResult(taskId, "Unable to save results");
-                        return Curator.CURATE_ERROR;
-                    }
-
-                } catch (NumberFormatException e) {
-                    curator.setResult(taskId, "Error in processing this media's value. Got:"+resultingValue);
-                    return Curator.CURATE_ERROR;
-                }
-
-
-
-                //fix the output results, to actually display right.
-
-            } else {
-                curator.setResult(taskId, "No media present");
-                return Curator.CURATE_SKIP;
+            //skip doing this step if metadata-field is already filled.
+            DCValue[] formatExtentMetadata = item.getMetadata("dc.format.extent");
+            if(formatExtentMetadata != null && formatExtentMetadata.length > 0) {
+                addResult(item, "skip", "Value for dc.format.extent already present.");
+                return;
             }
+
+            URL mediaURL = new URL(externalMedia[0].value);
+
+            File localFile = new File(tempDirectoryPath + "some-downloaded-file");
+            FileUtils.copyURLToFile(mediaURL, localFile);
+            
+
+            //Todo, generify by accepting config for path to tool.
+            Process mp3InfoProcess = Runtime.getRuntime().exec("/opt/local/bin/mp3info -p \"%S\" " + localFile.getAbsolutePath());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(mp3InfoProcess.getInputStream()));
+
+            String resultingValue = "";
+            String line;
+            while((line = reader.readLine()) != null) {
+                resultingValue += line;
+            }
+
+            try {
+                resultingValue = resultingValue.trim();
+                resultingValue = resultingValue.replaceAll("\"", "");
+
+
+                Integer durationSeconds = Integer.parseInt(resultingValue);
+
+
+                //stuff the value into the metadata field.
+                Duration duration = new Duration(0, 0, durationSeconds);
+                item.addMetadata("dc", "format", "extent", null, "Audio Duration: " + duration.toString());
+                
+                try {
+                    item.update();
+                    addResult(item, "success", "Set Audio Duration to " + duration.toString());
+                    return;
+
+                } catch (Exception e) {
+                    addResult(item, "error", "Unable to save results");
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                addResult(item, "error", "Error in processing this media's value. Got:"+resultingValue);
+                return;
+            }
+
+
+
+            //fix the output results, to actually display right.
+
         } else {
-            curator.setResult(taskId, "Not an Item");
-            return Curator.CURATE_SKIP;
+            addResult(item, "skip", "No media present");
+            return;
         }
+    }
+    
+    private void addResult(Item item, String status, String message) {
+        results.add(item.getHandle() + " (" + status + ") " + message);
     }
 
     // utility to get config property with default value when not set.
@@ -115,4 +126,13 @@ public class MediaDuration extends AbstractCurationTask {
         String result = ConfigurationManager.getProperty(key);
         return (result == null) ? dfl : result;
     }
+    
+    private void formatResults() {
+        StringBuilder outputResult = new StringBuilder();
+        for(String result : results) {
+            outputResult.append(result).append("\n");
+        }
+        setResult(outputResult.toString());
+    }
+            
 }
