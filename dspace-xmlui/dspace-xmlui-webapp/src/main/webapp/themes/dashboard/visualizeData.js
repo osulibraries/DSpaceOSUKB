@@ -63,7 +63,7 @@
 
             // Cheat with dates / data, and zero-fill the start/end edges, and "hopefully" things work out...
             // Set certainty to our cheat date to false, so it gets a dotted line.
-            if (c.chartData.A[0].type == 'date' && isValidDate(dateStart) && c.chartType == 'LineChart') {
+            if (c.chartData.getColumnType(0) == 'date' && isValidDate(dateStart) && c.chartType == 'LineChart') {
                 var cheatDateStart = [];
                 cheatDateStart.push(dateStart);
                 cheatDateStart.push(0);
@@ -82,7 +82,7 @@
               }
 
               newEntry = [];
-              if (c.chartData.A[0].type == 'date') {
+              if (c.chartData.getColumnType(0) == 'date') {
                 newEntry.push(new Date(entry[c.keyField]));
               } else {
                 newEntry.push(entry[c.keyField]);
@@ -95,14 +95,14 @@
               }
 
               // Certain data gets a certainty score of true. (solid line)
-              if (c.chartData.A[0].type == 'date' && c.chartType=='LineChart') {
+              if (c.chartData.getColumnType(0) == 'date' && c.chartType=='LineChart') {
                   newEntry.push(true);
               }
               dataValue.push(newEntry);
             });
 
             //Cheat and zero-fill in the last date. Certainty is false, so dotted line.
-            if (c.chartData.A[0].type == 'date' && isValidDate(dateEnd) && c.chartType=='LineChart') {
+            if (c.chartData.getColumnType(0) == 'date' && isValidDate(dateEnd) && c.chartType=='LineChart') {
               var cheatDateEnd = [];
               cheatDateEnd.push(dateEnd);
               cheatDateEnd.push(0);
