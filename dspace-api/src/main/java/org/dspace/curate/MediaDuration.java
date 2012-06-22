@@ -2,7 +2,6 @@ package org.dspace.curate;
 
 import com.sun.syndication.feed.module.itunes.types.Duration;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.dspace.content.DCValue;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
@@ -17,19 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: peterdietz
- * Date: 6/19/12
- * Time: 3:25 PM
- * To change this template use File | Settings | File Templates.
+ * Curation task to extract the audio duration from an MP3 file, and then add that to the metadata for an Item.
+ * The specific use case is that the mp3 lives on a remote server and is specified in dc.source.uri
+ * Author: Peter Dietz dietz.72@osu.edu
  */
 @Distributive
 public class MediaDuration extends AbstractCurationTask {
-    private static Logger log = Logger.getLogger(MediaDuration.class);
     
     private static String defaultExternalMedia = "dc.source.uri";
     private static String externalSourceField;
     private static String tempDirectoryPath;
+    private static String mp3infoPath;
     
     private List<String> results;
     
@@ -38,6 +35,7 @@ public class MediaDuration extends AbstractCurationTask {
         super.init(curator, taskId);
         externalSourceField = getDefaultedConfiguration("webui.feed.podcast.sourceuri", defaultExternalMedia);
         tempDirectoryPath = ConfigurationManager.getProperty("dspace.dir") + "/temp/";
+        mp3infoPath = ConfigurationManager.getProperty("mp3info.path");
     }
 
     @Override
@@ -67,10 +65,8 @@ public class MediaDuration extends AbstractCurationTask {
 
             File localFile = new File(tempDirectoryPath + "some-downloaded-file");
             FileUtils.copyURLToFile(mediaURL, localFile);
-            
 
-            //Todo, generify by accepting config for path to tool.
-            Process mp3InfoProcess = Runtime.getRuntime().exec("/opt/local/bin/mp3info -p \"%S\" " + localFile.getAbsolutePath());
+            Process mp3InfoProcess = Runtime.getRuntime().exec(mp3infoPath + " -p \"%S\" " + localFile.getAbsolutePath());
             BufferedReader reader = new BufferedReader(new InputStreamReader(mp3InfoProcess.getInputStream()));
 
             String resultingValue = "";
@@ -105,10 +101,6 @@ public class MediaDuration extends AbstractCurationTask {
                 addResult(item, "error", "Error in processing this media's value. Got:"+resultingValue);
                 return;
             }
-
-
-
-            //fix the output results, to actually display right.
 
         } else {
             addResult(item, "skip", "No media present");
