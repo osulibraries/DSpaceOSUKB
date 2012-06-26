@@ -781,6 +781,11 @@ fieldset ol, li.ds-form-item {
   float: left;
   clear: both; }
 
+li.ds-form-item fieldset {
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2; }
+
 div.ds-form-content {
   clear: both;
   display: block;
@@ -917,23 +922,11 @@ ul.pagination-links {
   font-weight: bolder;
   font-size: 90%; }
 
-li.page-link a,li.first-page-link a,li.last-page-link a {
+div#ds-feed-option img {
+  padding-right: 5px;
+  border: none; }
+div#ds-feed-option li {
+  padding-top: 4px; }
 
-}
-
-li.current-page-link a {
-
-}
-
-div#ds-feed-option img
-{
-    padding-right: 5px;
-    border: none;
-}
-
-div#ds-feed-option li
-{
-    padding-top: 4px;
-}
 select#aspect_submission_submit_SelectCollectionStep_field_handle {
   max-width: 250px; }
