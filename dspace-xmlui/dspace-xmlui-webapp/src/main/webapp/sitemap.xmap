@@ -562,6 +562,20 @@
                     </map:match>
 
                     <!-- Syndication feeds for whole repo or community/collection -->
+                    <map:match pattern="feed/*/**/mediaType/*">
+                        <map:generate type="DSpaceFeedGenerator">
+                            <map:parameter name="feedFormat" value="{1}"/>
+                            <map:parameter name="handle" value="{2}"/>
+                            <map:parameter name="mediaType" value="{3}"/>
+                        </map:generate>
+                        <map:act type="locale">
+                            <map:transform type="i18n">
+                                <map:parameter name="locale" value="{locale}"/>
+                            </map:transform>
+                        </map:act>
+                        <map:serialize type="xml"/>
+                    </map:match>
+
                     <map:match pattern="feed/*/**">
                         <map:generate type="DSpaceFeedGenerator">
                             <map:parameter name="feedFormat" value="{1}"/>

@@ -115,6 +115,9 @@ public class SyndicationFeed
     // affects Bitstream retrieval URL and I18N keys
     private String uiType = null;
 
+    // Media type of content request, if specified (audio vs video).
+    private String mediaType = null;
+
     private HttpServletRequest request = null;
 
     /**
@@ -210,6 +213,7 @@ public class SyndicationFeed
         }
 
         if(podcastFeed) {
+            //Set feed level information for podcast
             FeedInformation feedInformation = new FeedInformationImpl();
 
             Category itunesCategory = new Category();
@@ -248,6 +252,36 @@ public class SyndicationFeed
                     continue;
                 }
                 Item item = (Item)itemDSO;
+                
+                if(getMediaType() != null) {
+                    String mediaType = getMediaType();
+                    
+                    //TODO also make a decision about bitstreams with media types
+                    Integer numberContentMatchingType = 0;
+                    
+                    DCValue[] externalMedia = item.getMetadata(externalSourceField);
+                    if(externalMedia.length > 0)
+                    {
+                        for(int i = 0; i< externalMedia.length; i++)
+                        {
+                            if(mediaType.equals("audio")) {
+                                if(externalMedia[i].value.trim().endsWith(".mp3")) {
+                                    numberContentMatchingType++;
+                                }
+                            } else if(mediaType.equals("video")) {
+                                if(externalMedia[i].value.trim().endsWith(".m4v")) {
+                                    numberContentMatchingType++;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(numberContentMatchingType == 0) {
+                        //Request wanted a mediaType, but this Item has no files matching that type, so skip from feed.
+                        continue;
+                    }
+                }
+                
                 boolean hasDate = false;
                 SyndEntry entry = new SyndEntryImpl();
                 entries.add(entry);
@@ -377,6 +411,7 @@ public class SyndicationFeed
                     // Add enclosure(s)
                     List<SyndEnclosure> enclosures = new ArrayList();
                     try {
+                        // TODO Check mediaType of real bitstreams
                         Bundle[] bunds = item.getBundles("ORIGINAL");
                         if (bunds[0] != null) {
                             Bitstream[] bits = bunds[0].getBitstreams();
@@ -400,9 +435,35 @@ public class SyndicationFeed
                         {
                             for(int i = 0; i< externalMedia.length; i++)
                             {
+                                if(getMediaType() != null) {
+                                    String mediaType = getMediaType();
+
+                                    //TODO need to specify formats and mimes better
+                                    if(mediaType.equals("audio")) {
+                                        if(! externalMedia[i].value.trim().endsWith(".mp3")) {
+                                            // AUDIO, not MP3 ==  Sorry, this one can't be added.
+                                            continue;
+                                        }
+                                    } else if(mediaType.equals("video")) {
+                                        if(! externalMedia[i].value.trim().endsWith(".m4v")) {
+                                            // VIDEO, not M4V == Sorry, this one can't be added.
+                                            continue;
+                                        }
+                                    }
+                                }
+                                
+                                
                                 SyndEnclosure enc = new SyndEnclosureImpl();
-                                enc.setType("audio/x-mpeg");        //We can't determine MIME of external file, so just picking one.
-                                enc.setLength(1);
+                                
+                                if(externalMedia[i].value.endsWith(".mp3")) {
+                                    enc.setType("audio/mpeg");
+                                } else if(externalMedia[i].value.endsWith(".m4v")) {
+                                    enc.setType("video/x-m4v");
+                                } else {
+                                    enc.setType("audio/x-mpeg");        //We can't determine MIME of external file, so just picking one.
+                                }
+
+                                enc.setLength(1);                       // Set the enclosure length from the duration (we might have that...)
                                 enc.setUrl(externalMedia[i].value);
                                 enclosures.add(enc);
                             }
@@ -484,6 +545,21 @@ public class SyndicationFeed
         {
             feed.setImage(null);
         }
+    }
+
+    /**
+     * Specify which media-types you'd like to only have returned in the feed.
+     * @param mediaType Should be audio or video. Otherwise it won't be set.
+     */
+    public void setMediaType(String mediaType) {
+        mediaType = mediaType.toLowerCase();
+        if(mediaType.equals("audio") || mediaType.equals("video")) {
+            this.mediaType = mediaType;
+        }
+    }
+    
+    public String getMediaType() {
+        return this.mediaType;
     }
 
     /**
