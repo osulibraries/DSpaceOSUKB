@@ -307,7 +307,18 @@
                     });
                 </script>
 
-                <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+                <script type="text/javascript">
+                    <xsl:attribute name="src">
+                        <xsl:choose>
+                            <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='scheme']='https'">
+                                <xsl:text>https://c328740.ssl.cf1.rackcdn.com</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>http://cdn.mathjax.org</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:text>/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML</xsl:text>
+                    </xsl:attribute>
                     <xsl:text> </xsl:text>
                 </script>
             </xsl:if>
