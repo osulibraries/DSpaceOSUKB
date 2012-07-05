@@ -298,7 +298,10 @@
             <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='render'][@qualifier='scientificFormulas'] = 'true'">
                 <script type="text/x-mathjax-config">
                     MathJax.Hub.Config({
-                        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+                        tex2jax: {
+                            inlineMath: [['$','$'], ['\\(','\\)']],
+                            ignoreClass: "detail-field-data"
+                        },
                         TeX: {
                           Macros: {
                             AA: '{\\mathring A}'
