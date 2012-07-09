@@ -169,6 +169,11 @@
                     </xsl:attribute>
 
                     <xsl:choose>
+                        <!-- Special Case: Media Type -->
+                        <xsl:when test="contains(., 'audio')"><img src="/dspace/static/icons/feed.png" alt="Icon for Audio feed" />Audio Feed</xsl:when>
+                        <xsl:when test="contains(., 'video')"><img src="/dspace/static/icons/feed.png" alt="Icon for Video feed" />Video Feed</xsl:when>
+
+                        <!-- Default: Feed Format -->
                         <xsl:when test="contains(., 'rss_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 1.0 feed" />RSS 1.0</xsl:when>
                         <xsl:when test="contains(., 'rss_2.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 2.0 feed" />RSS 2.0</xsl:when>
                         <xsl:when test="contains(., 'atom_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for Atom feed" />Atom</xsl:when>

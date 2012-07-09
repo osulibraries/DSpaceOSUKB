@@ -7,12 +7,6 @@
  */
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.HashMap;
-
 import org.apache.cocoon.caching.CacheableProcessingComponent;
 import org.apache.cocoon.util.HashUtil;
 import org.apache.excalibur.source.SourceValidity;
@@ -22,11 +16,7 @@ import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Division;
-import org.dspace.app.xmlui.wing.element.ReferenceSet;
-import org.dspace.app.xmlui.wing.element.List;
-import org.dspace.app.xmlui.wing.element.PageMeta;
+import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.BrowseIndex;
@@ -34,6 +24,12 @@ import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Display a single collection. This includes a full text search, browse by
@@ -174,6 +170,9 @@ public class CollectionViewer extends AbstractDSpaceTransformer implements Cache
         String formats = ConfigurationManager.getProperty("webui.feed.formats");
 		if ( formats != null )
 		{
+            String audioCollection = ConfigurationManager.getProperty("webui.feed.podcast.audio.collections");
+            String videoCollection = ConfigurationManager.getProperty("webui.feed.podcast.video.collections");
+
 			for (String format : formats.split(","))
 			{
 				// Remove the protocol number, i.e. just list 'rss' or' atom'
@@ -187,6 +186,15 @@ public class CollectionViewer extends AbstractDSpaceTransformer implements Cache
 					
 				String feedURL = contextPath+"/feed/"+format.trim()+"/"+collection.getHandle();
 				pageMeta.addMetadata("feed", feedFormat).addContent(feedURL);
+
+                //if this collection has audio/video specific feeds too. Add them
+                if(audioCollection.contains(collection.getHandle())) {
+                    pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/audio");
+                }
+
+                if(videoCollection.contains(collection.getHandle())) {
+                    pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/video");
+                }
 			}
 		}
     }
