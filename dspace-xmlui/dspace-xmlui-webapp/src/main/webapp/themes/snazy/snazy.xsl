@@ -72,6 +72,96 @@
 
     </xsl:template>
 
+    <!-- Generate the info about the item from the metadata section -->
+    <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
+        <!-- First, throw any dc.source.uri elements into a file viewer, before showing all metadata-->
+        <xsl:choose>
+            <xsl:when test="count(dim:field[@element='source'][@qualifier='uri']) &gt; 0">
+                <ul id="external_file_list" class="snazy ds-file-list no-js">
+                    <xsl:for-each select="dim:field[@element='source'][@qualifier='uri']">
+                        <li>
+                            <xsl:attribute name="class">
+                                <xsl:text>file-entry </xsl:text>
+                                <xsl:if test="(position() mod 2 = 0)"> even</xsl:if>
+                                <xsl:if test="(position() mod 2 = 1)"> odd</xsl:if>
+                            </xsl:attribute>
+
+                            <div class="file-item file-link file-name">
+                                <span class="label">Remote Media:</span>
+                                <a>
+                                    <xsl:attribute name="src">
+                                        <xsl:value-of select="./node()"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="./node()"/>
+                                </a>
+                            </div>
+
+                            <div class="file-view">
+                                <div class="file-view-container">
+
+                                    <xsl:choose>
+                                        <xsl:when test="contains(./node(), '.mp3')">
+                                            <!--HTML5 Embed Audio-->
+                                            <audio controls="controls">
+                                                <source type="audio/mpeg">
+                                                    <xsl:attribute name="src">
+                                                        <xsl:value-of select="./node()"/>
+                                                    </xsl:attribute>
+                                                </source>
+                                            </audio>
+                                        </xsl:when>
+                                        <xsl:when test="contains(./node(), '.m4v')">
+                                            <!--HTML5 Embed Video-->
+                                            <video controls="controls">
+                                                <source type="video/x-m4v">
+                                                    <xsl:attribute name="src">
+                                                        <xsl:value-of select="./node()"/>
+                                                    </xsl:attribute>
+                                                </source>
+                                            </video>
+                                        </xsl:when>
+
+                                        <xsl:otherwise>
+                                            Honey Badger
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+
+
+
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </xsl:for-each>
+
+
+                </ul>
+            </xsl:when>
+        </xsl:choose>
+
+
+        <!--<ul id="file_list" class="snazy ds-file-list no-js">-->
+        <table class="ds-includeSet-table">
+            <xsl:call-template name="itemSummaryView-DIM-fields">
+            </xsl:call-template>
+        </table>
+        <xsl:if test="$config-use-COinS = 1">
+            <!--  Generate COinS  -->
+            <span class="Z3988">
+                <xsl:attribute name="title">
+                    <xsl:call-template name="renderCOinS"/>
+                </xsl:attribute>
+                &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+            </span>
+        </xsl:if>
+
+        <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
+        <!--        see also match="dim:dim" mode="itemDetailView-DIM"  -->
+        <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
+    </xsl:template>
+
+
     <!--Snazy New Layout-->
     <xsl:template match="mets:fileGrp[@USE='CONTENT']">
         <xsl:param name="context"/>
