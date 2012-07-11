@@ -89,7 +89,7 @@
                             <div class="file-item file-link file-name">
                                 <span class="label">Remote Media:</span>
                                 <a>
-                                    <xsl:attribute name="src">
+                                    <xsl:attribute name="href">
                                         <xsl:value-of select="./node()"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="./node()"/>
@@ -102,7 +102,7 @@
                                     <xsl:choose>
                                         <xsl:when test="contains(./node(), '.mp3')">
                                             <!--HTML5 Embed Audio-->
-                                            <audio controls="controls">
+                                            <audio id="html5audio" controls="controls">
                                                 <source type="audio/mpeg">
                                                     <xsl:attribute name="src">
                                                         <xsl:value-of select="./node()"/>
@@ -111,14 +111,16 @@
                                             </audio>
                                         </xsl:when>
                                         <xsl:when test="contains(./node(), '.m4v')">
-                                            <!--HTML5 Embed Video-->
-                                            <video controls="controls">
+                                            <!--HTML5 Embed Video -->
+                                            <video id="html5video" width="480" height="360" controls="controls">
                                                 <source type="video/x-m4v">
                                                     <xsl:attribute name="src">
                                                         <xsl:value-of select="./node()"/>
                                                     </xsl:attribute>
                                                 </source>
                                             </video>
+                                            <!--Fallback managed by JS-->
+                                            
                                         </xsl:when>
 
                                         <xsl:otherwise>

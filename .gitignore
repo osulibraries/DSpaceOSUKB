@@ -8,3 +8,4 @@ nbactions.xml
 profiles.xml
 *.orig
 .idea
+.sass-cache/
