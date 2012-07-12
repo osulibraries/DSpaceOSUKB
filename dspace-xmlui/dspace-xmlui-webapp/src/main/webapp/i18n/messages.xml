@@ -1941,6 +1941,8 @@
   <message key="xmlui.dri2xhtml.mimetype.application/pdf">PDF</message>
   <message key="xmlui.dri2xhtml.mimetype.application/postscript">Postscript</message>
   <message key="xmlui.dri2xhtml.mimetype.application/sgml">SGML</message>
+  <message key="xmlui.dri2xhtml.mimetype.application/vnd.google-earth.kml+xml">KML</message>
+  <message key="xmlui.dri2xhtml.mimetype.application/vnd.google-earth.kmz">KMZ</message>
   <message key="xmlui.dri2xhtml.mimetype.application/vnd.ms-excel">Microsoft Excel</message>
   <message key="xmlui.dri2xhtml.mimetype.application/vnd.ms-powerpoint">Microsoft PowerPoint</message>
   <message key="xmlui.dri2xhtml.mimetype.application/vnd.ms-project">Microsoft Project</message>
