@@ -155,23 +155,20 @@ public class CitationDocument {
         Rectangle pdfSize = source.getCropBox(1);
         Document citedDoc = new Document(pdfSize);
         File coverTemp = File.createTempFile(bitstream.getName(), ".cover.pdf");
-        
-        //Need a writer instance to make changed to the
-        //document.
+
+        //Need a writer instance to make changed to the document.
         PdfWriter writer = PdfWriter.getInstance(citedDoc, new FileOutputStream(coverTemp));
 
         //Call helper function to add content to the coverpage.
         this.generateCoverPage(citedDoc, writer, cMeta);
 
         //Create reader from finished cover page.
-        PdfReader cover = new PdfReader(
-                new FileInputStream(coverTemp));
+        PdfReader cover = new PdfReader(new FileInputStream(coverTemp));
 
         //Get page labels from source document
         String[] labels = PdfPageLabels.getPageLabels(source);
 
-        //Concatente the finished cover page with the source
-        //document.
+        //Concatente the finished cover page with the source document.
         File citedTemp = File.createTempFile(bitstream.getName(), ".cited.pdf");
         OutputStream citedOut = new FileOutputStream(citedTemp);
         PdfConcatenate concat = new PdfConcatenate(citedOut);
@@ -209,8 +206,7 @@ public class CitationDocument {
      * @throws IOException
      * @throws DocumentException
      */
-    private void generateCoverPage(Document cDoc, PdfWriter writer,
-                                   CitationMeta cMeta) throws DocumentException {
+    private void generateCoverPage(Document cDoc, PdfWriter writer, CitationMeta cMeta) throws DocumentException {
         cDoc.open();
         writer.setCompressionLevel(0);
 
