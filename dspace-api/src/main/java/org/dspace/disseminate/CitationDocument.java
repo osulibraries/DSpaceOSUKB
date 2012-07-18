@@ -213,8 +213,6 @@ public class CitationDocument {
                                    CitationMeta cMeta) throws DocumentException {
         cDoc.open();
         writer.setCompressionLevel(0);
-        cDoc.addHeader(cMeta.getCollection().getName() + ": "
-                + cMeta.getItem().getName(), CitationDocument.HEADER_LINE);
 
         //Set up some fonts
         Font beforeAfterFont = FontFactory.getFont(FontFactory.TIMES_BOLD, 12f, new BaseColor(153, 0, 0));
