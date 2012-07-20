@@ -71,22 +71,25 @@ div
     margin: 0 auto
     width: 1000px
   &#ds-header
-    width: 100%
+    position: relative
+    width: 1000px
     height: 109px
     padding: 0px
-    a span#ds-header-logo
-      width: 1000px
-      height: 109px
-      float: left
-      background-image: url("../images/header.png")
-      background-repeat: no-repeat
-      margin: 0px
-      color: inherit
+    background: url("../images/header.jpg") no-repeat
     h1, h2
-      font-size: 3em
-      display: inherit
-      padding: 10px 0 0 10px
-      margin: 0 0 0 0
+      margin: 0
+      padding: 0
+      line-height: 0
+    h2
+      position: absolute
+      bottom: 8px
+      left: 210px
+      font: 700 11px Arial, sans-serif
+      letter-spacing: 1px
+      a
+        color: #000
+        text-decoration: none
+
   &#ds-user-box
     text-align: right
     padding: 0 4px
@@ -184,6 +187,11 @@ ul#ds-trail
   background: url(../images/ChevronOverlay.png) no-repeat 100% 0
   width: 13px
   height: 20px
+
+.ir
+  font: 0/0 a
+  text-shadow: none
+  color: transparent
 
 /* bds: "body-and-options" is a div container that wraps the entire set of templates
  *      for both ds-body and ds-options (and meta, which is unused; see structural.xsl)
@@ -533,6 +541,15 @@ ul
         font-style: italic
       div.artifact-preview
         float: right
+
+#kb-logo a
+  position: absolute
+  top: 19px
+  left: 30px
+  display: block
+  width: 207px
+  height: 80px
+  background: url("../images/kb-logo.png") no-repeat
 
 div.ds-static-div
   padding: 0 2px

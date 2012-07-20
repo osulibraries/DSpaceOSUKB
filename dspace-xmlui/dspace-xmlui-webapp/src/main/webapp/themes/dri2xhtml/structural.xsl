@@ -391,29 +391,24 @@
         placeholders for header images -->
     <xsl:template name="buildHeader">
         <div id="ds-header">
-            <a>
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/</xsl:text>
-                </xsl:attribute>
-                <span id="ds-header-logo">
-                    <xsl:text> </xsl:text>
-                </span>
-            </a>
-
-            <!-- Include an invisible KB logo, usefull for robots that "lint" the page, such as FaceBook-->
-            <img>
-                <xsl:attribute name="src">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/static/images/kb-logo-small.jpg</xsl:text>
-                </xsl:attribute>
-                <xsl:attribute name="alt">
-                    <xsl:text>Logo of the Ohio State University Knowledge Bank</xsl:text>
-                </xsl:attribute>
-                <xsl:attribute name="style">
-                    <xsl:text>display:none</xsl:text>
-                </xsl:attribute>
-            </img>
+            <h1 id="kb-logo">
+                <a class="ir">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$context-path"/>
+                        <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>Knowledge Bank</xsl:text>
+                </a>
+            </h1>
+            <h2>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$context-path"/>
+                        <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>University Libraries and the Office of the Chief Information Officer</xsl:text>
+                </a>
+            </h2>
             <!-- Commenting out default action of the header. It has broken into individual smaller blocks.
             -<h1 class="pagetitle">
             -    <xsl:choose>
