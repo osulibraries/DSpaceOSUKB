@@ -796,7 +796,6 @@
     </xsl:template>
             
     <xsl:template match="dim:field" mode="itemDetailView-DIM">
-        <!-- An admin can view the provenance field in detail view-->
             <tr>
                 <xsl:attribute name="class">
                     <xsl:text>ds-table-row </xsl:text>
@@ -822,6 +821,7 @@
             </td>
                 <td class="detail-field-language"><xsl:value-of select="./@language"/></td>
             </tr>
+            </xsl:if>
     </xsl:template>
 
 	
@@ -854,15 +854,15 @@
                 <xsl:value-of select="dim:field[@element='description'][@qualifier='tableofcontents']/node()" disable-output-escaping="yes"/>
             </div>
         </xsl:if>
-        <xsl:if test="string-length(dim:field[@element='description'][not(@qualifier)])&gt;2">
-            <div class="intro-text">
-                <xsl:value-of select="dim:field[@element='description'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
-            </div>
-        </xsl:if>
-        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;2">
-            <div class="detail-view-rights-and-license">
-                <xsl:value-of select="dim:field[@element='rights'][not(@qualifier)]/node()" disable-output-escaping="yes"/>
-            </div>
+        
+        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0 or string-length(dim:field[@element='rights'][@qualifier='license'])&gt;0">
+        	<div class="detail-view-rights-and-license">
+		        <xsl:if test="string-length(dim:field[@element='rights'][not(@qualifier)])&gt;0">
+		            <p class="copyright-text">
+		                <xsl:copy-of select="dim:field[@element='rights'][not(@qualifier)]/node()"/>
+		            </p>
+		        </xsl:if>
+        	</div>
         </xsl:if>
         <xsl:text> </xsl:text> <!-- in case of none of the above, keeps a proper empty div -->
     </xsl:template>
