@@ -682,50 +682,6 @@
         </xsl:if>
     </xsl:template>
     
-    <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
-    <xsl:template name="buildFooter">
-        <div id="ds-footer">
-            <i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>
-            <div id="ds-footer-links">
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                        <xsl:text>/contact</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
-                </a>
-                <xsl:text> | </xsl:text>
-                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                        <xsl:text>/feedback</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
-                </a>
-            </div>
-            <!--Invisible link to HTML sitemap (for search engines) -->
-            <a>
-                <xsl:attribute name="href">
-                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                    <xsl:text>/htmlmap</xsl:text>
-                </xsl:attribute>
-            </a>
-        </div>
-        <!--
-            <a href="http://di.tamu.edu">
-                <div id="ds-footer-logo"></div>
-            </a>
-            <p>
-            This website is using Manakin, a new front end for DSpace created by Texas A&amp;M University
-            Libraries. The interface can be extensively modified through Manakin Aspects and XSL based Themes.
-            For more information visit
-            <a href="http://di.tamu.edu">http://di.tamu.edu</a> and
-            <a href="http://dspace.org">http://dspace.org</a>
-            </p>
-        -->
-    </xsl:template>
-    
-    
     
     <!--
         The trail is built one link at a time. Each link is given the ds-trail-link class, with the first and
@@ -3733,9 +3689,6 @@ Disable Choice
             </div>
         </xsl:for-each>
     </xsl:template>
-
-</xsl:stylesheet>
-
 
     <!-- Add each RSS feed from meta to a list -->
     <xsl:template name="addRSSLinks">

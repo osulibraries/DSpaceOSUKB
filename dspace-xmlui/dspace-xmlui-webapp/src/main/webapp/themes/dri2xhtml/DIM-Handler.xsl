@@ -821,7 +821,6 @@
             </td>
                 <td class="detail-field-language"><xsl:value-of select="./@language"/></td>
             </tr>
-            </xsl:if>
     </xsl:template>
 
 	
