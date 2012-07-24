@@ -7,15 +7,7 @@
  */
 package org.dspace.submit.step;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
-
 import org.dspace.app.util.SubmissionInfo;
 import org.dspace.app.util.Util;
 import org.dspace.authorize.AuthorizeException;
@@ -24,8 +16,13 @@ import org.dspace.content.LicenseUtils;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.eperson.EPerson;
-import org.dspace.license.CreativeCommons;
 import org.dspace.submit.AbstractProcessingStep;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * License step for DSpace Submission Process. Processes the
@@ -87,45 +84,6 @@ public class LicenseStep extends AbstractProcessingStep
             throws ServletException, IOException, SQLException,
             AuthorizeException
     {
-        // If creative commons licensing is enabled, then it is page #1
-        if (CreativeCommons.isEnabled()
-                && AbstractProcessingStep.getCurrentPage(request) == 1)
-        {
-            // process Creative Commons license
-            // (and return any error messages encountered)
-            return processCC(context, request, response, subInfo);
-        }
-        // otherwise, if we came from general DSpace license
-        else
-        {
-            // process DSpace license (and return any error messages
-            // encountered)
-            return processLicense(context, request, response, subInfo);
-        }
-    }
-
-    
-    /**
-     * Process the input from the license page
-     * 
-     * @param context
-     *            current DSpace context
-     * @param request
-     *            current servlet request object
-     * @param response
-     *            current servlet response object
-     * @param subInfo
-     *            submission info object
-     * 
-     * @return Status or error flag which will be processed by
-     *         UI-related code! (if STATUS_COMPLETE or 0 is returned,
-     *         no errors occurred!)
-     */
-    protected int processLicense(Context context, HttpServletRequest request,
-            HttpServletResponse response, SubmissionInfo subInfo)
-            throws ServletException, IOException, SQLException,
-            AuthorizeException
-    {
         String buttonPressed = Util.getSubmitButton(request, CANCEL_BUTTON);
 
         boolean licenseGranted = false;
@@ -183,53 +141,6 @@ public class LicenseStep extends AbstractProcessingStep
         return STATUS_COMPLETE;
     }
 
-    /**
-     * Process the input from the CC license page
-     * 
-     * @param context
-     *            current DSpace context
-     * @param request
-     *            current servlet request object
-     * @param response
-     *            current servlet response object
-     * @param subInfo
-     *            submission info object
-     * 
-     * @return Status or error flag which will be processed by
-     *         doPostProcessing() below! (if STATUS_COMPLETE or 0 is returned,
-     *         no errors occurred!)
-     */
-    protected int processCC(Context context, HttpServletRequest request,
-            HttpServletResponse response, SubmissionInfo subInfo)
-            throws ServletException, IOException, SQLException,
-            AuthorizeException
-    {
-        String buttonPressed = Util.getSubmitButton(request, NEXT_BUTTON);
-
-        // RLR hack - need to distinguish between progress bar real submission
-        // (if cc_license_url exists, then users has accepted the CC License)
-        String ccLicenseUrl = request.getParameter("cc_license_url");
-
-        if (buttonPressed.equals("submit_no_cc"))
-        {
-            // Skipping the CC license - remove any existing license selection
-            CreativeCommons.removeLicense(context, subInfo.getSubmissionItem()
-                    .getItem());
-        }
-        else if ((ccLicenseUrl != null) && (ccLicenseUrl.length() > 0))
-        {
-            Item item = subInfo.getSubmissionItem().getItem();
-
-            // save the CC license
-            CreativeCommons.setLicense(context, item, ccLicenseUrl);
-        }
-
-        // commit changes
-        context.commit();
-
-        // completed without errors
-        return STATUS_COMPLETE;
-    }
 
     /**
      * Retrieves the number of pages that this "step" extends over. This method
@@ -256,16 +167,8 @@ public class LicenseStep extends AbstractProcessingStep
     public int getNumberOfPages(HttpServletRequest request,
             SubmissionInfo subInfo) throws ServletException
     {
-        // if creative commons licensing is enabled,
-        // then there are 2 license pages
-        if (CreativeCommons.isEnabled())
-        {
-            return 2;
-        }
-        else
-        {
-            return 1;
-        }
+        return 1;
+
     }
 
 }

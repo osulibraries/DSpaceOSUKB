@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  * This is the last step of the item submission processes. During this
  * step the user must agree to the collection's standard distribution
  * license. If the user can not agree to the license they they may either
- * save the submission untill a later time or remove the submission completely.
+ * save the submission until a later time or remove the submission completely.
  * 
  * This step will include the full license text inside the page using the
  * HTML fragment method.
@@ -67,11 +67,7 @@ public class LicenseStep extends AbstractSubmissionStep
     protected static final Message T_submit_complete = 
         message("xmlui.Submission.submit.LicenseStep.submit_complete");
 	
-    /** 
-     * Global reference to Creative Commons license page
-     * (this is used when CC Licensing is enabled in dspace.cfg)
-     **/
-    private CCLicenseStep ccLicenseStep = null;
+
     
     /**
 	 * Establish our required parameters, abstractStep will enforce these.
@@ -81,43 +77,12 @@ public class LicenseStep extends AbstractSubmissionStep
 		this.requireSubmission = true;
 		this.requireStep = true;
 	}
-    
-     /**
-     * Check if this is actually the creative commons license step
-     */
-    public void setup(SourceResolver resolver, Map objectModel, String src, Parameters parameters) 
-        throws ProcessingException, SAXException, IOException
-    { 
-        super.setup(resolver,objectModel,src,parameters);
-        
-        //if Creative Commons licensing is enabled, and
-        //we are on the 1st page of Licensing, 
-        //then this is the CC License page
-        if (CreativeCommons.isEnabled() && this.getPage()==1)
-        {
-           ccLicenseStep = new CCLicenseStep();
-           ccLicenseStep.setup(resolver, objectModel, src, parameters);
-        }
-        else
-        {
-            ccLicenseStep = null;
-        }
-    
-    }
+
     
 	public void addBody(Body body) throws SAXException, WingException,
 	UIException, SQLException, IOException, AuthorizeException
 	{
-        // If Creative Commons licensing is enabled,
-        // and we've initialized the CC license Page
-        // then load the CreativeCommons page!
-        if (CreativeCommons.isEnabled() && ccLicenseStep!=null)
-        {
-           //add body for CC License page
-           ccLicenseStep.addBody(body);
-           return;
-        }
-        
+
         // Get the full text for the actuial licese
 		Collection collection = submission.getCollection();
 		String actionURL = contextPath + "/handle/"+collection.getHandle() + "/submit/" + knot.getId() + ".continue";
@@ -150,13 +115,13 @@ public class LicenseStep extends AbstractSubmissionStep
 		// If user did not check "I accept" checkbox 
 		if(this.errorFlag==org.dspace.submit.step.LicenseStep.STATUS_LICENSE_REJECTED)
 		{
-            log.info(LogManager.getHeader(context, "reject_license", submissionInfo.getSubmissionLogInfo()));
-
+			log.info(LogManager.getHeader(context, "reject_license", submissionInfo.getSubmissionLogInfo()));
+			
 			decision.addError(T_decision_error);
 		}
 		
-		//add standard control/paging buttons
-        addControlButtons(controls);
+		// add standard control/paging buttons
+		addControlButtons(controls);
 	}
     
     /** 
@@ -182,7 +147,7 @@ public class LicenseStep extends AbstractSubmissionStep
         WingException, UIException, SQLException, IOException,
         AuthorizeException
     {
-        //License step doesn't require reviewing
+        // License step doesn't require reviewing
         return null;
     }
 }

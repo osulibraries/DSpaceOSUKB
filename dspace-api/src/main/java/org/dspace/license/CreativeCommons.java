@@ -24,6 +24,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CreativeCommons
 {
@@ -47,29 +48,18 @@ public class CreativeCommons
     private static final String BSN_LICENSE_RDF = "license_rdf";
 
     protected static final Templates templates;
-    
-    private static boolean enabled_p;
 
     static
     {
-        // we only check the property once
-        enabled_p = ConfigurationManager
-                .getBooleanProperty("webui.submit.enable-cc");
+        // if defined, set a proxy server for http requests to Creative
+        // Commons site
+        String proxyHost = ConfigurationManager.getProperty("http.proxy.host");
+        String proxyPort = ConfigurationManager.getProperty("http.proxy.port");
 
-        if (enabled_p)
+        if ((proxyHost != null) && (proxyPort != null))
         {
-            // if defined, set a proxy server for http requests to Creative
-            // Commons site
-            String proxyHost = ConfigurationManager
-                    .getProperty("http.proxy.host");
-            String proxyPort = ConfigurationManager
-                    .getProperty("http.proxy.port");
-
-            if ((proxyHost != null) && (proxyPort != null))
-            {
-                System.setProperty("http.proxyHost", proxyHost);
-                System.setProperty("http.proxyPort", proxyPort);
-            }
+            System.setProperty("http.proxyHost", proxyHost);
+            System.setProperty("http.proxyPort", proxyPort);
         }
         
         try
@@ -91,7 +81,7 @@ public class CreativeCommons
      */
     public static boolean isEnabled()
     {
-        return enabled_p;
+        return true;
     }
 
         // create the CC bundle if it doesn't exist
@@ -124,7 +114,7 @@ public class CreativeCommons
         // set the RDF bitstream
         setBitstreamFromBytes(item, bundle, BSN_LICENSE_RDF, bs_rdf_format, licenseRdf.getBytes());
     }
-
+    
 
     /**
      * This is a bit of the "do-the-right-thing" method for CC stuff in an item
@@ -145,7 +135,7 @@ public class CreativeCommons
         BitstreamFormat bs_text_format = BitstreamFormat.findByShortDescription(
                 context, "CC License");
         BitstreamFormat bs_rdf_format = BitstreamFormat.findByShortDescription(
-                context, "CC RDF XML");
+                context, "RDF XML");
 
         // set the URL bitstream
         setBitstreamFromBytes(item, bundle, BSN_LICENSE_URL, bs_url_format,
@@ -214,22 +204,6 @@ public class CreativeCommons
         }
     }
 
-
-     /**
-     *  FOR CC 1.5 API
-     *
-     * @param item
-     * @throws SQLException
-     * @throws IOException
-     * @throws AuthorizeException
-     */
-    public static void removeLicenseMetadata(Item item, String schema, String element, String qualifier, String lang)
-    throws SQLException, IOException, AuthorizeException
-	{
-    	item.clearMetadata(schema, element, qualifier, lang);
-
-	}
-
     public static boolean hasLicense(Context context, Item item)
             throws SQLException, IOException
     {
@@ -257,34 +231,6 @@ public class CreativeCommons
 
         return true;
     }
-
-
-    /* for CC web services api */
-    public static boolean hasLicense(Item item, String schema, String element, String qualifier, String lang)
-    throws SQLException, IOException
-			{
-			// try to find CC license bundle
-			DCValue[] dcvalues = item.getMetadata(schema, element, qualifier, lang);
-
-			if (dcvalues.length == 0)
-			{
-			    return false;
-			} else {
-				return true;
-			}
-	}
-
-
-    /* for CC web services api */
-    public static String getLicenseMetadata(Item item, String schema, String element, String qualifier, String lang) {
-    	DCValue[] dcvalues = item.getMetadata(schema, element, qualifier, lang);
-    	for (DCValue dcvalue : dcvalues) {
-    		return dcvalue.value;
-    	}
-    	return "";
-    }
-
-
 
     public static String getLicenseURL(Item item) throws SQLException,
             IOException, AuthorizeException
@@ -488,12 +434,128 @@ public class CreativeCommons
                 sb.append(line);
             }
 
-             return sb.toString().getBytes();
+            return sb.toString().getBytes();
         }
-        catch (Exception e)
+        catch (Exception exc)
         {
-            log.error(e.getMessage());
+            log.error(exc.getMessage());
             return null;
         }
+    }
+    /**
+     * Returns a metadata field handle for given field Id
+     */
+    public static MdField getCCField(String fieldId)
+    {
+    	return new MdField(ConfigurationManager.getProperty("cc.license." + fieldId));
+    }
+    
+    // Shibboleth for Creative Commons license data - i.e. characters that reliably indicate CC in a URI
+    private static final String ccShib = "creativecommons";
+    
+    /**
+     * Helper class for using CC-related Metadata fields
+     * 
+     */
+    public static class MdField
+    {
+    	private String[] params = new String[4];
+    	
+    	public MdField(String fieldName)
+    	{
+    		if (fieldName != null && fieldName.length() > 0)
+    		{
+    			String[] fParams = fieldName.split("\\.");
+    			for (int i = 0; i < fParams.length; i++)
+    			{
+    				params[i] = fParams[i];
+    			}
+    			params[3] = Item.ANY;
+    		}
+    	}
+    	
+    	/**
+    	 * Returns first value that matches Creative Commons 'shibboleth',
+    	 * or null if no matching values.
+    	 * NB: this method will succeed only for metadata fields holding CC URIs
+    	 * 
+    	 * @param item - the item to read
+    	 * @return value - the first CC-matched value, or null if no such value
+    	 */
+    	public String ccItemValue(Item item)
+    	{
+            DCValue[] dcvalues = item.getMetadata(params[0], params[1], params[2], params[3]);
+            for (DCValue dcvalue : dcvalues)
+            {
+                if ((dcvalue.value).indexOf(ccShib) != -1) 
+                {
+                	// return first value that matches the shib
+                	return dcvalue.value;
+                }
+            }
+            return null;
+    	}
+    	
+    	/**
+    	 * Returns the value that matches the value mapped to the passed key if any.
+    	 * NB: this only delivers a license name (if present in field) given a license URI
+    	 * 
+    	 * @param item - the item to read
+    	 * @param key - the key for desired value
+    	 * @return value - the value associated with key or null if no such value
+    	 */
+    	public String keyedItemValue(Item item, String key)
+    		throws AuthorizeException, IOException, SQLException
+    	{
+    		 CCLookup ccLookup = new CCLookup();
+             ccLookup.issue(key);
+             String matchValue = ccLookup.getLicenseName();
+             DCValue[] dcvalues = item.getMetadata(params[0], params[1], params[2], params[3]);
+             for (DCValue dcvalue : dcvalues)
+             {
+            	 if (dcvalue.value.equals(matchValue))
+            	 {
+            		 return dcvalue.value;
+            	 }
+             }
+    		return null;
+    	}
+    	
+    	/**
+    	 * Removes the passed value from the set of values for the field in passed item.
+    	 * 
+    	 * @param item - the item to update
+    	 * @param value - the value to remove
+    	 */
+    	public void removeItemValue(Item item, String value) 
+    			throws AuthorizeException, IOException, SQLException
+    	{
+    		if (value != null)
+    		{
+    			 DCValue[] dcvalues  = item.getMetadata(params[0], params[1], params[2], params[3]);
+                 ArrayList<String> arrayList = new ArrayList<String>();
+                 for (DCValue dcvalue : dcvalues)
+                 {
+                     if (! dcvalue.value.equals(value))
+                     {
+                         arrayList.add(dcvalue.value);
+                     }
+                  }
+                  String[] values = (String[])arrayList.toArray(new String[arrayList.size()]);
+                  item.clearMetadata(params[0], params[1], params[2], params[3]);
+                  item.addMetadata(params[0], params[1], params[2], params[3], values);
+    		}
+    	}
+    	
+    	/**
+    	 * Adds passed value to the set of values for the field in passed item.
+    	 * 
+    	 * @param item - the item to update
+    	 * @param value - the value to add in this field
+    	 */
+    	public void addItemValue(Item item, String value)
+    	{
+    		item.addMetadata(params[0], params[1], params[2], params[3], value);
+    	}
     }
 }

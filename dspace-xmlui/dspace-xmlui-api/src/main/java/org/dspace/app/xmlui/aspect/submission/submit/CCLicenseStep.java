@@ -1,42 +1,35 @@
-/*
- * CCLicensePage.java
- *
+/**
  * The contents of this file are subject to the license and copyright
  * detailed in the LICENSE and NOTICE files at the root of the source
  * tree and available online at
  *
- *     http://dspace.org/license/
+ * http://www.dspace.org/license/
  */
 package org.dspace.app.xmlui.aspect.submission.submit;
 
 
+import org.apache.cocoon.environment.ObjectModelHelper;
+import org.apache.cocoon.environment.Request;
+import org.dspace.app.xmlui.aspect.submission.AbstractSubmissionStep;
+import org.dspace.app.xmlui.utils.UIException;
+import org.dspace.app.xmlui.wing.Message;
+import org.dspace.app.xmlui.wing.WingException;
+import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Collection;
+import org.dspace.content.Item;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.license.CCLicense;
+import org.dspace.license.CCLicenseField;
+import org.dspace.license.CCLookup;
+import org.dspace.license.CreativeCommons;
+import org.xml.sax.SAXException;
+
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.cocoon.environment.ObjectModelHelper;
-import org.apache.cocoon.environment.Request;
-import org.dspace.app.xmlui.utils.UIException;
-import org.dspace.app.xmlui.aspect.submission.AbstractSubmissionStep;
-import org.dspace.app.xmlui.wing.Message;
-import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Division;
-import org.dspace.app.xmlui.wing.element.List;
-import org.dspace.app.xmlui.wing.element.Radio;
-import org.dspace.app.xmlui.wing.element.Select;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Collection;
-import org.dspace.content.Item;
-import org.dspace.license.CreativeCommons;
-import org.dspace.license.CCLicenseField;
-import org.dspace.license.CCLookup;
-import org.dspace.license.CCLicense;
-import org.dspace.core.ConfigurationManager;
-import org.xml.sax.SAXException;
 
 /**
  * This is an optional page of the item submission processes. The Creative 
@@ -75,6 +68,7 @@ public class CCLicenseStep extends AbstractSubmissionStep
         protected static final Message T_no_license    = message("xmlui.Submission.submit.CCLicenseStep.no_license");
         protected static final Message T_select_change = message("xmlui.Submission.submit.CCLicenseStep.select_change");
         protected static final Message T_save_changes  = message("xmlui.Submission.submit.CCLicenseStep.save_changes");
+        protected static final Message T_ccws_error  = message("xmlui.Submission.submit.CCLicenseStep.ccws_error");
 
 
 	/**
@@ -119,27 +113,25 @@ public class CCLicenseStep extends AbstractSubmissionStep
 	    Select selectList = list.addItem().addSelect("licenseclass_chooser");
 	    selectList.setLabel(T_license);
 	    selectList.setEvtBehavior("submitOnChange");
-	    Iterator iterator = cclookup.getLicenses(ConfigurationManager.getProperty("default.locale")).iterator();
+	    Iterator<CCLicense> iterator = cclookup.getLicenses(ConfigurationManager.getProperty("default.locale")).iterator();
+	    // build select List - first choice always 'choose a license', last always 'No license'
+	    selectList.addOption(T_select_change.getKey(), T_select_change);
 	    while (iterator.hasNext()) {
-	        CCLicense cclicense = (CCLicense)iterator.next();
-                if (cclicense.getLicenseId().contains("xmlui.Submission.submit.CCLicenseStep.")) 
-	        {
-		    selectList.addOption(cclicense.getLicenseId(), message(cclicense.getLicenseName()));
-		} else {
-		    selectList.addOption(cclicense.getLicenseId(), cclicense.getLicenseName());
-		}
-		if (selectedLicense != null && selectedLicense.equals(cclicense.getLicenseId()))
+	        CCLicense cclicense = iterator.next();
+	        selectList.addOption(cclicense.getLicenseId(), cclicense.getLicenseName());
+            if (selectedLicense != null && selectedLicense.equals(cclicense.getLicenseId()))
         	{
-		    selectList.setOptionSelected(cclicense.getLicenseId());
-		}
+            	selectList.setOptionSelected(cclicense.getLicenseId());
+        	}
 	    }
+	    selectList.addOption(T_no_license.getKey(), T_no_license);
 	    if (selectedLicense  !=  null) {
-		// output the license fields chooser for the license class type
-		if (cclookup.getLicenseFields(selectedLicense) == null ) {
-		    // do nothing
-		} 
-		else 
-		{
+	    	// output the license fields chooser for the license class type
+	    	if (cclookup.getLicenseFields(selectedLicense) == null ) {
+	    		// do nothing
+	    	} 
+	    	else 
+	    	{
 		    Iterator outerIterator = cclookup.getLicenseFields(selectedLicense).iterator();
 		    while (outerIterator.hasNext()) 
 		    {
@@ -166,19 +158,24 @@ public class CCLicenseStep extends AbstractSubmissionStep
         	}    
 		Division statusDivision = div.addDivision("statusDivision");
 		List statusList = statusDivision.addList("statusList", List.TYPE_FORM);
-		if (CreativeCommons.hasLicense(item, "dc", "rights", "uri", Item.ANY))
+		String licenseUri = CreativeCommons.getCCField("uri").ccItemValue(item);
+		if (licenseUri != null)
 		{
-			String url  = CreativeCommons.getLicenseMetadata(item,"dc", "rights", "uri", Item.ANY);
-			statusList.addItem().addXref(url,url);
-        	}
+			statusList.addItem().addXref(licenseUri, licenseUri);
+        }
 		else
 		{
-			if (session.getAttribute("isFieldRequired") != null && session.getAttribute("isFieldRequired").equals("TRUE") && session.getAttribute("ccError") != null) {
-				statusList.addItem().addHighlight("error").addContent("Submission failed due to " + (String)session.getAttribute("ccError"));
-				session.removeAttribute("ccError");
-				session.removeAttribute("isFieldRequired");
-			} else {
-				 statusList.addItem().addHighlight("italic").addContent(T_save_changes);
+			if (session.getAttribute("isFieldRequired") != null && 	
+			    session.getAttribute("isFieldRequired").equals("TRUE") && 
+			    session.getAttribute("ccError") != null) 
+			{
+			    statusList.addItem().addHighlight("error").addContent(T_ccws_error.parameterize((String)session.getAttribute("ccError")));
+			    session.removeAttribute("ccError");
+			    session.removeAttribute("isFieldRequired");
+			} 
+			else if (session.getAttribute("inProgress") != null && ((String)session.getAttribute("inProgress")).equals("TRUE")) 
+			{
+				statusList.addItem().addHighlight("italic").addContent(T_save_changes);
 			}
 		}
         addControlButtons(statusList);
