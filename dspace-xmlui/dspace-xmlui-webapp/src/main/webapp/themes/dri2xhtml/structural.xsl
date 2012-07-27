@@ -614,6 +614,13 @@
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
                     </xsl:attribute>
                     <fieldset>
+                        <legend class="visuallyhidden">Search</legend>
+                        <!-- bds: title attribute works with jQuery script static/js/text-field-prompt.js -->
+                        <input title="Search the Knowledge Bank" id="ds-global-search-box" type="text">
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                            </xsl:attribute>
+                        </input>
                         <!-- bds: creating unique id for the search box and button -->
                         <!--      button, box, and radio buttons in reverse order for floats to work right -->
                         <input id="ds-global-search-button" name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
@@ -633,16 +640,11 @@
                                 </xsl:text>
                             </xsl:attribute>
                         </input>
-                        <!-- bds: title attribute works with jQuery script static/js/text-field-prompt.js -->
-                        <input title="Search the Knowledge Bank" id="ds-global-search-box" type="text">
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
-                            </xsl:attribute>
-                        </input>
+                        
+                        
                         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
                             <div id="ds-global-search-scope">
                                 <label>
-
                                     <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
                                     <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
                                 </label>

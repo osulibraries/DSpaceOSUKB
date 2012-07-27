@@ -8,6 +8,16 @@ body
 /*
  *background: url('../images/bkgd.png') repeat-x transparent;
 
+.visuallyhidden
+  border: 0
+  clip: rect(0 0 0 0)
+  height: 1px
+  margin: -1px
+  overflow: hidden
+  padding: 0
+  position: absolute
+  width: 1px
+
 p
   margin: 10px 0
   padding: 0
@@ -280,13 +290,12 @@ div
 input
   &#ds-global-search-box
     width: 300px
-    float: right
     margin: 0 8px
-  &#ds-global-search-button
-    float: right
-    height: 35px
 
 div#ds-global-search-scope
+  position: absolute
+  top: 2px
+  right: 360px
   label
     margin: 2px 10px 0 0
     vertical-align: middle
@@ -297,9 +306,12 @@ div#ds-global-search-scope
 .input-prompt
   position: absolute
   right: 62px
-  top: 140px
+  top: 4px
   font-style: italic
   color: #555
+
+#ds-search-form
+  position: relative
 
 div
   &#ds-body

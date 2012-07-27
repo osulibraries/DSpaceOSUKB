@@ -6,6 +6,16 @@ body {
   padding: 0; }
 
 /*background: url('../images/bkgd.png') repeat-x transparent; */
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+
 p {
   margin: 10px 0;
   padding: 0; }
@@ -267,25 +277,28 @@ div#ds-global-search a {
 /* scarlet-bar and grey-bar lie between header and trail */
 input#ds-global-search-box {
   width: 300px;
-  float: right;
   margin: 0 8px; }
-input#ds-global-search-button {
-  float: right;
-  height: 35px; }
 
-div#ds-global-search-scope label {
-  margin: 2px 10px 0 0;
-  vertical-align: middle; }
-div#ds-global-search-scope input {
-  vertical-align: middle;
-  margin: 0 3px 0 0; }
+div#ds-global-search-scope {
+  position: absolute;
+  top: 2px;
+  right: 360px; }
+  div#ds-global-search-scope label {
+    margin: 2px 10px 0 0;
+    vertical-align: middle; }
+  div#ds-global-search-scope input {
+    vertical-align: middle;
+    margin: 0 3px 0 0; }
 
 .input-prompt {
   position: absolute;
   right: 62px;
-  top: 140px;
+  top: 4px;
   font-style: italic;
   color: #555555; }
+
+#ds-search-form {
+  position: relative; }
 
 div#ds-body h1 {
   font-size: 1.5em;
@@ -917,23 +930,11 @@ ul.pagination-links {
   font-weight: bolder;
   font-size: 90%; }
 
-li.page-link a,li.first-page-link a,li.last-page-link a {
+div#ds-feed-option img {
+  padding-right: 5px;
+  border: none; }
+div#ds-feed-option li {
+  padding-top: 4px; }
 
-}
-
-li.current-page-link a {
-
-}
-
-div#ds-feed-option img
-{
-    padding-right: 5px;
-    border: none;
-}
-
-div#ds-feed-option li
-{
-    padding-top: 4px;
-}
 select#aspect_submission_submit_SelectCollectionStep_field_handle {
   max-width: 250px; }
