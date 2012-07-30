@@ -462,6 +462,7 @@
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
+            <h5 class="visuallyhidden">Footer</h2>
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
             <div id="osu-footer-logo">
                 <span><xsl:text> </xsl:text></span>
@@ -694,6 +695,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <div id="breadCrumb0" class="breadCrumb">
+                  <h2 class="visuallyhidden">Breadcrumbs Navigation</h2>
                     <ul id="ds-trail">
                         <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
                     </ul>
@@ -746,6 +748,7 @@
     <xsl:template match="dri:options">
         <div id="ds-options" class="column">
             <!-- bds: adding help and about links bit -->
+            <h2 class="visuallyhidden">Sidebar Navigation</h2>
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
             </h3>
