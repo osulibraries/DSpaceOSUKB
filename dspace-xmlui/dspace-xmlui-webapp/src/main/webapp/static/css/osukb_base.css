@@ -1,11 +1,10 @@
 body {
   font-family: sans-serif;
-  background-color: #c2cec2;
+  background: #c2cec2;
   font-size: 0.93em;
   margin: 0;
   padding: 0; }
 
-/*background: url('../images/bkgd.png') repeat-x transparent; */
 .visuallyhidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -15,6 +14,101 @@ body {
   padding: 0;
   position: absolute;
   width: 1px; }
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table; }
+
+.clearfix:after {
+  clear: both; }
+
+.clearfix {
+  *zoom: 1; }
+
+#osu-nav-bar {
+  position: relative;
+  width: 981px;
+  margin: 0 auto;
+  padding: 10px 10px 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #eaebeb url("../images/background-osu-nav-bar.png") no-repeat bottom left; }
+
+#osu-nav-bar a:link,
+#osu-nav-bar a:visited {
+  text-decoration: none; }
+#osu-nav-bar a:hover,
+#osu-nav-bar a:active,
+#osu-nav-bar a:focus {
+  text-decoration: underline;
+  outline: none; }
+
+.osu-semantic {
+  position: absolute;
+  left: 0;
+  top: -500px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
+  .osu-semantic:active, .osu-semantic:focus {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible; }
+
+#skip:active, #skip:focus {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  width: 50%;
+  padding: 0.5em 0 1.5em;
+  display: block;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  z-index: 99;
+  background: #686868;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px dotted #cccccc;
+  border-top: none; }
+
+#osu-site-title {
+  font-size: 15px;
+  margin: 0;
+  float: left; }
+  #osu-site-title a {
+    color: #3d3d3d;
+    white-space: nowrap; }
+    #osu-site-title a:hover {
+      border-bottom: 1px solid #3d3d3d;
+      text-decoration: none; }
+    #osu-site-title a:before {
+      content: "\25B8";
+      font-size: 14px;
+      color: #777777;
+      padding: 0 5px 0 1px;
+      border-bottom: 1px solid #eaebeb; }
+    #osu-site-title a:first-child {
+      color: #990000;
+      font-weight: bold; }
+      #osu-site-title a:first-child:hover {
+        border-bottom: 1px solid #990000; }
+      #osu-site-title a:first-child:before {
+        content: "";
+        padding: 0; }
+
+#osu-nav-primary {
+  float: right;
+  font-size: 12px;
+  margin-top: 2px; }
+  #osu-nav-primary ul, #osu-nav-primary li {
+    margin: 0;
+    padding: 0; }
+  #osu-nav-primary li {
+    display: inline; }
+  #osu-nav-primary a {
+    color: #3d3d3d;
+    padding: 0 0 0 12px; }
 
 p {
   margin: 10px 0;

@@ -113,43 +113,25 @@
         </script>
     </xsl:template>
 
-    <!-- 2010-05-04 PMBMD - Adds the html pieces of the osu navbar -->
+    <!-- 2012-07-31 DE Redid the OSU Navbar -->
     <xsl:template name="buildBodyOSU">
-        <div id="osu-Navbar">
-            <p>
-                <a href="#ds-main" id="skip" class="osu-semantic">skip to main content</a>
+        <div id="osu-nav-bar" class="clearfix">
+            <h2 class="visuallyhidden">OSU Navigation Bar</h2>
+            <a href="#main-content" id="skip" class="osu-semantic">Skip to main content</a>
+            <p id="osu-site-title">
+                <a href="http://www.osu.edu/" title="The Ohio State University homepage">The Ohio State University</a>
+                <a href="http://library.osu.edu/" title="University Libraries at The Ohio State University">University Libraries</a>
+                <a href="http://kb.osu.edu/" title="Knowledge Bank of University Libraries at The Ohio State University">Knowledge Bank</a>
             </p>
-            <h2 class="osu-semantic">OSU Navigation Bar</h2>
-            <div id="osu-NavbarBreadcrumb">
-                <p id="osu">
-                    <a title="The Ohio State University homepage" href="http://www.osu.edu/">The Ohio State University</a>
-                </p>
-                <p id="site-name">
-                    <a title="University Libraries at The Ohio State University" href="http://library.osu.edu/">University Libraries</a>
-                </p>
-                <p id="site-name">
-                    <a title="Knowledge Bank of University Libraries at The Ohio State University" href="http://kb.osu.edu/">Knowledge Bank</a>
-                </p>
-            </div>
-            <div id="osu-NavbarLinks">
+            <div id="osu-nav-primary">
+                <h3 class="visuallyhidden">Links:</h3>
                 <ul>
                     <li><a href="http://www.osu.edu/help.php" title="OSU Help">Help</a></li>
                     <li><a href="http://buckeyelink.osu.edu/" title="Buckeye Link">Buckeye Link</a></li>
                     <li><a href="http://www.osu.edu/map/" title="Campus map">Map</a></li>
                     <li><a href="http://www.osu.edu/findpeople.php" title="Find people at OSU">Find People</a></li>
-                    <li><a href="https://webmail.osu.edu" title="OSU Webmail">Webmail</a></li>
-                    <li id="searchbox">
-                        <form action="http://www.osu.edu/search/index.php" method="post">
-                            <div class="osu-semantic">
-                            </div>
-                            <fieldset>
-                                <legend><span class="osu-semantic">Search</span></legend>
-                                <label class="osu-semantic" for="search-field">Search Ohio State</label>
-                                <input type="text" alt-attribute="Search Ohio State" value="" name="searchOSU" class="textfield headerSearchInput" id="search-field"/>
-                                <button name="go" type="submit">Go</button>
-                            </fieldset>
-                        </form>
-                    </li>
+                    <li><a href="https://webmail.osu.edu/" title="OSU Webmail">Webmail</a></li>
+                    <li><a href="http://www.osu.edu/search.php" title="Search Ohio State">Search Ohio State</a></li>
                 </ul>
             </div>
         </div>
