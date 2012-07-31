@@ -462,7 +462,7 @@
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
-            <h5 class="visuallyhidden">Footer</h2>
+            <h5 class="visuallyhidden">Footer</h5>
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
             <div id="osu-footer-logo">
                 <span><xsl:text> </xsl:text></span>
