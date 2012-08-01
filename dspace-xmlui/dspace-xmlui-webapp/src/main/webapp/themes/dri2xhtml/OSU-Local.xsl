@@ -52,12 +52,6 @@
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
             </xsl:attribute>
         </link>
-        <link rel="shortcut icon" type="image/x-icon">
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
-            </xsl:attribute>
-        </link>
         <!-- bds: jQuery breadcrumb trail shrinker, uses easing plugin -->
         <!-- http://www.comparenetworks.com/developers/jqueryplugins/jbreadcrumb.html -->
         <script type="text/javascript">
