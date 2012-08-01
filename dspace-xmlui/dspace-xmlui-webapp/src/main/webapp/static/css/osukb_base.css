@@ -1032,3 +1032,33 @@ div#ds-feed-option li {
 
 select#aspect_submission_submit_SelectCollectionStep_field_handle {
   max-width: 250px; }
+
+@media print {
+  html {
+    font-size: 100%;
+    padding: 0;
+    margin: 0; }
+    html body #osu-Navbar {
+      display: none; }
+    html body #ds-main #ds-header {
+      display: none; }
+    html body #ds-main #scarlet-bar {
+      display: none; }
+    html body #ds-main #grey-bar {
+      display: none; }
+    html body #ds-main #body-and-options {
+      max-width: 100%; }
+      html body #ds-main #body-and-options #ds-body {
+        float: none;
+        width: auto; }
+        html body #ds-main #body-and-options #ds-body h1.ds-div-head {
+          display: block;
+          padding-left: 0;
+          margin-left: 0;
+          clear: both;
+          padding: 0;
+          margin: 0 0 10pt; }
+        html body #ds-main #body-and-options #ds-body table {
+          width: auto; }
+      html body #ds-main #body-and-options #ds-options {
+        display: none; } }
