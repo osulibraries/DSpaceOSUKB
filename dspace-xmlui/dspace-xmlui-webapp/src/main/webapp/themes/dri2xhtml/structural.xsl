@@ -185,15 +185,6 @@
                     <xsl:text>/static/css/osukb_base.css</xsl:text>
                 </xsl:attribute>
             </link>
-            <link rel="stylesheet" type="text/css">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/static/css/osukb_print.css</xsl:text>
-                </xsl:attribute>
-                <xsl:attribute name="media">
-                    <xsl:text>print</xsl:text>
-                </xsl:attribute>
-            </link>
             <!-- Add stylsheets -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='stylesheet']">
                 <link rel="stylesheet" type="text/css">
