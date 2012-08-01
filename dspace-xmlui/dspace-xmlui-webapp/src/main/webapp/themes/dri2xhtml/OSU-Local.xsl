@@ -26,24 +26,7 @@
     <xsl:output indent="yes"/>
 
 
-    <!-- 2010-05-04 PMBMD - Adds required head CSS/js for osu header navbar -->
     <xsl:template name="buildHeadOSU">
-        <!-- Skipping the reset <link rel="stylesheet" type="text/css" href="/xmlui/static/osu-navbar-media/css-optional/reset.css" />-->
-        <link rel="stylesheet" type="text/css">
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/css/navbar.css</xsl:text>
-            </xsl:attribute>
-        </link>
-        <!-- TODO not currently calling IE specific navbar css files. -->
-        <script type="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/js/searchform.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text>var x=0;</xsl:text>
-        </script>
-
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
             var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
