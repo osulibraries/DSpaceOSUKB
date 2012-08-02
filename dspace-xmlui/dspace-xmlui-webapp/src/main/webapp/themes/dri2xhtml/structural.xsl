@@ -676,7 +676,7 @@
                         </xsl:if>
                     </fieldset>
                 </form>
-                <a>
+                <a class="icon-cog">
                     <xsl:attribute name="href">
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='advancedURL']"/>
                     </xsl:attribute>
