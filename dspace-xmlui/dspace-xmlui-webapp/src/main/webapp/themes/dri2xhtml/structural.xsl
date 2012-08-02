@@ -120,39 +120,41 @@
                 <xsl:otherwise>
                     <body>
 
-                        <!-- bds: see OSU-local.xsl for buildBodyOSU -->
-                <!--      (really just builds OSU navbar) -->
-                        <xsl:call-template name="buildBodyOSU"/>
-                        <div id="ds-main">
+                        <div id="ds-main-container" class="clearfix">
+
+                            <!-- bds: see OSU-local.xsl for buildBodyOSU -->
+                            <!-- (really just builds OSU navbar) -->
+                            <xsl:call-template name="buildBodyOSU"/>
+                            <div id="ds-main">
+                            <!--
+                            The header div, complete with title, subtitle, trail and other junk. The trail is
+                            built by applying a template over pageMeta's trail children. -->
+                            <xsl:call-template name="buildHeader"/>
+
+                            <!-- bds: the following items have been separated from their original containers -->
+                            <xsl:call-template name="scarlet-bar"/>
+                             <xsl:call-template name="grey-bar"/>
+
                         <!--
-                        The header div, complete with title, subtitle, trail and other junk. The trail is
-                        built by applying a template over pageMeta's trail children. -->
-                        <xsl:call-template name="buildHeader"/>
+                            Goes over the document tag's children elements: body, options, meta. The body template
+                            generates the ds-body div that contains all the content. The options template generates
+                            the ds-options div that contains the navigation and action options available to the
+                            user. The meta element is ignored since its contents are not processed directly, but
+                            instead referenced from the different points in the document. -->
 
-                        <!-- bds: the following items have been separated from their original containers -->
-                        <xsl:call-template name="scarlet-bar"/>
-                        <xsl:call-template name="grey-bar"/>
+                        <!-- bds: adding body-and-options div to allow more styling options -->
+                        <!-- bds: container1 and container2 are nested inside body-and-options and are used
+                             to help create equal-height columns. See:
+                             http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+                        -->
+                            <div id="body-and-options">
+                                <xsl:apply-templates />
+                                </div>
 
-                    <!--
-                        Goes over the document tag's children elements: body, options, meta. The body template
-                        generates the ds-body div that contains all the content. The options template generates
-                        the ds-options div that contains the navigation and action options available to the
-                        user. The meta element is ignored since its contents are not processed directly, but
-                        instead referenced from the different points in the document. -->
-
-                 <!-- bds: adding body-and-options div to allow more styling options -->
-<!-- bds: container1 and container2 are nested inside body-and-options and are used
-        to help create equal-height columns. See:
-        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
--->
-                        <div id="body-and-options">
-                            <xsl:apply-templates />
-                            <div id="clearBody" />
+                                <xsl:call-template name="buildFooter"/>
                             </div>
-
-                            <xsl:call-template name="buildFooter"/>
+                            <xsl:call-template name="extraBody-end"/>
                         </div>
-                        <xsl:call-template name="extraBody-end"/>
                     </body>
                 </xsl:otherwise>
             </xsl:choose>
@@ -350,15 +352,27 @@
         placeholders for header images -->
     <xsl:template name="buildHeader">
         <div id="ds-header">
-            <a>
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/</xsl:text>
-                </xsl:attribute>
-                <span id="ds-header-logo">
-                    <xsl:text> </xsl:text>
-                </span>
-            </a>
+            <h1 id="kb-logo">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$context-path"/>
+                        <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="class">
+                        <xsl:text>ir</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>Knowledge Bank</xsl:text>
+                </a>
+            </h1>
+            <h2>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$context-path"/>
+                        <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>University Libraries and the Office of the Chief Information Officer</xsl:text>
+                </a>
+            </h2>
 
             <!-- Include an invisible KB logo, usefull for robots that "lint" the page, such as FaceBook-->
             <img>
@@ -1697,8 +1711,8 @@ Disable authority
                     <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
                 </xsl:when>
                 <xsl:otherwise>
-	            <xsl:apply-templates />
-		</xsl:otherwise>
+                <xsl:apply-templates />
+        </xsl:otherwise>
             </xsl:choose>
         </xsl:element>
     </xsl:template>
@@ -2033,7 +2047,7 @@ Disable Choice
             <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
                 <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
 <!-- Disable Choice
-		<xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+        <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
                     <xsl:attribute name="style">
                         <xsl:text>display:none;</xsl:text>
                     </xsl:attribute>
@@ -2105,7 +2119,7 @@ Disable Choice
         <xsl:param name="position"/>
         <!-- add authority value for this instance -->
 <!-- Disable Choice
-	<xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
+    <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
             <xsl:call-template name="authorityInputFields">
                 <xsl:with-param name="name" select="@n"/>
                 <xsl:with-param name="position" select="$position"/>
@@ -2345,8 +2359,8 @@ Disable Choice
 
     <xsl:template match="dri:field" mode="normalField">
         <!-- Disable Choice
-	<xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
-	-->
+    <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
+    -->
         <xsl:choose>
             <!-- TODO: this has changed drammatically (see form3.xml) -->
             <xsl:when test="@type= 'select'">
