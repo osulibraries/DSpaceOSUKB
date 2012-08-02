@@ -46,7 +46,7 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <link rel="icon" type="image/x-icon">
+        <link rel="shortcut icon " type="image/x-icon">
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
