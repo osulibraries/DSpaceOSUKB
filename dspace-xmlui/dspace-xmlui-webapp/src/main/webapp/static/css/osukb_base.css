@@ -210,23 +210,6 @@ tr.ds-table-row.even {
       color: black;
       text-decoration: none; }
 
-#ds-user-box {
-  text-align: right;
-  padding: 0 4px; }
-  #ds-user-box p {
-    font-size: 0.85em;
-    color: inherit;
-    background-color: inherit;
-    height: 12px;
-    margin: 0; }
-  #ds-user-box a {
-    text-decoration: none;
-    color: #eeeeee;
-    background-color: inherit;
-    height: 12px; }
-    #ds-user-box a:hover {
-      text-decoration: underline; }
-
 #kb-logo a {
   position: absolute;
   top: 15px;
@@ -375,10 +358,55 @@ tr.ds-table-row.even {
 
 #scarlet-bar {
   background-color: #990000;
-  text-align: right;
-  height: 14px;
-  border: none;
-  padding: 4px; }
+  height: 1em;
+  padding: 0.5em; }
+
+#ds-user-box {
+  text-align: right; }
+  #ds-user-box p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #eeeeee; }
+  #ds-user-box a {
+    text-decoration: none;
+    color: inherit; }
+    #ds-user-box a:hover {
+      color: white;
+      border-bottom: 1px dotted #eeeeee; }
+
+@font-face {
+  font-family: "fontello";
+  src: url("../fonts/fontello.eot");
+  src: url("../fonts/fontello.eot?#iefix") format("embedded-opentype"), url("../fonts/fontello.woff") format("woff"), url("../fonts/fontello.ttf") format("truetype"), url("../fonts/fontello.svg#fontello") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0.2em;
+  text-align: center;
+  line-height: 1em; }
+
+[class^="icon-"]:hover:before,
+[class*=" icon-"]:hover:before {
+  opacity: 1;
+  border-bottom: 1px solid #990000; }
+
+.icon-login:before {
+  content: "\e740"; }
+
+.icon-logout:before {
+  content: "\e741"; }
+
+.icon-user:before {
+  content: "👤"; }
 
 #grey-bar {
   background-color: #edeaea;

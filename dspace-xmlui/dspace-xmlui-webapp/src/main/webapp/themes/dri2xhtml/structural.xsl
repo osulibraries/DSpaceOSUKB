@@ -560,7 +560,7 @@
                 <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
                     <div id="ds-user-box">
                         <p>
-                            <a>
+                            <a class="icon-user">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='url']"/>
@@ -573,7 +573,7 @@
                                               dri:metadata[@element='identifier' and @qualifier='lastName']"/>
                             </a>
                             <xsl:text> | </xsl:text>
-                            <a>
+                            <a class="icon-logout">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
@@ -586,7 +586,7 @@
                 <xsl:otherwise>
                     <div id="ds-user-box">
                         <p>
-                            <a>
+                            <a class="icon-login">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
