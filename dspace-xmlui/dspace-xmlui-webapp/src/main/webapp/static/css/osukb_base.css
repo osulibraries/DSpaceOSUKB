@@ -138,9 +138,18 @@ body {
     color: #3d3d3d;
     padding: 0 0 0 12px; }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  color: #3d473c; }
+  h1 a:link,
+  h1 a:visited, h2 a:link, h2 a:visited, h3 a:link, h3 a:visited, h4 a:link, h4 a:visited, h5 a:link, h5 a:visited, h6 a:link, h6 a:visited {
+    color: inherit; }
+
 p {
-  margin: 10px 0;
-  padding: 0; }
+  font-size: 1em;
+  line-height: 1.5em;
+  margin: 0 0 1.5em 0; }
 
 a:link, a:visited {
   color: #cc0000;
@@ -335,34 +344,34 @@ tr.ds-table-row.even {
   font-size: 0.8em; }
 
 #homepage-body {
-  padding: 5px 20px;
-  font-size: 0.9em;
-  width: 65%;
+  padding: 1em;
+  width: 530px;
   float: left; }
   #homepage-body h1 {
-    padding: 0 !important;
-    margin: 4px 0 12px 0 !important; }
+    margin-top: 0 !important; }
 
 #homepage-featured {
   font-size: 0.8em;
   border-left: 1px solid #cccccc;
   float: right;
-  margin: 20px 0 0 10px;
-  padding: 10px 12px 40px 10px;
+  padding: 1em 1em 3em;
   width: 200px;
-  background: url("../images/bkgd_featured.png") repeat-x; }
+  background: white;
+  background: -moz-linear-gradient(top, white 0%, #f0e5bc 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0e5bc));
+  background: -webkit-linear-gradient(top, white 0%, #f0e5bc 100%);
+  background: -o-linear-gradient(top, white 0%, #f0e5bc 100%);
+  background: -ms-linear-gradient(top, white 0%, #f0e5bc 100%);
+  background: linear-gradient(to bottom, white 0%, #f0e5bc 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#f0e5bc',GradientType=0 ); }
   #homepage-featured img {
-    border: none; }
+    border: 1px solid #735635; }
   #homepage-featured h3 {
     text-align: center;
-    font-size: 1.2em; }
-
-.feature-item {
-  margin-bottom: 15px; }
+    margin-bottom: 1em !important; }
 
 .feature-item-logo {
-  margin: 0 auto;
-  display: table; }
+  margin: 1em auto; }
 
 .top-downloads {
   width: 186px; }
@@ -545,23 +554,29 @@ tr.ds-table-row.even {
     background: #a5a5a5; }
 
 #ds-body h1 {
-  font-size: 1.5em;
-  padding: 8px 2px;
-  margin: 40px 0 10px 14px;
-  color: #990000;
-  font-weight: normal; }
+  font-size: 1.75em;
+  line-height: 1.714em;
+  margin-top: 0.857em; }
 #ds-body h2 {
-  font-size: 1.4em;
-  margin: 10px 0 5px;
-  color: #990000;
-  font-weight: bolder;
-  clear: both; }
+  font-size: 1.5em;
+  line-height: 1em;
+  margin-top: 1em; }
 #ds-body h3 {
-  margin: 10px 0 5px;
-  clear: both; }
+  font-size: 1.375em;
+  line-height: 1.091em;
+  margin-top: 1.091em; }
 #ds-body h4 {
-  margin: 0px;
-  color: black; }
+  font-size: 1.25em;
+  line-height: 1.2em;
+  margin-top: 1.2em; }
+#ds-body h5 {
+  font-size: 1.125em;
+  line-height: 1.333em;
+  margin-top: 1.333em; }
+#ds-body h6 {
+  font-size: 1em;
+  line-height: 1.5em;
+  margin-top: 1.5em; }
 
 .ds-option-set {
   padding: 0;
@@ -602,38 +617,36 @@ tr.ds-table-row.even {
 
 #ds-footer {
   position: relative;
-  height: 100px;
   float: left;
-  width: 100%;
-  border: none;
-  padding: 0 0 5px 0;
-  border-top: 1px solid #999999;
-  color: inherit;
-  background-color: #edeaea; }
-
-#osu-footer-logo {
-  background: url("../images/OSU_fulllogo.png") no-repeat;
-  border: none;
-  height: 58px;
-  margin: 5px;
-  width: 58px;
-  float: left;
-  display: block; }
-
-#osu-logo-text p {
+  width: 976px;
+  padding: 1em;
   font-size: 0.75em;
-  margin: 5px 0 0 0;
-  width: 350px;
-  float: left;
-  display: block; }
+  border-top: 1px solid #999999;
+  background: #edeaea; }
 
-#ds-footer-links {
-  position: absolute;
-  right: 0px;
-  top: 2px;
-  padding-right: 5px;
+#ds-footer-left {
+  float: left;
+  width: 50%; }
+  #ds-footer-left p {
+    margin-left: 1em;
+    width: 350px;
+    float: left; }
+
+#footer-osu-logo {
+  width: 58px;
+  height: 58px;
+  background: url("../images/OSU_fulllogo.png") no-repeat;
+  float: left; }
+
+#ds-footer-right {
+  float: right;
   text-align: right;
-  font-size: 0.9em; }
+  width: 50%; }
+  #ds-footer-right a:link, #ds-footer-right a:visited {
+    color: #3d473c; }
+  #ds-footer-right a:hover, #ds-footer-right a:focus {
+    border-bottom: 1px dotted #3d473c;
+    text-decoration: none; }
 
 #more-link {
   float: right;

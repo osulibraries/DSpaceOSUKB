@@ -469,41 +469,41 @@
         <div id="ds-footer">
             <h5 class="visuallyhidden">Footer</h5>
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
-            <div id="osu-footer-logo">
-                <span><xsl:text> </xsl:text></span>
-            </div>
-            <div id="osu-logo-text">
+            <div id="ds-footer-left">
+                <div class="ir" id="footer-osu-logo">The Ohio State University Logo</div>
                 <p>If you have problems with the site, difficulty accessing portions of it due to incompatibility with adaptive technology, or need information in an alternative format, please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</p>
             </div>
-            <div id="ds-footer-links">
-                <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
-                                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="$context-path"/>
-                        <xsl:text>/contact</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
-                </a>
-                -->
-                <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://www.dspace.org/">DSpace</a>
-
-                <xsl:if test="$config-use-feedback = 1">
-                    <!-- PMD: Make the Feedback link configurable. Since OSU KB uses the CMS forms.-->
-                    <xsl:text> | </xsl:text>
-                    <a>
+            <div id="ds-footer-right">
+                <div id="ds-footer-links">
+                    <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
+                                    <a>
                         <xsl:attribute name="href">
                             <xsl:value-of select="$context-path"/>
-                            <xsl:text>/feedback</xsl:text>
+                            <xsl:text>/contact</xsl:text>
                         </xsl:attribute>
-                        <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
                     </a>
-                </xsl:if>
+                    -->
+                    <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://www.dspace.org/">DSpace</a>
+
+                    <xsl:if test="$config-use-feedback = 1">
+                        <!-- PMD: Make the Feedback link configurable. Since OSU KB uses the CMS forms.-->
+                        <xsl:text> | </xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="$context-path"/>
+                                <xsl:text>/feedback</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        </a>
+                    </xsl:if>
+                </div>
             </div>
             <a>
                 <xsl:attribute name="href">
