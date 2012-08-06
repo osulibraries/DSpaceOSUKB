@@ -147,7 +147,7 @@
                              to help create equal-height columns. See:
                              http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
                         -->
-                            <div id="body-and-options">
+                            <div id="body-and-options" class="clearfix">
                                 <xsl:apply-templates />
                                 </div>
 
