@@ -363,7 +363,7 @@ tr.ds-table-row.even {
   background: -o-linear-gradient(top, white 0%, #f0e5bc 100%);
   background: -ms-linear-gradient(top, white 0%, #f0e5bc 100%);
   background: linear-gradient(to bottom, white 0%, #f0e5bc 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#f0e5bc',GradientType=0 ); }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f0e5bc',GradientType=0 ); }
   #homepage-featured img {
     border: 1px solid #735635; }
   #homepage-featured h3 {
