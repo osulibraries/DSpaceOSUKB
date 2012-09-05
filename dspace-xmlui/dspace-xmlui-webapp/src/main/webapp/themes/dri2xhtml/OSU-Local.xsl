@@ -26,24 +26,7 @@
     <xsl:output indent="yes"/>
 
 
-    <!-- 2010-05-04 PMBMD - Adds required head CSS/js for osu header navbar -->
     <xsl:template name="buildHeadOSU">
-        <!-- Skipping the reset <link rel="stylesheet" type="text/css" href="/xmlui/static/osu-navbar-media/css-optional/reset.css" />-->
-        <link rel="stylesheet" type="text/css">
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/css/navbar.css</xsl:text>
-            </xsl:attribute>
-        </link>
-        <!-- TODO not currently calling IE specific navbar css files. -->
-        <script type="text/javascript">
-            <xsl:attribute name="src">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/js/searchform.js</xsl:text>
-            </xsl:attribute>
-            <xsl:text>var x=0;</xsl:text>
-        </script>
-
         <!-- Grab Google CDN jQuery. fall back to local if necessary. Also use same http / https as site -->
         <script type="text/javascript">
             var JsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
@@ -63,13 +46,7 @@
             </xsl:attribute>
             <xsl:text> </xsl:text>
         </script>
-        <link rel="icon" type="image/x-icon">
-            <xsl:attribute name="href">
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
-                <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
-            </xsl:attribute>
-        </link>
-        <link rel="shortcut icon" type="image/x-icon">
+        <link rel="shortcut icon " type="image/x-icon">
             <xsl:attribute name="href">
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
                 <xsl:text>/static/osu-navbar-media/img/favicon.ico</xsl:text>
@@ -113,43 +90,25 @@
         </script>
     </xsl:template>
 
-    <!-- 2010-05-04 PMBMD - Adds the html pieces of the osu navbar -->
+    <!-- 2012-07-31 DE Redid the OSU Navbar -->
     <xsl:template name="buildBodyOSU">
-        <div id="osu-Navbar">
-            <p>
-                <a href="#ds-body" id="skip" class="osu-semantic">skip to main content</a>
+        <div id="osu-nav-bar" class="clearfix">
+            <h2 class="visuallyhidden">OSU Navigation Bar</h2>
+            <a href="#main-content" id="skip" class="osu-semantic">Skip to main content</a>
+            <p id="osu-site-title">
+                <a href="http://www.osu.edu/" title="The Ohio State University homepage">The Ohio State University</a>
+                <a href="http://library.osu.edu/" title="University Libraries at The Ohio State University">University Libraries</a>
+                <a href="http://kb.osu.edu/" title="Knowledge Bank of University Libraries at The Ohio State University">Knowledge Bank</a>
             </p>
-            <h2 class="osu-semantic">OSU Navigation Bar</h2>
-            <div id="osu-NavbarBreadcrumb">
-                <p id="osu">
-                    <a title="The Ohio State University homepage" href="http://www.osu.edu/">The Ohio State University</a>
-                </p>
-                <p id="site-name">
-                    <a title="University Libraries at The Ohio State University" href="http://library.osu.edu/">University Libraries</a>
-                </p>
-                <p id="site-name">
-                    <a title="Knowledge Bank of University Libraries at The Ohio State University" href="http://kb.osu.edu/">Knowledge Bank</a>
-                </p>
-            </div>
-            <div id="osu-NavbarLinks">
+            <div id="osu-nav-primary">
+                <h3 class="visuallyhidden">Links:</h3>
                 <ul>
                     <li><a href="http://www.osu.edu/help.php" title="OSU Help">Help</a></li>
                     <li><a href="http://buckeyelink.osu.edu/" title="Buckeye Link">Buckeye Link</a></li>
                     <li><a href="http://www.osu.edu/map/" title="Campus map">Map</a></li>
                     <li><a href="http://www.osu.edu/findpeople.php" title="Find people at OSU">Find People</a></li>
-                    <li><a href="https://webmail.osu.edu" title="OSU Webmail">Webmail</a></li>
-                    <li id="searchbox">
-                        <form action="http://www.osu.edu/search/index.php" method="post">
-                            <div class="osu-semantic">
-                            </div>
-                            <fieldset>
-                                <legend><span class="osu-semantic">Search</span></legend>
-                                <label class="osu-semantic" for="search-field">Search Ohio State</label>
-                                <input type="text" alt-attribute="Search Ohio State" value="" name="searchOSU" class="textfield headerSearchInput" id="search-field"/>
-                                <button name="go" type="submit">Go</button>
-                            </fieldset>
-                        </form>
-                    </li>
+                    <li><a href="https://webmail.osu.edu/" title="OSU Webmail">Webmail</a></li>
+                    <li><a href="http://www.osu.edu/search.php" title="Search Ohio State">Search Ohio State</a></li>
                 </ul>
             </div>
         </div>
@@ -170,13 +129,14 @@
 
                     <xsl:choose>
                         <!-- Special Case: Media Type -->
-                        <xsl:when test="contains(., 'audio')"><img src="/dspace/static/icons/feed.png" alt="Icon for Audio feed" />Audio Feed</xsl:when>
-                        <xsl:when test="contains(., 'video')"><img src="/dspace/static/icons/feed.png" alt="Icon for Video feed" />Video Feed</xsl:when>
+                        <xsl:when test="contains(., 'audio')">Audio Feed</xsl:when>
+                        <xsl:when test="contains(., 'video')">Video Feed</xsl:when>
 
                         <!-- Default: Feed Format -->
-                        <xsl:when test="contains(., 'rss_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 1.0 feed" />RSS 1.0</xsl:when>
-                        <xsl:when test="contains(., 'rss_2.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for RSS 2.0 feed" />RSS 2.0</xsl:when>
-                        <xsl:when test="contains(., 'atom_1.0')"><img src="/dspace/static/icons/feed.png" alt="Icon for Atom feed" />Atom</xsl:when>
+                        <xsl:when test="contains(., 'rss_1.0')">RSS 1.0</xsl:when>
+                        <xsl:when test="contains(., 'rss_2.0')">RSS 2.0</xsl:when>
+                        <xsl:when test="contains(., 'atom_1.0')">Atom</xsl:when>
+
                         <xsl:otherwise>
                             <xsl:value-of select="@qualifier"/>
                         </xsl:otherwise>

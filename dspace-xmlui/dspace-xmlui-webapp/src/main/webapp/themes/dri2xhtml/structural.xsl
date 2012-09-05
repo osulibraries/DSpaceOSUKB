@@ -120,39 +120,41 @@
                 <xsl:otherwise>
                     <body>
 
-                        <!-- bds: see OSU-local.xsl for buildBodyOSU -->
-                <!--      (really just builds OSU navbar) -->
-                        <xsl:call-template name="buildBodyOSU"/>
-                        <div id="ds-main">
+                        <div id="ds-main-container" class="clearfix">
+
+                            <!-- bds: see OSU-local.xsl for buildBodyOSU -->
+                            <!-- (really just builds OSU navbar) -->
+                            <xsl:call-template name="buildBodyOSU"/>
+                            <div id="ds-main">
+                            <!--
+                            The header div, complete with title, subtitle, trail and other junk. The trail is
+                            built by applying a template over pageMeta's trail children. -->
+                            <xsl:call-template name="buildHeader"/>
+
+                            <!-- bds: the following items have been separated from their original containers -->
+                            <xsl:call-template name="scarlet-bar"/>
+                             <xsl:call-template name="grey-bar"/>
+
                         <!--
-                        The header div, complete with title, subtitle, trail and other junk. The trail is
-                        built by applying a template over pageMeta's trail children. -->
-                        <xsl:call-template name="buildHeader"/>
+                            Goes over the document tag's children elements: body, options, meta. The body template
+                            generates the ds-body div that contains all the content. The options template generates
+                            the ds-options div that contains the navigation and action options available to the
+                            user. The meta element is ignored since its contents are not processed directly, but
+                            instead referenced from the different points in the document. -->
 
-                        <!-- bds: the following items have been separated from their original containers -->
-                        <xsl:call-template name="scarlet-bar"/>
-                        <xsl:call-template name="grey-bar"/>
+                        <!-- bds: adding body-and-options div to allow more styling options -->
+                        <!-- bds: container1 and container2 are nested inside body-and-options and are used
+                             to help create equal-height columns. See:
+                             http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+                        -->
+                            <div id="body-and-options" class="clearfix">
+                                <xsl:apply-templates />
+                                </div>
 
-                    <!--
-                        Goes over the document tag's children elements: body, options, meta. The body template
-                        generates the ds-body div that contains all the content. The options template generates
-                        the ds-options div that contains the navigation and action options available to the
-                        user. The meta element is ignored since its contents are not processed directly, but
-                        instead referenced from the different points in the document. -->
-
-                 <!-- bds: adding body-and-options div to allow more styling options -->
-<!-- bds: container1 and container2 are nested inside body-and-options and are used
-        to help create equal-height columns. See:
-        http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
--->
-                        <div id="body-and-options">
-                            <xsl:apply-templates />
-                            <div id="clearBody" />
+                                <xsl:call-template name="buildFooter"/>
                             </div>
-
-                            <xsl:call-template name="buildFooter"/>
+                            <xsl:call-template name="extraBody-end"/>
                         </div>
-                        <xsl:call-template name="extraBody-end"/>
                     </body>
                 </xsl:otherwise>
             </xsl:choose>
@@ -183,15 +185,6 @@
                 <xsl:attribute name="href">
                     <xsl:value-of select="$context-path"/>
                     <xsl:text>/static/css/osukb_base.css</xsl:text>
-                </xsl:attribute>
-            </link>
-            <link rel="stylesheet" type="text/css">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$context-path"/>
-                    <xsl:text>/static/css/osukb_print.css</xsl:text>
-                </xsl:attribute>
-                <xsl:attribute name="media">
-                    <xsl:text>print</xsl:text>
                 </xsl:attribute>
             </link>
             <!-- Add stylsheets -->
@@ -392,10 +385,13 @@
     <xsl:template name="buildHeader">
         <div id="ds-header">
             <h1 id="kb-logo">
-                <a class="ir">
+                <a>
                     <xsl:attribute name="href">
                         <xsl:value-of select="$context-path"/>
                         <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="class">
+                        <xsl:text>ir</xsl:text>
                     </xsl:attribute>
                     <xsl:text>Knowledge Bank</xsl:text>
                 </a>
@@ -409,6 +405,20 @@
                     <xsl:text>University Libraries and the Office of the Chief Information Officer</xsl:text>
                 </a>
             </h2>
+
+            <!-- Include an invisible KB logo, usefull for robots that "lint" the page, such as FaceBook-->
+            <img>
+                <xsl:attribute name="src">
+                    <xsl:value-of select="$context-path"/>
+                    <xsl:text>/static/images/kb-logo-small.jpg</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="alt">
+                    <xsl:text>Logo of the Ohio State University Knowledge Bank</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="style">
+                    <xsl:text>display:none</xsl:text>
+                </xsl:attribute>
+            </img>
             <!-- Commenting out default action of the header. It has broken into individual smaller blocks.
             -<h1 class="pagetitle">
             -    <xsl:choose>
@@ -489,42 +499,43 @@
     <!-- Like the header, the footer contains various miscellanious text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <div id="ds-footer">
+            <h5 class="visuallyhidden">Footer</h5>
             <!--<i18n:text>xmlui.dri2xhtml.structural.footer-promotional</i18n:text>-->
-            <div id="osu-footer-logo">
-                <span><xsl:text> </xsl:text></span>
+            <div id="ds-footer-left">
+                <div class="ir" id="footer-osu-logo">The Ohio State University Logo</div>
+                <p>If you have problems with the site, difficulty accessing portions of it due to incompatibility with adaptive technology, or need information in an alternative format, please contact the <a href="mailto:libkbhelp@lists.acs.ohio-state.edu">system administrators</a>.</p>
             </div>
-            <div id="osu-logo-text">
-                <p>If you have problems with the site, difficulty accessing portions of it due to incompatibility with adaptive technology, or need information in an alternative format, please contact the <a href="mailto:libkbhelp@lists.osu.edu">system administrators</a>.</p>
-            </div>
-            <div id="ds-footer-links">
-                <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
-                                <a>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="$context-path"/>
-                        <xsl:text>/contact</xsl:text>
-                    </xsl:attribute>
-                    <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
-                </a>
-                -->
-                <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
-                <xsl:text> | </xsl:text>
-                <a target="_blank" href="http://www.dspace.org/">DSpace</a>
-
-                <xsl:if test="$config-use-feedback = 1">
-                    <!-- PMD: Make the Feedback link configurable. Since OSU KB uses the CMS forms.-->
-                    <xsl:text> | </xsl:text>
-                    <a>
+            <div id="ds-footer-right">
+                <div id="ds-footer-links">
+                    <!-- bds: JSPUI didn't have a contact link, so I comment this one out too
+                                    <a>
                         <xsl:attribute name="href">
                             <xsl:value-of select="$context-path"/>
-                            <xsl:text>/feedback</xsl:text>
+                            <xsl:text>/contact</xsl:text>
                         </xsl:attribute>
-                        <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
                     </a>
-                </xsl:if>
+                    -->
+                    <a target="_blank" href="http://cio.osu.edu/">Office of the CIO</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://library.osu.edu/">University Libraries</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://library.osu.edu/projects-initiatives/knowledge-bank/">Knowledge Bank Center</a>
+                    <xsl:text> | </xsl:text>
+                    <a target="_blank" href="http://www.dspace.org/">DSpace</a>
+
+                    <xsl:if test="$config-use-feedback = 1">
+                        <!-- PMD: Make the Feedback link configurable. Since OSU KB uses the CMS forms.-->
+                        <xsl:text> | </xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="$context-path"/>
+                                <xsl:text>/feedback</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        </a>
+                    </xsl:if>
+                </div>
             </div>
             <a>
                 <xsl:attribute name="href">
@@ -581,7 +592,7 @@
                 <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
                     <div id="ds-user-box">
                         <p>
-                            <a>
+                            <a class="icon-user">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='url']"/>
@@ -594,7 +605,7 @@
                                               dri:metadata[@element='identifier' and @qualifier='lastName']"/>
                             </a>
                             <xsl:text> | </xsl:text>
-                            <a>
+                            <a class="icon-logout">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='logoutURL']"/>
@@ -607,7 +618,7 @@
                 <xsl:otherwise>
                     <div id="ds-user-box">
                         <p>
-                            <a>
+                            <a class="icon-login">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                                                   dri:metadata[@element='identifier' and @qualifier='loginURL']"/>
@@ -641,6 +652,13 @@
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
                     </xsl:attribute>
                     <fieldset>
+                        <legend class="visuallyhidden">Search</legend>
+                        <!-- bds: title attribute works with jQuery script static/js/text-field-prompt.js -->
+                        <input title="Search the Knowledge Bank" id="ds-global-search-box" type="text">
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                            </xsl:attribute>
+                        </input>
                         <!-- bds: creating unique id for the search box and button -->
                         <!--      button, box, and radio buttons in reverse order for floats to work right -->
                         <input id="ds-global-search-button" name="submit" type="submit" i18n:attr="value" value="xmlui.general.go" >
@@ -660,16 +678,11 @@
                                 </xsl:text>
                             </xsl:attribute>
                         </input>
-                        <!-- bds: title attribute works with jQuery script static/js/text-field-prompt.js -->
-                        <input title="Search the Knowledge Bank" id="ds-global-search-box" type="text">
-                            <xsl:attribute name="name">
-                                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
-                            </xsl:attribute>
-                        </input>
+                        
+                        
                         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
                             <div id="ds-global-search-scope">
                                 <label>
-
                                     <input id="ds-search-form-scope-all" type="radio" name="scope" value="" checked="checked"/>
                                     <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
                                 </label>
@@ -695,7 +708,7 @@
                         </xsl:if>
                     </fieldset>
                 </form>
-                <a>
+                <a class="icon-cog">
                     <xsl:attribute name="href">
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='advancedURL']"/>
                     </xsl:attribute>
@@ -719,6 +732,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <div id="breadCrumb0" class="breadCrumb">
+                  <h2 class="visuallyhidden">Breadcrumbs Navigation</h2>
                     <ul id="ds-trail">
                         <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
                     </ul>
@@ -771,6 +785,7 @@
     <xsl:template match="dri:options">
         <div id="ds-options" class="column">
             <!-- bds: adding help and about links bit -->
+            <h2 class="visuallyhidden">Sidebar Navigation</h2>
             <h3 id="ds-help-option-head" class="ds-option-set-head">
                 <xsl:text>Information</xsl:text>
             </h3>
@@ -1728,8 +1743,8 @@ Disable authority
                     <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
                 </xsl:when>
                 <xsl:otherwise>
-	            <xsl:apply-templates />
-		</xsl:otherwise>
+                <xsl:apply-templates />
+        </xsl:otherwise>
             </xsl:choose>
         </xsl:element>
     </xsl:template>
@@ -2064,7 +2079,7 @@ Disable Choice
             <input type="submit" value="Add more" name="{concat('submit_',@n,'_add')}" class="ds-button-field ds-add-button">
                 <!-- Make invisible if we have choice-lookup popup that provides its own Add. -->
 <!-- Disable Choice
-		<xsl:if test="dri:params/@choicesPresentation = 'lookup'">
+        <xsl:if test="dri:params/@choicesPresentation = 'lookup'">
                     <xsl:attribute name="style">
                         <xsl:text>display:none;</xsl:text>
                     </xsl:attribute>
@@ -2136,7 +2151,7 @@ Disable Choice
         <xsl:param name="position"/>
         <!-- add authority value for this instance -->
 <!-- Disable Choice
-	<xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
+    <xsl:if test="dri:instance[position()=$position]/dri:value[@type='authority']">
             <xsl:call-template name="authorityInputFields">
                 <xsl:with-param name="name" select="@n"/>
                 <xsl:with-param name="position" select="$position"/>
@@ -2376,8 +2391,8 @@ Disable Choice
 
     <xsl:template match="dri:field" mode="normalField">
         <!-- Disable Choice
-	<xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
-	-->
+    <xsl:variable name="confidenceIndicatorID" select="concat(translate(@id,'.','_'),'_confidence_indicator')"/>
+    -->
         <xsl:choose>
             <!-- TODO: this has changed drammatically (see form3.xml) -->
             <xsl:when test="@type= 'select'">

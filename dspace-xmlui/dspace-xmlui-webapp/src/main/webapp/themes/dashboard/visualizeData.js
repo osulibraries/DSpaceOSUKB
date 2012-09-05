@@ -469,9 +469,9 @@
         var reportName = $('input[name=reportName]').val();
 
         if ($('input[name=reportDepth]').val() == "detail") {
-            var contextPanel = '<div><p><a href="' + baseURLStats + '">Back to Summary Statistics for ' + name + '</a></p><br/>';
-            contextPanel += '<a href="#" onclick="window.print(); return false;"><img src="http://www.famfamfam.com/lab/icons/silk/icons/printer.png"/>Print This Report</a><br/>';
-            contextPanel += '<a href="' + baseURLStats + '/csv/' + reportName;
+            var contextPanel = '<div><p><a href="' + baseURLStats + '" class="small-icon left-arrow-icon">Back to Summary Statistics for ' + name + '</a></p><br/>';
+            contextPanel += '<a href="#" class="small-icon print-icon" onclick="window.print(); return false;">Print This Report</a><br/>';
+            contextPanel += '<a class="small-icon excel-icon" href="' + baseURLStats + '/csv/' + reportName;
             if(fromDateString !== null && typeof fromDateString !== 'undefined') {
                 contextPanel += '?from=' + fromDateString;
             }
@@ -484,7 +484,7 @@
 
                 contextPanel += 'to=' + toDateString;
             }
-            contextPanel += '"><img src="http://www.famfamfam.com/lab/icons/silk/icons/page_excel.png"/>Download Data as .csv</a></div>';
+            contextPanel += '">Download Data as .csv</a></div>';
             $(contextPanel).insertAfter('#aspect_dashboard_ElasticSearchStatsViewer_div_chart_div');
 
         }
