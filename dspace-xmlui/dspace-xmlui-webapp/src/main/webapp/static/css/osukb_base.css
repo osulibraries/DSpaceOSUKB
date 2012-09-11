@@ -154,10 +154,10 @@ p {
   margin: 0 0 1.5em 0; }
 
 a:link, a:visited {
-  color: #cc0000;
+  color: #990000;
   text-decoration: none; }
 a:hover, a:focus {
-  color: #990000;
+  color: #cc0000;
   text-decoration: underline;
   outline: none; }
 
