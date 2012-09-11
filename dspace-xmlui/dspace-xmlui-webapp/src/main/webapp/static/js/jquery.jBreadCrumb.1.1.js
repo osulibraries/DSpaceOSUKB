@@ -118,6 +118,10 @@
                 }
                 jQuery(listElement).bind('mouseover', options, expandBreadCrumb).bind('mouseout', options, shrinkBreadCrumb);
                 jQuery(listElement).find('a').unbind('mouseover', expandBreadCrumb).unbind('mouseout', shrinkBreadCrumb);
+
+                //Also bind the mouse effect to onFocus
+                jQuery(listElement).find('a').bind('focus', options, expandBreadCrumb).bind('blur', options, shrinkBreadCrumb);
+
                 listElement.autoInterval = setInterval(function()
                 {
                     clearInterval(listElement.autoInterval);
