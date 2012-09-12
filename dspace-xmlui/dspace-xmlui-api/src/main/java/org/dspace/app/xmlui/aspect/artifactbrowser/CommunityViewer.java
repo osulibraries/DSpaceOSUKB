@@ -204,11 +204,11 @@ public class CommunityViewer extends AbstractDSpaceTransformer implements Cachea
 				pageMeta.addMetadata("feed", feedFormat).addContent(feedURL);
 
                 //if this community has audio/video specific feeds too. Add them
-                if(audioCommunity.contains(community.getHandle())) {
+                if(audioCommunity != null && audioCommunity.contains(community.getHandle())) {
                     pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/audio");
                 }
 
-                if(videoCommunity.contains(community.getHandle())) {
+                if(videoCommunity != null && videoCommunity.contains(community.getHandle())) {
                     pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/video");
                 }
 			}
