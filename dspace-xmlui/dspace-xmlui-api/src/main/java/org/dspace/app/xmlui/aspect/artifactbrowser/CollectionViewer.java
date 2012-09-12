@@ -188,11 +188,11 @@ public class CollectionViewer extends AbstractDSpaceTransformer implements Cache
 				pageMeta.addMetadata("feed", feedFormat).addContent(feedURL);
 
                 //if this collection has audio/video specific feeds too. Add them
-                if(audioCollection.contains(collection.getHandle())) {
+                if(audioCollection != null && audioCollection.contains(collection.getHandle())) {
                     pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/audio");
                 }
 
-                if(videoCollection.contains(collection.getHandle())) {
+                if(videoCollection != null && videoCollection.contains(collection.getHandle())) {
                     pageMeta.addMetadata("feed", feedFormat).addContent(feedURL + "/mediaType/video");
                 }
 			}
