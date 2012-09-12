@@ -731,12 +731,14 @@
                             or /dri:document/dri:body/dri:div[@rend='primary submission']">
             </xsl:when>
             <xsl:otherwise>
-                <div id="breadCrumb0" class="breadCrumb">
-                  <h2 class="visuallyhidden">Breadcrumbs Navigation</h2>
-                    <ul id="ds-trail">
-                        <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
-                    </ul>
-                </div>
+                <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:trail">
+                    <div id="breadCrumb0" class="breadCrumb">
+                        <h2 class="visuallyhidden">Breadcrumbs Navigation</h2>
+                        <ul id="ds-trail">
+                            <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
+                        </ul>
+                    </div>
+                </xsl:if>
            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
