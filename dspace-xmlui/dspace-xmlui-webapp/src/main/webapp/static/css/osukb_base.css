@@ -550,8 +550,9 @@ tr.ds-table-row.even {
 
 #ds-body h1 {
   font-size: 1.75em;
-  line-height: 1.714em;
-  margin-top: 0.857em; }
+  line-height: 1.25em;
+  margin-top: 0.857em;
+  padding: 10px 20px; }
 #ds-body h2 {
   font-size: 1.5em;
   line-height: 1em;
