@@ -357,4 +357,51 @@
             </div>
         </li>
     </xsl:template>
+
+    <!-- Generate the info about the item from the metadata section -->
+    <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
+
+        <xsl:choose>
+            <xsl:when test="count(dim:field[@element='source'][@qualifier='uri']) &gt; 0">
+                <h3>Embed Source.URI Media</h3>
+                <xsl:for-each select="dim:field[@element='source'][@qualifier='uri']">
+                    <xsl:variable name="sourceURI">
+                        <xsl:value-of select="./node()"/>
+                    </xsl:variable>
+
+                    <embed class="googleplayer" type="application/x-shockwave-flash" wmode="transparent" height="27" width="320">
+                        <xsl:attribute name="src">
+                            <xsl:text>http://www.google.com/reader/ui/3523697345-audio-player.swf?audioUrl=</xsl:text>
+                            <xsl:value-of select="$sourceURI" />
+                        </xsl:attribute>
+                    </embed>
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="$sourceURI" />
+                        </xsl:attribute>
+                        <xsl:text>View this in your browser.</xsl:text>
+                    </a>
+                </xsl:for-each>
+            </xsl:when>
+        </xsl:choose>
+
+        <table class="ds-includeSet-table">
+            <xsl:call-template name="itemSummaryView-DIM-fields">
+            </xsl:call-template>
+        </table>
+        <xsl:if test="$config-use-COinS = 1">
+            <!--  Generate COinS  -->
+            <span class="Z3988">
+                <xsl:attribute name="title">
+                    <xsl:call-template name="renderCOinS"/>
+                </xsl:attribute>
+                &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+            </span>
+        </xsl:if>
+
+        <!-- bds: this seemed as appropriate a place as any to throw in the blanket copyright notice -->
+        <!--        see also match="dim:dim" mode="itemDetailView-DIM"  -->
+        <p class="copyright-text">Items in Knowledge Bank are protected by copyright, with all rights reserved, unless otherwise indicated.</p>
+    </xsl:template>
+
 </xsl:stylesheet>
