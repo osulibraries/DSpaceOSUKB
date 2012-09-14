@@ -336,13 +336,10 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                     fileInputStream = new FileInputStream(citedDocument);
                     if(fileInputStream == null) {
                         log.error("Error opening fileInputStream: ");
-                    } else {
-                        log.info("fileInputStream was ok");
                     }
                     
                     this.bitstreamInputStream = fileInputStream;
                     this.bitstreamSize = citedDocument.length();
-                    log.info("Got to here");
                     
                 } catch (Exception e) {
                     log.error("Caught an error with intercepting the citation document:" + e.getMessage());
@@ -350,13 +347,9 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                 
                 
             } else {
-                log.info("Citation not gonna work for this bitstream. " + bitstream.getID());
-
                 this.bitstreamInputStream = bitstream.retrieve();
                 this.bitstreamSize = bitstream.getSize();
             }
-
-            log.info("Citation: This Far.");
 
             this.bitstreamMimeType = bitstream.getFormat().getMIMEType();
             this.bitstreamName = bitstream.getName();

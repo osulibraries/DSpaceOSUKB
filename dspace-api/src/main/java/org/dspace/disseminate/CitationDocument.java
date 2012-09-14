@@ -20,11 +20,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by IntelliJ IDEA.
- * User: peterdietz
- * Date: 7/16/12
- * Time: 12:13 PM
- * To change this template use File | Settings | File Templates.
+ * The Citation Document produces a dissemination package (DIP) that is different that the archival package (AIP).
+ * In this case we append the descriptive metadata to the end (configurable) of the document. i.e. last page of PDF.
+ * So instead of getting the original PDF, you get a cPDF (with citation information added).
+ *
+ * @author Peter Dietz (dietz.72@osu.edu)
  */
 public class CitationDocument {
     /**
@@ -88,7 +88,6 @@ public class CitationDocument {
 
 
     public CitationDocument() {
-        log.info("CitationDocument Constructor");
     }
     
     public boolean canGenerateCitationVersion(Bitstream bitstream) {
@@ -99,21 +98,14 @@ public class CitationDocument {
         try {
         
             Item item = (Item) bitstream.getParentObject();
-            log.info("This had better work");
             CitationMeta cm = new CitationMeta(item);
             if(cm == null) {
                 log.error("CitationMeta was null");
-            } else {
-                log.info("CitationMeta was ok");
             }
-
-            log.info("Here...");
             
             File citedDocumentFile = makeCitedDocument(bitstream, cm);
             if(citedDocumentFile == null) {
                 log.error("Got a null citedDocumentFile in makeCitedDocument for bitstream");
-            } else {
-                log.info("Got an ok citedDocumentFile.");
             }
             return citedDocumentFile;
         } catch (Exception e) {
