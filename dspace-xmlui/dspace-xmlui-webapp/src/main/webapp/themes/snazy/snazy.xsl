@@ -34,8 +34,8 @@
         <!-- bds: moving file info above metadata -->
         <!-- Generate the bitstream information from the file section -->
         <xsl:choose>
-            <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL']">
-                <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL']">
+            <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='DISPLAY']">
+                <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='DISPLAY']">
                     <xsl:with-param name="context" select="."/>
                     <xsl:with-param name="primaryBitstream" select="./mets:structMap[@TYPE='LOGICAL']/mets:div[@TYPE='DSpace Item']/mets:fptr/@FILEID"/>
                 </xsl:apply-templates>
@@ -165,7 +165,7 @@
 
 
     <!--Snazy New Layout-->
-    <xsl:template match="mets:fileGrp[@USE='CONTENT']">
+    <xsl:template match="mets:fileGrp[@USE='CONTENT' or @USE='DISPLAY']">
         <xsl:param name="context"/>
         <xsl:param name="primaryBitstream" select="-1"/>
         <xsl:call-template name="mimeviews">
