@@ -209,20 +209,18 @@ public class CitationDocument {
 
         //Construct title and header paragraphs
         Paragraph title = new Paragraph(cMeta.getItem().getName(), titleFont);
-
-        Phrase beforeCollection = new Phrase(1f, "from the ", beforeAfterFont);
-        Phrase collection = new Phrase(1f, cMeta.getCollection().getName(), headerFont);
-        Phrase afterCollection = new Phrase(1f, " collection", beforeAfterFont);
-
-        Paragraph fromThe = new Paragraph(beforeCollection);
-        fromThe.add(collection);
-        fromThe.add(afterCollection);
-
         title.setLeading(0f, 1f);
-        fromThe.setLeading(1f, 1.5f);
-        fromThe.setSpacingAfter(10f);
         cDoc.add(title);
-        cDoc.add(fromThe);
+
+        Phrase beforeCollection = new Phrase(1f, "This file appeared in the following Collection:", beforeAfterFont);
+        Paragraph fromPara = new Paragraph(beforeCollection);
+        fromPara.setLeading(1f, 1.5f);
+        cDoc.add(fromPara);
+
+        Phrase collectionPhrase = new Phrase(1f, cMeta.getCollection().getName(), headerFont);
+        Paragraph collectionPara = new Paragraph(collectionPhrase);
+        collectionPara.setLeading(1f, 1.5f);
+        cDoc.add(collectionPara);
 
         //Add OSU logo to citation page.
         if (LOGO_RESOURCE.length() > 0) {
